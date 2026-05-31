@@ -1,1 +1,391 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Calcul Poutre BA</title>
+
+<style>
+    body{
+        font-family: Arial, sans-serif;
+        background:#f2f2f2;
+        margin:0;
+        padding:20px;
+    }
+
+    .container{
+        max-width:1000px;
+        margin:auto;
+        background:white;
+        padding:25px;
+        border-radius:12px;
+        box-shadow:0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h1{
+        text-align:center;
+        color:#222;
+    }
+
+    .grid{
+        display:grid;
+        grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+        gap:15px;
+        margin-bottom:20px;
+    }
+
+    label{
+        display:block;
+        font-weight:bold;
+        margin-bottom:5px;
+    }
+
+    input, select{
+        width:100%;
+        padding:10px;
+        border-radius:8px;
+        border:1px solid #ccc;
+        box-sizing:border-box;
+    }
+
+    button{
+        width:100%;
+        padding:14px;
+        background:#0077cc;
+        color:white;
+        border:none;
+        border-radius:10px;
+        font-size:16px;
+        cursor:pointer;
+    }
+
+    button:hover{
+        background:#005fa3;
+    }
+
+    .result{
+        margin-top:25px;
+        background:#fafafa;
+        padding:20px;
+        border-radius:10px;
+        border:1px solid #ddd;
+    }
+
+    .section{
+        margin-bottom:25px;
+    }
+
+    .section h2{
+        background:#0077cc;
+        color:white;
+        padding:10px;
+        border-radius:8px;
+    }
+
+    .ok{
+        color:green;
+        font-weight:bold;
+    }
+
+    .bad{
+        color:red;
+        font-weight:bold;
+    }
+
+    table{
+        width:100%;
+        border-collapse:collapse;
+        margin-top:10px;
+    }
+
+    table, th, td{
+        border:1px solid #ccc;
+    }
+
+    th, td{
+        padding:8px;
+        text-align:center;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Calcul Poutre Béton Armé</h1>
+
+    <div class="grid">
+
+        <div>
+            <label>g (kN/m)</label>
+            <input type="number" id="g" value="20">
+        </div>
+
+        <div>
+            <label>q (kN/m)</label>
+            <input type="number" id="q" value="10">
+        </div>
+
+        <div>
+            <label>b (cm)</label>
+            <input type="number" id="b" value="25">
+        </div>
+
+        <div>
+            <label>h (cm)</label>
+            <input type="number" id="h" value="50">
+        </div>
+
+        <div>
+            <label>L (m)</label>
+            <input type="number" id="L" value="6">
+        </div>
+
+        <div>
+            <label>fck (MPa)</label>
+            <input type="number" id="fck" value="25">
+        </div>
+
+    </div>
+
+    <button onclick="calculer()">Calculer</button>
+
+    <div id="resultats" class="result"></div>
+
+</div>
+
+<script>
+
+function sectionBarre(d, n){
+    return n * (Math.PI * d * d) / 400.0;
+}
+
+function calculer(){
+
+    let g = parseFloat(document.getElementById("g").value);
+    let q = parseFloat(document.getElementById("q").value);
+    let b_cm = parseFloat(document.getElementById("b").value);
+    let h_cm = parseFloat(document.getElementById("h").value);
+    let L = parseFloat(document.getElementById("L").value);
+    let fck = parseFloat(document.getElementById("fck").value);
+
+    let fyk = 400;
+
+    let fcm = fck + 8;
+
+    let E = 22000 * Math.pow(fcm / 10.0, 0.3);
+
+    let b = b_cm / 100.0;
+    let h = h_cm / 100.0;
+    let d = 0.9 * h;
+
+    let b_mm = b * 1000;
+    let h_mm = h * 1000;
+    let d_mm = d * 1000;
+
+    let fcd = fck / 1.5;
+    let fyd = fyk / 1.15;
+
+    // ================= ELU =================
+
+    let pelu = 1.35 * g + 1.5 * q;
+
+    let melu = pelu * Math.pow(L,2) / 8.0 * 1e6;
+
+    let u = melu / (b_mm * d_mm * d_mm * fcd);
+
+    if(u >= 0.5){
+        document.getElementById("resultats").innerHTML =
+            "<h2 class='bad'>Section insuffisante (u > 0.5)</h2>";
+        return;
+    }
+
+    let alpha = 1.25 * (1 - Math.sqrt(1 - 2*u));
+
+    let As = 0.8 * alpha * d_mm * b_mm * fcd / fyd;
+
+    let As_cm2 = As / 100.0;
+
+    // ================= ARMATURES =================
+
+    let diam = [5,6,8,10,12,14,16,20,25,32,40];
+
+    let solutions = [];
+
+    for(let dbar of diam){
+
+        for(let n=1;n<=20;n++){
+
+            let s = sectionBarre(dbar,n);
+
+            if(s >= As_cm2){
+
+                solutions.push({
+                    d:dbar,
+                    n:n,
+                    s:s
+                });
+            }
+        }
+    }
+
+    solutions.sort((a,b)=>a.s-b.s);
+
+    // ================= ELS =================
+
+    let pels = g + q;
+
+    let mels = pels * Math.pow(L,2) / 8.0 * 1e6;
+
+    let z1 =
+        (15.0 * As / b_mm) *
+        (
+            Math.sqrt(
+                1.0 +
+                (2.0 * b_mm * d_mm) /
+                (15.0 * As)
+            ) - 1.0
+        );
+
+    let Ifiss =
+        (b_mm * Math.pow(z1,3))/3.0 +
+        15.0 * As * Math.pow(d_mm-z1,2);
+
+    let Inon =
+        (b_mm * Math.pow(h_mm,3))/12.0;
+
+    let sigmaBeton =
+        mels * z1 / Ifiss;
+
+    let sigmaAcier =
+        15.0 * mels * (d_mm-z1) / Ifiss;
+
+    // ================= FLECHE =================
+
+    let qNmm = pels;
+
+    let fleche =
+        (5 * qNmm * Math.pow(L*1000,4)) /
+        (384 * E * Ifiss);
+
+    let L250 = (L*1000)/250.0;
+
+    let L300 = (L*1000)/300.0;
+
+    let verifFleche = "";
+
+    if(fleche <= L300)
+        verifFleche = "<span class='ok'>OK (L/300)</span>";
+    else if(fleche <= L250)
+        verifFleche = "<span class='ok'>Acceptable (L/250)</span>";
+    else
+        verifFleche = "<span class='bad'>NON CONFORME</span>";
+
+    // ================= CISAILLEMENT =================
+
+    let Ved = pelu * L / 2.0;
+
+    let VedN = Ved * 1000;
+
+    let tauu =
+        VedN / (b_mm * d_mm);
+
+    let taulim =
+        Math.min(0.15 * fck / 1.15, 4.0);
+
+    let verifCis = tauu <= taulim
+        ? "<span class='ok'>OK</span>"
+        : "<span class='bad'>NON OK</span>";
+
+    // ================= AFFICHAGE =================
+
+    let html = "";
+
+    html += `
+    <div class="section">
+        <h2>ELU</h2>
+
+        <p><b>Pelu :</b> ${pelu.toFixed(2)} kN/m</p>
+        <p><b>Melu :</b> ${(melu/1e6).toFixed(2)} kNm</p>
+        <p><b>u :</b> ${u.toFixed(4)}</p>
+        <p><b>alpha :</b> ${alpha.toFixed(4)}</p>
+        <p><b>As :</b> ${As_cm2.toFixed(2)} cm²</p>
+    </div>
+    `;
+
+    html += `
+    <div class="section">
+        <h2>Armatures proposées</h2>
+
+        <table>
+            <tr>
+                <th>Disposition</th>
+                <th>Section</th>
+            </tr>
+    `;
+
+    for(let i=0;i<Math.min(5,solutions.length);i++){
+
+        html += `
+        <tr>
+            <td>${solutions[i].n} x Ø${solutions[i].d}</td>
+            <td>${solutions[i].s.toFixed(2)} cm²</td>
+        </tr>
+        `;
+    }
+
+    html += `</table></div>`;
+
+    html += `
+    <div class="section">
+        <h2>ELS</h2>
+
+        <p><b>Mels :</b> ${(mels/1e6).toFixed(2)} kNm</p>
+
+        <p><b>z1 :</b> ${z1.toFixed(2)} mm</p>
+
+        <p><b>I fissurée :</b> ${Ifiss.toExponential(3)}</p>
+
+        <p><b>I non fissurée :</b> ${Inon.toExponential(3)}</p>
+
+        <p><b>σ béton :</b> ${sigmaBeton.toFixed(2)} MPa</p>
+
+        <p><b>σ acier :</b> ${sigmaAcier.toFixed(2)} MPa</p>
+    </div>
+    `;
+
+    html += `
+    <div class="section">
+        <h2>Flèche</h2>
+
+        <p><b>Flèche :</b> ${fleche.toFixed(2)} mm</p>
+
+        <p><b>L/250 :</b> ${L250.toFixed(2)} mm</p>
+
+        <p><b>L/300 :</b> ${L300.toFixed(2)} mm</p>
+
+        <p>${verifFleche}</p>
+    </div>
+    `;
+
+    html += `
+    <div class="section">
+        <h2>Cisaillement</h2>
+
+        <p><b>τu :</b> ${tauu.toFixed(3)} MPa</p>
+
+        <p><b>τlim :</b> ${taulim.toFixed(3)} MPa</p>
+
+        <p>${verifCis}</p>
+    </div>
+    `;
+
+    document.getElementById("resultats").innerHTML = html;
+}
+
+</script>
+
+</body>
+</html>
