@@ -579,12 +579,12 @@ const checkDotsIsolate = (counter) => {
 
 const checkEndGame = () => {
     for(let i = 0; i <dots.length; i++){
-        if(dots[i].y+rad>=lineEndY&&!dots[i].isolate){
+       if (dots[i].y + (rad || 0) >= lineEndY && !dots[i].isolate){
             gamePlay = false
             endGame()
             break
         }
-        if(dots[i].y+rad>=lineEndY&&dots[i].isolate){
+        if (dots[i].y + (rad || 0) >= lineEndY && !dots[i].isolate){
             dots.splice(i, 1);             
         }    
     }
@@ -603,11 +603,18 @@ const endGame = () => {
 
 const newGame = () => {
     dots = [];
+    booms = [];
+    same = [];
+
     nbrPlayer = 0;
     countPoints = 0;
+    progress = 0;
+
+    gamePlay = true; // 🔥 IMPORTANT ABSOLU
+
     info.innerText = countPoints;
 
-    createBall();   // 🔥 important
+    createBall();
     newPlayer();
 };
 
