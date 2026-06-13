@@ -4,26 +4,108 @@
   <title>Game Hub Console</title>
 
   <style>
+    :root {
+      --bg: #050505;
+      --text: #fff;
+      --card: #111;
+      --border: #222;
+      --glow: #00ffcc;
+    }
+
+    body.light {
+      --bg: #f2f2f2;
+      --text: #111;
+      --card: #ffffff;
+      --border: #ddd;
+      --glow: #0077ff;
+    }
+
+    body.neon {
+      --bg: #000;
+      --text: #fff;
+      --card: #0a0a0a;
+      --border: #00ffcc;
+      --glow: #ff00ff;
+    }
+
     body {
       margin: 0;
-      background: #050505;
-      color: white;
+      background: var(--bg);
+      color: var(--text);
       font-family: monospace;
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
+      overflow: hidden;
+      transition: 0.4s;
     }
 
+    /* ===== BOOT SCREEN (PS5 STYLE) ===== */
+    #boot {
+      position: fixed;
+      inset: 0;
+      background: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 999;
+      animation: fadeOut 2.5s ease forwards;
+      animation-delay: 2.5s;
+    }
+
+    #boot h1 {
+      font-size: 28px;
+      letter-spacing: 6px;
+      opacity: 0;
+      animation: fadeIn 1.5s ease forwards;
+    }
+
+    .bar {
+      width: 200px;
+      height: 2px;
+      background: #222;
+      margin-top: 20px;
+      overflow: hidden;
+    }
+
+    .bar::after {
+      content: "";
+      display: block;
+      width: 40%;
+      height: 100%;
+      background: white;
+      animation: load 1.5s infinite;
+    }
+
+    @keyframes load {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(300%); }
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+
+    /* ===== UI ===== */
+
     .container {
-      width: 400px;
+      width: 420px;
     }
 
     .title {
       text-align: center;
       margin-bottom: 20px;
-      font-size: 20px;
-      letter-spacing: 3px;
+      font-size: 18px;
+      letter-spacing: 4px;
       opacity: 0.8;
     }
 
@@ -35,90 +117,128 @@
 
     .item {
       padding: 15px;
-      border: 1px solid #222;
-      background: #111;
+      background: var(--card);
+      border: 1px solid var(--border);
       cursor: pointer;
-      transition: 0.2s;
       display: flex;
       justify-content: space-between;
-      align-items: center;
-    }
-
-    .item:hover {
-      background: #1a1a1a;
+      transition: 0.2s;
     }
 
     .item.selected {
-      border: 1px solid #00ffcc;
-      box-shadow: 0 0 15px #00ffcc;
-      background: #0d0d0d;
+      border: 1px solid var(--glow);
+      box-shadow: 0 0 20px var(--glow);
       transform: scale(1.03);
     }
 
-    .tag {
-      font-size: 12px;
+    .hint {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 11px;
       opacity: 0.5;
     }
 
-    .hint {
-      margin-top: 20px;
-      text-align: center;
-      font-size: 12px;
-      opacity: 0.5;
+    /* bouton thème */
+    .theme-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      cursor: pointer;
+      font-family: monospace;
     }
   </style>
 </head>
 
 <body>
 
+<!-- ===== BOOT PS5 ===== -->
+<div id="boot">
+  <h1>PLAYSTATION</h1>
+  <div class="bar"></div>
+</div>
+
+<!-- ===== THEME BUTTON ===== -->
+<button class="theme-btn" onclick="cycleTheme()">THEME</button>
+
+<!-- ===== MENU ===== -->
 <div class="container">
   <div class="title">GAME HUB // CONSOLE</div>
 
-  <div class="menu" id="menu">
-    <div class="item selected" onclick="openGame('game-balls.html')">
-      🎮 Game Balls <span class="tag">PLAY</span>
+  <div class="menu">
+    <div class="item selected" onclick="go('game-balls.html')">
+      🎮 Game Balls <span>PLAY</span>
     </div>
 
-    <div class="item" onclick="openGame('games/game-2.html')">
-      🧩 Game 2 <span class="tag">WIP</span>
+    <div class="item" onclick="go('games/game-2.html')">
+      🧩 Game 2 <span>WIP</span>
     </div>
 
-    <div class="item" onclick="openGame('games/game-3.html')">
-      🚀 Game 3 <span class="tag">WIP</span>
+    <div class="item" onclick="go('games/game-3.html')">
+      🚀 Game 3 <span>WIP</span>
     </div>
   </div>
 
-  <div class="hint">↑ ↓ to navigate • ENTER to select</div>
+  <div class="hint">↑ ↓ navigate • ENTER select</div>
 </div>
 
 <script>
+  // ===== BOOT REMOVE =====
+  setTimeout(() => {
+    document.getElementById("boot").remove();
+  }, 3000);
+
+  // ===== MENU NAV =====
   const items = document.querySelectorAll(".item");
   let index = 0;
 
-  function updateSelection() {
+  function update() {
     items.forEach(i => i.classList.remove("selected"));
     items[index].classList.add("selected");
   }
 
-  function openGame(url) {
+  function go(url) {
     window.location.href = url;
   }
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "ArrowDown") {
       index = (index + 1) % items.length;
-      updateSelection();
+      update();
     }
 
     if (e.key === "ArrowUp") {
       index = (index - 1 + items.length) % items.length;
-      updateSelection();
+      update();
     }
 
     if (e.key === "Enter") {
       items[index].click();
     }
   });
+
+  // ===== THEMES =====
+  const themes = ["default", "light", "neon"];
+  let t = 0;
+
+  function cycleTheme() {
+    document.body.classList.remove("light", "neon");
+
+    t = (t + 1) % themes.length;
+
+    if (themes[t] === "light") document.body.classList.add("light");
+    if (themes[t] === "neon") document.body.classList.add("neon");
+
+    localStorage.setItem("theme", themes[t]);
+  }
+
+  // load theme
+  const saved = localStorage.getItem("theme");
+  if (saved === "light") document.body.classList.add("light");
+  if (saved === "neon") document.body.classList.add("neon");
 </script>
 
 </body>
