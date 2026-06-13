@@ -15,7 +15,7 @@
         <script src="https://code.createjs.com/1.0.0/soundjs.min.js"></script>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
         <style>
-/* Created by lolo */
+/* Created by AA */
 
 body {
     padding:0;margin:0;
@@ -128,7 +128,7 @@ body {
 </a>
 
     <script>
-// Created by lolo
+// Created by AA
 
 let c, ctx, W, H
 let gamePlay = true
@@ -513,9 +513,9 @@ const createEffet = () => {
     }
 }
 const createBall = () => {        
-    rad = W/16-0.01
+   rad = Math.min(W, H) / 28;
     diam = rad*2  
-    lineEndY = H-1.7*diam
+   lineEndY = H * 0.85;
     for(let x =-rad*5; x<W-rad;x+=diam+1){
         let nC = ~~random(colors.length)    
         if(x>rad&&x<W-rad)dots.push(new Dot(x,rad,rad,nC))
