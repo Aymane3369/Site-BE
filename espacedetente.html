@@ -2,16 +2,34 @@
 <html>
 <head>
   <title>Game Hub</title>
+
   <style>
+    :root {
+      --bg: #0d0d0d;
+      --card: rgba(255,255,255,0.05);
+      --text: white;
+      --border: rgba(255,255,255,0.1);
+      --shadow: rgba(0,0,0,0.5);
+    }
+
+    body.light {
+      --bg: #f2f2f2;
+      --card: rgba(0,0,0,0.05);
+      --text: #111;
+      --border: rgba(0,0,0,0.15);
+      --shadow: rgba(0,0,0,0.2);
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: radial-gradient(circle at top, #1a1a1a, #0d0d0d);
-      color: white;
+      background: var(--bg);
+      color: var(--text);
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+      transition: 0.3s ease;
     }
 
     .menu {
@@ -24,8 +42,8 @@
 
     .card {
       height: 150px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--card);
+      border: 1px solid var(--border);
       border-radius: 16px;
       display: flex;
       justify-content: center;
@@ -33,35 +51,15 @@
       flex-direction: column;
       cursor: pointer;
       text-decoration: none;
-      color: white;
+      color: var(--text);
       font-size: 18px;
       transition: 0.25s ease;
       backdrop-filter: blur(10px);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-      transform: rotate(45deg);
-      top: -50%;
-      left: -50%;
-      transition: 0.5s;
     }
 
     .card:hover {
       transform: translateY(-6px) scale(1.03);
-      border-color: rgba(255, 255, 255, 0.3);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-
-    .card:hover::before {
-      top: 50%;
-      left: 50%;
+      box-shadow: 0 10px 30px var(--shadow);
     }
 
     .tag {
@@ -69,10 +67,32 @@
       opacity: 0.6;
       margin-top: 5px;
     }
+
+    /* bouton thème */
+    .theme-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 10px 15px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      transition: 0.3s;
+    }
+
+    .theme-btn:hover {
+      transform: scale(1.05);
+    }
   </style>
 </head>
 
 <body>
+
+  <button class="theme-btn" onclick="toggleTheme()">🌗 Theme</button>
+
   <div class="menu">
     <a class="card" href="game-balls.html">
       🎮 Game Balls
@@ -89,5 +109,27 @@
       <div class="tag">En cours</div>
     </a>
   </div>
+
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle("light");
+
+      // sauvegarde du choix
+      if (document.body.classList.contains("light")) {
+        localStorage.setItem("theme", "light");
+      } else {
+        localStorage.setItem("theme", "dark");
+      }
+    }
+
+    // charger thème au démarrage
+    window.onload = () => {
+      const theme = localStorage.getItem("theme");
+      if (theme === "light") {
+        document.body.classList.add("light");
+      }
+    };
+  </script>
+
 </body>
 </html>
