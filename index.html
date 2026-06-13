@@ -53,6 +53,16 @@ body{
   color:var(--text);
   overflow-x:hidden;
 }
+   body.light{
+  --bg:#f5f7ff;
+  --panel:rgba(0,0,0,0.05);
+  --panel2:rgba(0,0,0,0.08);
+  --stroke:rgba(0,0,0,0.15);
+  --text:#111;
+  --muted:#444;
+  --gold:#b38b2a;
+  --gold2:#d6b25e;
+}
 
 /* =========================
    HEADER PREMIUM
@@ -101,6 +111,15 @@ nav a{
 
 nav a:hover{
   color:var(--gold);
+}
+   .theme-btn{
+  background: transparent;
+  border: 1px solid var(--stroke);
+  color: var(--text);
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
 }
 
 /* =========================
@@ -329,7 +348,9 @@ footer{
         <li><a href="PriseRDV.html">Prise de Rendez-vous</a></li>
          <li><a href="articles.html">Articles</a></li>
          <li><a href="espacedetente.html">Espace détente</a></li>
-      </ul>
+      </ul><li>
+  <button id="themeToggle" class="theme-btn">🌙</button>
+</li>
     </nav>
   </div>
 </header>
@@ -472,6 +493,19 @@ const observer=new IntersectionObserver(entries=>{
 },{threshold:0.15});
 
 elements.forEach(el=>observer.observe(el));
+</script>
+   <script>
+const btn = document.getElementById("themeToggle");
+
+btn.addEventListener("click", () => {
+  document.body.classList.toggle("light");
+
+  if(document.body.classList.contains("light")){
+    btn.textContent = "☀️";
+  } else {
+    btn.textContent = "🌙";
+  }
+});
 </script>
 
 </body>
