@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Game Hub</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #111;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .menu { display:flex; gap:20px; }
+    .card {
+      width: 200px;
+      height: 150px;
+      background: #222;
+      border-radius: 15px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      cursor:pointer;
+      transition:0.3s;
+      color:white;
+      text-decoration:none;
+      font-size:18px;
+    }
+    .card:hover { transform: scale(1.05); background:#333; }
+  </style>
+</head>
+<body>
+  <div class="menu">
+    <a class="card" href="games/game-balls.html">🎮 Game Balls</a>
+    <a class="card" href="games/game-2.html">🧩 Game 2</a>
+    <a class="card" href="games/game-3.html">🚀 Game 3</a>
+  </div>
+</body>
+</html>
