@@ -2,26 +2,22 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="google-site-verification" content="5Ntfenm84ASmO-7ipWvDEN6PSxfCgttqB-c0kCpXMLw" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>BET STRUCTURE | Ingénierie & Calcul de Structures</title>
-<meta name="description" content="Bureau d'études structure spécialisé en béton armé, acier, diagnostic et réhabilitation selon Eurocodes.">
-<meta name="keywords" content="BET structure, ingénierie structure, béton armé, Eurocodes, calcul structure">
-<meta name="author" content="BET STRUCTURE">
+<meta name="description" content="Bureau d'études structure spécialisé béton armé, acier, réhabilitation et Eurocodes.">
 
-<!-- Open Graph -->
-<meta property="og:title" content="BET STRUCTURE | Ingénierie Structurelle">
-<meta property="og:description" content="Conception et calcul de structures béton, acier et mixtes selon Eurocodes.">
+<meta property="og:title" content="BET STRUCTURE">
+<meta property="og:description" content="Ingénierie structurelle béton & acier selon Eurocodes">
 <meta property="og:type" content="website">
 
+<!-- FONT -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
   --bg:#05070d;
   --panel:rgba(255,255,255,0.04);
-  --panel2:rgba(255,255,255,0.06);
   --stroke:rgba(255,255,255,0.08);
   --text:#eaf0ff;
   --muted:#a9b4d0;
@@ -29,53 +25,48 @@
   --gold2:#ffcc70;
 }
 
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Montserrat',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Montserrat,sans-serif;}
 
 body{
-  background: radial-gradient(circle at top, #0b1020, var(--bg));
+  background:radial-gradient(circle at top,#0b1020,var(--bg));
   color:var(--text);
   overflow-x:hidden;
+  transition:0.4s;
 }
 
 body.light{
   --bg:#f5f7ff;
   --panel:rgba(0,0,0,0.05);
-  --panel2:rgba(0,0,0,0.08);
   --stroke:rgba(0,0,0,0.15);
   --text:#111;
   --muted:#444;
-  --gold:#b38b2a;
-  --gold2:#d6b25e;
 }
 
 header{
   position:sticky;
   top:0;
   z-index:1000;
-  backdrop-filter: blur(14px);
-  background: rgba(5,7,13,0.75);
+  backdrop-filter:blur(14px);
+  background:rgba(5,7,13,0.75);
   border-bottom:1px solid var(--stroke);
-  padding:18px 20px;
+  padding:15px 20px;
 }
 
 .header-wrap{
+  max-width:1200px;
+  margin:auto;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  max-width:1200px;
-  margin:auto;
-  flex-wrap:wrap;
-  gap:10px;
 }
 
-.logo{font-weight:700;letter-spacing:2px;font-size:18px;}
-.logo span{color:var(--gold);}
+.logo{font-weight:700;letter-spacing:2px}
+.logo span{color:var(--gold)}
 
 nav ul{
   display:flex;
   gap:18px;
   list-style:none;
-  flex-wrap:wrap;
 }
 
 nav a{
@@ -84,11 +75,35 @@ nav a{
   font-size:14px;
 }
 
-nav a:hover{color:var(--gold);}
+nav a:hover{color:var(--gold)}
+
+/* MOBILE MENU */
+.burger{
+  display:none;
+  font-size:26px;
+  cursor:pointer;
+}
+
+@media(max-width:900px){
+  nav ul{
+    position:absolute;
+    top:70px;
+    left:0;
+    right:0;
+    background:rgba(0,0,0,0.9);
+    flex-direction:column;
+    padding:20px;
+    display:none;
+  }
+
+  nav ul.active{display:flex;}
+
+  .burger{display:block;}
+}
 
 .theme-btn{
-  background:transparent;
   border:1px solid var(--stroke);
+  background:transparent;
   color:var(--text);
   padding:6px 10px;
   border-radius:8px;
@@ -101,8 +116,8 @@ nav a:hover{color:var(--gold);}
   align-items:center;
   justify-content:center;
   text-align:center;
-  padding:40px;
   position:relative;
+  padding:40px;
 }
 
 .hero::before{
@@ -113,23 +128,26 @@ nav a:hover{color:var(--gold);}
   opacity:0.18;
 }
 
-.hero-content{position:relative;max-width:850px;}
+.hero-content{position:relative;max-width:850px}
 
-.hero h1{font-size:44px;}
-.hero h1 span{color:var(--gold);}
+.hero h1{font-size:44px}
+.hero h1 span{color:var(--gold)}
 
-.hero p{margin-top:15px;color:var(--muted);line-height:1.6;}
+.hero p{margin-top:15px;color:var(--muted);line-height:1.6}
 
 .cta{
-  margin-top:25px;
   display:inline-block;
+  margin-top:25px;
   padding:12px 26px;
   background:linear-gradient(135deg,var(--gold),var(--gold2));
   color:#111;
   font-weight:700;
   border-radius:10px;
   text-decoration:none;
+  transition:0.3s;
 }
+
+.cta:hover{transform:scale(1.05)}
 
 section{
   max-width:1200px;
@@ -137,7 +155,10 @@ section{
   padding:0 20px;
 }
 
-.section-title{color:var(--gold);margin-bottom:25px;}
+.section-title{
+  color:var(--gold);
+  margin-bottom:25px;
+}
 
 .grid{
   display:grid;
@@ -150,11 +171,16 @@ section{
   border:1px solid var(--stroke);
   padding:22px;
   border-radius:14px;
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:translateY(-6px);
 }
 
 .stats{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
   gap:15px;
 }
 
@@ -166,42 +192,20 @@ section{
   border-radius:12px;
 }
 
-.stat h2{color:var(--gold);}
+.stat h2{color:var(--gold)}
 
 .step{
   padding:15px;
-  background:var(--panel);
-  border-left:3px solid var(--gold);
-  border-radius:10px;
   margin-bottom:10px;
-}
-
-form{
-  display:grid;
-  gap:12px;
-}
-
-input,textarea{
-  padding:12px;
+  border-left:3px solid var(--gold);
+  background:var(--panel);
   border-radius:10px;
-  border:1px solid var(--stroke);
-  background:#0b0f1a;
-  color:white;
-}
-
-button{
-  padding:12px;
-  border:none;
-  border-radius:10px;
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  font-weight:700;
-  cursor:pointer;
 }
 
 .fade{
   opacity:0;
-  transform:translateY(30px);
-  transition:0.8s ease;
+  transform:translateY(25px);
+  transition:0.7s ease;
 }
 
 .fade.show{
@@ -224,26 +228,25 @@ footer{
   <div class="header-wrap">
     <div class="logo">BET <span>STRUCTURE</span></div>
 
-    <nav aria-label="Navigation principale">
-      <ul>
+    <div class="burger" onclick="toggleMenu()">☰</div>
+
+    <nav>
+      <ul id="menu">
         <li><a href="#services">Services</a></li>
-        <li><a href="#expertise">Expertise</a></li>
         <li><a href="#method">Méthode</a></li>
         <li><a href="#contact">Contact</a></li>
-        <li><a href="calcul-poutre.html">Calcul Poutre</a></li>
-        <li><a href="Learning.html">Learning</a></li>
-        <li><a href="PriseRDV.html">RDV</a></li>
+        <li><a href="calcul-poutre.html">Calcul</a></li>
       </ul>
     </nav>
 
-    <button id="themeToggle" class="theme-btn" type="button">🌙</button>
+    <button class="theme-btn" id="themeBtn">🌙</button>
   </div>
 </header>
 
 <section class="hero">
   <div class="hero-content fade">
     <h1>Ingénierie <span>Structurelle</span></h1>
-    <p>Conception, calcul et optimisation de structures béton, acier et mixtes selon Eurocodes.</p>
+    <p>Conception et calcul de structures béton, acier et mixtes selon Eurocodes.</p>
     <a class="cta" href="#contact">Demander une étude</a>
   </div>
 </section>
@@ -251,20 +254,20 @@ footer{
 <section class="fade">
   <h2 class="section-title">EXPERTISE</h2>
   <div class="stats">
-    <div class="stat"><h2>1+</h2><p>Années</p></div>
-    <div class="stat"><h2>Eurocodes</h2><p>Maîtrisés</p></div>
-    <div class="stat"><h2>100%</h2><p>Optimisé</p></div>
-    <div class="stat"><h2>24h</h2><p>Réponse</p></div>
+    <div class="stat"><h2>Eurocodes</h2></div>
+    <div class="stat"><h2>Béton</h2></div>
+    <div class="stat"><h2>Acier</h2></div>
+    <div class="stat"><h2>Optimisation</h2></div>
   </div>
 </section>
 
 <section id="services" class="fade">
   <h2 class="section-title">SERVICES</h2>
   <div class="grid">
-    <div class="card"><h3>Études</h3><p>Plans EXE complets</p></div>
-    <div class="card"><h3>Diagnostic</h3><p>Analyse structurelle</p></div>
-    <div class="card"><h3>Réhabilitation</h3><p>Renforcement ouvrages</p></div>
-    <div class="card"><h3>Fondations</h3><p>Sol-structure</p></div>
+    <div class="card">Études d’exécution</div>
+    <div class="card">Diagnostic structure</div>
+    <div class="card">Réhabilitation</div>
+    <div class="card">Fondations</div>
   </div>
 </section>
 
@@ -272,8 +275,8 @@ footer{
   <h2 class="section-title">MÉTHODE</h2>
   <div class="step">Analyse</div>
   <div class="step">Modélisation</div>
-  <div class="step">Calcul Eurocodes</div>
-  <div class="step">Plans EXE</div>
+  <div class="step">Calcul</div>
+  <div class="step">Plans</div>
   <div class="step">Suivi chantier</div>
 </section>
 
@@ -281,8 +284,8 @@ footer{
   <h2 class="section-title">CONTACT</h2>
 
   <form action="https://formspree.io/f/xlgvkwng" method="POST">
-    <input name="name" placeholder="Nom" required autocomplete="name">
-    <input name="email" type="email" placeholder="Email" required autocomplete="email">
+    <input name="name" placeholder="Nom" required>
+    <input name="email" type="email" placeholder="Email" required>
     <textarea name="message" placeholder="Projet" required></textarea>
     <button type="submit">Envoyer</button>
   </form>
@@ -293,30 +296,33 @@ footer{
 </footer>
 
 <script>
-const elements=document.querySelectorAll(".fade");
-
-const observer=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting) e.target.classList.add("show");
+// scroll animation
+const items=document.querySelectorAll('.fade');
+const obs=new IntersectionObserver(e=>{
+  e.forEach(x=>{
+    if(x.isIntersecting) x.target.classList.add('show');
   });
 },{threshold:0.15});
+items.forEach(i=>obs.observe(i));
 
-elements.forEach(el=>observer.observe(el));
+// mobile menu
+function toggleMenu(){
+  document.getElementById("menu").classList.toggle("active");
+}
 
-const btn=document.getElementById("themeToggle");
-
-// persistence thème
+// theme + persist
+const btn=document.getElementById("themeBtn");
 if(localStorage.getItem("theme")==="light"){
   document.body.classList.add("light");
   btn.textContent="☀️";
 }
 
-btn.addEventListener("click",()=>{
+btn.onclick=()=>{
   document.body.classList.toggle("light");
   const isLight=document.body.classList.contains("light");
   btn.textContent=isLight?"☀️":"🌙";
   localStorage.setItem("theme",isLight?"light":"dark");
-});
+};
 </script>
 
 </body>
