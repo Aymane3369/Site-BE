@@ -1,35 +1,23 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2601668568046762"
-     crossorigin="anonymous"></script>
-   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-HXSZCHYD64"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-HXSZCHYD64');
-</script>
 <meta charset="UTF-8">
 <meta name="google-site-verification" content="5Ntfenm84ASmO-7ipWvDEN6PSxfCgttqB-c0kCpXMLw" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>BET STRUCTURE | Ingénierie & Calcul de Structures</title>
+<meta name="description" content="Bureau d'études structure spécialisé en béton armé, acier, diagnostic et réhabilitation selon Eurocodes.">
 <meta name="keywords" content="BET structure, ingénierie structure, béton armé, Eurocodes, calcul structure">
 <meta name="author" content="BET STRUCTURE">
 
-<title>BET STRUCTURE | Ingénierie & Calcul de Structures</title>
-<meta name="description" content="Bureau d'études structure spécialisé en béton armé, acier, diagnostic et réhabilitation selon Eurocodes.">
+<!-- Open Graph -->
+<meta property="og:title" content="BET STRUCTURE | Ingénierie Structurelle">
+<meta property="og:description" content="Conception et calcul de structures béton, acier et mixtes selon Eurocodes.">
+<meta property="og:type" content="website">
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-
-/* =========================
-   ULTRA PREMIUM DESIGN SYSTEM
-========================= */
-
 :root{
   --bg:#05070d;
   --panel:rgba(255,255,255,0.04);
@@ -41,19 +29,15 @@
   --gold2:#ffcc70;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Montserrat', sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Montserrat',sans-serif;}
 
 body{
   background: radial-gradient(circle at top, #0b1020, var(--bg));
   color:var(--text);
   overflow-x:hidden;
 }
-   body.light{
+
+body.light{
   --bg:#f5f7ff;
   --panel:rgba(0,0,0,0.05);
   --panel2:rgba(0,0,0,0.08);
@@ -64,10 +48,6 @@ body{
   --gold2:#d6b25e;
 }
 
-/* =========================
-   HEADER PREMIUM
-========================= */
-
 header{
   position:sticky;
   top:0;
@@ -75,7 +55,7 @@ header{
   backdrop-filter: blur(14px);
   background: rgba(5,7,13,0.75);
   border-bottom:1px solid var(--stroke);
-  padding:18px 40px;
+  padding:18px 20px;
 }
 
 .header-wrap{
@@ -84,47 +64,36 @@ header{
   align-items:center;
   max-width:1200px;
   margin:auto;
+  flex-wrap:wrap;
+  gap:10px;
 }
 
-.logo{
-  font-weight:700;
-  letter-spacing:2px;
-  font-size:18px;
-}
-
-.logo span{
-  color:var(--gold);
-}
+.logo{font-weight:700;letter-spacing:2px;font-size:18px;}
+.logo span{color:var(--gold);}
 
 nav ul{
   display:flex;
-  gap:25px;
+  gap:18px;
   list-style:none;
+  flex-wrap:wrap;
 }
 
 nav a{
   color:var(--muted);
   text-decoration:none;
   font-size:14px;
-  transition:0.3s;
 }
 
-nav a:hover{
-  color:var(--gold);
-}
-   .theme-btn{
-  background: transparent;
-  border: 1px solid var(--stroke);
-  color: var(--text);
-  padding: 6px 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-}
+nav a:hover{color:var(--gold);}
 
-/* =========================
-   HERO PREMIUM
-========================= */
+.theme-btn{
+  background:transparent;
+  border:1px solid var(--stroke);
+  color:var(--text);
+  padding:6px 10px;
+  border-radius:8px;
+  cursor:pointer;
+}
 
 .hero{
   height:85vh;
@@ -144,26 +113,12 @@ nav a:hover{
   opacity:0.18;
 }
 
-.hero-content{
-  position:relative;
-  max-width:850px;
-}
+.hero-content{position:relative;max-width:850px;}
 
-.hero h1{
-  font-size:44px;
-  letter-spacing:1px;
-}
+.hero h1{font-size:44px;}
+.hero h1 span{color:var(--gold);}
 
-.hero h1 span{
-  color:var(--gold);
-}
-
-.hero p{
-  margin-top:15px;
-  color:var(--muted);
-  font-size:16px;
-  line-height:1.6;
-}
+.hero p{margin-top:15px;color:var(--muted);line-height:1.6;}
 
 .cta{
   margin-top:25px;
@@ -174,37 +129,19 @@ nav a:hover{
   font-weight:700;
   border-radius:10px;
   text-decoration:none;
-  transition:0.3s;
 }
-
-.cta:hover{
-  transform:scale(1.05);
-}
-
-/* =========================
-   SECTIONS
-========================= */
 
 section{
   max-width:1200px;
   margin:80px auto;
-  padding:0 40px;
+  padding:0 20px;
 }
 
-.section-title{
-  font-size:22px;
-  margin-bottom:25px;
-  color:var(--gold);
-  letter-spacing:1px;
-}
-
-/* =========================
-   GRID SERVICES
-========================= */
+.section-title{color:var(--gold);margin-bottom:25px;}
 
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
   gap:18px;
 }
 
@@ -213,32 +150,11 @@ section{
   border:1px solid var(--stroke);
   padding:22px;
   border-radius:14px;
-  transition:0.4s;
 }
-
-.card:hover{
-  transform:translateY(-8px);
-  background:var(--panel2);
-  border-color:var(--gold);
-}
-
-.card h3{
-  margin-bottom:10px;
-  font-size:16px;
-}
-
-.card p{
-  color:var(--muted);
-  font-size:14px;
-}
-
-/* =========================
-   STATS BAR
-========================= */
 
 .stats{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
   gap:15px;
 }
 
@@ -250,37 +166,19 @@ section{
   border-radius:12px;
 }
 
-.stat h2{
-  color:var(--gold);
-  font-size:26px;
-}
-
-/* =========================
-   PROCESS
-========================= */
-
-.steps{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
+.stat h2{color:var(--gold);}
 
 .step{
   padding:15px;
   background:var(--panel);
   border-left:3px solid var(--gold);
   border-radius:10px;
-  color:var(--muted);
+  margin-bottom:10px;
 }
-
-/* =========================
-   CONTACT
-========================= */
 
 form{
   display:grid;
   gap:12px;
-  max-width:600px;
 }
 
 input,textarea{
@@ -300,10 +198,6 @@ button{
   cursor:pointer;
 }
 
-/* =========================
-   ANIMATION
-========================= */
-
 .fade{
   opacity:0;
   transform:translateY(30px);
@@ -315,168 +209,84 @@ button{
   transform:translateY(0);
 }
 
-/* =========================
-   FOOTER
-========================= */
-
 footer{
   text-align:center;
   padding:40px;
   border-top:1px solid var(--stroke);
   color:var(--muted);
-  margin-top:80px;
 }
-
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
 <header>
   <div class="header-wrap">
     <div class="logo">BET <span>STRUCTURE</span></div>
 
-    <nav>
+    <nav aria-label="Navigation principale">
       <ul>
         <li><a href="#services">Services</a></li>
         <li><a href="#expertise">Expertise</a></li>
         <li><a href="#method">Méthode</a></li>
         <li><a href="#contact">Contact</a></li>
         <li><a href="calcul-poutre.html">Calcul Poutre</a></li>
-         <li><a href="Learning.html">Learning</a></li>   
-        <li><a href="PriseRDV.html">Prise de Rendez-vous</a></li>
-         <li><a href="articles.html">Articles</a></li>
-         <li><a href="espacedetente.html">Espace détente</a></li>
-         <li><a href="indexboutique.html">Boutique StyleShop</a></li>
-      </ul><li>
-  <button id="themeToggle" class="theme-btn">🌙</button>
-</li>
+        <li><a href="Learning.html">Learning</a></li>
+        <li><a href="PriseRDV.html">RDV</a></li>
+      </ul>
     </nav>
+
+    <button id="themeToggle" class="theme-btn" type="button">🌙</button>
   </div>
 </header>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-content fade">
-    <h1>Ingénierie <span>Structurelle</span> </h1>
-    <p>
-      Conception, calcul et optimisation de structures béton, acier et mixtes
-      selon les Eurocodes pour bâtiments complexes, industriels et tertiaires.
-    </p>
+    <h1>Ingénierie <span>Structurelle</span></h1>
+    <p>Conception, calcul et optimisation de structures béton, acier et mixtes selon Eurocodes.</p>
     <a class="cta" href="#contact">Demander une étude</a>
   </div>
 </section>
 
-<!-- STATS -->
 <section class="fade">
   <h2 class="section-title">EXPERTISE</h2>
-
   <div class="stats">
-    <div class="stat">
-      <h2>1+</h2>
-      <p>Années d’expérience</p>
-    </div>
-    <div class="stat">
-      <h2>Eurocodes</h2>
-      <p>EC0 à EC3 maîtrisés</p>
-    </div>
-    <div class="stat">
-      <h2>100%</h2>
-      <p>Projets optimisés</p>
-    </div>
-    <div class="stat">
-      <h2>24h</h2>
-      <p>Réponse rapide</p>
-    </div>
+    <div class="stat"><h2>1+</h2><p>Années</p></div>
+    <div class="stat"><h2>Eurocodes</h2><p>Maîtrisés</p></div>
+    <div class="stat"><h2>100%</h2><p>Optimisé</p></div>
+    <div class="stat"><h2>24h</h2><p>Réponse</p></div>
   </div>
 </section>
 
-<!-- SERVICES -->
 <section id="services" class="fade">
   <h2 class="section-title">SERVICES</h2>
-
   <div class="grid">
-
-    <div class="card">
-      <h3>Études d’exécution</h3>
-      <p>Plans de coffrage, ferraillage et dossiers techniques complets.</p>
-    </div>
-
-    <div class="card">
-      <h3>Diagnostic structure</h3>
-      <p>Analyse complète des pathologies et risques structurels.</p>
-    </div>
-
-    <div class="card">
-      <h3>Réhabilitation</h3>
-      <p>Renforcement et mise aux normes des ouvrages existants.</p>
-    </div>
-
-    <div class="card">
-      <h3>Fondations</h3>
-      <p>Études géotechniques et interaction sol-structure.</p>
-    </div>
-
+    <div class="card"><h3>Études</h3><p>Plans EXE complets</p></div>
+    <div class="card"><h3>Diagnostic</h3><p>Analyse structurelle</p></div>
+    <div class="card"><h3>Réhabilitation</h3><p>Renforcement ouvrages</p></div>
+    <div class="card"><h3>Fondations</h3><p>Sol-structure</p></div>
   </div>
 </section>
 
-<!-- METHOD -->
 <section id="method" class="fade">
-  <h2 class="section-title">MÉTHODOLOGIE</h2>
-
-  <div class="steps">
-    <div class="step">1. Analyse du projet et des contraintes</div>
-    <div class="step">2. Modélisation structurelle avancée</div>
-    <div class="step">3. Calcul et optimisation Eurocodes</div>
-    <div class="step">4. Production des plans EXE</div>
-    <div class="step">5. Suivi et assistance chantier</div>
-  </div>
+  <h2 class="section-title">MÉTHODE</h2>
+  <div class="step">Analyse</div>
+  <div class="step">Modélisation</div>
+  <div class="step">Calcul Eurocodes</div>
+  <div class="step">Plans EXE</div>
+  <div class="step">Suivi chantier</div>
 </section>
 
-<!-- CONTACT -->
 <section id="contact" class="fade">
   <h2 class="section-title">CONTACT</h2>
 
-  <div style="display:grid; grid-template-columns:1fr 1fr; gap:30px; align-items:start;">
-
-    <!-- FORMULAIRE -->
-    <form action="https://formspree.io/f/xlgvkwng" method="POST">
-      <input type="text" name="name" placeholder="Nom complet" required>
-      <input type="email" name="email" placeholder="Email professionnel" required>
-      <textarea rows="5" name="message" placeholder="Décrivez votre projet" required></textarea>
-      <button type="submit">Envoyer la demande</button>
-    </form>
-
-    <!-- CONTACT ENTREPRISE -->
-    <div style="padding:20px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px;">
-
-      <h3 style="color:#d6b25e; margin-bottom:10px;">Coordonnées</h3>
-
-      <p style="margin-bottom:10px; color:#a9b4d0;">
-        📧 Email : 
-        <a href="mailto:aymaneabidine@gmail.com" style="color:#ffd36e; text-decoration:none;">
-          aymaneabidine@gmail.com
-        </a>
-      </p>
-
-      <p style="margin-bottom:10px; color:#a9b4d0;">
-        ⏱ Réponse sous 24h
-      </p>
-
-      <p style="margin-bottom:10px; color:#a9b4d0;">
-        🏗 BET STRUCTURE<br>
-        Bureau d’études structure – Ingénierie béton & acier
-      </p>
-
-      <p style="margin-top:15px; font-size:13px; color:#777;">
-        Disponible pour projets France & international
-      </p>
-
-    </div>
-
-  </div>
-
+  <form action="https://formspree.io/f/xlgvkwng" method="POST">
+    <input name="name" placeholder="Nom" required autocomplete="name">
+    <input name="email" type="email" placeholder="Email" required autocomplete="email">
+    <textarea name="message" placeholder="Projet" required></textarea>
+    <button type="submit">Envoyer</button>
+  </form>
+</section>
 
 <footer>
   BET STRUCTURE — Ingénierie & Calcul de Structures
@@ -487,25 +297,25 @@ const elements=document.querySelectorAll(".fade");
 
 const observer=new IntersectionObserver(entries=>{
   entries.forEach(e=>{
-    if(e.isIntersecting){
-      e.target.classList.add("show");
-    }
+    if(e.isIntersecting) e.target.classList.add("show");
   });
 },{threshold:0.15});
 
 elements.forEach(el=>observer.observe(el));
-</script>
-   <script>
-const btn = document.getElementById("themeToggle");
 
-btn.addEventListener("click", () => {
+const btn=document.getElementById("themeToggle");
+
+// persistence thème
+if(localStorage.getItem("theme")==="light"){
+  document.body.classList.add("light");
+  btn.textContent="☀️";
+}
+
+btn.addEventListener("click",()=>{
   document.body.classList.toggle("light");
-
-  if(document.body.classList.contains("light")){
-    btn.textContent = "☀️";
-  } else {
-    btn.textContent = "🌙";
-  }
+  const isLight=document.body.classList.contains("light");
+  btn.textContent=isLight?"☀️":"🌙";
+  localStorage.setItem("theme",isLight?"light":"dark");
 });
 </script>
 
