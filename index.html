@@ -1,10 +1,20 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BET STRUCTURE | Ingénierie Structurelle</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+
 <style>
 :root{
-  --bg:#060913;
+  --bg:#050814;
   --panel:rgba(255,255,255,0.03);
   --stroke:rgba(255,255,255,0.08);
-  --text:#eaf0ff;
-  --muted:#9aa6c0;
+  --text:#eef2ff;
+  --muted:#9aa6c3;
   --gold:#d6b25e;
 }
 
@@ -12,27 +22,27 @@
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family: "Montserrat", sans-serif;
+  font-family:Montserrat,sans-serif;
 }
 
 body{
-  background: radial-gradient(circle at top, #0c1224, var(--bg));
+  background: radial-gradient(circle at top,#0b1024,#050814);
   color:var(--text);
   overflow-x:hidden;
 }
 
-/* HEADER */
+/* HEADER LUXE */
 header{
   position:fixed;
-  top:0;
   width:100%;
+  top:0;
   z-index:1000;
-  backdrop-filter: blur(16px);
-  background:rgba(6,9,19,0.7);
+  backdrop-filter:blur(18px);
+  background:rgba(5,8,20,0.6);
   border-bottom:1px solid var(--stroke);
 }
 
-.header-wrap{
+.header-inner{
   max-width:1200px;
   margin:auto;
   display:flex;
@@ -49,7 +59,7 @@ header{
 
 nav ul{
   display:flex;
-  gap:22px;
+  gap:20px;
   list-style:none;
 }
 
@@ -60,12 +70,9 @@ nav a{
   letter-spacing:1px;
   transition:0.3s;
 }
+nav a:hover{color:var(--gold)}
 
-nav a:hover{
-  color:var(--gold);
-}
-
-/* HERO PREMIUM ARCHITECTURE */
+/* HERO CINÉMATIQUE */
 .hero{
   height:100vh;
   display:flex;
@@ -80,9 +87,8 @@ nav a:hover{
   position:absolute;
   inset:0;
   background:
-    linear-gradient(to bottom, rgba(6,9,19,0.6), rgba(6,9,19,0.95)),
+    linear-gradient(to bottom,rgba(5,8,20,0.5),rgba(5,8,20,0.95)),
     url("https://images.unsplash.com/photo-1503387762-592deb58ef4e") center/cover;
-  filter:contrast(1.1);
 }
 
 .hero-content{
@@ -92,57 +98,52 @@ nav a:hover{
 }
 
 .hero h1{
-  font-size:56px;
+  font-size:64px;
   letter-spacing:2px;
-  font-weight:700;
 }
 
-.hero h1 span{
-  color:var(--gold);
-}
+.hero h1 span{color:var(--gold)}
 
 .hero p{
   margin-top:20px;
-  color:var(--muted);
   font-size:17px;
-  line-height:1.7;
+  color:var(--muted);
   max-width:650px;
-  margin-left:auto;
-  margin-right:auto;
+  margin-inline:auto;
+  line-height:1.7;
 }
 
 .cta{
   display:inline-block;
   margin-top:30px;
-  padding:14px 32px;
+  padding:15px 34px;
   background:linear-gradient(135deg,var(--gold),#ffdf8a);
   color:#111;
   font-weight:700;
-  border-radius:8px;
+  border-radius:10px;
   text-decoration:none;
   transition:0.3s;
 }
-
 .cta:hover{
-  transform:translateY(-3px);
-  box-shadow:0 10px 25px rgba(214,178,94,0.2);
+  transform:translateY(-4px);
+  box-shadow:0 15px 35px rgba(214,178,94,0.2);
 }
 
 /* SECTIONS */
 section{
   max-width:1200px;
-  margin:120px auto;
+  margin:140px auto;
   padding:0 25px;
 }
 
 .section-title{
-  font-size:14px;
-  letter-spacing:3px;
+  font-size:12px;
+  letter-spacing:4px;
   color:var(--gold);
   margin-bottom:35px;
 }
 
-/* GRID ULTRA CLEAN */
+/* GRID PREMIUM */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -153,7 +154,7 @@ section{
 .card{
   background:var(--panel);
   border:1px solid var(--stroke);
-  padding:26px;
+  padding:28px;
   border-radius:14px;
   transition:0.4s;
   position:relative;
@@ -164,14 +165,14 @@ section{
   content:"";
   position:absolute;
   inset:0;
-  background:linear-gradient(135deg,transparent,rgba(214,178,94,0.05));
+  background:linear-gradient(135deg,transparent,rgba(214,178,94,0.06));
   opacity:0;
   transition:0.4s;
 }
 
 .card:hover{
-  transform:translateY(-8px);
-  border-color:rgba(214,178,94,0.4);
+  transform:translateY(-10px);
+  border-color:rgba(214,178,94,0.5);
 }
 
 .card:hover::before{
@@ -189,7 +190,7 @@ section{
   line-height:1.6;
 }
 
-/* STATS PREMIUM */
+/* STATS HERO STYLE */
 .stats{
   display:grid;
   grid-template-columns:repeat(4,1fr);
@@ -197,21 +198,21 @@ section{
 }
 
 .stat{
-  padding:22px;
+  text-align:center;
+  padding:25px;
   border:1px solid var(--stroke);
   background:rgba(255,255,255,0.02);
-  text-align:center;
   border-radius:12px;
 }
 
 .stat h2{
-  font-size:28px;
+  font-size:30px;
   color:var(--gold);
 }
 
-/* METHOD CLEAN */
+/* STEPS */
 .step{
-  padding:16px;
+  padding:18px;
   margin-bottom:12px;
   border-left:3px solid var(--gold);
   background:var(--panel);
@@ -227,15 +228,15 @@ form{
 }
 
 input,textarea{
-  padding:14px;
+  padding:15px;
   border-radius:10px;
   border:1px solid var(--stroke);
-  background:rgba(0,0,0,0.2);
+  background:rgba(0,0,0,0.25);
   color:white;
 }
 
 button{
-  padding:14px;
+  padding:15px;
   border:none;
   border-radius:10px;
   background:linear-gradient(135deg,var(--gold),#ffdf8a);
@@ -245,27 +246,112 @@ button{
 }
 
 button:hover{
-  transform:translateY(-2px);
+  transform:translateY(-3px);
 }
 
 /* ANIMATION */
 .fade{
   opacity:0;
-  transform:translateY(30px);
-  transition:0.9s ease;
+  transform:translateY(40px);
+  transition:1s ease;
 }
-
 .fade.show{
   opacity:1;
   transform:translateY(0);
 }
 
-/* FOOTER */
+/* FOOTER LUXE */
 footer{
   text-align:center;
-  padding:60px;
+  padding:80px;
   border-top:1px solid var(--stroke);
   color:var(--muted);
-  margin-top:120px;
+  margin-top:140px;
+  letter-spacing:1px;
 }
 </style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">BET <span>STRUCTURE</span></div>
+
+    <nav>
+      <ul>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#expertise">Expertise</a></li>
+        <li><a href="#method">Méthode</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-content fade">
+    <h1>Ingénierie <span>Structurelle</span></h1>
+    <p>Conception et optimisation de structures béton, acier et mixtes selon Eurocodes pour projets complexes et exigeants.</p>
+    <a class="cta" href="#contact">Demander une étude</a>
+  </div>
+</section>
+
+<section class="fade">
+  <h2 class="section-title">EXPERTISE</h2>
+  <div class="stats">
+    <div class="stat"><h2>Eurocodes</h2></div>
+    <div class="stat"><h2>Béton</h2></div>
+    <div class="stat"><h2>Acier</h2></div>
+    <div class="stat"><h2>Optimisation</h2></div>
+  </div>
+</section>
+
+<section id="services" class="fade">
+  <h2 class="section-title">SERVICES</h2>
+  <div class="grid">
+    <div class="card"><h3>Études EXE</h3><p>Plans de coffrage et ferraillage détaillés.</p></div>
+    <div class="card"><h3>Diagnostic</h3><p>Analyse complète des structures existantes.</p></div>
+    <div class="card"><h3>Réhabilitation</h3><p>Renforcement et mise en conformité.</p></div>
+    <div class="card"><h3>Fondations</h3><p>Interaction sol-structure optimisée.</p></div>
+  </div>
+</section>
+
+<section id="method" class="fade">
+  <h2 class="section-title">MÉTHODOLOGIE</h2>
+  <div class="step">Analyse du projet</div>
+  <div class="step">Modélisation avancée</div>
+  <div class="step">Calcul Eurocodes</div>
+  <div class="step">Optimisation structurelle</div>
+  <div class="step">Suivi chantier</div>
+</section>
+
+<section id="contact" class="fade">
+  <h2 class="section-title">CONTACT</h2>
+
+  <form action="https://formspree.io/f/xlgvkwng" method="POST">
+    <input name="name" placeholder="Nom" required>
+    <input name="email" type="email" placeholder="Email" required>
+    <textarea name="message" placeholder="Projet" required></textarea>
+    <button type="submit">Envoyer</button>
+  </form>
+</section>
+
+<footer>
+  BET STRUCTURE — Ingénierie & Calcul de Structures
+</footer>
+
+<script>
+const items=document.querySelectorAll('.fade');
+
+const obs=new IntersectionObserver(e=>{
+  e.forEach(x=>{
+    if(x.isIntersecting) x.target.classList.add('show');
+  });
+},{threshold:0.15});
+
+items.forEach(i=>obs.observe(i));
+</script>
+
+</body>
+</html>
