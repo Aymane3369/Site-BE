@@ -1,963 +1,618 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2601668568046762"
-     crossorigin="anonymous"></script>
-   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-HXSZCHYD64"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+   <!-- Google Ads & Analytics (conservés) -->
+   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2601668568046762" crossorigin="anonymous"></script>
+   <script async src="https://www.googletagmanager.com/gtag/js?id=G-HXSZCHYD64"></script>
+   <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-HXSZCHYD64');
+   </script>
+   <meta charset="UTF-8">
+   <meta name="google-site-verification" content="5Ntfenm84ASmO-7ipWvDEN6PSxfCgttqB-c0kCpXMLw" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="keywords" content="BET structure, ingénierie structure, béton armé, Eurocodes, calcul structure">
+   <meta name="author" content="BET STRUCTURE">
+   <title>BET STRUCTURE | Ingénierie & Calcul de Structures</title>
+   <meta name="description" content="Bureau d'études structure spécialisé en béton armé, acier, diagnostic et réhabilitation selon Eurocodes.">
 
-  gtag('config', 'G-HXSZCHYD64');
-</script>
-<meta charset="UTF-8">
-<meta name="google-site-verification" content="5Ntfenm84ASmO-7ipWvDEN6PSxfCgttqB-c0kCpXMLw" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-<meta name="keywords" content="BET structure, ingénierie structure, béton armé, Eurocodes, calcul structure">
-<meta name="author" content="BET STRUCTURE">
+   <style>
+      /* ===========================================================
+         DESIGN "ARCHITECTURE DASHBOARD" – 100% refonte avec onglets
+      =========================================================== */
+      * { margin: 0; padding: 0; box-sizing: border-box; }
 
-<title>BET STRUCTURE | Ingénierie & Calcul de Structures</title>
-<meta name="description" content="Bureau d'études structure spécialisé en béton armé, acier, diagnostic et réhabilitation selon Eurocodes.">
+      :root {
+         --bg-body: #080c14;
+         --bg-surface: #101826;
+         --bg-card: #151f31;
+         --border-color: rgba(56, 132, 255, 0.15);
+         --text-primary: #f0f5ff;
+         --text-muted: #8899bb;
+         --gold: #d4af37;
+         --gold-glow: #f2d57e;
+         --blue-accent: #3884ff;
+         --shadow: 0 20px 40px -15px rgba(0,0,0,0.8);
+      }
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+      body {
+         font-family: 'Poppins', sans-serif;
+         background: var(--bg-body);
+         color: var(--text-primary);
+         min-height: 100vh;
+         transition: background 0.4s, color 0.4s;
+         background-image: radial-gradient(circle at 20% 30%, rgba(56, 132, 255, 0.05) 0%, transparent 60%),
+                           radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.04) 0%, transparent 50%);
+      }
 
-<style>
+      /* --- Thème clair --- */
+      body.light {
+         --bg-body: #f3f7fd;
+         --bg-surface: #ffffff;
+         --bg-card: #eef3fa;
+         --border-color: rgba(0, 40, 100, 0.10);
+         --text-primary: #121a2b;
+         --text-muted: #4a5b7a;
+         --shadow: 0 20px 40px -15px rgba(0,0,0,0.10);
+         background-image: radial-gradient(circle at 20% 30%, rgba(56, 132, 255, 0.04) 0%, transparent 60%),
+                           radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.03) 0%, transparent 50%);
+      }
 
-/* =========================
-   ULTRA PREMIUM DESIGN SYSTEM v2
-========================= */
+      /* ========== HEADER STICKY ========== */
+      header {
+         position: sticky;
+         top: 0;
+         z-index: 1000;
+         background: rgba(8, 12, 20, 0.85);
+         backdrop-filter: blur(16px);
+         border-bottom: 1px solid var(--border-color);
+         padding: 12px 30px;
+         transition: background 0.3s;
+      }
+      body.light header { background: rgba(243, 247, 253, 0.90); }
 
-:root{
-  --bg:#05070d;
-  --panel:rgba(255,255,255,0.04);
-  --panel2:rgba(255,255,255,0.08);
-  --stroke:rgba(255,255,255,0.10);
-  --text:#eaf0ff;
-  --muted:#a9b4d0;
-  --gold:#d6b25e;
-  --gold2:#ffcc70;
-  --shadow: 0 20px 40px rgba(0,0,0,0.5);
-  --radius: 16px;
-  --transition: 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-}
+      .header-wrap {
+         max-width: 1300px;
+         margin: 0 auto;
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         flex-wrap: wrap;
+         gap: 10px;
+      }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Montserrat', sans-serif;
-}
+      .logo {
+         font-weight: 800;
+         font-size: 20px;
+         letter-spacing: 1.5px;
+         text-transform: uppercase;
+      }
+      .logo span { color: var(--gold); }
 
-html{
-  scroll-behavior:smooth;
-}
+      nav {
+         display: flex;
+         align-items: center;
+         flex-wrap: wrap;
+         gap: 4px;
+      }
+      nav ul {
+         display: flex;
+         gap: 4px;
+         list-style: none;
+         flex-wrap: wrap;
+      }
+      nav a {
+         color: var(--text-muted);
+         text-decoration: none;
+         font-size: 11px;
+         font-weight: 600;
+         padding: 6px 14px;
+         border-radius: 30px;
+         transition: 0.25s;
+         text-transform: uppercase;
+         letter-spacing: 0.8px;
+      }
+      nav a:hover {
+         background: var(--gold);
+         color: #080c14;
+      }
+      .theme-btn {
+         background: transparent;
+         border: 1px solid var(--border-color);
+         color: var(--text-primary);
+         padding: 6px 12px;
+         border-radius: 30px;
+         cursor: pointer;
+         font-size: 15px;
+         transition: 0.3s;
+      }
+      .theme-btn:hover {
+         background: var(--gold);
+         color: #080c14;
+         border-color: var(--gold);
+      }
 
-body{
-  background: radial-gradient(circle at 20% 20%, #0e1528, var(--bg));
-  color:var(--text);
-  overflow-x:hidden;
-  line-height:1.6;
-  transition: background 0.6s, color 0.6s;
-}
+      /* ========== HERO (avec image architecturale) ========== */
+      .hero {
+         min-height: 65vh;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         text-align: center;
+         padding: 80px 20px 40px;
+         position: relative;
+         background: 
+            linear-gradient(145deg, rgba(8,12,20,0.80) 0%, rgba(8,12,20,0.50) 100%),
+            url('https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1600&q=80') center/cover no-repeat;
+         border-bottom: 2px solid var(--gold);
+      }
+      body.light .hero {
+         background: 
+            linear-gradient(145deg, rgba(243,247,253,0.85) 0%, rgba(243,247,253,0.60) 100%),
+            url('https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1600&q=80') center/cover no-repeat;
+      }
+      .hero-content { max-width: 850px; }
+      .hero h1 {
+         font-size: clamp(2.4rem, 7vw, 4.2rem);
+         font-weight: 800;
+         line-height: 1.1;
+         letter-spacing: -1px;
+      }
+      .hero h1 span {
+         background: linear-gradient(135deg, var(--gold), var(--gold-glow));
+         -webkit-background-clip: text;
+         -webkit-text-fill-color: transparent;
+         background-clip: text;
+      }
+      .hero p {
+         margin-top: 16px;
+         font-size: 1.1rem;
+         color: var(--text-muted);
+         max-width: 600px;
+         margin-left: auto;
+         margin-right: auto;
+         font-weight: 300;
+      }
+      .cta-hero {
+         margin-top: 30px;
+         display: inline-block;
+         padding: 14px 38px;
+         background: linear-gradient(135deg, var(--gold), var(--gold-glow));
+         color: #080c14;
+         font-weight: 700;
+         border-radius: 60px;
+         text-decoration: none;
+         font-size: 0.95rem;
+         text-transform: uppercase;
+         letter-spacing: 1.5px;
+         transition: 0.3s;
+         box-shadow: 0 10px 30px -8px rgba(212, 175, 55, 0.25);
+      }
+      .cta-hero:hover {
+         transform: translateY(-4px) scale(1.02);
+         box-shadow: 0 20px 40px -8px rgba(212, 175, 55, 0.4);
+      }
 
-body.light{
-  --bg:#f0f3ff;
-  --panel:rgba(0,0,0,0.04);
-  --panel2:rgba(0,0,0,0.08);
-  --stroke:rgba(0,0,0,0.12);
-  --text:#111827;
-  --muted:#4b5563;
-  --gold:#b38b2a;
-  --gold2:#d6b25e;
-  --shadow: 0 20px 40px rgba(0,0,0,0.10);
-}
+      /* ========== SECTION ONGLETS (TABS) ========== */
+      .tabs-container {
+         max-width: 1200px;
+         margin: 60px auto 40px;
+         padding: 0 30px;
+      }
 
-/* --- Particles Canvas (arrière‑plan animé) --- */
-#particles-canvas{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  z-index:0;
-  pointer-events:none;
-  opacity:0.4;
-}
+      /* Barre d'onglets */
+      .tabs-nav {
+         display: flex;
+         gap: 8px;
+         border-bottom: 2px solid var(--border-color);
+         padding-bottom: 4px;
+         margin-bottom: 40px;
+         flex-wrap: wrap;
+      }
+      .tab-btn {
+         background: transparent;
+         border: none;
+         padding: 14px 28px;
+         font-family: 'Poppins', sans-serif;
+         font-weight: 600;
+         font-size: 1rem;
+         color: var(--text-muted);
+         cursor: pointer;
+         border-radius: 12px 12px 0 0;
+         transition: 0.3s ease;
+         position: relative;
+         display: flex;
+         align-items: center;
+         gap: 10px;
+         letter-spacing: 0.5px;
+      }
+      .tab-btn i { font-size: 1.2rem; }
+      .tab-btn:hover { color: var(--text-primary); background: var(--bg-surface); }
+      .tab-btn.active {
+         color: var(--gold);
+         background: var(--bg-surface);
+         box-shadow: 0 -2px 0 var(--gold);
+      }
+      .tab-btn.active::after {
+         content: '';
+         position: absolute;
+         bottom: -2px;
+         left: 20%;
+         width: 60%;
+         height: 3px;
+         background: var(--gold);
+         border-radius: 10px;
+      }
 
-/* --- Conteneur principal pour placer le contenu au‑dessus --- */
-body > *:not(#particles-canvas){
-  position:relative;
-  z-index:1;
-}
+      /* Panneaux */
+      .tab-panel {
+         display: none;
+         animation: fadeSlide 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+      .tab-panel.active { display: block; }
 
-/* =========================
-   HEADER PREMIUM
-========================= */
+      @keyframes fadeSlide {
+         0% { opacity: 0; transform: translateY(20px); }
+         100% { opacity: 1; transform: translateY(0); }
+      }
 
-header{
-  position:sticky;
-  top:0;
-  z-index:1000;
-  backdrop-filter: blur(18px) saturate(1.4);
-  background: rgba(5,7,13,0.60);
-  border-bottom:1px solid var(--stroke);
-  padding:16px 40px;
-  transition: background 0.4s, border-color 0.4s;
-}
+      /* ========== CONTENU DES PANNEAUX ========== */
 
-.header-wrap{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  max-width:1200px;
-  margin:auto;
-}
+      /* --- Panel Services (grille) --- */
+      .grid-services {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+         gap: 25px;
+      }
+      .card-service {
+         background: var(--bg-surface);
+         border: 1px solid var(--border-color);
+         padding: 30px 22px;
+         border-radius: 16px;
+         transition: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+         box-shadow: var(--shadow);
+      }
+      .card-service:hover {
+         transform: translateY(-10px);
+         border-color: var(--gold);
+         box-shadow: 0 30px 50px -20px rgba(0,0,0,0.7);
+      }
+      .card-service h3 {
+         font-size: 1.2rem;
+         font-weight: 700;
+         margin-bottom: 8px;
+         display: flex;
+         align-items: center;
+         gap: 10px;
+      }
+      .card-service h3 i { color: var(--gold); }
+      .card-service p {
+         color: var(--text-muted);
+         font-size: 0.95rem;
+         font-weight: 300;
+         line-height: 1.6;
+      }
 
-.logo{
-  font-weight:800;
-  letter-spacing:3px;
-  font-size:20px;
-  background: linear-gradient(135deg, var(--gold), var(--gold2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  position:relative;
-}
-.logo::after{
-  content:'';
-  position:absolute;
-  bottom:-4px;
-  left:0;
-  width:100%;
-  height:2px;
-  background: linear-gradient(90deg, var(--gold), transparent);
-  transform:scaleX(0);
-  transform-origin:left;
-  transition: transform 0.6s;
-}
-.logo:hover::after{
-  transform:scaleX(1);
-}
+      /* --- Panel Expertise (stats + method) --- */
+      .stats-grid {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+         gap: 20px;
+         margin-bottom: 40px;
+      }
+      .stat-item {
+         background: var(--bg-surface);
+         border: 1px solid var(--border-color);
+         padding: 24px 16px;
+         text-align: center;
+         border-radius: 16px;
+         box-shadow: var(--shadow);
+         transition: 0.3s;
+      }
+      .stat-item:hover { border-color: var(--gold); transform: scale(1.02); }
+      .stat-item h2 {
+         font-size: 2.6rem;
+         font-weight: 700;
+         color: var(--gold);
+         letter-spacing: 1px;
+      }
+      .stat-item p {
+         color: var(--text-muted);
+         font-weight: 400;
+         font-size: 0.85rem;
+         text-transform: uppercase;
+         letter-spacing: 0.5px;
+      }
 
-nav ul{
-  display:flex;
-  gap:20px;
-  list-style:none;
-  align-items:center;
-  flex-wrap:wrap;
-}
+      .steps-grid {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+         gap: 16px;
+      }
+      .step-item {
+         background: var(--bg-surface);
+         border: 1px solid var(--border-color);
+         padding: 18px 16px;
+         border-radius: 12px;
+         display: flex;
+         align-items: center;
+         gap: 14px;
+         box-shadow: var(--shadow);
+         transition: 0.3s;
+      }
+      .step-item:hover {
+         border-color: var(--gold);
+         transform: translateX(6px);
+      }
+      .step-item .num {
+         display: inline-flex;
+         align-items: center;
+         justify-content: center;
+         min-width: 32px;
+         height: 32px;
+         background: var(--gold);
+         color: #080c14;
+         font-weight: 800;
+         border-radius: 50%;
+         font-size: 13px;
+      }
+      .step-item span { color: var(--text-muted); font-weight: 400; }
 
-nav a{
-  color:var(--muted);
-  text-decoration:none;
-  font-size:13px;
-  font-weight:500;
-  transition: color 0.3s;
-  position:relative;
-  padding:4px 0;
-}
-nav a::after{
-  content:'';
-  position:absolute;
-  left:0;
-  bottom:0;
-  width:100%;
-  height:1.5px;
-  background: var(--gold);
-  transform:scaleX(0);
-  transform-origin:right;
-  transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
-}
-nav a:hover{
-  color:var(--gold);
-}
-nav a:hover::after{
-  transform:scaleX(1);
-  transform-origin:left;
-}
+      /* --- Panel Contact --- */
+      .contact-wrap {
+         display: grid;
+         grid-template-columns: 1fr 1fr;
+         gap: 40px;
+         align-items: start;
+      }
+      @media (max-width: 700px) { .contact-wrap { grid-template-columns: 1fr; } }
 
-.theme-btn{
-  background: var(--panel);
-  border:1px solid var(--stroke);
-  color:var(--text);
-  padding:6px 12px;
-  border-radius:30px;
-  cursor:pointer;
-  font-size:16px;
-  transition: all 0.3s;
-  line-height:1;
-}
-.theme-btn:hover{
-  background:var(--gold);
-  color:#111;
-  border-color:var(--gold);
-}
+      form {
+         display: grid;
+         gap: 16px;
+      }
+      input, textarea {
+         padding: 14px 18px;
+         border-radius: 12px;
+         border: 1px solid var(--border-color);
+         background: var(--bg-surface);
+         color: var(--text-primary);
+         font-size: 0.95rem;
+         transition: 0.3s;
+         font-family: inherit;
+      }
+      input:focus, textarea:focus {
+         outline: none;
+         border-color: var(--gold);
+         box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.08);
+      }
+      textarea { resize: vertical; min-height: 110px; }
+      .btn-submit {
+         padding: 16px 28px;
+         border: none;
+         border-radius: 60px;
+         background: linear-gradient(135deg, var(--gold), var(--gold-glow));
+         color: #080c14;
+         font-weight: 700;
+         text-transform: uppercase;
+         letter-spacing: 1.5px;
+         font-size: 0.9rem;
+         cursor: pointer;
+         transition: 0.3s;
+      }
+      .btn-submit:hover {
+         transform: scale(1.02) translateY(-2px);
+         box-shadow: 0 12px 30px rgba(212, 175, 55, 0.3);
+      }
 
-/* =========================
-   HERO PREMIUM
-========================= */
+      .contact-infos {
+         padding: 30px;
+         background: var(--bg-surface);
+         border-radius: 16px;
+         border: 1px solid var(--border-color);
+         box-shadow: var(--shadow);
+      }
+      .contact-infos h3 {
+         color: var(--gold);
+         font-size: 1.3rem;
+         margin-bottom: 20px;
+      }
+      .contact-infos p {
+         color: var(--text-muted);
+         margin-bottom: 14px;
+         display: flex;
+         align-items: center;
+         gap: 14px;
+      }
+      .contact-infos a {
+         color: var(--gold-glow);
+         text-decoration: none;
+      }
+      .contact-infos a:hover { text-decoration: underline; }
+      .contact-infos i { width: 24px; color: var(--gold); }
 
-.hero{
-  min-height:90vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:40px 20px;
-  position:relative;
-  overflow:hidden;
-}
+      /* ========== FOOTER ========== */
+      footer {
+         text-align: center;
+         padding: 30px 20px;
+         border-top: 1px solid var(--border-color);
+         color: var(--text-muted);
+         font-size: 0.8rem;
+         letter-spacing: 1px;
+         margin-top: 40px;
+      }
 
-.hero::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:url("https://images.unsplash.com/photo-1581092918056-0c4c3acd3789") center/cover;
-  opacity:0.12;
-  transform:scale(1.1);
-  animation: heroZoom 30s infinite alternate ease-in-out;
-}
-@keyframes heroZoom{
-  0%{ transform:scale(1); }
-  100%{ transform:scale(1.15); }
-}
-
-.hero-content{
-  position:relative;
-  max-width:850px;
-  padding:20px;
-}
-
-.hero h1{
-  font-size:clamp(2.4rem, 8vw, 4.2rem);
-  font-weight:800;
-  letter-spacing:-0.02em;
-  line-height:1.2;
-}
-.hero h1 span{
-  background: linear-gradient(135deg, var(--gold), var(--gold2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.hero p{
-  margin-top:18px;
-  color:var(--muted);
-  font-size:clamp(1rem, 2vw, 1.2rem);
-  max-width:600px;
-  margin-left:auto;
-  margin-right:auto;
-  line-height:1.7;
-}
-
-.cta{
-  margin-top:30px;
-  display:inline-block;
-  padding:14px 36px;
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  color:#111;
-  font-weight:700;
-  border-radius:60px;
-  text-decoration:none;
-  transition: transform 0.4s, box-shadow 0.4s;
-  box-shadow: 0 8px 30px rgba(214,178,94,0.25);
-  position:relative;
-  overflow:hidden;
-}
-.cta::before{
-  content:'';
-  position:absolute;
-  top:-50%;
-  left:-50%;
-  width:200%;
-  height:200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 60%);
-  opacity:0;
-  transition: opacity 0.6s;
-  transform: rotate(25deg);
-}
-.cta:hover{
-  transform:translateY(-4px) scale(1.02);
-  box-shadow: 0 12px 40px rgba(214,178,94,0.4);
-}
-.cta:hover::before{
-  opacity:1;
-}
-
-/* =========================
-   SECTIONS COMMUNES
-========================= */
-
-section{
-  max-width:1200px;
-  margin:100px auto;
-  padding:0 40px;
-}
-
-.section-title{
-  font-size:clamp(1.6rem, 3vw, 2.4rem);
-  font-weight:700;
-  margin-bottom:30px;
-  color:var(--gold);
-  letter-spacing:-0.01em;
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-.section-title i{
-  font-size:0.8em;
-  opacity:0.7;
-}
-
-/* =========================
-   STATS
-========================= */
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:20px;
-}
-
-.stat{
-  text-align:center;
-  padding:28px 16px;
-  background:var(--panel);
-  border:1px solid var(--stroke);
-  border-radius:var(--radius);
-  backdrop-filter: blur(6px);
-  transition: all 0.4s;
-}
-.stat:hover{
-  transform:translateY(-6px);
-  background:var(--panel2);
-  border-color:var(--gold);
-}
-.stat h2{
-  color:var(--gold);
-  font-size:clamp(2rem, 4vw, 2.6rem);
-  font-weight:700;
-}
-.stat p{
-  color:var(--muted);
-  font-size:0.9rem;
-  margin-top:6px;
-}
-
-/* =========================
-   SERVICES (GRID)
-========================= */
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:24px;
-}
-
-.card{
-  background:var(--panel);
-  border:1px solid var(--stroke);
-  padding:28px 20px;
-  border-radius:var(--radius);
-  transition: all 0.5s;
-  backdrop-filter: blur(6px);
-  position:relative;
-  overflow:hidden;
-}
-.card::before{
-  content:'';
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:3px;
-  background: linear-gradient(90deg, var(--gold), var(--gold2));
-  opacity:0;
-  transition: opacity 0.4s;
-}
-.card:hover::before{
-  opacity:1;
-}
-.card:hover{
-  transform:translateY(-10px);
-  background:var(--panel2);
-  border-color:var(--gold);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-}
-.card i{
-  font-size:2rem;
-  color:var(--gold);
-  margin-bottom:12px;
-  display:inline-block;
-  transition: transform 0.4s;
-}
-.card:hover i{
-  transform:scale(1.1) rotate(-4deg);
-}
-.card h3{
-  font-size:1.1rem;
-  font-weight:600;
-  margin-bottom:10px;
-}
-.card p{
-  color:var(--muted);
-  font-size:0.9rem;
-  line-height:1.6;
-}
-
-/* =========================
-   METHOD (STEPS)
-========================= */
-
-.steps{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-
-.step{
-  padding:18px 24px;
-  background:var(--panel);
-  border-left:4px solid var(--gold);
-  border-radius:12px;
-  color:var(--muted);
-  font-weight:500;
-  transition: all 0.4s;
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-.step:hover{
-  background:var(--panel2);
-  transform:translateX(6px);
-}
-.step i{
-  color:var(--gold);
-  font-size:1.2rem;
-  width:24px;
-  text-align:center;
-}
-
-/* =========================
-   CONTACT
-========================= */
-
-.contact-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:30px;
-  align-items:start;
-}
-@media (max-width:768px){
-  .contact-grid{
-    grid-template-columns:1fr;
-  }
-}
-
-form{
-  display:grid;
-  gap:14px;
-}
-
-input,textarea{
-  padding:14px 18px;
-  border-radius:12px;
-  border:1px solid var(--stroke);
-  background:rgba(255,255,255,0.04);
-  color:var(--text);
-  font-size:0.95rem;
-  transition: border-color 0.4s, box-shadow 0.4s, background 0.4s;
-}
-input:focus,textarea:focus{
-  outline:none;
-  border-color:var(--gold);
-  background:rgba(255,255,255,0.07);
-  box-shadow: 0 0 0 4px rgba(214,178,94,0.15);
-}
-input::placeholder,textarea::placeholder{
-  color:var(--muted);
-  opacity:0.6;
-}
-
-button[type="submit"]{
-  padding:14px;
-  border:none;
-  border-radius:60px;
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  color:#111;
-  font-weight:700;
-  font-size:1rem;
-  cursor:pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
-  box-shadow: 0 8px 25px rgba(214,178,94,0.2);
-}
-button[type="submit"]:hover{
-  transform:translateY(-3px);
-  box-shadow: 0 12px 35px rgba(214,178,94,0.35);
-}
-
-.contact-info{
-  padding:28px;
-  background:var(--panel);
-  border:1px solid var(--stroke);
-  border-radius:var(--radius);
-  backdrop-filter: blur(6px);
-}
-.contact-info h3{
-  color:var(--gold);
-  font-size:1.3rem;
-  margin-bottom:16px;
-}
-.contact-info p{
-  margin-bottom:12px;
-  color:var(--muted);
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.contact-info a{
-  color:var(--gold2);
-  text-decoration:none;
-  transition:color 0.3s;
-}
-.contact-info a:hover{
-  color:var(--gold);
-  text-decoration:underline;
-}
-.contact-info i{
-  width:24px;
-  color:var(--gold);
-}
-
-/* =========================
-   FOOTER
-========================= */
-
-footer{
-  text-align:center;
-  padding:40px 20px;
-  border-top:1px solid var(--stroke);
-  color:var(--muted);
-  margin-top:80px;
-  font-size:0.9rem;
-}
-
-/* =========================
-   ANIMATIONS DE RÉVÉLATION
-========================= */
-
-.fade{
-  opacity:0;
-  transform:translateY(40px);
-  transition: opacity 0.9s cubic-bezier(0.23,1,0.32,1), transform 0.9s cubic-bezier(0.23,1,0.32,1);
-}
-.fade.show{
-  opacity:1;
-  transform:translateY(0);
-}
-
-/* Décalage pour les éléments en grille */
-.grid .card:nth-child(2){ transition-delay:0.1s; }
-.grid .card:nth-child(3){ transition-delay:0.2s; }
-.grid .card:nth-child(4){ transition-delay:0.3s; }
-
-.stats .stat:nth-child(2){ transition-delay:0.1s; }
-.stats .stat:nth-child(3){ transition-delay:0.2s; }
-.stats .stat:nth-child(4){ transition-delay:0.3s; }
-
-/* =========================
-   ANIMATION DE FLOATING POUR LES CARTES
-========================= */
-@keyframes float {
-  0%{ transform:translateY(0px); }
-  50%{ transform:translateY(-8px); }
-  100%{ transform:translateY(0px); }
-}
-.card:nth-child(1){ animation:float 6s infinite ease-in-out; }
-.card:nth-child(2){ animation:float 7s infinite ease-in-out 0.5s; }
-.card:nth-child(3){ animation:float 8s infinite ease-in-out 1s; }
-.card:nth-child(4){ animation:float 6.5s infinite ease-in-out 1.5s; }
-.card:hover{
-  animation-play-state:paused;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-@media (max-width:900px){
-  .header-wrap{
-    flex-wrap:wrap;
-    gap:12px;
-  }
-  nav ul{
-    gap:10px;
-    justify-content:center;
-  }
-  header{
-    padding:12px 20px;
-  }
-  section{
-    padding:0 20px;
-    margin:60px auto;
-  }
-}
-
-@media (max-width:600px){
-  nav ul li a{
-    font-size:12px;
-  }
-  .hero{
-    min-height:70vh;
-  }
-  .hero h1{
-    font-size:2rem;
-  }
-  .hero p{
-    font-size:0.95rem;
-  }
-}
-
-/* =========================
-   SCROLLBAR PERSONNALISÉE
-========================= */
-::-webkit-scrollbar{
-  width:8px;
-}
-::-webkit-scrollbar-track{
-  background:var(--bg);
-}
-::-webkit-scrollbar-thumb{
-  background:var(--gold);
-  border-radius:10px;
-}
-::-webkit-scrollbar-thumb:hover{
-  background:var(--gold2);
-}
-
-/* =========================
-   LIENS INTERNES (aucune modification)
-========================= */
-/* Tous les liens et contenus restent intacts */
-
-</style>
+      /* ========== RESPONSIVE ========== */
+      @media (max-width: 768px) {
+         header { padding: 10px 16px; }
+         .header-wrap { flex-direction: column; align-items: stretch; gap: 6px; }
+         nav ul { justify-content: center; }
+         nav a { font-size: 10px; padding: 4px 10px; }
+         .hero { min-height: 50vh; padding: 100px 16px 30px; background-attachment: scroll; }
+         .hero h1 { font-size: 2rem; }
+         .tab-btn { padding: 10px 16px; font-size: 0.85rem; }
+         .tab-btn i { display: none; } /* cache icônes sur mobile pour économiser de l'espace */
+         .stats-grid { grid-template-columns: 1fr 1fr; }
+         .steps-grid { grid-template-columns: 1fr; }
+      }
+   </style>
 </head>
-
 <body>
-
-<!-- CANVAS PARTICULES -->
-<canvas id="particles-canvas"></canvas>
 
 <!-- HEADER -->
 <header>
-  <div class="header-wrap">
-    <div class="logo">BET <span>STRUCTURE</span></div>
-
-    <nav>
-      <ul>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#expertise">Expertise</a></li>
-        <li><a href="#method">Méthode</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <li><a href="calcul-poutre.html">Calcul Poutre</a></li>
-         <li><a href="Learning.html">Learning</a></li>   
-        <li><a href="PriseRDV.html">Prise de Rendez-vous</a></li>
-         <li><a href="articles.html">Articles</a></li>
-         <li><a href="espacedetente.html">Espace détente</a></li>
-         <li><a href="indexboutique.html">Boutique StyleShop</a></li>
-         <li><button id="themeToggle" class="theme-btn">🌙</button></li>
-      </ul>
-    </nav>
-  </div>
+   <div class="header-wrap">
+      <div class="logo">BET <span>STRUCTURE</span></div>
+      <nav>
+         <ul>
+            <li><a href="#tabs-section">Services</a></li>
+            <li><a href="#tabs-section">Expertise</a></li>
+            <li><a href="#tabs-section">Contact</a></li>
+            <li><a href="calcul-poutre.html">Calcul Poutre</a></li>
+            <li><a href="Learning.html">Learning</a></li>
+            <li><a href="PriseRDV.html">Prise de Rendez-vous</a></li>
+            <li><a href="articles.html">Articles</a></li>
+            <li><a href="espacedetente.html">Espace détente</a></li>
+            <li><a href="indexboutique.html">Boutique StyleShop</a></li>
+         </ul>
+         <button id="themeToggle" class="theme-btn" aria-label="Thème">🌙</button>
+      </nav>
+   </div>
 </header>
 
 <!-- HERO -->
-<section class="hero">
-  <div class="hero-content fade">
-    <h1>Ingénierie <span>Structurelle</span></h1>
-    <p>
-      Conception, calcul et optimisation de structures béton, acier et mixtes
-      selon les Eurocodes pour bâtiments complexes, industriels et tertiaires.
-    </p>
-    <a class="cta" href="#contact">Demander une étude</a>
-  </div>
+<section class="hero" id="hero">
+   <div class="hero-content">
+      <h1>Ingénierie <span>Structurelle</span></h1>
+      <p>Conception, calcul et optimisation de structures béton, acier et mixtes selon les Eurocodes pour bâtiments complexes, industriels et tertiaires.</p>
+      <a class="cta-hero" href="#tabs-section">Explorer nos services</a>
+   </div>
 </section>
 
-<!-- STATS -->
-<section class="fade" id="expertise">
-  <h2 class="section-title"><i class="fas fa-chart-line"></i> EXPERTISE</h2>
+<!-- SECTION ONGLETS INTERACTIFS -->
+<div class="tabs-container" id="tabs-section">
 
-  <div class="stats">
-    <div class="stat">
-      <h2 id="stat1">1+</h2>
-      <p>Années d’expérience</p>
-    </div>
-    <div class="stat">
-      <h2 id="stat2">Eurocodes</h2>
-      <p>EC0 à EC3 maîtrisés</p>
-    </div>
-    <div class="stat">
-      <h2 id="stat3">100%</h2>
-      <p>Projets optimisés</p>
-    </div>
-    <div class="stat">
-      <h2 id="stat4">24h</h2>
-      <p>Réponse rapide</p>
-    </div>
-  </div>
-</section>
+   <!-- Navigation des onglets -->
+   <div class="tabs-nav">
+      <button class="tab-btn active" data-tab="services"><i class="fas fa-cubes"></i> Services</button>
+      <button class="tab-btn" data-tab="expertise"><i class="fas fa-chart-bar"></i> Expertise & Méthode</button>
+      <button class="tab-btn" data-tab="contact"><i class="fas fa-envelope"></i> Contact</button>
+   </div>
 
-<!-- SERVICES -->
-<section id="services" class="fade">
-  <h2 class="section-title"><i class="fas fa-cogs"></i> SERVICES</h2>
+   <!-- PANEL 1 : SERVICES -->
+   <div class="tab-panel active" id="panel-services">
+      <div class="grid-services">
+         <div class="card-service">
+            <h3><i class="fas fa-drafting-compass"></i> Études d’exécution</h3>
+            <p>Plans de coffrage, ferraillage et dossiers techniques complets.</p>
+         </div>
+         <div class="card-service">
+            <h3><i class="fas fa-search-plus"></i> Diagnostic structure</h3>
+            <p>Analyse complète des pathologies et risques structurels.</p>
+         </div>
+         <div class="card-service">
+            <h3><i class="fas fa-hard-hat"></i> Réhabilitation</h3>
+            <p>Renforcement et mise aux normes des ouvrages existants.</p>
+         </div>
+         <div class="card-service">
+            <h3><i class="fas fa-layer-group"></i> Fondations</h3>
+            <p>Études géotechniques et interaction sol-structure.</p>
+         </div>
+      </div>
+   </div>
 
-  <div class="grid">
+   <!-- PANEL 2 : EXPERTISE & METHODE -->
+   <div class="tab-panel" id="panel-expertise">
+      <!-- Stats -->
+      <div class="stats-grid">
+         <div class="stat-item"><h2>1+</h2><p>Années d’expérience</p></div>
+         <div class="stat-item"><h2>Eurocodes</h2><p>EC0 à EC3 maîtrisés</p></div>
+         <div class="stat-item"><h2>100%</h2><p>Projets optimisés</p></div>
+         <div class="stat-item"><h2>24h</h2><p>Réponse rapide</p></div>
+      </div>
 
-    <div class="card">
-      <i class="fas fa-drafting-compass"></i>
-      <h3>Études d’exécution</h3>
-      <p>Plans de coffrage, ferraillage et dossiers techniques complets.</p>
-    </div>
+      <!-- Méthodologie -->
+      <div class="steps-grid">
+         <div class="step-item"><span class="num">1</span> <span>Analyse du projet et des contraintes</span></div>
+         <div class="step-item"><span class="num">2</span> <span>Modélisation structurelle avancée</span></div>
+         <div class="step-item"><span class="num">3</span> <span>Calcul et optimisation Eurocodes</span></div>
+         <div class="step-item"><span class="num">4</span> <span>Production des plans EXE</span></div>
+         <div class="step-item"><span class="num">5</span> <span>Suivi et assistance chantier</span></div>
+      </div>
+   </div>
 
-    <div class="card">
-      <i class="fas fa-search-plus"></i>
-      <h3>Diagnostic structure</h3>
-      <p>Analyse complète des pathologies et risques structurels.</p>
-    </div>
+   <!-- PANEL 3 : CONTACT -->
+   <div class="tab-panel" id="panel-contact">
+      <div class="contact-wrap">
+         <form action="https://formspree.io/f/xlgvkwng" method="POST">
+            <input type="text" name="name" placeholder="Nom complet" required>
+            <input type="email" name="email" placeholder="Email professionnel" required>
+            <textarea rows="5" name="message" placeholder="Décrivez votre projet" required></textarea>
+            <button class="btn-submit" type="submit">Envoyer la demande</button>
+         </form>
+         <div class="contact-infos">
+            <h3><i class="fas fa-building"></i> Coordonnées</h3>
+            <p><i class="fas fa-envelope"></i> Email : <a href="mailto:aymaneabidine@gmail.com">aymaneabidine@gmail.com</a></p>
+            <p><i class="fas fa-clock"></i> ⏱ Réponse sous 24h</p>
+            <p><i class="fas fa-helmet-safety"></i> 🏗 BET STRUCTURE<br>Bureau d’études structure – Ingénierie béton & acier</p>
+            <p style="margin-top:16px; font-size:0.85rem; opacity:0.7;">Disponible pour projets France & international</p>
+         </div>
+      </div>
+   </div>
+</div>
 
-    <div class="card">
-      <i class="fas fa-hard-hat"></i>
-      <h3>Réhabilitation</h3>
-      <p>Renforcement et mise aux normes des ouvrages existants.</p>
-    </div>
-
-    <div class="card">
-      <i class="fas fa-archway"></i>
-      <h3>Fondations</h3>
-      <p>Études géotechniques et interaction sol-structure.</p>
-    </div>
-
-  </div>
-</section>
-
-<!-- METHOD -->
-<section id="method" class="fade">
-  <h2 class="section-title"><i class="fas fa-tasks"></i> MÉTHODOLOGIE</h2>
-
-  <div class="steps">
-    <div class="step"><i class="fas fa-1"></i> Analyse du projet et des contraintes</div>
-    <div class="step"><i class="fas fa-2"></i> Modélisation structurelle avancée</div>
-    <div class="step"><i class="fas fa-3"></i> Calcul et optimisation Eurocodes</div>
-    <div class="step"><i class="fas fa-4"></i> Production des plans EXE</div>
-    <div class="step"><i class="fas fa-5"></i> Suivi et assistance chantier</div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact" class="fade">
-  <h2 class="section-title"><i class="fas fa-envelope"></i> CONTACT</h2>
-
-  <div class="contact-grid">
-
-    <!-- FORMULAIRE -->
-    <form action="https://formspree.io/f/xlgvkwng" method="POST">
-      <input type="text" name="name" placeholder="Nom complet" required>
-      <input type="email" name="email" placeholder="Email professionnel" required>
-      <textarea rows="5" name="message" placeholder="Décrivez votre projet" required></textarea>
-      <button type="submit"><i class="fas fa-paper-plane" style="margin-right:8px;"></i>Envoyer la demande</button>
-    </form>
-
-    <!-- CONTACT ENTREPRISE -->
-    <div class="contact-info">
-
-      <h3><i class="fas fa-address-card"></i> Coordonnées</h3>
-
-      <p>
-        <i class="fas fa-envelope"></i> Email : 
-        <a href="mailto:aymaneabidine@gmail.com">aymaneabidine@gmail.com</a>
-      </p>
-
-      <p>
-        <i class="fas fa-clock"></i> ⏱ Réponse sous 24h
-      </p>
-
-      <p>
-        <i class="fas fa-building"></i> BET STRUCTURE<br>
-        Bureau d’études structure – Ingénierie béton & acier
-      </p>
-
-      <p style="margin-top:20px; font-size:0.85rem; color:var(--muted);">
-        <i class="fas fa-globe"></i> Disponible pour projets France & international
-      </p>
-
-    </div>
-
-  </div>
-</section>
-
+<!-- FOOTER -->
 <footer>
-  BET STRUCTURE — Ingénierie & Calcul de Structures
+   BET STRUCTURE — Ingénierie & Calcul de Structures
 </footer>
 
-<!-- =========================
-     SCRIPTS
-========================= -->
-
+<!-- SCRIPTS -->
 <script>
-// --- Intersection Observer pour les fades ---
-const elements = document.querySelectorAll(".fade");
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("show");
-    }
-  });
-}, { threshold: 0.15 });
-elements.forEach(el => observer.observe(el));
+   // ===== THÈME CLAIR / SOMBRE =====
+   const btn = document.getElementById('themeToggle');
+   btn.addEventListener('click', () => {
+      document.body.classList.toggle('light');
+      btn.textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
+   });
 
-// --- Thème clair/sombre ---
-const btn = document.getElementById("themeToggle");
-btn.addEventListener("click", () => {
-  document.body.classList.toggle("light");
-  btn.textContent = document.body.classList.contains("light") ? "☀️" : "🌙";
-});
+   // ===== ONGLETS INTERACTIFS =====
+   const tabs = document.querySelectorAll('.tab-btn');
+   const panels = {
+      services: document.getElementById('panel-services'),
+      expertise: document.getElementById('panel-expertise'),
+      contact: document.getElementById('panel-contact')
+   };
 
-// --- Compteurs pour les statistiques (animation) ---
-const statEls = document.querySelectorAll('.stat h2');
-const statValues = ['1+', 'Eurocodes', '100%', '24h'];
+   tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+         // Désactiver tous les onglets
+         tabs.forEach(t => t.classList.remove('active'));
+         // Activer l'onglet cliqué
+         tab.classList.add('active');
 
-// On ne modifie que les éléments qui contiennent des nombres (on ignore "Eurocodes")
-// On va animer ceux qui ont un nombre, sauf le deuxième qui est du texte.
-// On peut animer 1+, 100% et 24h en tant que chiffres.
-// On va créer un observer pour les stats aussi.
-const statObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const el = entry.target;
-      const text = el.textContent.trim();
-      // Si le texte contient un nombre (on ignore "Eurocodes")
-      if (text !== 'Eurocodes') {
-        const isPercent = text.includes('%');
-        const isPlus = text.includes('+');
-        const isHour = text.includes('h');
-        let targetNumber = parseFloat(text.replace(/[^0-9.]/g, ''));
-        if (isNaN(targetNumber)) targetNumber = 0;
-        // On anime le nombre
-        const duration = 2000;
-        const startTime = performance.now();
-        const startVal = 0;
-        function updateCounter(currentTime) {
-          const elapsed = currentTime - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-          const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
-          const currentVal = Math.round(eased * targetNumber);
-          let display = currentVal.toString();
-          if (isPercent) display += '%';
-          if (isPlus) display += '+';
-          if (isHour) display += 'h';
-          el.textContent = display;
-          if (progress < 1) {
-            requestAnimationFrame(updateCounter);
-          } else {
-            // Valeur finale exacte
-            let finalDisplay = targetNumber.toString();
-            if (isPercent) finalDisplay += '%';
-            if (isPlus) finalDisplay += '+';
-            if (isHour) finalDisplay += 'h';
-            el.textContent = finalDisplay;
-          }
-        }
-        requestAnimationFrame(updateCounter);
-      }
-      statObserver.unobserve(el); // une seule fois
-    }
-  });
-}, { threshold: 0.5 });
+         // Cacher tous les panneaux
+         Object.values(panels).forEach(p => p.classList.remove('active'));
 
-statEls.forEach(el => statObserver.observe(el));
+         // Afficher le panneau correspondant
+         const target = tab.getAttribute('data-tab');
+         if (panels[target]) {
+            panels[target].classList.add('active');
+         }
+      });
+   });
 
-// --- Particules animées (Canvas) ---
-const canvas = document.getElementById('particles-canvas');
-const ctx = canvas.getContext('2d');
-let width, height;
-let particles = [];
-
-function initCanvas() {
-  width = canvas.width = window.innerWidth;
-  height = canvas.height = window.innerHeight;
-}
-initCanvas();
-
-const NUM_PARTICLES = 80;
-class Particle {
-  constructor() {
-    this.reset();
-  }
-  reset() {
-    this.x = Math.random() * width;
-    this.y = Math.random() * height;
-    this.size = Math.random() * 2.5 + 1;
-    this.speedX = (Math.random() - 0.5) * 0.4;
-    this.speedY = (Math.random() - 0.5) * 0.4;
-    this.opacity = Math.random() * 0.5 + 0.2;
-  }
-  update() {
-    this.x += this.speedX;
-    this.y += this.speedY;
-    if (this.x < 0 || this.x > width) this.speedX *= -1;
-    if (this.y < 0 || this.y > height) this.speedY *= -1;
-  }
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(214, 178, 94, ${this.opacity})`;
-    ctx.fill();
-  }
-}
-
-for (let i = 0; i < NUM_PARTICLES; i++) {
-  particles.push(new Particle());
-}
-
-function drawLines() {
-  for (let i = 0; i < particles.length; i++) {
-    for (let j = i + 1; j < particles.length; j++) {
-      const dx = particles[i].x - particles[j].x;
-      const dy = particles[i].y - particles[j].y;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      if (dist < 150) {
-        ctx.beginPath();
-        ctx.moveTo(particles[i].x, particles[i].y);
-        ctx.lineTo(particles[j].x, particles[j].y);
-        ctx.strokeStyle = `rgba(214, 178, 94, ${0.08 * (1 - dist/150)})`;
-        ctx.lineWidth = 0.6;
-        ctx.stroke();
-      }
-    }
-  }
-}
-
-function animateParticles() {
-  ctx.clearRect(0, 0, width, height);
-  particles.forEach(p => {
-    p.update();
-    p.draw();
-  });
-  drawLines();
-  requestAnimationFrame(animateParticles);
-}
-animateParticles();
-
-window.addEventListener('resize', () => {
-  initCanvas();
-  particles.forEach(p => p.reset());
-});
-
+   // ===== SCROLL DOUX POUR LIENS INTERNES (header vers onglets) =====
+   document.querySelectorAll('nav a[href="#tabs-section"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+         e.preventDefault();
+         document.getElementById('tabs-section').scrollIntoView({ behavior: 'smooth' });
+      });
+   });
 </script>
-
 </body>
 </html>
