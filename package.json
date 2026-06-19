@@ -4,16 +4,3 @@
   "dependencies": {
     "stripe": "^14.24.0"
   }
-{
-  "headers": [
-    {
-      "source": "/",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        }
-      ]
-    }
-  ]
-}
