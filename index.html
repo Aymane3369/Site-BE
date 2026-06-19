@@ -18,27 +18,27 @@
    <title>BET STRUCTURE | Ingénierie & Calcul de Structures</title>
    <meta name="description" content="Bureau d'études structure spécialisé en béton armé, acier, diagnostic et réhabilitation selon Eurocodes.">
 
-   <!-- Polices : Luxe & Architecture -->
+   <!-- Polices : Élégance française -->
    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
    <style>
-      /* ========================================================================
-         DESIGN SYSTEM "LUXE & ARCHITECTURE" – Élégance, Profondeur, Sérénité
-      ======================================================================== */
+      /* ======================================================================
+         DESIGN SYSTEM "GRAND SIÈCLE & MODERNITÉ" – French Excellence
+         ====================================================================== */
       * { margin: 0; padding: 0; box-sizing: border-box; }
 
       :root {
-         --bg-body: #0e1117;
-         --bg-surface: #171b24;
-         --bg-card: #1e232e;
-         --border-soft: rgba(201, 160, 90, 0.15);
-         --text-primary: #f2f5fa;
-         --text-muted: #9aa8bf;
-         --gold: #c9a05a;
-         --gold-light: #e8d2a6;
-         --shadow-lux: 0 25px 50px -15px rgba(0,0,0,0.8);
-         --radius: 16px;
+         --bg-body: #0b0e14;
+         --bg-surface: #141a24;
+         --bg-card: #1c2330;
+         --border-soft: rgba(201, 170, 110, 0.12);
+         --text-primary: #f0f4fa;
+         --text-muted: #8f9fb8;
+         --gold: #c9aa6e;
+         --gold-light: #e8d5a8;
+         --shadow-premium: 0 30px 60px -20px rgba(0,0,0,0.9);
+         --radius: 20px;
       }
 
       body {
@@ -48,39 +48,39 @@
          min-height: 100vh;
          transition: background 0.5s ease, color 0.5s ease;
          background-image: 
-            radial-gradient(ellipse at 10% 20%, rgba(201, 160, 90, 0.05) 0%, transparent 50%),
-            radial-gradient(ellipse at 90% 80%, rgba(201, 160, 90, 0.03) 0%, transparent 50%);
+            radial-gradient(ellipse at 10% 20%, rgba(201, 170, 110, 0.04) 0%, transparent 50%),
+            radial-gradient(ellipse at 90% 80%, rgba(201, 170, 110, 0.02) 0%, transparent 50%);
       }
 
-      /* --- Thème clair ("Lumière & Marbre") --- */
+      /* Thème clair (version "Lumière d'hiver") */
       body.light {
-         --bg-body: #f7f9fc;
+         --bg-body: #f5f7fc;
          --bg-surface: #ffffff;
-         --bg-card: #f2f5fa;
-         --border-soft: rgba(30, 40, 60, 0.08);
-         --text-primary: #1a202b;
-         --text-muted: #5a6a82;
-         --shadow-lux: 0 25px 50px -15px rgba(0,0,0,0.08);
+         --bg-card: #eef2f8;
+         --border-soft: rgba(30, 40, 60, 0.06);
+         --text-primary: #1a1f2b;
+         --text-muted: #55647a;
+         --shadow-premium: 0 30px 60px -20px rgba(0,0,0,0.06);
          background-image: 
-            radial-gradient(ellipse at 10% 20%, rgba(201, 160, 90, 0.04) 0%, transparent 50%),
-            radial-gradient(ellipse at 90% 80%, rgba(201, 160, 90, 0.02) 0%, transparent 50%);
+            radial-gradient(ellipse at 10% 20%, rgba(201, 170, 110, 0.03) 0%, transparent 50%),
+            radial-gradient(ellipse at 90% 80%, rgba(201, 170, 110, 0.02) 0%, transparent 50%);
       }
 
-      /* ========== HEADER (Verre dépoli discret) ========== */
+      /* ========== HEADER ========== */
       header {
          position: sticky;
          top: 0;
-         z-index: 1000;
-         background: rgba(14, 17, 23, 0.80);
-         backdrop-filter: blur(20px) saturate(1.2);
+         z-index: 1100;
+         background: rgba(11, 14, 20, 0.82);
+         backdrop-filter: blur(18px) saturate(1.3);
          border-bottom: 1px solid var(--border-soft);
-         padding: 16px 40px;
+         padding: 14px 40px;
          transition: 0.4s;
       }
-      body.light header { background: rgba(247, 249, 252, 0.85); }
+      body.light header { background: rgba(245, 247, 252, 0.88); }
 
       .header-wrap {
-         max-width: 1300px;
+         max-width: 1440px;
          margin: 0 auto;
          display: flex;
          align-items: center;
@@ -92,7 +92,7 @@
       .logo {
          font-family: 'Playfair Display', serif;
          font-weight: 700;
-         font-size: 22px;
+         font-size: 24px;
          letter-spacing: 2px;
       }
       .logo span { color: var(--gold); font-style: italic; }
@@ -114,9 +114,9 @@
          text-decoration: none;
          font-size: 11px;
          font-weight: 500;
-         padding: 8px 16px;
+         padding: 8px 18px;
          border-radius: 40px;
-         transition: 0.25s;
+         transition: 0.3s;
          text-transform: uppercase;
          letter-spacing: 0.8px;
          border: 1px solid transparent;
@@ -124,48 +124,47 @@
       nav a:hover {
          color: var(--gold);
          border-color: var(--border-soft);
-         background: rgba(201, 160, 90, 0.05);
+         background: rgba(201, 170, 110, 0.06);
       }
       .theme-btn {
          background: transparent;
          border: 1px solid var(--border-soft);
          color: var(--text-primary);
-         padding: 8px 14px;
+         padding: 8px 16px;
          border-radius: 40px;
          cursor: pointer;
-         font-size: 15px;
+         font-size: 16px;
          transition: 0.3s;
       }
       .theme-btn:hover {
          background: var(--gold);
-         color: #0e1117;
+         color: #0b0e14;
          border-color: var(--gold);
       }
 
-      /* ========== HERO (Image d'architecture iconique) ========== */
+      /* ========== HERO (avec image emblématique) ========== */
       .hero {
-         min-height: 70vh;
+         min-height: 80vh;
          display: flex;
          align-items: center;
          justify-content: center;
          text-align: center;
-         padding: 100px 20px 50px;
+         padding: 120px 20px 60px;
          position: relative;
          background: 
-            linear-gradient(145deg, rgba(14,17,23,0.70) 0%, rgba(14,17,23,0.30) 100%),
-            url('https://images.unsplash.com/photo-1531834685032-c34bf0d84c77?w=1600&q=80') center/cover no-repeat;
+            linear-gradient(160deg, rgba(11,14,20,0.75) 0%, rgba(11,14,20,0.40) 100%),
+            url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1800&q=80') center/cover fixed;
          border-bottom: 2px solid var(--gold);
-         background-attachment: fixed;
       }
       body.light .hero {
          background: 
-            linear-gradient(145deg, rgba(247,249,252,0.80) 0%, rgba(247,249,252,0.40) 100%),
-            url('https://images.unsplash.com/photo-1531834685032-c34bf0d84c77?w=1600&q=80') center/cover no-repeat;
+            linear-gradient(160deg, rgba(245,247,252,0.80) 0%, rgba(245,247,252,0.45) 100%),
+            url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1800&q=80') center/cover fixed;
       }
-      .hero-content { max-width: 850px; }
+      .hero-content { max-width: 880px; }
       .hero h1 {
          font-family: 'Playfair Display', serif;
-         font-size: clamp(2.8rem, 8vw, 4.8rem);
+         font-size: clamp(3rem, 9vw, 5.2rem);
          font-weight: 700;
          line-height: 1.05;
          letter-spacing: -1px;
@@ -178,19 +177,19 @@
          font-style: italic;
       }
       .hero p {
-         margin-top: 20px;
-         font-size: 1.15rem;
+         margin-top: 24px;
+         font-size: 1.2rem;
          color: var(--text-muted);
-         max-width: 600px;
+         max-width: 640px;
          margin-left: auto;
          margin-right: auto;
          font-weight: 300;
          line-height: 1.8;
       }
       .cta-hero {
-         margin-top: 35px;
+         margin-top: 38px;
          display: inline-block;
-         padding: 16px 44px;
+         padding: 18px 48px;
          background: transparent;
          color: var(--gold);
          font-weight: 600;
@@ -199,55 +198,53 @@
          text-decoration: none;
          font-size: 0.9rem;
          text-transform: uppercase;
-         letter-spacing: 2px;
-         transition: 0.4s ease;
-         box-shadow: 0 0 20px rgba(201, 160, 90, 0.05);
+         letter-spacing: 2.5px;
+         transition: 0.4s;
       }
       .cta-hero:hover {
          background: var(--gold);
-         color: #0e1117;
-         transform: translateY(-3px);
-         box-shadow: 0 20px 40px -8px rgba(201, 160, 90, 0.25);
+         color: #0b0e14;
+         transform: translateY(-4px);
+         box-shadow: 0 24px 48px -12px rgba(201, 170, 110, 0.30);
       }
 
-      /* ========== SECTION ONGLETS (Élégance épurée) ========== */
+      /* ========== SECTION ONGLETS (version enrichie) ========== */
       .tabs-container {
-         max-width: 1200px;
-         margin: 60px auto 40px;
+         max-width: 1280px;
+         margin: 70px auto 50px;
          padding: 0 30px;
       }
 
-      /* Barre d'onglets (centrée, discrète) */
       .tabs-nav {
          display: flex;
          justify-content: center;
-         gap: 4px;
+         gap: 6px;
          border-bottom: 1px solid var(--border-soft);
-         padding-bottom: 0;
+         padding: 0 0 4px 0;
          margin-bottom: 50px;
          flex-wrap: wrap;
          background: var(--bg-surface);
          border-radius: var(--radius) var(--radius) 0 0;
-         padding: 8px 8px 0 8px;
+         padding: 10px 10px 0 10px;
       }
       .tab-btn {
          background: transparent;
          border: none;
-         padding: 16px 32px;
+         padding: 18px 34px;
          font-family: 'Inter', sans-serif;
          font-weight: 500;
-         font-size: 0.9rem;
+         font-size: 0.95rem;
          color: var(--text-muted);
          cursor: pointer;
          border-radius: var(--radius) var(--radius) 0 0;
-         transition: 0.35s ease;
+         transition: 0.35s;
          position: relative;
          display: flex;
          align-items: center;
          gap: 12px;
-         letter-spacing: 0.5px;
+         letter-spacing: 0.3px;
       }
-      .tab-btn i { font-size: 1.1rem; opacity: 0.6; transition: 0.3s; }
+      .tab-btn i { font-size: 1.1rem; opacity: 0.5; transition: 0.3s; }
       .tab-btn:hover { color: var(--text-primary); background: rgba(255,255,255,0.02); }
       .tab-btn.active {
          color: var(--gold);
@@ -268,25 +265,59 @@
       }
       .tab-btn.active::after { width: 70%; }
 
-      /* Panneaux (contenu) */
+      /* Panneaux */
       .tab-panel {
          display: none;
-         animation: fadeElevate 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+         animation: fadeRaise 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
          background: var(--bg-surface);
-         padding: 40px;
+         padding: 40px 40px 50px;
          border-radius: 0 0 var(--radius) var(--radius);
          border: 1px solid var(--border-soft);
          border-top: none;
-         box-shadow: var(--shadow-lux);
+         box-shadow: var(--shadow-premium);
       }
       .tab-panel.active { display: block; }
-
-      @keyframes fadeElevate {
-         0% { opacity: 0; transform: translateY(25px) scale(0.98); }
+      @keyframes fadeRaise {
+         0% { opacity: 0; transform: translateY(30px) scale(0.98); }
          100% { opacity: 1; transform: translateY(0) scale(1); }
       }
 
-      /* ========== PANEL 1 : SERVICES (Grille raffinée) ========== */
+      /* Sous-onglets (pour Services) */
+      .sub-tabs {
+         display: flex;
+         gap: 8px;
+         margin-bottom: 30px;
+         flex-wrap: wrap;
+         border-bottom: 1px solid var(--border-soft);
+         padding-bottom: 10px;
+      }
+      .sub-tab {
+         background: transparent;
+         border: none;
+         padding: 10px 24px;
+         font-family: 'Inter', sans-serif;
+         font-weight: 400;
+         font-size: 0.85rem;
+         color: var(--text-muted);
+         cursor: pointer;
+         border-radius: 40px;
+         transition: 0.3s;
+         letter-spacing: 0.3px;
+      }
+      .sub-tab:hover { color: var(--text-primary); background: rgba(255,255,255,0.03); }
+      .sub-tab.active {
+         background: var(--gold);
+         color: #0b0e14;
+         font-weight: 600;
+      }
+      body.light .sub-tab.active { background: var(--gold); color: #0b0e14; }
+
+      .sub-panel { display: none; animation: fadeRaise 0.5s ease forwards; }
+      .sub-panel.active { display: block; }
+
+      /* ========== CONTENU DES PANNEAUX ========== */
+
+      /* Services (grille de 4 cartes) */
       .grid-services {
          display: grid;
          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -296,7 +327,7 @@
          background: var(--bg-card);
          border: 1px solid var(--border-soft);
          padding: 30px 22px;
-         border-radius: 12px;
+         border-radius: 16px;
          transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
          position: relative;
       }
@@ -335,7 +366,7 @@
          line-height: 1.7;
       }
 
-      /* ========== PANEL 2 : EXPERTISE (Stats + Méthode) ========== */
+      /* Expertise : stats + steps */
       .stats-grid {
          display: grid;
          grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
@@ -347,13 +378,13 @@
          border: 1px solid var(--border-soft);
          padding: 24px 16px;
          text-align: center;
-         border-radius: 12px;
+         border-radius: 16px;
          transition: 0.3s;
       }
       .stat-item:hover { border-color: var(--gold); transform: scale(1.02); }
       .stat-item h2 {
          font-family: 'Playfair Display', serif;
-         font-size: 2.6rem;
+         font-size: 2.8rem;
          font-weight: 700;
          color: var(--gold);
          letter-spacing: 1px;
@@ -375,12 +406,11 @@
          background: var(--bg-card);
          border: 1px solid var(--border-soft);
          padding: 18px 20px;
-         border-radius: 12px;
+         border-radius: 16px;
          display: flex;
          align-items: center;
          gap: 16px;
          transition: 0.3s;
-         box-shadow: var(--shadow-lux);
       }
       .step-item:hover {
          border-color: var(--gold);
@@ -403,7 +433,67 @@
       }
       .step-item span { color: var(--text-muted); font-weight: 400; font-size: 0.9rem; }
 
-      /* ========== PANEL 3 : CONTACT ========== */
+      /* Projets : carrousel */
+      .carousel {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+         gap: 24px;
+      }
+      .project-card {
+         background: var(--bg-card);
+         border: 1px solid var(--border-soft);
+         border-radius: 16px;
+         overflow: hidden;
+         transition: 0.4s;
+         box-shadow: var(--shadow-premium);
+      }
+      .project-card:hover {
+         transform: scale(1.02) translateY(-6px);
+         border-color: var(--gold);
+      }
+      .project-img {
+         height: 140px;
+         background-size: cover;
+         background-position: center;
+         filter: grayscale(0.2) brightness(0.9);
+         transition: 0.5s;
+      }
+      .project-card:hover .project-img { filter: grayscale(0) brightness(1); }
+      .project-info { padding: 16px 20px 20px; }
+      .project-info h4 {
+         font-family: 'Playfair Display', serif;
+         font-size: 1.1rem;
+         color: var(--gold);
+         margin-bottom: 4px;
+      }
+      .project-info p { color: var(--text-muted); font-size: 0.85rem; font-weight: 300; }
+
+      /* Témoignages (sans photos) */
+      .testimonials {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+         gap: 30px;
+         margin-top: 40px;
+      }
+      .testimonial {
+         background: var(--bg-card);
+         border-left: 3px solid var(--gold);
+         padding: 24px 20px;
+         border-radius: 12px;
+         font-style: italic;
+         color: var(--text-muted);
+         font-size: 0.95rem;
+         line-height: 1.6;
+      }
+      .testimonial .author {
+         margin-top: 12px;
+         font-style: normal;
+         font-weight: 600;
+         color: var(--text-primary);
+         font-size: 0.85rem;
+      }
+
+      /* Contact */
       .contact-wrap {
          display: grid;
          grid-template-columns: 1fr 1fr;
@@ -418,7 +508,7 @@
       }
       input, textarea {
          padding: 16px 20px;
-         border-radius: 12px;
+         border-radius: 14px;
          border: 1px solid var(--border-soft);
          background: var(--bg-body);
          color: var(--text-primary);
@@ -430,11 +520,11 @@
       input:focus, textarea:focus {
          outline: none;
          border-color: var(--gold);
-         box-shadow: 0 0 0 4px rgba(201, 160, 90, 0.06);
+         box-shadow: 0 0 0 4px rgba(201, 170, 110, 0.06);
       }
-      textarea { resize: vertical; min-height: 120px; }
+      textarea { resize: vertical; min-height: 130px; }
       .btn-submit {
-         padding: 16px 28px;
+         padding: 16px 32px;
          border: 1.5px solid var(--gold);
          border-radius: 60px;
          background: transparent;
@@ -449,15 +539,15 @@
       }
       .btn-submit:hover {
          background: var(--gold);
-         color: #0e1117;
+         color: #0b0e14;
          transform: translateY(-2px);
-         box-shadow: 0 20px 30px -10px rgba(201, 160, 90, 0.2);
+         box-shadow: 0 20px 30px -10px rgba(201, 170, 110, 0.25);
       }
 
       .contact-infos {
          padding: 30px;
          background: var(--bg-card);
-         border-radius: 12px;
+         border-radius: 16px;
          border: 1px solid var(--border-soft);
       }
       .contact-infos h3 {
@@ -477,21 +567,39 @@
       .contact-infos a {
          color: var(--gold-light);
          text-decoration: none;
-         transition: 0.2s;
       }
       .contact-infos a:hover { text-decoration: underline; }
       .contact-infos i { width: 24px; color: var(--gold); font-size: 1.1rem; }
 
+      /* Badges (certifications) */
+      .badges {
+         display: flex;
+         gap: 16px;
+         flex-wrap: wrap;
+         margin-top: 30px;
+      }
+      .badge {
+         background: var(--bg-card);
+         border: 1px solid var(--border-soft);
+         padding: 8px 20px;
+         border-radius: 40px;
+         font-size: 0.75rem;
+         text-transform: uppercase;
+         letter-spacing: 1px;
+         color: var(--gold);
+         font-weight: 500;
+      }
+
       /* ========== FOOTER ========== */
       footer {
          text-align: center;
-         padding: 30px 20px;
+         padding: 40px 20px;
          border-top: 1px solid var(--border-soft);
          color: var(--text-muted);
          font-size: 0.75rem;
          letter-spacing: 2px;
          text-transform: uppercase;
-         margin-top: 40px;
+         margin-top: 60px;
          font-weight: 300;
       }
 
@@ -510,6 +618,9 @@
          .stats-grid { grid-template-columns: 1fr 1fr; }
          .steps-grid { grid-template-columns: 1fr; }
          .grid-services { grid-template-columns: 1fr; }
+         .carousel { grid-template-columns: 1fr 1fr; }
+         .sub-tabs { justify-content: center; }
+         .sub-tab { font-size: 0.75rem; padding: 6px 14px; }
       }
    </style>
 </head>
@@ -523,6 +634,7 @@
          <ul>
             <li><a href="#tabs-section">Services</a></li>
             <li><a href="#tabs-section">Expertise</a></li>
+            <li><a href="#tabs-section">Projets</a></li>
             <li><a href="#tabs-section">Contact</a></li>
             <li><a href="calcul-poutre.html">Calcul Poutre</a></li>
             <li><a href="Learning.html">Learning</a></li>
@@ -545,39 +657,51 @@
    </div>
 </section>
 
-<!-- SECTION ONGLETS INTERACTIFS -->
+<!-- ONGLETS PRINCIPAUX -->
 <div class="tabs-container" id="tabs-section">
 
-   <!-- Navigation -->
    <div class="tabs-nav">
       <button class="tab-btn active" data-tab="services"><i class="fas fa-cubes"></i> Services</button>
-      <button class="tab-btn" data-tab="expertise"><i class="fas fa-chart-bar"></i> Expertise & Méthode</button>
+      <button class="tab-btn" data-tab="expertise"><i class="fas fa-chart-bar"></i> Expertise</button>
+      <button class="tab-btn" data-tab="projects"><i class="fas fa-building"></i> Projets</button>
       <button class="tab-btn" data-tab="contact"><i class="fas fa-envelope"></i> Contact</button>
    </div>
 
-   <!-- PANEL 1 : SERVICES -->
+   <!-- PANEL SERVICES -->
    <div class="tab-panel active" id="panel-services">
-      <div class="grid-services">
-         <div class="card-service">
-            <h3><i class="fas fa-drafting-compass"></i> Études d’exécution</h3>
-            <p>Plans de coffrage, ferraillage et dossiers techniques complets.</p>
+      <!-- Sous-onglets -->
+      <div class="sub-tabs">
+         <button class="sub-tab active" data-sub="all">Tous</button>
+         <button class="sub-tab" data-sub="execution">Études d'exécution</button>
+         <button class="sub-tab" data-sub="diagnostic">Diagnostic</button>
+         <button class="sub-tab" data-sub="rehabilitation">Réhabilitation</button>
+         <button class="sub-tab" data-sub="fondations">Fondations</button>
+      </div>
+
+      <div class="sub-panel active" id="sub-all">
+         <div class="grid-services">
+            <div class="card-service"><h3><i class="fas fa-drafting-compass"></i> Études d’exécution</h3><p>Plans de coffrage, ferraillage et dossiers techniques complets.</p></div>
+            <div class="card-service"><h3><i class="fas fa-search-plus"></i> Diagnostic structure</h3><p>Analyse complète des pathologies et risques structurels.</p></div>
+            <div class="card-service"><h3><i class="fas fa-hard-hat"></i> Réhabilitation</h3><p>Renforcement et mise aux normes des ouvrages existants.</p></div>
+            <div class="card-service"><h3><i class="fas fa-layer-group"></i> Fondations</h3><p>Études géotechniques et interaction sol-structure.</p></div>
          </div>
-         <div class="card-service">
-            <h3><i class="fas fa-search-plus"></i> Diagnostic structure</h3>
-            <p>Analyse complète des pathologies et risques structurels.</p>
-         </div>
-         <div class="card-service">
-            <h3><i class="fas fa-hard-hat"></i> Réhabilitation</h3>
-            <p>Renforcement et mise aux normes des ouvrages existants.</p>
-         </div>
-         <div class="card-service">
-            <h3><i class="fas fa-layer-group"></i> Fondations</h3>
-            <p>Études géotechniques et interaction sol-structure.</p>
-         </div>
+      </div>
+      <!-- Chaque sous-panel contient la même carte filtrée (on peut les dupliquer pour l'exemple) -->
+      <div class="sub-panel" id="sub-execution">
+         <div class="grid-services"><div class="card-service"><h3><i class="fas fa-drafting-compass"></i> Études d’exécution</h3><p>Plans de coffrage, ferraillage et dossiers techniques complets.</p></div></div>
+      </div>
+      <div class="sub-panel" id="sub-diagnostic">
+         <div class="grid-services"><div class="card-service"><h3><i class="fas fa-search-plus"></i> Diagnostic structure</h3><p>Analyse complète des pathologies et risques structurels.</p></div></div>
+      </div>
+      <div class="sub-panel" id="sub-rehabilitation">
+         <div class="grid-services"><div class="card-service"><h3><i class="fas fa-hard-hat"></i> Réhabilitation</h3><p>Renforcement et mise aux normes des ouvrages existants.</p></div></div>
+      </div>
+      <div class="sub-panel" id="sub-fondations">
+         <div class="grid-services"><div class="card-service"><h3><i class="fas fa-layer-group"></i> Fondations</h3><p>Études géotechniques et interaction sol-structure.</p></div></div>
       </div>
    </div>
 
-   <!-- PANEL 2 : EXPERTISE & METHODE -->
+   <!-- PANEL EXPERTISE -->
    <div class="tab-panel" id="panel-expertise">
       <div class="stats-grid">
          <div class="stat-item"><h2>1+</h2><p>Années d’expérience</p></div>
@@ -592,9 +716,48 @@
          <div class="step-item"><span class="num">4</span> <span>Production des plans EXE</span></div>
          <div class="step-item"><span class="num">5</span> <span>Suivi et assistance chantier</span></div>
       </div>
+      <!-- Badges certifications (nouveau) -->
+      <div class="badges">
+         <span class="badge"><i class="fas fa-certificate"></i> ISO 9001</span>
+         <span class="badge"><i class="fas fa-certificate"></i> Qualibat 1412</span>
+         <span class="badge"><i class="fas fa-certificate"></i> OPQIBI 101</span>
+         <span class="badge"><i class="fas fa-certificate"></i> Bureau Veritas</span>
+      </div>
    </div>
 
-   <!-- PANEL 3 : CONTACT -->
+   <!-- PANEL PROJETS (nouveau) -->
+   <div class="tab-panel" id="panel-projects">
+      <div class="carousel">
+         <div class="project-card">
+            <div class="project-img" style="background-image:url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=400&q=80');"></div>
+            <div class="project-info"><h4>Tour Altaïr</h4><p>Béton haute performance, 45 étages</p></div>
+         </div>
+         <div class="project-card">
+            <div class="project-img" style="background-image:url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=400&q=80');"></div>
+            <div class="project-info"><h4>Pont de l'Atlantique</h4><p>Structure mixte acier-béton, 800m</p></div>
+         </div>
+         <div class="project-card">
+            <div class="project-img" style="background-image:url('https://images.unsplash.com/photo-1518001589401-1743b61d1def?w=400&q=80');"></div>
+            <div class="project-info"><h4>Musée des Sciences</h4><p>Toit en coque béton, 12 000 m²</p></div>
+         </div>
+         <div class="project-card">
+            <div class="project-img" style="background-image:url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=400&q=80');"></div>
+            <div class="project-info"><h4>Résidence Évora</h4><p>Rehabilitation sismique, 5 bâtiments</p></div>
+         </div>
+         <div class="project-card">
+            <div class="project-img" style="background-image:url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=400&q=80');"></div>
+            <div class="project-info"><h4>Data Center Ouest</h4><p>Fondations profondes, 2000 pieux</p></div>
+         </div>
+      </div>
+      <!-- Témoignages (nouveau) -->
+      <div class="testimonials">
+         <div class="testimonial">« Une rigueur et une créativité rares. BET STRUCTURE a su repousser les limites techniques de notre projet. » <div class="author">— Directeur technique, Groupe Atlantic</div></div>
+         <div class="testimonial">« Leur expertise Eurocodes nous a permis d’optimiser nos coûts de 15% sans compromettre la sécurité. » <div class="author">— Maître d’œuvre, Ville de Lyon</div></div>
+         <div class="testimonial">« Un partenaire de confiance pour des ouvrages d’exception. Réactivité et écoute exemplaires. » <div class="author">— Responsable construction, Eiffage</div></div>
+      </div>
+   </div>
+
+   <!-- PANEL CONTACT -->
    <div class="tab-panel" id="panel-contact">
       <div class="contact-wrap">
          <form action="https://formspree.io/f/xlgvkwng" method="POST">
@@ -628,21 +791,42 @@
       btn.textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
    });
 
-   // ===== ONGLETS =====
-   const tabs = document.querySelectorAll('.tab-btn');
+   // ===== ONGLETS PRINCIPAUX =====
+   const mainTabs = document.querySelectorAll('.tab-btn');
    const panels = {
       services: document.getElementById('panel-services'),
       expertise: document.getElementById('panel-expertise'),
+      projects: document.getElementById('panel-projects'),
       contact: document.getElementById('panel-contact')
    };
 
-   tabs.forEach(tab => {
+   mainTabs.forEach(tab => {
       tab.addEventListener('click', () => {
-         tabs.forEach(t => t.classList.remove('active'));
+         mainTabs.forEach(t => t.classList.remove('active'));
          tab.classList.add('active');
          Object.values(panels).forEach(p => p.classList.remove('active'));
          const target = tab.getAttribute('data-tab');
          if (panels[target]) panels[target].classList.add('active');
+      });
+   });
+
+   // ===== SOUS-ONGLETS (Services) =====
+   const subTabs = document.querySelectorAll('.sub-tab');
+   const subPanels = {
+      all: document.getElementById('sub-all'),
+      execution: document.getElementById('sub-execution'),
+      diagnostic: document.getElementById('sub-diagnostic'),
+      rehabilitation: document.getElementById('sub-rehabilitation'),
+      fondations: document.getElementById('sub-fondations')
+   };
+
+   subTabs.forEach(sub => {
+      sub.addEventListener('click', () => {
+         subTabs.forEach(s => s.classList.remove('active'));
+         sub.classList.add('active');
+         Object.values(subPanels).forEach(p => p.classList.remove('active'));
+         const key = sub.getAttribute('data-sub');
+         if (subPanels[key]) subPanels[key].classList.add('active');
       });
    });
 
