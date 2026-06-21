@@ -8,21 +8,33 @@
 <script src="https://js.stripe.com/v3/"></script>
 
 <style>
+/* ================= BASE ================= */
 *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
 body{background:#f8fafc;color:#0f172a}
 
 /* HEADER */
 .header{
-    display:flex;justify-content:space-between;align-items:center;
-    padding:1rem 2rem;background:white;border-bottom:1px solid #e2e8f0;
-    position:sticky;top:0;z-index:100
+    background:white;
+    border-bottom:1px solid #e2e8f0;
+    padding:1rem 2rem;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:100;
 }
 
-.cart-icon{cursor:pointer;position:relative}
+.cart-icon{position:relative;cursor:pointer;font-size:1.5rem}
 .cart-count{
-    position:absolute;top:-8px;right:-10px;
-    background:#3b82f6;color:white;border-radius:20px;
-    font-size:0.7rem;padding:2px 6px
+    position:absolute;
+    top:-8px;
+    right:-10px;
+    background:#3b82f6;
+    color:white;
+    font-size:0.7rem;
+    padding:2px 6px;
+    border-radius:20px;
 }
 
 /* CONTAINER */
@@ -30,57 +42,77 @@ body{background:#f8fafc;color:#0f172a}
 
 .products-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-    gap:1.5rem
+    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    gap:1.5rem;
 }
 
 /* CARD */
 .product-card{
-    background:white;padding:1rem;border-radius:18px;
+    background:white;
+    border-radius:18px;
+    padding:1rem;
     border:1px solid #e2e8f0;
+    cursor:pointer;
     transition:.2s;
 }
 .product-card:hover{transform:translateY(-3px)}
 
+.product-icon img{
+    width:60px;height:60px;
+    object-fit:cover;
+    border-radius:8px;
+}
+
 button{
-    border:none;padding:.5rem .8rem;border-radius:20px;
-    cursor:pointer
+    border:none;
+    padding:.5rem .8rem;
+    border-radius:20px;
+    cursor:pointer;
 }
 .primary{background:#3b82f6;color:white}
 .outline{background:white;border:1px solid #cbd5e1}
 
-/* DRAWER */
+/* ================= DRAWER ================= */
 .cart-drawer{
-    position:fixed;top:0;right:-400px;
-    width:360px;height:100%;
+    position:fixed;
+    top:0;
+    right:-380px;
+    width:360px;
+    height:100%;
     background:white;
     box-shadow:-10px 0 30px rgba(0,0,0,0.1);
     transition:.3s;
-    z-index:1000;
-    display:flex;flex-direction:column
+    z-index:2000;
+    display:flex;
+    flex-direction:column;
 }
 .cart-drawer.open{right:0}
 
 .cart-header{
-    display:flex;justify-content:space-between;
-    padding:1rem;border-bottom:1px solid #e2e8f0
+    display:flex;
+    justify-content:space-between;
+    padding:1rem;
+    border-bottom:1px solid #e2e8f0;
 }
 
 .cart-footer{
     margin-top:auto;
     padding:1rem;
-    border-top:1px solid #e2e8f0
+    border-top:1px solid #e2e8f0;
 }
 
 .cart-item{
-    display:flex;justify-content:space-between;
-    padding:.7rem;border-bottom:1px solid #eee
+    display:flex;
+    justify-content:space-between;
+    padding:.8rem;
+    border-bottom:1px solid #eee;
 }
 
 /* ANIMATION */
 .flying{
     position:fixed;
-    width:18px;height:18px;
+    width:18px;
+    height:18px;
     background:#3b82f6;
     border-radius:50%;
     z-index:9999;
@@ -91,24 +123,23 @@ button{
 
 <body>
 
-<!-- HEADER -->
 <div class="header">
     <div><strong>StyleShop</strong></div>
 
-    <div class="cart-icon" onclick="toggleCart()">
+    <div class="cart-icon" onclick="toggleCartDrawer()">
         🛒
         <span id="cartCount" class="cart-count">0</span>
     </div>
 </div>
 
 <!-- DRAWER -->
-<div id="drawer" class="cart-drawer">
+<div id="cartDrawer" class="cart-drawer">
     <div class="cart-header">
         <h3>Panier</h3>
-        <button onclick="toggleCart()">✕</button>
+        <button onclick="toggleCartDrawer()">✕</button>
     </div>
 
-    <div id="cartContent" style="padding:1rem"></div>
+    <div id="cartContent"></div>
 
     <div class="cart-footer">
         <button class="primary" style="width:100%">
@@ -125,14 +156,26 @@ button{
 
 <script>
 
-/* ================= DATA ================= */
-let products = [
-    {id:1,name:"T-shirt",price:19.99},
-    {id:2,name:"Casquette",price:14.99},
-    {id:3,name:"Sneakers",price:59.99}
-];
+/* ================= SUPABASE ================= */
+const SUPABASE_URL = 'https://xrocqhazpmjcnqjdyytd.supabase.co';
+const SUPABASE_KEY = 'YOUR_KEY';
 
-let cart = [];
+/* ================= STATE ================= */
+let products = [];
+let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+/* ================= LOAD ================= */
+async function loadProducts(){
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/products?select=*`, {
+        headers:{
+            apikey: SUPABASE_KEY,
+            Authorization: `Bearer ${SUPABASE_KEY}`
+        }
+    });
+
+    products = await res.json() || [];
+    render();
+}
 
 /* ================= RENDER ================= */
 function render(){
@@ -141,23 +184,27 @@ function render(){
     el.innerHTML = products.map(p=>`
         <div class="product-card">
 
-            <h3>${p.name}</h3>
-            <p>${p.price.toFixed(2)} €</p>
+            <div class="product-icon">
+                ${p.image_url ? `<img src="${p.image_url}">` : "📦"}
+            </div>
 
-            <!-- ACTIONS RAPIDES -->
+            <h3>${p.name}</h3>
+            <p>${(p.price || 0).toFixed(2)} €</p>
+
+            <!-- AJOUT RAPIDE -->
             <div style="display:flex;gap:6px;margin-top:10px"
                  onclick="event.stopPropagation()">
 
                 <button class="outline"
-                    onclick="quickAdd(${p.id},-1,event)">-</button>
+                    onclick="quickAdd('${p.id}', -1, event)">-</button>
 
                 <button class="primary"
-                    onclick="quickAdd(${p.id},1,event)">
+                    onclick="quickAdd('${p.id}', 1, event)">
                     🛒 Ajouter
                 </button>
 
                 <button class="outline"
-                    onclick="quickAdd(${p.id},1,event)">+</button>
+                    onclick="quickAdd('${p.id}', 1, event)">+</button>
 
             </div>
 
@@ -166,38 +213,39 @@ function render(){
 }
 
 /* ================= QUICK ADD ================= */
-function quickAdd(id,qty,e){
-    const p = products.find(x=>x.id===id);
+function quickAdd(id, qty, e){
+    const p = products.find(x=>String(x.id)===String(id));
     if(!p) return;
 
-    let item = cart.find(c=>c.id===id);
+    let item = cart.find(c=>String(c.id)===String(id));
 
     if(!item){
-        cart.push({...p,qty});
+        cart.push({...p, qty: Math.max(1, qty)});
     } else {
         item.qty += qty;
     }
 
-    if(item && item.qty<=0){
-        cart = cart.filter(c=>c.id!==id);
+    if(item && item.qty <= 0){
+        cart = cart.filter(c=>String(c.id)!==String(id));
     }
 
+    saveCart();
     updateCart();
     renderCart();
     animate(e);
 }
 
 /* ================= CART ================= */
-function toggleCart(){
-    document.getElementById("drawer").classList.toggle("open");
+function toggleCartDrawer(){
+    document.getElementById("cartDrawer").classList.toggle("open");
     renderCart();
 }
 
 function renderCart(){
     const el = document.getElementById("cartContent");
 
-    if(cart.length===0){
-        el.innerHTML="Panier vide";
+    if(cart.length === 0){
+        el.innerHTML = "Panier vide";
         return;
     }
 
@@ -216,42 +264,51 @@ function renderCart(){
 
 function changeQty(i,d){
     cart[i].qty += d;
-    if(cart[i].qty<=0) cart.splice(i,1);
+
+    if(cart[i].qty <= 0){
+        cart.splice(i,1);
+    }
+
+    saveCart();
     updateCart();
     renderCart();
 }
 
-/* ================= CART COUNT ================= */
-function updateCart(){
-    document.getElementById("cartCount").innerText =
-        cart.reduce((s,i)=>s+i.qty,0);
+/* ================= STORAGE ================= */
+function saveCart(){
+    localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-/* ================= ANIMATION ================= */
+function updateCart(){
+    document.getElementById("cartCount").innerText =
+        cart.reduce((s,i)=>s + i.qty, 0);
+}
+
+/* ================= ANIMATION FIX ================= */
 function animate(e){
     if(!e) return;
 
-    const dot=document.createElement("div");
-    dot.className="flying";
+    const dot = document.createElement("div");
+    dot.className = "flying";
     document.body.appendChild(dot);
 
-    const rect=e.target.getBoundingClientRect();
-    dot.style.left=rect.left+"px";
-    dot.style.top=rect.top+"px";
+    const rect = e.target.getBoundingClientRect();
+    dot.style.left = rect.left + "px";
+    dot.style.top = rect.top + "px";
 
-    const cart=document.querySelector(".cart-icon").getBoundingClientRect();
+    const cartIcon = document.querySelector(".cart-icon").getBoundingClientRect();
 
     setTimeout(()=>{
-        dot.style.left=cart.left+"px";
-        dot.style.top=cart.top+"px";
-        dot.style.opacity="0";
-    },50);
+        dot.style.left = cartIcon.left + "px";
+        dot.style.top = cartIcon.top + "px";
+        dot.style.opacity = "0";
+    }, 50);
 
-    setTimeout(()=>dot.remove(),600);
+    setTimeout(()=>dot.remove(), 600);
 }
 
 /* ================= INIT ================= */
-render();
+loadProducts();
 updateCart();
 
 </script>
