@@ -14,7 +14,8 @@ module.exports = async (req, res) => {
       : 'https://boutiqueflechy.vercel.app';
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
+      // === AJOUT DE KLARNA ICI ===
+      payment_method_types: ['card', 'klarna'],   // <- ligne modifiée
       mode: 'payment',
       line_items: [
         {
@@ -32,15 +33,10 @@ module.exports = async (req, res) => {
       success_url: `${baseUrl}/?success=true&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${baseUrl}/?cancel=true`,
 
-      // === COLLECTE AUTOMATIQUE DES INFORMATIONS CLIENT ===
-      // Stripe demandera lui-même l'email sur sa page de paiement
-
-      // Adresse de livraison (Stripe affiche les champs)
       shipping_address_collection: {
         allowed_countries: ['FR', 'BE', 'CH', 'LU', 'DE', 'IT', 'ES', 'GB']
       },
 
-      // Téléphone (optionnel)
       phone_number_collection: {
         enabled: true
       },
