@@ -146,7 +146,7 @@
         }
 
         /* ============================================================
-           PRODUCT CARD
+           PRODUCT CARD (catalogue)
            ============================================================ */
         .product-card {
             background: var(--color-surface);
@@ -387,7 +387,7 @@
         }
 
         /* ============================================================
-           DETAIL PRODUCT
+           DETAIL PRODUCT (amélioré)
            ============================================================ */
         .product-detail {
             background: var(--color-surface);
@@ -395,9 +395,12 @@
             padding: 2rem;
             border: 1px solid var(--color-border);
             box-shadow: var(--shadow-sm);
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
+            display: flex;
+            flex-direction: column;
         }
+
         .back-link {
             display: inline-flex;
             align-items: center;
@@ -405,23 +408,31 @@
             color: var(--color-accent);
             font-weight: 500;
             cursor: pointer;
-            margin-bottom: 1.2rem;
+            margin-bottom: 1.5rem;
             transition: color var(--transition);
+            font-size: 0.9rem;
         }
         .back-link:hover {
             color: var(--color-primary);
         }
 
+        /* Layout colonnes */
+        .detail-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            align-items: start;
+        }
+
+        /* Galerie */
         .product-gallery {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 1.5rem;
         }
         .main-image {
             width: 100%;
-            max-width: 480px;
-            aspect-ratio: 1 / 1;
+            aspect-ratio: 4 / 3;
             background: #f8fafc;
             border-radius: var(--radius-md);
             display: flex;
@@ -429,39 +440,54 @@
             justify-content: center;
             overflow: hidden;
             box-shadow: var(--shadow-sm);
+            transition: transform 0.3s ease;
+            position: relative;
+            cursor: zoom-in;
+        }
+        .main-image:hover {
+            transform: scale(1.01);
         }
         .main-image img {
             width: 100%;
             height: 100%;
             object-fit: contain;
             padding: 1.5rem;
+            transition: transform 0.4s ease;
+        }
+        .main-image:hover img {
+            transform: scale(1.04);
         }
         .main-image span {
             font-size: 6rem;
             opacity: 0.3;
         }
+
         .thumbnails {
             display: flex;
             gap: 0.6rem;
-            margin-top: 0.8rem;
+            margin-top: 1rem;
             flex-wrap: wrap;
             justify-content: center;
         }
         .thumb {
-            width: 60px;
-            height: 60px;
+            width: 64px;
+            height: 64px;
             border-radius: var(--radius-sm);
             overflow: hidden;
             cursor: pointer;
             border: 2px solid transparent;
-            transition: border-color var(--transition);
+            transition: border-color var(--transition), transform 0.2s;
             background: #f1f5f9;
             display: flex;
             align-items: center;
             justify-content: center;
         }
+        .thumb:hover {
+            transform: translateY(-2px);
+        }
         .thumb.active {
             border-color: var(--color-accent);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
         }
         .thumb img {
             width: 100%;
@@ -473,33 +499,101 @@
             opacity: 0.5;
         }
 
+        /* Infos produit */
+        .detail-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
         .detail-info h2 {
-            font-size: 1.8rem;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 0.3rem;
-        }
-        .detail-info .description {
-            color: var(--color-text-secondary);
-            text-align: center;
-            margin-bottom: 1.2rem;
-            font-size: 0.95rem;
-        }
-        .detail-info .price {
             font-size: 2rem;
             font-weight: 700;
-            text-align: center;
+            letter-spacing: -0.02em;
             color: var(--color-primary);
-            margin: 0.8rem 0;
-        }
-        .detail-info .stock-info {
-            text-align: center;
-            font-weight: 500;
-            margin: 0.8rem 0;
+            margin-bottom: 0.1rem;
+            line-height: 1.2;
         }
 
+        .detail-info .description {
+            color: var(--color-text-secondary);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-info .price {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin: 0.4rem 0 0.2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .detail-info .price .old-price {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: #94a3b8;
+            text-decoration: line-through;
+            margin-left: 0.2rem;
+        }
+
+        .detail-info .stock-info {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.95rem;
+            margin: 0.2rem 0 0.4rem;
+        }
+        .stock-info .dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 0.3rem;
+        }
+        .stock-info .dot.in-stock {
+            background: var(--color-success);
+        }
+        .stock-info .dot.low-stock {
+            background: var(--color-warning);
+        }
+        .stock-info .dot.out-stock {
+            background: var(--color-danger);
+        }
+
+        /* Caractéristiques */
+        .features {
+            background: #f8fafc;
+            padding: 1rem 1.2rem;
+            border-radius: var(--radius-sm);
+            margin: 0.5rem 0;
+        }
+        .features ul {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.4rem 1rem;
+        }
+        .features ul li {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .features ul li::before {
+            content: "✓";
+            color: var(--color-success);
+            font-weight: 700;
+        }
+
+        /* Variantes */
         .variant-group {
-            margin: 1.2rem 0;
+            margin: 0.6rem 0;
         }
         .variant-group strong {
             display: block;
@@ -514,7 +608,6 @@
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-            justify-content: center;
         }
         .variant-btn {
             background: #f1f5f9;
@@ -533,17 +626,69 @@
             background: var(--color-primary);
             color: white;
             border-color: var(--color-primary);
+            box-shadow: 0 2px 8px rgba(30, 58, 111, 0.15);
         }
 
         .detail-actions {
-            margin-top: 1.5rem;
+            margin-top: 0.8rem;
             display: flex;
-            justify-content: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
         }
         .detail-actions .btn {
             width: auto;
-            padding: 0.7rem 3rem;
+            padding: 0.8rem 2.5rem;
             font-size: 1rem;
+            flex: 1;
+            min-width: 180px;
+        }
+
+        /* Encart rassurant */
+        .trust-badges {
+            display: flex;
+            justify-content: space-around;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--color-border);
+            flex-wrap: wrap;
+        }
+        .trust-badges .badge {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.85rem;
+            color: var(--color-text-secondary);
+            font-weight: 500;
+        }
+        .trust-badges .badge span {
+            font-size: 1.4rem;
+        }
+
+        /* Responsive detail */
+        @media (max-width: 820px) {
+            .detail-layout {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .main-image {
+                aspect-ratio: 1 / 1;
+            }
+            .detail-info h2 {
+                font-size: 1.6rem;
+            }
+            .detail-info .price {
+                font-size: 2rem;
+            }
+            .features ul {
+                grid-template-columns: 1fr;
+            }
+            .trust-badges {
+                flex-direction: column;
+                align-items: center;
+            }
         }
 
         /* ============================================================
@@ -1216,7 +1361,6 @@
 
             modalOptions.innerHTML = html;
 
-            // Sélection
             document.querySelectorAll('.variant-btn-modal').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const parent = this.parentElement;
@@ -1339,7 +1483,6 @@
             html += `</div>`;
             app.innerHTML = html;
 
-            // Événements
             document.querySelectorAll('.add-btn:not([disabled])').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -1363,13 +1506,14 @@
         }
 
         // ================================================================
-        // 12. RENDU FICHE PRODUIT
+        // 12. RENDU FICHE PRODUIT (AMÉLIORÉE)
         // ================================================================
         function renderProductDetail(productId) {
             const app = document.getElementById('app');
             const product = products.find(p => p.id === productId);
             if (!product) { renderCatalogue(); return; }
 
+            // Gestion des images
             let images = [];
             if (product.images && product.images.length > 0) {
                 images = product.images;
@@ -1387,15 +1531,37 @@
             let currentPrice = isVariant ? (product.base_price || 0) : (product.price || 0);
             let currentStock = isVariant ? 0 : (product.stock || 0);
             let canAdd = false;
+            let oldPrice = null;
+
             if (isVariant && selectedVariantId) {
                 selectedVariant = product.variants?.find(v => v.id === selectedVariantId);
                 if (selectedVariant) {
                     currentPrice = selectedVariant.price || 0;
                     currentStock = selectedVariant.stock || 0;
                     canAdd = currentStock > 0;
+                    // ancien prix fictif (pour exemple)
+                    if (selectedVariant.compare_at_price) oldPrice = selectedVariant.compare_at_price;
                 }
-            } else if (!isVariant) canAdd = (product.stock || 0) > 0;
+            } else if (!isVariant) {
+                canAdd = (product.stock || 0) > 0;
+                if (product.compare_at_price) oldPrice = product.compare_at_price;
+            }
 
+            // Caractéristiques (si présentes dans product.features, sinon génériques)
+            let features = [];
+            if (product.features && Array.isArray(product.features)) {
+                features = product.features;
+            } else {
+                // Quelques exemples vendeurs
+                features = [
+                    'Livraison offerte dès 50€',
+                    'Garantie 2 ans',
+                    'Fabriqué en Europe',
+                    'Paiement sécurisé'
+                ];
+            }
+
+            // Variantes
             let tailleOptions = [],
                 couleurOptions = [];
             if (isVariant && product.variants) {
@@ -1405,6 +1571,7 @@
             const currentTaille = selectedVariant?.attributes?.taille || (tailleOptions[0] || '');
             const currentCouleur = selectedVariant?.attributes?.couleur || (couleurOptions[0] || '');
 
+            // Galerie HTML
             let galleryHtml = '';
             if (images.length > 0) {
                 const mainSrc = images[currentImageIndex];
@@ -1431,46 +1598,87 @@
                 galleryHtml = `<div class="product-gallery"><div class="main-image"><span>📦</span></div></div>`;
             }
 
-            const detailHtml = `
-                <div class="back-link" onclick="navigateTo('catalogue')">← Retour</div>
+            // Indicateur de stock
+            let stockHtml = '';
+            if (currentStock > 5) {
+                stockHtml = `<span class="dot in-stock"></span> En stock (${currentStock})`;
+            } else if (currentStock > 0 && currentStock <= 5) {
+                stockHtml = `<span class="dot low-stock"></span> Plus que ${currentStock} en stock !`;
+            } else {
+                stockHtml = `<span class="dot out-stock"></span> Rupture de stock`;
+            }
+
+            // Prix avec ancien prix
+            let priceHtml = `${currentPrice.toFixed(2)} €`;
+            if (oldPrice && oldPrice > currentPrice) {
+                priceHtml += ` <span class="old-price">${oldPrice.toFixed(2)} €</span>`;
+            }
+
+            // Construction de la page
+            const html = `
+                <div class="back-link" onclick="navigateTo('catalogue')">← Retour au catalogue</div>
                 <div class="product-detail">
-                    ${galleryHtml}
-                    <div class="detail-info">
-                        <h2>${product.name}</h2>
-                        <p class="description">${product.description || ''}</p>
-                        ${isVariant ? `
-                            <div class="variant-group">
-                                <strong>Taille</strong>
-                                <div class="variant-options" id="tailleContainer">
-                                    ${tailleOptions.map(t => `
-                                        <div class="variant-btn ${currentTaille === t ? 'selected' : ''}" data-type="taille" data-value="${t}">${t}</div>
-                                    `).join('')}
+                    <div class="detail-layout">
+                        <!-- Colonne gauche : galerie -->
+                        <div>${galleryHtml}</div>
+
+                        <!-- Colonne droite : informations -->
+                        <div class="detail-info">
+                            <h2>${product.name}</h2>
+                            <p class="description">${product.description || 'Découvrez ce produit de qualité, conçu pour durer.'}</p>
+
+                            <div class="price">${priceHtml}</div>
+
+                            <div class="stock-info">${stockHtml}</div>
+
+                            <!-- Variantes -->
+                            ${isVariant ? `
+                                <div class="variant-group">
+                                    <strong>Taille</strong>
+                                    <div class="variant-options" id="tailleContainer">
+                                        ${tailleOptions.map(t => `
+                                            <div class="variant-btn ${currentTaille === t ? 'selected' : ''}" data-type="taille" data-value="${t}">${t}</div>
+                                        `).join('')}
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="variant-group">
-                                <strong>Couleur</strong>
-                                <div class="variant-options" id="couleurContainer">
-                                    ${couleurOptions.map(c => `
-                                        <div class="variant-btn ${currentCouleur === c ? 'selected' : ''}" data-type="couleur" data-value="${c}">${c}</div>
-                                    `).join('')}
+                                <div class="variant-group">
+                                    <strong>Couleur</strong>
+                                    <div class="variant-options" id="couleurContainer">
+                                        ${couleurOptions.map(c => `
+                                            <div class="variant-btn ${currentCouleur === c ? 'selected' : ''}" data-type="couleur" data-value="${c}">${c}</div>
+                                        `).join('')}
+                                    </div>
                                 </div>
+                            ` : ''}
+
+                            <!-- Caractéristiques -->
+                            <div class="features">
+                                <ul>
+                                    ${features.map(f => `<li>${f}</li>`).join('')}
+                                </ul>
                             </div>
-                        ` : ''}
-                        <div class="price">${currentPrice.toFixed(2)} €</div>
-                        <div class="stock-info">
-                            ${currentStock > 0 ? `<span style="color:var(--color-success);">✅ En stock (${currentStock})</span>` : `<span style="color:var(--color-danger);">❌ Rupture</span>`}
-                        </div>
-                        <div class="detail-actions">
-                            <button class="btn btn-accent" id="addToCartBtn" ${!canAdd ? 'disabled' : ''}>
-                                ${canAdd ? 'Ajouter au panier' : 'Indisponible'}
-                            </button>
+
+                            <!-- Bouton Ajouter -->
+                            <div class="detail-actions">
+                                <button class="btn btn-accent" id="addToCartBtn" ${!canAdd ? 'disabled' : ''}>
+                                    ${canAdd ? 'Ajouter au panier' : 'Indisponible'}
+                                </button>
+                            </div>
+
+                            <!-- Encart rassurant -->
+                            <div class="trust-badges">
+                                <div class="badge"><span>🚚</span> Livraison rapide</div>
+                                <div class="badge"><span>🔒</span> Paiement sécurisé</div>
+                                <div class="badge"><span>💬</span> Service client 7j/7</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             `;
-            app.innerHTML = detailHtml;
 
-            // Thumbnails
+            app.innerHTML = html;
+
+            // Gestion des miniatures
             document.querySelectorAll('.thumb').forEach(thumb => {
                 thumb.addEventListener('click', function() {
                     const idx = parseInt(this.dataset.index);
@@ -1481,7 +1689,7 @@
                 });
             });
 
-            // Variantes
+            // Gestion des variantes sur la fiche
             if (isVariant) {
                 const tailleBtns = document.querySelectorAll('#tailleContainer .variant-btn');
                 const couleurBtns = document.querySelectorAll('#couleurContainer .variant-btn');
@@ -1496,20 +1704,32 @@
                             renderProductDetail(productId); }
                     }
                 }
-                tailleBtns.forEach(btn => btn.onclick = () => { tailleBtns.forEach(b => b.classList.remove('selected'));
-                    btn.classList.add('selected');
-                    updateDetailVariant(); });
-                couleurBtns.forEach(btn => btn.onclick = () => { couleurBtns.forEach(b => b.classList.remove('selected'));
-                    btn.classList.add('selected');
-                    updateDetailVariant(); });
+
+                tailleBtns.forEach(btn => {
+                    btn.onclick = () => {
+                        tailleBtns.forEach(b => b.classList.remove('selected'));
+                        btn.classList.add('selected');
+                        updateDetailVariant();
+                    };
+                });
+                couleurBtns.forEach(btn => {
+                    btn.onclick = () => {
+                        couleurBtns.forEach(b => b.classList.remove('selected'));
+                        btn.classList.add('selected');
+                        updateDetailVariant();
+                    };
+                });
             }
 
+            // Bouton Ajouter
             document.getElementById('addToCartBtn')?.addEventListener('click', () => {
                 if (isVariant) {
                     const vid = selectedVariantCache[productId];
                     if (!vid) { showToast('Choisissez une variante', 'error'); return; }
                     addToCart(productId, vid, 1);
-                } else addToCart(productId, null, 1);
+                } else {
+                    addToCart(productId, null, 1);
+                }
             });
         }
 
@@ -1591,7 +1811,6 @@
             `;
             app.innerHTML = html;
 
-            // Gestion des quantités
             document.querySelectorAll('.qty-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const idx = parseInt(this.dataset.idx);
@@ -1725,7 +1944,6 @@
 
             renderCurrentPage();
 
-            // Effet header scrolled
             window.addEventListener('scroll', () => {
                 document.getElementById('mainHeader').classList.toggle('scrolled', window.scrollY > 20);
             });
