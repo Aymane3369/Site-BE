@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>StyleShop — Boutique élégante</title>
+    <title>Ingénierie-Travaux — Boutique & Services</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
@@ -53,7 +53,7 @@
         }
 
         /* ============================================================
-           BANNIÈRE PROMO (AJOUT)
+           BANNIÈRE PROMO
            ============================================================ */
         .promo-banner {
             background: var(--color-primary);
@@ -127,6 +127,13 @@
         .logo span {
             color: var(--color-accent);
         }
+        .logo .sub {
+            font-size: 0.6rem;
+            font-weight: 400;
+            color: var(--color-text-secondary);
+            display: block;
+            margin-top: -0.2rem;
+        }
 
         .header-actions {
             display: flex;
@@ -187,7 +194,64 @@
         }
 
         /* ============================================================
-           PRODUCT CARD (catalogue)
+           PRESENTATION TEXT (AJOUT)
+           ============================================================ */
+        .presentation-section {
+            margin: 3rem auto 1rem;
+            padding: 2rem;
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow-sm);
+            max-width: 1200px;
+        }
+        .presentation-section .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        .presentation-section p {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--color-text-secondary);
+        }
+        .presentation-section p strong {
+            color: var(--color-primary);
+        }
+        .presentation-section .badges-container {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--color-border);
+        }
+        .presentation-section .badges-container .badge {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.85rem;
+            color: var(--color-text-secondary);
+            font-weight: 500;
+        }
+        .presentation-section .badges-container .badge span {
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 820px) {
+            .presentation-section .row {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .presentation-section {
+                padding: 1.5rem;
+                margin: 2rem 0.5rem;
+            }
+        }
+
+        /* ============================================================
+           PRODUCT CARD
            ============================================================ */
         .product-card {
             background: var(--color-surface);
@@ -266,7 +330,6 @@
             background: #fde8e8;
         }
 
-        /* Indicateur d'urgence (AJOUT) */
         .urgency-badge {
             font-size: 0.7rem;
             color: var(--color-danger);
@@ -445,7 +508,7 @@
         }
 
         /* ============================================================
-           DETAIL PRODUCT (amélioré)
+           DETAIL PRODUCT
            ============================================================ */
         .product-detail {
             background: var(--color-surface);
@@ -474,7 +537,6 @@
             color: var(--color-primary);
         }
 
-        /* Layout colonnes */
         .detail-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -482,7 +544,6 @@
             align-items: start;
         }
 
-        /* Galerie */
         .product-gallery {
             display: flex;
             flex-direction: column;
@@ -557,7 +618,6 @@
             opacity: 0.5;
         }
 
-        /* Infos produit */
         .detail-info {
             display: flex;
             flex-direction: column;
@@ -622,7 +682,6 @@
             background: var(--color-danger);
         }
 
-        /* --- SECTION AVIS CLIENTS (AJOUT) --- */
         .reviews-section {
             margin: 0.8rem 0;
             border-top: 1px solid var(--color-border);
@@ -664,7 +723,6 @@
             color: var(--color-text);
         }
 
-        /* Caractéristiques */
         .features {
             background: #f8fafc;
             padding: 1rem 1.2rem;
@@ -691,7 +749,6 @@
             font-weight: 700;
         }
 
-        /* Variantes */
         .variant-group {
             margin: 0.6rem 0;
         }
@@ -743,7 +800,6 @@
             min-width: 180px;
         }
 
-        /* Encart rassurant (AJOUT : "satisfait ou remboursé") */
         .trust-badges {
             display: flex;
             justify-content: space-around;
@@ -771,7 +827,6 @@
             font-weight: 600;
         }
 
-        /* Responsive detail */
         @media (max-width: 820px) {
             .detail-layout {
                 grid-template-columns: 1fr;
@@ -1112,7 +1167,7 @@
 <body>
 
     <!-- ============================================================
-    BANNIÈRE PROMO (AJOUT)
+    BANNIÈRE PROMO
     ============================================================ -->
     <div class="promo-banner" id="promoBanner">
         🎉 Nouveau client ? Utilisez le code <strong>BIENVENUE</strong> pour bénéficier de <strong>-10%</strong> sur votre première commande !
@@ -1123,7 +1178,12 @@
     HEADER
     ============================================================ -->
     <header class="header" id="mainHeader">
-        <div class="logo" onclick="navigateTo('catalogue')">Style<span>Shop</span></div>
+        <div class="logo" onclick="navigateTo('catalogue')">
+            <div>
+                Style<span>Shop</span>
+                <span class="sub">Ingénierie · Travaux · Boutique</span>
+            </div>
+        </div>
         <div class="header-actions">
             <div class="cart-icon" onclick="navigateTo('cart')" aria-label="Panier">
                 🛒
@@ -1543,13 +1603,16 @@
         });
 
         // ================================================================
-        // 11. RENDU CATALOGUE (avec urgence)
+        // 11. RENDU CATALOGUE (avec texte de présentation)
         // ================================================================
         function renderCatalogue() {
             const app = document.getElementById('app');
             const active = products.filter(p => p.active !== false);
             if (active.length === 0) {
-                app.innerHTML = `<div class="empty-state"><span class="emoji">📦</span><p>Aucun produit disponible pour le moment.</p></div>`;
+                app.innerHTML = `
+                    <div class="empty-state"><span class="emoji">📦</span><p>Aucun produit disponible pour le moment.</p></div>
+                    ${getPresentationHtml()}
+                `;
                 return;
             }
 
@@ -1606,6 +1669,10 @@
                 `;
             });
             html += `</div>`;
+
+            // Ajout du texte de présentation APRÈS les produits
+            html += getPresentationHtml();
+
             app.innerHTML = html;
 
             document.querySelectorAll('.add-btn:not([disabled])').forEach(btn => {
@@ -1631,14 +1698,53 @@
         }
 
         // ================================================================
-        // 12. RENDU FICHE PRODUIT (avec avis et urgence)
+        // FONCTION POUR LE TEXTE DE PRÉSENTATION
+        // ================================================================
+        function getPresentationHtml() {
+            return `
+                <div class="presentation-section">
+                    <div class="row">
+                        <div class="col">
+                            <p>
+                                <strong>Ingénierie-Travaux</strong>, c’est bien plus qu’un simple site de vente en ligne. C’est la rencontre entre une <strong>expertise technique reconnue</strong> et une <strong>passion pour la qualité</strong> au service des particuliers et des professionnels.<br/><br/>
+
+                                D’abord spécialisée dans le <strong>domaine de l’ingénierie et des travaux</strong> — avec des services de <strong>maîtrise d’œuvre</strong>, <strong>conseil en construction</strong>, <strong>gestion de projets</strong> et <strong>audits techniques</strong> — notre activité s’est naturellement enrichie d’une <strong>boutique en ligne</strong> pour répondre aux besoins quotidiens de nos clients.<br/><br/>
+
+                                Aujourd’hui, notre site e-commerce vous propose une <strong>sélection variée de produits</strong> soigneusement choisis : <strong>vêtements tendance</strong>, <strong>accessoires mode</strong>, <strong>équipement de la maison</strong>, <strong>high-tech</strong>, <strong>beauté</strong> et bien plus encore. Nous collaborons avec des marques de confiance pour vous offrir le meilleur des <strong>produits du quotidien</strong> comme des <strong>articles plus techniques</strong>.<br/><br/>
+
+                                Que vous soyez un <strong>particulier</strong> en quête de nouveaux produits ou un <strong>professionnel</strong> ayant besoin de matériel spécifique, notre <strong>équipe d’experts</strong> est là pour vous conseiller et vous accompagner dans vos choix.
+                            </p>
+                        </div>
+                        <div class="col">
+                            <p>
+                                Notre force réside dans notre <strong>double compétence</strong> : la rigueur du <strong>secteur de l’ingénierie</strong> associée à la réactivité et la convivialité d’une <strong>boutique moderne</strong>. Nous savons ce que signifie la <strong>confiance</strong> dans une relation client — c’est pourquoi nous mettons un point d’honneur à vous proposer des <strong>produits de qualité</strong>, des <strong>prix compétitifs</strong> et un <strong>service après-vente réactif</strong>.<br/><br/>
+
+                                Pour nos clients professionnels, nous proposons également des <strong>solutions sur-mesure</strong> : <strong>devis personnalisés</strong>, <strong>livraison en quantité</strong>, <strong>accompagnement technique</strong> et <strong>formations</strong> sur certains équipements.<br/><br/>
+
+                                Nous croyons en une <strong>relation de proximité</strong> avec nos clients, qu’ils soient à l’autre bout de la France ou à l’étranger. Notre site est accessible depuis la <strong>France métropolitaine</strong>, l’<strong>Outre-Mer</strong>, mais aussi la <strong>Belgique</strong>, la <strong>Suisse</strong>, le <strong>Luxembourg</strong>, l’<strong>Allemagne</strong> et l’<strong>Italie</strong>.<br/><br/>
+
+                                Rejoignez la communauté <strong>#ingenierietravaux</strong> ! Pour découvrir nos dernières offres, nos <strong>conseils et astuces</strong> et nos <strong>nouveautés produits</strong>, suivez-nous sur nos <strong>réseaux sociaux</strong> et abonnez-vous à notre <strong>newsletter</strong>. Ensemble, construisons un monde plus beau, plus fonctionnel et plus agréable à vivre. 🌟
+                            </p>
+                        </div>
+                    </div>
+                    <div class="badges-container">
+                        <div class="badge"><span>✅</span> Satisfait ou remboursé 30 jours</div>
+                        <div class="badge"><span>🔒</span> Paiement sécurisé</div>
+                        <div class="badge"><span>🚚</span> Livraison rapide</div>
+                        <div class="badge"><span>💬</span> Service client 7j/7</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ================================================================
+        // 12. RENDU FICHE PRODUIT
         // ================================================================
         function renderProductDetail(productId) {
             const app = document.getElementById('app');
             const product = products.find(p => p.id === productId);
             if (!product) { renderCatalogue(); return; }
 
-            // Gestion des images
             let images = [];
             if (product.images && product.images.length > 0) {
                 images = product.images;
@@ -1671,7 +1777,6 @@
                 if (product.compare_at_price) oldPrice = product.compare_at_price;
             }
 
-            // Caractéristiques
             let features = [];
             if (product.features && Array.isArray(product.features)) {
                 features = product.features;
@@ -1684,7 +1789,6 @@
                 ];
             }
 
-            // Variantes
             let tailleOptions = [],
                 couleurOptions = [];
             if (isVariant && product.variants) {
@@ -1694,7 +1798,6 @@
             const currentTaille = selectedVariant?.attributes?.taille || (tailleOptions[0] || '');
             const currentCouleur = selectedVariant?.attributes?.couleur || (couleurOptions[0] || '');
 
-            // Galerie HTML
             let galleryHtml = '';
             if (images.length > 0) {
                 const mainSrc = images[currentImageIndex];
@@ -1721,7 +1824,6 @@
                 galleryHtml = `<div class="product-gallery"><div class="main-image"><span>📦</span></div></div>`;
             }
 
-            // Indicateur de stock avec urgence
             let stockHtml = '';
             let urgencyHtml = '';
             if (currentStock > 5) {
@@ -1733,13 +1835,11 @@
                 stockHtml = `<span class="dot out-stock"></span> Rupture de stock`;
             }
 
-            // Prix avec ancien prix
             let priceHtml = `${currentPrice.toFixed(2)} €`;
             if (oldPrice && oldPrice > currentPrice) {
                 priceHtml += ` <span class="old-price">${oldPrice.toFixed(2)} €</span>`;
             }
 
-            // Avis clients (fictifs)
             const reviews = [
                 { name: 'Marie L.', stars: 5, text: 'Super produit, conforme à la description. Livraison rapide !' },
                 { name: 'Thomas R.', stars: 4, text: 'Très bonne qualité, je recommande.' }
@@ -1755,24 +1855,16 @@
                 </div>
             `).join('');
 
-            // Construction de la page
             const html = `
                 <div class="back-link" onclick="navigateTo('catalogue')">← Retour au catalogue</div>
                 <div class="product-detail">
                     <div class="detail-layout">
-                        <!-- Colonne gauche : galerie -->
                         <div>${galleryHtml}</div>
-
-                        <!-- Colonne droite : informations -->
                         <div class="detail-info">
                             <h2>${product.name}</h2>
                             <p class="description">${product.description || 'Découvrez ce produit de qualité, conçu pour durer.'}</p>
-
                             <div class="price">${priceHtml}</div>
-
                             <div class="stock-info">${stockHtml} ${urgencyHtml}</div>
-
-                            <!-- Variantes -->
                             ${isVariant ? `
                                 <div class="variant-group">
                                     <strong>Taille</strong>
@@ -1791,28 +1883,20 @@
                                     </div>
                                 </div>
                             ` : ''}
-
-                            <!-- Caractéristiques -->
                             <div class="features">
                                 <ul>
                                     ${features.map(f => `<li>${f}</li>`).join('')}
                                 </ul>
                             </div>
-
-                            <!-- SECTION AVIS (AJOUT) -->
                             <div class="reviews-section">
                                 <div style="font-weight:600;margin-bottom:0.5rem;">Avis clients</div>
                                 ${reviewsHtml}
                             </div>
-
-                            <!-- Bouton Ajouter -->
                             <div class="detail-actions">
                                 <button class="btn btn-accent" id="addToCartBtn" ${!canAdd ? 'disabled' : ''}>
                                     ${canAdd ? 'Ajouter au panier' : 'Indisponible'}
                                 </button>
                             </div>
-
-                            <!-- Encart rassurant (AJOUT : satisfait ou remboursé) -->
                             <div class="trust-badges">
                                 <div class="badge"><span>🚚</span> Livraison rapide</div>
                                 <div class="badge"><span>🔒</span> Paiement sécurisé</div>
@@ -1826,7 +1910,6 @@
 
             app.innerHTML = html;
 
-            // Gestion des miniatures
             document.querySelectorAll('.thumb').forEach(thumb => {
                 thumb.addEventListener('click', function() {
                     const idx = parseInt(this.dataset.index);
@@ -1837,7 +1920,6 @@
                 });
             });
 
-            // Gestion des variantes sur la fiche
             if (isVariant) {
                 const tailleBtns = document.querySelectorAll('#tailleContainer .variant-btn');
                 const couleurBtns = document.querySelectorAll('#couleurContainer .variant-btn');
@@ -1869,7 +1951,6 @@
                 });
             }
 
-            // Bouton Ajouter
             document.getElementById('addToCartBtn')?.addEventListener('click', () => {
                 if (isVariant) {
                     const vid = selectedVariantCache[productId];
@@ -1882,7 +1963,7 @@
         }
 
         // ================================================================
-        // 13. RENDU PANIER (inchangé)
+        // 13. RENDU PANIER
         // ================================================================
         function renderCart() {
             const app = document.getElementById('app');
@@ -1988,7 +2069,7 @@
         }
 
         // ================================================================
-        // 14. PAIEMENT STRIPE (inchangé)
+        // 14. PAIEMENT STRIPE
         // ================================================================
         async function stripeCheckout() {
             if (!Array.isArray(cart) || cart.length === 0) {
@@ -2073,7 +2154,7 @@
         window.stripeCheckout = stripeCheckout;
 
         // ================================================================
-        // 18. INITIALISATION (avec gestion de la bannière)
+        // 18. INITIALISATION
         // ================================================================
         async function init() {
             await loadProducts();
@@ -2096,7 +2177,6 @@
                 document.getElementById('mainHeader').classList.toggle('scrolled', window.scrollY > 20);
             });
 
-            // Fermeture de la bannière promo (AJOUT)
             document.getElementById('closeBannerBtn')?.addEventListener('click', function() {
                 const banner = document.getElementById('promoBanner');
                 banner.style.display = 'none';
