@@ -771,7 +771,66 @@
          text-transform: uppercase;
          color: var(--text-muted);
       }
-
+/* ========== PROJETS D'INGÉNIERIE (ACCORDÉON) ========== */
+.projets-accordion {
+   display: flex;
+   flex-direction: column;
+   gap: 12px;
+   margin-top: 20px;
+}
+.projet-category {
+   background: var(--bg-card);
+   border: 1px solid var(--border-soft);
+   border-radius: var(--radius);
+   overflow: hidden;
+   transition: 0.3s;
+}
+.projet-category:hover {
+   border-color: var(--bronze);
+}
+.projet-cat-title {
+   background: var(--bg-surface);
+   padding: 14px 24px;
+   font-weight: 600;
+   cursor: pointer;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   color: var(--text-primary);
+   transition: 0.3s;
+}
+.projet-cat-title::after {
+   content: '\f078';
+   font-family: 'Font Awesome 6 Free';
+   font-weight: 900;
+   font-size: 0.8rem;
+   color: var(--bronze);
+   transition: transform 0.3s;
+}
+.projet-category.open .projet-cat-title::after {
+   transform: rotate(180deg);
+}
+.projet-cat-content {
+   display: none;
+   padding: 16px 24px;
+   background: var(--bg-body);
+   border-top: 1px solid var(--border-soft);
+}
+.projet-category.open .projet-cat-content {
+   display: block;
+}
+.projet-cat-content a {
+   display: block;
+   padding: 6px 0;
+   color: var(--bronze-glow);
+   text-decoration: none;
+   font-weight: 300;
+   transition: 0.2s;
+}
+.projet-cat-content a:hover {
+   color: var(--bronze);
+   padding-left: 8px;
+}
       /* ========== FAQ (NOUVEAU) ========== */
       .faq-grid {
          display: grid;
@@ -1621,6 +1680,56 @@
          </div>
       </div>
    </section>
+   <!-- ===== PROJETS D'INGÉNIERIE (NOUVEAU) ===== -->
+<section id="projets-ingenierie" class="container reveal">
+   <h2 class="section-title">Mes projets <span>d'ingénierie</span></h2>
+   <p class="section-sub">Une sélection de dossiers et de réalisations en béton armé, bois, métal, géotechnique et logiciels.</p>
+
+   <div class="projets-accordion stagger-grid">
+      <!-- Béton armé -->
+      <div class="projet-category">
+         <div class="projet-cat-title">Béton armé</div>
+         <div class="projet-cat-content">
+            <a href="https://drive.google.com/file/d/1itsJUtviy5lbgP1joqfKu5PMKLHPhYyc/preview" target="_blank">Projet 1 - Contreventement</a>
+            <a href="files/beton/projet2.pdf" target="_blank">Projet 2 - Poteaux</a>
+         </div>
+      </div>
+
+      <!-- Bois -->
+      <div class="projet-category">
+         <div class="projet-cat-title">Bois</div>
+         <div class="projet-cat-content">
+            <a href="files/bois/charpente1.pdf" target="_blank">Charpente 1</a>
+         </div>
+      </div>
+
+      <!-- Métal & mixte -->
+      <div class="projet-category">
+         <div class="projet-cat-title">Construction métallique et mixte</div>
+         <div class="projet-cat-content">
+            <a href="files/metal/hangar.pdf" target="_blank">Hangar industriel</a>
+            <a href="https://drive.google.com/file/d/1ohATwsBirvLIbNspgnrDYLPQOgSyyKvk/preview" target="_blank">Construction Mixte</a>
+         </div>
+      </div>
+
+      <!-- Géotechnique -->
+      <div class="projet-category">
+         <div class="projet-cat-title">Géotechnique</div>
+         <div class="projet-cat-content">
+            <a href="files/geo/semelle.pdf" target="_blank">Semelle isolée</a>
+         </div>
+      </div>
+
+      <!-- Logiciels -->
+      <div class="projet-category">
+         <div class="projet-cat-title">Logiciels</div>
+         <div class="projet-cat-content">
+            <a href="files/log/robot.pdf" target="_blank">Robot Structural Analysis</a>
+            <a href="files/log/plaxis.pdf" target="_blank">Plaxis</a>
+         </div>
+      </div>
+   </div>
+</section>
 
    <!-- ===== TÉMOIGNAGES ===== -->
    <section id="testimonials" class="container reveal">
@@ -1876,6 +1985,15 @@
             }
          });
       });
+      // ================================================
+// 9. ACCORDÉON PROJETS D'INGÉNIERIE
+// ================================================
+document.querySelectorAll('.projet-cat-title').forEach(title => {
+   title.addEventListener('click', function() {
+      const parent = this.parentElement;
+      parent.classList.toggle('open');
+   });
+});
    </script>
 </body>
 </html>
