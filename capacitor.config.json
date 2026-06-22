@@ -3,6 +3,10 @@
   "appName": "Ingenierie Travaux",
   "webDir": "www",
   "server": {
-    "url": "https://ingenierie-travaux.vercel.app"
+    "url": "https://ingenierietravaux.vercel.app",
+    "allowNavigation": [
+      "ingenierietravaux.vercel.app",
+      "*.vercel.app"
+    ]
   }
 }
