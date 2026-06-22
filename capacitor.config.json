@@ -1,0 +1,8 @@
+{
+  "appId": "com.ingenierietravaux.app",
+  "appName": "Ingenierie Travaux",
+  "webDir": "www",
+  "server": {
+    "url": "https://ingenierie-travaux.vercel.app"
+  }
+}
