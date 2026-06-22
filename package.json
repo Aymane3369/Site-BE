@@ -1,14 +1,7 @@
 {
   "name": "ingenierie-travaux",
   "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "start": "echo ok",
-    "cap:sync": "npx cap sync",
-    "cap:open": "npx cap open android"
-  },
   "dependencies": {
-    "@capacitor/core": "^5.0.0",
-    "@capacitor/android": "^5.0.0"
+    "stripe": "^14.24.0"
   }
 }
