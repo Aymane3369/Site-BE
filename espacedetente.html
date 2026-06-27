@@ -1,262 +1,258 @@
+
+Search within code
+ 
+‎espacedetente.html‎
++1
+-1
+Lines changed: 1 addition & 1 deletion
+Original file line number	Diff line number	Diff line change
+@@ -1,249 +1,249 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Neon Breaker Fullscreen</title>
+  <title>Game Hub Ultra Console</title>
 
-<style>
-* {
-    box-sizing: border-box;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: none;
-}
+  <style>
+    :root {
+      --bg1: #05070a;
+      --text: #fff;
+      --card: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.12);
+      --glow: #00ffcc;
+    }
 
-body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #0b0f19;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    color: white;
-}
+    body.light {
+      --bg1: #eef3ff;
+      --text: #111;
+      --card: rgba(0,0,0,0.05);
+      --border: rgba(0,0,0,0.15);
+      --glow: #0077ff;
+    }
 
-.game-wrapper {
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
+    body.neon {
+      --bg1: #000;
+      --text: #fff;
+      --card: rgba(255,255,255,0.04);
+      --border: #ff00ff;
+      --glow: #ff00ff;
+    }
 
-h1 {
-    position: absolute;
-    top: 10px;
-    color: #00f0ff;
-    font-size: 20px;
-    margin: 0;
-}
+    body {
+      margin: 0;
+      font-family: monospace;
+      overflow: hidden;
+      color: var(--text);
+      background: var(--bg1);
+      transition: 0.4s;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-#scoreDisplay {
-    position: absolute;
-    top: 40px;
-    font-size: 18px;
-    color: #ff007f;
-    font-weight: bold;
-}
+    /* ======================
+       🌊 BACKGROUND WAVES
+    ====================== */
+    .waves {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      opacity: 0.6;
+    }
 
-canvas {
-    background-color: #111827;
-    border: 3px solid #00f0ff;
-    border-radius: 12px;
-    display: block;
-}
+    .wave {
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 30%, rgba(0,255,204,0.25), transparent 60%);
+      animation: moveWave 12s linear infinite;
+      filter: blur(40px);
+    }
 
-#winLossMessage {
-    position: absolute;
-    bottom: 80px;
-    font-size: 20px;
-    font-weight: bold;
-}
+    .wave:nth-child(2) {
+      animation-duration: 18s;
+      opacity: 0.5;
+    }
 
-button {
-    position: absolute;
-    bottom: 30px;
-    padding: 12px 30px;
-    font-size: 16px;
-    background-color: #ff007f;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    display: none;
-}
-</style>
+    .wave:nth-child(3) {
+      animation-duration: 25s;
+      opacity: 0.3;
+    }
+
+    @keyframes moveWave {
+      0% { transform: translate(-20%, -20%) rotate(0deg); }
+      50% { transform: translate(20%, 10%) rotate(180deg); }
+      100% { transform: translate(-20%, -20%) rotate(360deg); }
+    }
+
+    /* ======================
+       ✨ PARTICLES CANVAS
+    ====================== */
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+
+    /* ======================
+       BOOT SCREEN
+    ====================== */
+    #boot {
+      position: fixed;
+      inset: 0;
+      background: black;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #boot h1 {
+      letter-spacing: 8px;
+      opacity: 0;
+      animation: fadeIn 1.5s forwards;
+    }
+
+    .bar {
+      width: 220px;
+      height: 2px;
+      background: #222;
+      margin-top: 20px;
+      overflow: hidden;
+    }
+
+    .bar::after {
+      content: "";
+      width: 40%;
+      height: 100%;
+      background: white;
+      display: block;
+      animation: load 1.2s infinite;
+    }
+
+    @keyframes load {
+      0% { transform: translateX(-120%); }
+      100% { transform: translateX(320%); }
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    /* ======================
+       UI MENU
+    ====================== */
+
+    .container {
+      position: relative;
+      z-index: 2;
+      width: 460px;
+    }
+
+    .title {
+      text-align: center;
+      margin-bottom: 20px;
+      letter-spacing: 4px;
+      opacity: 0.8;
+    }
+
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .item {
+      padding: 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      transition: 0.15s;
+      backdrop-filter: blur(10px);
+    }
+
+    .item.selected {
+      border: 1px solid var(--glow);
+      box-shadow: 0 0 25px var(--glow);
+      transform: scale(1.04);
+    }
+
+    .hint {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 11px;
+      opacity: 0.6;
+    }
+
+    /* ===== THEME BUTTON ICON ===== */
+    .theme-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      cursor: pointer;
+      z-index: 3;
+      font-size: 18px;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="game-wrapper">
-    <h1>⚡ NEON BREAKER ⚡</h1>
-    <div id="scoreDisplay">SCORE: <span id="score">0</span></div>
-
-    <canvas id="gameCanvas"></canvas>
-
-    <div id="winLossMessage"></div>
-    <button id="resetBtn" onclick="resetGame()">PLAY AGAIN 🔄</button>
+<!-- 🌊 WAVES -->
+<div class="waves">
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="wave"></div>
 </div>
 
-<script>
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
+<!-- ✨ PARTICLES -->
+<canvas id="particles"></canvas>
 
-// GAME STATE
-let score, x, y, dx, dy, paddleX, bricks;
-let animationId;
+<!-- BOOT -->
+<div id="boot">
+  <h2>Bienvenue dans votre Espace détente</h2>
+  <div class="bar"></div>
+</div>
 
-// CONSTANTS
-const ballRadius = 8;
-const paddleHeight = 12;
-const paddleWidth = 90;
-const brickRowCount = 5;
-const brickColumnCount = 6;
-const brickWidth = 60;
-const brickHeight = 18;
-const brickPadding = 10;
-const brickOffsetTop = 60;
-const brickOffsetLeft = 30;
+<!-- THEME -->
+<button class="theme-btn" onclick="cycleTheme()">☀</button>
 
-function resizeCanvas() {
-    canvas.width = window.innerWidth * 0.9;
-    canvas.height = window.innerHeight * 0.75;
-    paddleX = (canvas.width - paddleWidth) / 2;
-}
+<!-- MENU -->
+<div class="container">
+  <div class="title">GAME HUB // CONSOLE</div>
 
-function initGame() {
-    score = 0;
+  <div class="menu">
+    <div class="item selected" onclick="go('game-balls.html')">
+      🎮 Game 1 Balls <span>▶</span>
+    </div>
 
-    x = canvas.width / 2;
-    y = canvas.height - 60;
-    dx = 3;
-    dy = -3;
+    <div class="item" onclick="go('game-2.html')">
+      🧩 Game 2 Your name <span>▶</span>
+    </div>
 
-    paddleX = (canvas.width - paddleWidth) / 2;
-
-    bricks = [];
-    for (let c = 0; c < brickColumnCount; c++) {
-        bricks[c] = [];
-        for (let r = 0; r < brickRowCount; r++) {
-            bricks[c][r] = { status: 1 };
-        }
-    }
-
-    document.getElementById("score").innerText = score;
-    document.getElementById("winLossMessage").innerText = "";
-    document.getElementById("resetBtn").style.display = "none";
-}
-
-canvas.addEventListener("touchmove", function (e) {
-    e.preventDefault();
-    let rect = canvas.getBoundingClientRect();
-    let touch = e.touches[0];
-    let relativeX = touch.clientX - rect.left;
-
-    if (relativeX > 0 && relativeX < canvas.width) {
-        paddleX = relativeX - paddleWidth / 2;
-    }
-}, { passive: false });
-
-canvas.addEventListener("mousemove", function (e) {
-    let rect = canvas.getBoundingClientRect();
-    let relativeX = e.clientX - rect.left;
-    paddleX = relativeX - paddleWidth / 2;
-});
-
-function collisionDetection() {
-    for (let c = 0; c < brickColumnCount; c++) {
-        for (let r = 0; r < brickRowCount; r++) {
-            let b = bricks[c][r];
-            if (b.status === 1) {
-                let bx = c * (brickWidth + brickPadding) + brickOffsetLeft;
-                let by = r * (brickHeight + brickPadding) + brickOffsetTop;
-
-                if (x > bx && x < bx + brickWidth && y > by && y < by + brickHeight) {
-                    dy = -dy;
-                    b.status = 0;
-                    score += 10;
-                    document.getElementById("score").innerText = score;
-
-                    if (score === brickRowCount * brickColumnCount * 10) {
-                        gameOver("🏆 YOU WIN!", "#00f0ff");
-                    }
-                }
-            }
-        }
-    }
-}
-
-function drawBall() {
-    ctx.beginPath();
-    ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-    ctx.fillStyle = "#ff007f";
-    ctx.fill();
-    ctx.closePath();
-}
-
-function drawPaddle() {
-    ctx.beginPath();
-    ctx.rect(paddleX, canvas.height - paddleHeight - 20, paddleWidth, paddleHeight);
-    ctx.fillStyle = "#00f0ff";
-    ctx.fill();
-    ctx.closePath();
-}
-
-function drawBricks() {
-    for (let c = 0; c < brickColumnCount; c++) {
-        for (let r = 0; r < brickRowCount; r++) {
-            if (bricks[c][r].status === 1) {
-                let bx = c * (brickWidth + brickPadding) + brickOffsetLeft;
-                let by = r * (brickHeight + brickPadding) + brickOffsetTop;
-
-                ctx.beginPath();
-                ctx.rect(bx, by, brickWidth, brickHeight);
-                ctx.fillStyle = "#39ff14";
-                ctx.fill();
-                ctx.closePath();
-            }
-        }
-    }
-}
-
-function gameOver(text, color) {
-    document.getElementById("winLossMessage").innerText = text;
-    document.getElementById("winLossMessage").style.color = color;
-    document.getElementById("resetBtn").style.display = "block";
-    cancelAnimationFrame(animationId);
-}
-
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    drawBricks();
-    drawBall();
-    drawPaddle();
-    collisionDetection();
-
-    if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) dx = -dx;
-    if (y + dy < ballRadius) dy = -dy;
-    else if (y + dy > canvas.height - ballRadius - 20) {
-        if (x > paddleX && x < paddleX + paddleWidth) {
-            dy = -dy;
-            dx = 6 * ((x - (paddleX + paddleWidth / 2)) / paddleWidth);
-        } else {
-            gameOver("💥 GAME OVER 💥", "#ff007f");
-            return;
-        }
-    }
-
-    x += dx;
-    y += dy;
-
-    animationId = requestAnimationFrame(draw);
-}
-
-function resetGame() {
-    cancelAnimationFrame(animationId);
-    initGame();
-    draw();
-}
-
-// START
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
-
-initGame();
-draw();
-</script>
-
-</body>
-</html>
+    <div class="item" onclick="go('game-3.html')">
+      🚀 Game 3 Earth <span>▶</span>
+    </div>
+        <div class="item" onclick="go('game-4.html')">
+      🧱 Game 4 Beam Iso <span>▶</span>
+    </div>
+        <div class="item" onclick="go('game-5.html')">
+      🏗 Game 5 Modele diagramme<span>En cours</span>
+    </div>
+    <div class="item" onclick="go('game-5.html')">
+    <div class="item" onclick="go('game-6.html')">
+      🎮 Game 6 <span>En cours</span>
+  </div>
