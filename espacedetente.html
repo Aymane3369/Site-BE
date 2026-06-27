@@ -1,12 +1,3 @@
-
-Search within code
- 
-‎espacedetente.html‎
-+1
--1
-Lines changed: 1 addition & 1 deletion
-Original file line number	Diff line number	Diff line change
-@@ -1,249 +1,249 @@
 <!DOCTYPE html>
 <html>
 <head>
@@ -252,7 +243,136 @@ Original file line number	Diff line number	Diff line change
         <div class="item" onclick="go('game-5.html')">
       🏗 Game 5 Modele diagramme<span>En cours</span>
     </div>
-    <div class="item" onclick="go('game-5.html')">
     <div class="item" onclick="go('game-6.html')">
       🎮 Game 6 <span>En cours</span>
   </div>
+
+  <div class="hint">↑ ↓ navigate • ENTER select</div>
+</div>
+
+<script>
+/* ======================
+   🔊 SOUND ENGINE
+====================== */
+let audioCtx;
+
+function beep(f, d, t="sine", v=0.05){
+  if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  o.type=t; o.frequency.value=f;
+  g.gain.value=v;
+  o.connect(g); g.connect(audioCtx.destination);
+  o.start(); o.stop(audioCtx.currentTime+d);
+}
+
+function moveSound(){ beep(420,0.05); }
+function selectSound(){ beep(820,0.08,"triangle",0.06); }
+
+/* BOOT SOUND */
+setTimeout(()=>beep(200,0.2),200);
+setTimeout(()=>beep(350,0.2),500);
+
+/* BOOT REMOVE */
+setTimeout(()=>{
+  document.getElementById("boot").style.opacity="0";
+  setTimeout(()=>document.getElementById("boot").remove(),800);
+},2200);
+
+/* ======================
+   MENU
+====================== */
+const items=document.querySelectorAll(".item");
+let index=0;
+
+function update(){
+  items.forEach(i=>i.classList.remove("selected"));
+  items[index].classList.add("selected");
+}
+
+function go(url){
+  selectSound();
+  setTimeout(()=>location.href=url,120);
+}
+
+document.addEventListener("keydown",(e)=>{
+  if(e.key==="ArrowDown"){
+    index=(index+1)%items.length;
+    update(); moveSound();
+  }
+  if(e.key==="ArrowUp"){
+    index=(index-1+items.length)%items.length;
+    update(); moveSound();
+  }
+  if(e.key==="Enter") items[index].click();
+});
+
+/* ======================
+   THEME
+====================== */
+const themes=["default","light","neon"];
+let t=0;
+
+function cycleTheme(){
+  document.body.classList.remove("light","neon");
+  t=(t+1)%themes.length;
+  if(themes[t]==="light") document.body.classList.add("light");
+  if(themes[t]==="neon") document.body.classList.add("neon");
+  moveSound();
+  localStorage.setItem("theme",themes[t]);
+}
+
+const saved=localStorage.getItem("theme");
+if(saved==="light") document.body.classList.add("light");
+if(saved==="neon") document.body.classList.add("neon");
+
+/* ======================
+   ✨ PARTICLES SYSTEM
+====================== */
+const canvas=document.getElementById("particles");
+const ctx=canvas.getContext("2d");
+
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+
+let particles=[];
+
+for(let i=0;i<60;i++){
+  particles.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    r:Math.random()*2+1,
+    dx:(Math.random()-0.5)*0.3,
+    dy:(Math.random()-0.5)*0.3
+  });
+}
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  for(let p of particles){
+    p.x+=p.dx;
+    p.y+=p.dy;
+
+    if(p.x<0||p.x>canvas.width) p.dx*=-1;
+    if(p.y<0||p.y>canvas.height) p.dy*=-1;
+
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle="rgba(255,255,255,0.5)";
+    ctx.fill();
+  }
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+window.addEventListener("resize",()=>{
+  canvas.width=innerWidth;
+  canvas.height=innerHeight;
+});
+</script>
+
+</body>
+</html>
