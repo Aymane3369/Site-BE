@@ -2,68 +2,77 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Neon Breaker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Neon Breaker Fullscreen</title>
 
 <style>
-/* ❌ IMPORTANT: PAS de fullscreen body */
+* {
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+}
 
 body {
     margin: 0;
-    background: #0b0f19;
-    font-family: sans-serif;
+    padding: 0;
+    overflow: hidden;
+    background-color: #0b0f19;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     color: white;
 }
 
-/* Section jeu normale */
 .game-wrapper {
-    width: 100%;
-    max-width: 500px;
-    margin: 20px auto;
-    text-align: center;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 h1 {
+    position: absolute;
+    top: 10px;
     color: #00f0ff;
     font-size: 20px;
-    margin: 10px 0;
+    margin: 0;
 }
 
 #scoreDisplay {
+    position: absolute;
+    top: 40px;
+    font-size: 18px;
     color: #ff007f;
     font-weight: bold;
-    margin-bottom: 10px;
 }
 
-/* Canvas RESPONSIVE sans bloquer la page */
 canvas {
-    width: 100%;
-    max-width: 420px;
-    height: 60vh;
-    background: #111827;
+    background-color: #111827;
     border: 3px solid #00f0ff;
     border-radius: 12px;
     display: block;
-    margin: auto;
 }
 
 #winLossMessage {
-    font-size: 18px;
+    position: absolute;
+    bottom: 80px;
+    font-size: 20px;
     font-weight: bold;
-    margin-top: 10px;
-    min-height: 24px;
 }
 
 button {
-    padding: 10px 20px;
-    font-size: 14px;
-    background: #ff007f;
+    position: absolute;
+    bottom: 30px;
+    padding: 12px 30px;
+    font-size: 16px;
+    background-color: #ff007f;
     color: white;
     border: none;
-    border-radius: 20px;
+    border-radius: 25px;
     cursor: pointer;
     display: none;
-    margin-top: 10px;
 }
 </style>
 </head>
@@ -72,13 +81,11 @@ button {
 
 <div class="game-wrapper">
     <h1>⚡ NEON BREAKER ⚡</h1>
-
     <div id="scoreDisplay">SCORE: <span id="score">0</span></div>
 
     <canvas id="gameCanvas"></canvas>
 
     <div id="winLossMessage"></div>
-
     <button id="resetBtn" onclick="resetGame()">PLAY AGAIN 🔄</button>
 </div>
 
@@ -86,37 +93,35 @@ button {
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-// STATE
-let score, x, y, dx, dy, paddleX, bricks, animationId;
+// GAME STATE
+let score, x, y, dx, dy, paddleX, bricks;
+let animationId;
 
-// SETTINGS
+// CONSTANTS
 const ballRadius = 8;
 const paddleHeight = 12;
-const paddleWidth = 70;
-
-const brickRowCount = 4;
-const brickColumnCount = 4;
+const paddleWidth = 90;
+const brickRowCount = 5;
+const brickColumnCount = 6;
 const brickWidth = 60;
 const brickHeight = 18;
-const brickPadding = 8;
-const brickOffsetTop = 40;
-const brickOffsetLeft = 28;
+const brickPadding = 10;
+const brickOffsetTop = 60;
+const brickOffsetLeft = 30;
 
-// RESPONSIVE FIX (IMPORTANT)
 function resizeCanvas() {
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width;
-    canvas.height = rect.height;
+    canvas.width = window.innerWidth * 0.9;
+    canvas.height = window.innerHeight * 0.75;
+    paddleX = (canvas.width - paddleWidth) / 2;
 }
 
-// INIT GAME
 function initGame() {
     score = 0;
 
     x = canvas.width / 2;
     y = canvas.height - 60;
-    dx = 2.5;
-    dy = -2.5;
+    dx = 3;
+    dy = -3;
 
     paddleX = (canvas.width - paddleWidth) / 2;
 
@@ -124,7 +129,7 @@ function initGame() {
     for (let c = 0; c < brickColumnCount; c++) {
         bricks[c] = [];
         for (let r = 0; r < brickRowCount; r++) {
-            bricks[c][r] = { x: 0, y: 0, status: 1 };
+            bricks[c][r] = { status: 1 };
         }
     }
 
@@ -133,7 +138,6 @@ function initGame() {
     document.getElementById("resetBtn").style.display = "none";
 }
 
-// TOUCH CONTROL
 canvas.addEventListener("touchmove", function (e) {
     e.preventDefault();
     let rect = canvas.getBoundingClientRect();
@@ -145,17 +149,24 @@ canvas.addEventListener("touchmove", function (e) {
     }
 }, { passive: false });
 
-// COLLISION
+canvas.addEventListener("mousemove", function (e) {
+    let rect = canvas.getBoundingClientRect();
+    let relativeX = e.clientX - rect.left;
+    paddleX = relativeX - paddleWidth / 2;
+});
+
 function collisionDetection() {
     for (let c = 0; c < brickColumnCount; c++) {
         for (let r = 0; r < brickRowCount; r++) {
             let b = bricks[c][r];
             if (b.status === 1) {
-                if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
+                let bx = c * (brickWidth + brickPadding) + brickOffsetLeft;
+                let by = r * (brickHeight + brickPadding) + brickOffsetTop;
+
+                if (x > bx && x < bx + brickWidth && y > by && y < by + brickHeight) {
                     dy = -dy;
                     b.status = 0;
                     score += 10;
-
                     document.getElementById("score").innerText = score;
 
                     if (score === brickRowCount * brickColumnCount * 10) {
@@ -167,48 +178,46 @@ function collisionDetection() {
     }
 }
 
-// DRAW
 function drawBall() {
     ctx.beginPath();
     ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
     ctx.fillStyle = "#ff007f";
     ctx.fill();
+    ctx.closePath();
 }
 
 function drawPaddle() {
+    ctx.beginPath();
+    ctx.rect(paddleX, canvas.height - paddleHeight - 20, paddleWidth, paddleHeight);
     ctx.fillStyle = "#00f0ff";
-    ctx.fillRect(paddleX, canvas.height - paddleHeight - 10, paddleWidth, paddleHeight);
+    ctx.fill();
+    ctx.closePath();
 }
 
 function drawBricks() {
     for (let c = 0; c < brickColumnCount; c++) {
         for (let r = 0; r < brickRowCount; r++) {
-            let b = bricks[c][r];
+            if (bricks[c][r].status === 1) {
+                let bx = c * (brickWidth + brickPadding) + brickOffsetLeft;
+                let by = r * (brickHeight + brickPadding) + brickOffsetTop;
 
-            if (b.status === 1) {
-                let brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
-                let brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
-
-                b.x = brickX;
-                b.y = brickY;
-
+                ctx.beginPath();
+                ctx.rect(bx, by, brickWidth, brickHeight);
                 ctx.fillStyle = "#39ff14";
-                ctx.fillRect(brickX, brickY, brickWidth, brickHeight);
+                ctx.fill();
+                ctx.closePath();
             }
         }
     }
 }
 
-// GAME OVER
 function gameOver(text, color) {
     document.getElementById("winLossMessage").innerText = text;
     document.getElementById("winLossMessage").style.color = color;
-    document.getElementById("resetBtn").style.display = "inline-block";
-
+    document.getElementById("resetBtn").style.display = "block";
     cancelAnimationFrame(animationId);
 }
 
-// LOOP
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -219,12 +228,12 @@ function draw() {
 
     if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) dx = -dx;
     if (y + dy < ballRadius) dy = -dy;
-    else if (y + dy > canvas.height - ballRadius - 10) {
+    else if (y + dy > canvas.height - ballRadius - 20) {
         if (x > paddleX && x < paddleX + paddleWidth) {
             dy = -dy;
             dx = 6 * ((x - (paddleX + paddleWidth / 2)) / paddleWidth);
         } else {
-            gameOver("💥 GAME OVER", "#ff007f");
+            gameOver("💥 GAME OVER 💥", "#ff007f");
             return;
         }
     }
@@ -235,7 +244,6 @@ function draw() {
     animationId = requestAnimationFrame(draw);
 }
 
-// RESET
 function resetGame() {
     cancelAnimationFrame(animationId);
     initGame();
