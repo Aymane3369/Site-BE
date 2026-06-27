@@ -2,41 +2,31 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Neon Breaker Mobile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neon Breaker</title>
 
 <style>
-* {
-    box-sizing: border-box;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: none;
-}
+/* ❌ IMPORTANT: PAS de fullscreen body */
 
-html, body {
+body {
     margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow: hidden;
     background: #0b0f19;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    font-family: sans-serif;
+    color: white;
 }
 
+/* Section jeu normale */
 .game-wrapper {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
+    text-align: center;
 }
 
 h1 {
     color: #00f0ff;
     font-size: 20px;
-    margin: 5px;
+    margin: 10px 0;
 }
 
 #scoreDisplay {
@@ -45,15 +35,16 @@ h1 {
     margin-bottom: 10px;
 }
 
+/* Canvas RESPONSIVE sans bloquer la page */
 canvas {
-    width: 95vw;
+    width: 100%;
     max-width: 420px;
-    height: 70vh;
-    max-height: 650px;
+    height: 60vh;
     background: #111827;
     border: 3px solid #00f0ff;
     border-radius: 12px;
     display: block;
+    margin: auto;
 }
 
 #winLossMessage {
@@ -64,7 +55,7 @@ canvas {
 }
 
 button {
-    padding: 10px 25px;
+    padding: 10px 20px;
     font-size: 14px;
     background: #ff007f;
     color: white;
@@ -81,11 +72,13 @@ button {
 
 <div class="game-wrapper">
     <h1>⚡ NEON BREAKER ⚡</h1>
+
     <div id="scoreDisplay">SCORE: <span id="score">0</span></div>
 
     <canvas id="gameCanvas"></canvas>
 
     <div id="winLossMessage"></div>
+
     <button id="resetBtn" onclick="resetGame()">PLAY AGAIN 🔄</button>
 </div>
 
@@ -93,13 +86,14 @@ button {
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-// GAME STATE
-let score, x, y, dx, dy, paddleX, bricks;
+// STATE
+let score, x, y, dx, dy, paddleX, bricks, animationId;
 
 // SETTINGS
 const ballRadius = 8;
 const paddleHeight = 12;
 const paddleWidth = 70;
+
 const brickRowCount = 4;
 const brickColumnCount = 4;
 const brickWidth = 60;
@@ -108,12 +102,14 @@ const brickPadding = 8;
 const brickOffsetTop = 40;
 const brickOffsetLeft = 28;
 
+// RESPONSIVE FIX (IMPORTANT)
 function resizeCanvas() {
     const rect = canvas.getBoundingClientRect();
     canvas.width = rect.width;
     canvas.height = rect.height;
 }
 
+// INIT GAME
 function initGame() {
     score = 0;
 
@@ -137,6 +133,7 @@ function initGame() {
     document.getElementById("resetBtn").style.display = "none";
 }
 
+// TOUCH CONTROL
 canvas.addEventListener("touchmove", function (e) {
     e.preventDefault();
     let rect = canvas.getBoundingClientRect();
@@ -148,6 +145,7 @@ canvas.addEventListener("touchmove", function (e) {
     }
 }, { passive: false });
 
+// COLLISION
 function collisionDetection() {
     for (let c = 0; c < brickColumnCount; c++) {
         for (let r = 0; r < brickRowCount; r++) {
@@ -157,6 +155,7 @@ function collisionDetection() {
                     dy = -dy;
                     b.status = 0;
                     score += 10;
+
                     document.getElementById("score").innerText = score;
 
                     if (score === brickRowCount * brickColumnCount * 10) {
@@ -168,51 +167,48 @@ function collisionDetection() {
     }
 }
 
+// DRAW
 function drawBall() {
     ctx.beginPath();
     ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
     ctx.fillStyle = "#ff007f";
     ctx.fill();
-    ctx.closePath();
 }
 
 function drawPaddle() {
-    ctx.beginPath();
-    ctx.rect(paddleX, canvas.height - paddleHeight - 10, paddleWidth, paddleHeight);
     ctx.fillStyle = "#00f0ff";
-    ctx.fill();
-    ctx.closePath();
+    ctx.fillRect(paddleX, canvas.height - paddleHeight - 10, paddleWidth, paddleHeight);
 }
 
 function drawBricks() {
     for (let c = 0; c < brickColumnCount; c++) {
         for (let r = 0; r < brickRowCount; r++) {
-            if (bricks[c][r].status === 1) {
-                let brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
-                let brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+            let b = bricks[c][r];
 
-                bricks[c][r].x = brickX;
-                bricks[c][r].y = brickY;
+            if (b.status === 1) {
+                let brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
+                let brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
 
-                ctx.beginPath();
-                ctx.rect(brickX, brickY, brickWidth, brickHeight);
+                b.x = brickX;
+                b.y = brickY;
+
                 ctx.fillStyle = "#39ff14";
-                ctx.fill();
-                ctx.closePath();
+                ctx.fillRect(brickX, brickY, brickWidth, brickHeight);
             }
         }
     }
 }
 
+// GAME OVER
 function gameOver(text, color) {
     document.getElementById("winLossMessage").innerText = text;
     document.getElementById("winLossMessage").style.color = color;
-    document.getElementById("resetBtn").style.display = "block";
+    document.getElementById("resetBtn").style.display = "inline-block";
+
     cancelAnimationFrame(animationId);
 }
 
-let animationId;
-
+// LOOP
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -239,6 +235,7 @@ function draw() {
     animationId = requestAnimationFrame(draw);
 }
 
+// RESET
 function resetGame() {
     cancelAnimationFrame(animationId);
     initGame();
