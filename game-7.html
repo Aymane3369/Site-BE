@@ -13,62 +13,63 @@
     touch-action: none;
 }
 
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    text-align: center;
-    background-color: #0b0f19;
-    color: #fff;
+html, body {
     margin: 0;
-    padding: 10px;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    background: #0b0f19;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-wrapper {
+    width: 100vw;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-}
-
-.game-wrapper {
-    width: 100%;
-    max-width: 360px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 h1 {
     color: #00f0ff;
-    font-size: 24px;
-    margin: 0 0 5px 0;
+    font-size: 20px;
+    margin: 5px;
 }
 
 #scoreDisplay {
-    font-size: 18px;
     color: #ff007f;
     font-weight: bold;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 canvas {
-    background-color: #111827;
+    width: 95vw;
+    max-width: 420px;
+    height: 70vh;
+    max-height: 650px;
+    background: #111827;
     border: 3px solid #00f0ff;
     border-radius: 12px;
     display: block;
 }
 
 #winLossMessage {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
-    margin-top: 15px;
-    min-height: 28px;
+    margin-top: 10px;
+    min-height: 24px;
 }
 
 button {
-    padding: 12px 30px;
-    font-size: 16px;
-    background-color: #ff007f;
+    padding: 10px 25px;
+    font-size: 14px;
+    background: #ff007f;
     color: white;
     border: none;
-    border-radius: 25px;
+    border-radius: 20px;
     cursor: pointer;
     display: none;
     margin-top: 10px;
@@ -82,12 +83,10 @@ button {
     <h1>⚡ NEON BREAKER ⚡</h1>
     <div id="scoreDisplay">SCORE: <span id="score">0</span></div>
 
-    <canvas id="gameCanvas" width="320" height="450"></canvas>
+    <canvas id="gameCanvas"></canvas>
 
     <div id="winLossMessage"></div>
     <button id="resetBtn" onclick="resetGame()">PLAY AGAIN 🔄</button>
-
-    <p class="controls">📱 Drag your finger anywhere across the canvas</p>
 </div>
 
 <script>
@@ -97,7 +96,7 @@ const ctx = canvas.getContext("2d");
 // GAME STATE
 let score, x, y, dx, dy, paddleX, bricks;
 
-// CONSTANTS
+// SETTINGS
 const ballRadius = 8;
 const paddleHeight = 12;
 const paddleWidth = 70;
@@ -109,11 +108,17 @@ const brickPadding = 8;
 const brickOffsetTop = 40;
 const brickOffsetLeft = 28;
 
+function resizeCanvas() {
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+}
+
 function initGame() {
     score = 0;
 
     x = canvas.width / 2;
-    y = canvas.height - 40;
+    y = canvas.height - 60;
     dx = 2.5;
     dy = -2.5;
 
@@ -155,7 +160,7 @@ function collisionDetection() {
                     document.getElementById("score").innerText = score;
 
                     if (score === brickRowCount * brickColumnCount * 10) {
-                        gameOver("🏆 YOU WIN! AMAZING!", "#00f0ff");
+                        gameOver("🏆 YOU WIN!", "#00f0ff");
                     }
                 }
             }
@@ -223,7 +228,7 @@ function draw() {
             dy = -dy;
             dx = 6 * ((x - (paddleX + paddleWidth / 2)) / paddleWidth);
         } else {
-            gameOver("💥 GAME OVER 💥", "#ff007f");
+            gameOver("💥 GAME OVER", "#ff007f");
             return;
         }
     }
@@ -240,7 +245,10 @@ function resetGame() {
     draw();
 }
 
-// START GAME
+// START
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
 initGame();
 draw();
 </script>
