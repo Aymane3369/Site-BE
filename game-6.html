@@ -3,22 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ingénierie Structure - Interface</title>
+<title>Ingénierie Structure AI</title>
 <style>
-  body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; display: flex; justify-content: center; height: 100vh; }
+  body { font-family: sans-serif; background: #f4f7f6; margin: 0; display: flex; justify-content: center; height: 100vh; }
   .app { width: 100%; max-width: 700px; background: white; display: flex; flex-direction: column; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
   header { background: #2c3e50; color: white; padding: 15px; text-align: center; }
-  #messages { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; }
-  .message { padding: 10px 15px; border-radius: 12px; max-width: 85%; font-size: 14px; }
+  #messages { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
+  .message { padding: 10px; border-radius: 8px; max-width: 80%; }
   .user { align-self: flex-end; background: #3498db; color: white; }
-  .assistant { align-self: flex-start; background: #ecf0f1; color: #333; }
-  
-  /* Panneau Admin */
-  #admin-panel { display: none; background: #fff3cd; padding: 15px; border-bottom: 2px solid #ffc107; font-size: 14px; gap: 10px; flex-wrap: wrap; justify-content: center; }
-  
-  form { padding: 15px; border-top: 1px solid #ddd; display: flex; gap: 8px; }
-  textarea { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px; resize: none; }
-  button { padding: 8px 12px; cursor: pointer; border-radius: 4px; border: none; background: #2c3e50; color: white; font-weight: bold; }
+  .assistant { align-self: flex-start; background: #ecf0f1; }
+  #admin-panel { display: none; background: #fff3cd; padding: 10px; border-bottom: 2px solid #ffc107; }
+  form { padding: 15px; border-top: 1px solid #ddd; display: flex; gap: 5px; }
+  textarea { flex: 1; padding: 8px; }
 </style>
 </head>
 <body>
@@ -26,61 +22,48 @@
 <div class="app">
   <header><h1>Ingénierie Structure AI</h1></header>
   
-  <!-- Panneau Admin -->
   <div id="admin-panel">
-    <span><strong>ADMIN :</strong></span>
+    <strong>[MODE ADMIN]</strong>
     <button onclick="afficherConversationComplete()">Revoir Tout</button>
-    <button onclick="downloadHistory()">Exporter JSON</button>
-    <button onclick="resetData()" style="background:#e74c3c;">Vider</button>
+    <button onclick="downloadHistory()">Exporter</button>
+    <button onclick="resetData()" style="color:red;">Vider Tout</button>
   </div>
 
   <div id="messages"></div>
 
   <form id="chat-form">
-    <textarea id="user-input" rows="1" placeholder="Votre question..." required></textarea>
+    <textarea id="user-input" placeholder="Votre question..." required></textarea>
     <button type="submit">Envoyer</button>
   </form>
 </div>
 
 <script>
   const GROQ_API_KEY = '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';
-  
-  // 1. Initialisation
-  let conversation = JSON.parse(localStorage.getItem('chat_data')) || [{ 
-    role: 'system', 
-    content: 'Tu es l assistant officiel d Ingénierie Structure. Ton employeur est Aymane Abidine. Tu es expert en génie civil.' 
-  }];
+  let conversation = JSON.parse(localStorage.getItem('chat_data')) || [{ role: 'system', content: 'Tu es l assistant d Ingénierie Structure. Expert en génie civil.' }];
 
-  // 2. Vérification Admin au chargement
-  document.addEventListener('DOMContentLoaded', () => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('mode') === 'admin') {
-      const code = prompt("Code Admin :");
-      if (code === 'ton_code_secret') { // <--- REMPLACE PAR TON MOT DE PASSE
-        document.getElementById('admin-panel').style.display = 'flex';
-      } else {
-        alert("Accès refusé.");
-      }
+  // --- LOGIQUE ADMIN DIRECTE ---
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mode') === 'admin') {
+    const code = prompt("Code Admin :");
+    if (code === 'ton_code_secret') { // CHANGE TON MOT DE PASSE ICI
+      document.getElementById('admin-panel').style.display = 'block';
+    } else {
+      alert("Accès refusé");
     }
-  });
+  }
 
-  // 3. Affichage message
   function renderUI(role, text) {
     const div = document.createElement('div');
     div.className = 'message ' + role;
     div.textContent = text;
     document.getElementById('messages').appendChild(div);
-    document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
   }
 
   conversation.forEach(msg => { if(msg.role !== 'system') renderUI(msg.role, msg.content); });
 
-  // 4. Chat
   document.getElementById('chat-form').onsubmit = async (e) => {
     e.preventDefault();
     const input = document.getElementById('user-input');
-    if(!input.value.trim()) return;
-    
     renderUI('user', input.value);
     conversation.push({ role: 'user', content: input.value });
     
@@ -98,22 +81,16 @@
     input.value = '';
   };
 
-  // 5. Fonctions Admin
   function afficherConversationComplete() {
-    const newWindow = window.open("", "_blank");
-    newWindow.document.write("<pre style='padding:20px; font-family:monospace;'>" + JSON.stringify(conversation, null, 2) + "</pre>");
+    const w = window.open("", "_blank");
+    w.document.write("<pre>" + JSON.stringify(conversation, null, 2) + "</pre>");
   }
-
   function downloadHistory() {
     const blob = new Blob([JSON.stringify(conversation)], {type: 'application/json'});
-    const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url; a.download = 'historique_chat.json'; a.click();
+    a.href = URL.createObjectURL(blob); a.download = 'historique.json'; a.click();
   }
-  
-  function resetData() { 
-    if(confirm("Tout effacer ?")) { localStorage.removeItem('chat_data'); location.reload(); }
-  }
+  function resetData() { localStorage.removeItem('chat_data'); location.reload(); }
 </script>
 </body>
 </html>
