@@ -17,8 +17,7 @@
         .config .status.online { color: #27ae60; }
         .config .status.fallback { color: #f39c12; }
         .config .status.error { color: #e74c3c; }
-        .config .status.local { color: #8e44ad; }
-        .config .status.loading { color: #2980b9; }
+        .config .status.knowledge { color: #8e44ad; }
         #messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
         .message { max-width: 80%; padding: 10px 14px; border-radius: 12px; font-size: 14px; line-height: 1.5; word-wrap: break-word; }
         .message.user { align-self: flex-end; background-color: #2980b9; color: white; }
@@ -42,39 +41,72 @@
         </div>
     </header>
     <div class="config">
-        <span>Statut : <span id="status-text" class="status loading">Chargement...</span></span>
+        <span>Statut : <span id="status-text" class="status online">Prêt</span></span>
         <span id="memory-indicator">🧠 0 messages</span>
     </div>
     <div id="messages"></div>
     <form id="chat-form">
         <textarea id="user-input" rows="1" placeholder="Posez votre question technique..." required></textarea>
-        <button id="send-btn" type="submit" disabled>Envoyer</button>
+        <button id="send-btn" type="submit">Envoyer</button>
     </form>
 </div>
 
-<script type="importmap">
-    {
-        "imports": {
-            "@xenova/transformers": "https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2/dist/transformers.min.js"
-        }
-    }
-</script>
-
-<script type="module">
+<script>
     // ===================== CONFIGURATION =====================
     const GROQ_API_KEY = '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';
-    const HF_API_TOKEN = '';
+    const HF_API_TOKEN = '';  // Optionnel
     const OPENROUTER_API_KEY = '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';
     const DEEPSEEK_API_KEY = 'sk-b09a3e6bb30f4174b43de7ee821207db';
 
     const MAX_CONTEXT_MESSAGES = 8;
     const MAX_RETRIES = 2;
 
+    // ===================== BASE DE CONNAISSANCES (FAQ TECHNIQUE) =====================
+    const knowledgeBase = [
+        // Eurocodes
+        { keywords: ['eurocode 0', 'eurocode0'], answer: "L'Eurocode 0 (EN 1990) définit les principes de base et les méthodes de calcul pour la fiabilité des structures." },
+        { keywords: ['eurocode 1', 'eurocode1', 'charges'], answer: "L'Eurocode 1 (EN 1991) traite des actions sur les structures : charges permanentes, d'exploitation, neige, vent, séisme, etc." },
+        { keywords: ['eurocode 2', 'eurocode2', 'béton armé'], answer: "L'Eurocode 2 (EN 1992) concerne le calcul des structures en béton armé et précontraint." },
+        { keywords: ['eurocode 3', 'eurocode3', 'acier'], answer: "L'Eurocode 3 (EN 1993) régit le calcul des structures en acier." },
+        { keywords: ['eurocode 7', 'eurocode7', 'géotechnique'], answer: "L'Eurocode 7 (EN 1997) traite des calculs géotechniques : fondations, murs de soutènement, etc." },
+        // Béton
+        { keywords: ['béton', 'beton', 'résistance'], answer: "La résistance caractéristique du béton est notée f_ck (ex: C25/30). La résistance de calcul est f_cd = α_cc * f_ck / γ_c." },
+        { keywords: ['acier', 'armature', 'ferraillage'], answer: "La limite d'élasticité de l'acier est notée f_sk. La contrainte de calcul est f_sd = f_sk / γ_s." },
+        { keywords: ['poutre', 'flèche'], answer: "La flèche d'une poutre simplement appuyée sous charge uniforme est : f = (5/384) * (q * L^4) / (E * I)." },
+        { keywords: ['fondation', 'semelle'], answer: "Une semelle de fondation transmet les charges au sol. La contrainte de contact doit vérifier σ ≤ q_net." },
+        // Calculs
+        { keywords: ['descente de charges'], answer: "La descente de charges consiste à cumuler les charges permanentes et d'exploitation pour dimensionner les éléments porteurs." },
+        { keywords: ['moment fléchissant'], answer: "Le moment fléchissant maximal pour une poutre bi-appuyée est M_max = (q * L^2) / 8." },
+        { keywords: ['effort tranchant'], answer: "L'effort tranchant maximal est V_max = (q * L) / 2." },
+        // Général
+        { keywords: ['cm66'], answer: "Le CM66 est l'ancien règlement français pour les structures en acier. Il a été remplacé par les Eurocodes." },
+        { keywords: ['bael 91'], answer: "Le BAEL 91 est l'ancien règlement français pour le béton armé. Il a été remplacé par l'Eurocode 2." },
+        { keywords: ['ingénierie', 'travaux'], answer: "Ingénierie Travaux est le cabinet d'Aymane Abidine, expert en structures et génie civil." },
+        // Contact
+        { keywords: ['contacter', 'email', 'téléphone'], answer: "Vous pouvez contacter Aymane Abidine par e-mail : aymaneabidine@gmail.com ou par téléphone au 06 67 56 63 01." }
+    ];
+
+    function findKnowledgeAnswer(question) {
+        const q = question.toLowerCase();
+        let best = null;
+        let bestScore = 0;
+        for (const entry of knowledgeBase) {
+            for (const kw of entry.keywords) {
+                if (q.includes(kw)) {
+                    const score = kw.length / q.length; // priorité aux mots longs et précis
+                    if (score > bestScore) {
+                        bestScore = score;
+                        best = entry.answer;
+                    }
+                }
+            }
+        }
+        return best;
+    }
+
     // ===================== ÉTAT =====================
     let conversation = [];
     let isProcessing = false;
-    let localGenerator = null;  // Modèle local (Transformers.js)
-    let localModelReady = false;
 
     // ===================== ÉLÉMENTS DOM =====================
     const messagesEl = document.getElementById('messages');
@@ -162,45 +194,16 @@
         ];
     }
 
-    // ===================== CHARGEMENT DU MODÈLE LOCAL =====================
-    async function loadLocalModel() {
-        try {
-            setStatus('Chargement du modèle local (TinyLlama)...', 'loading');
-            const { pipeline } = await import('@xenova/transformers');
-            localGenerator = await pipeline('text-generation', 'Xenova/TinyLlama-1.1B-Chat-v1.0');
-            localModelReady = true;
-            setStatus('Prêt (local + APIs)', 'online');
-            sendBtn.disabled = false;
-            userInput.disabled = false;
-            userInput.placeholder = 'Posez votre question (local + fallback APIs)...';
-        } catch (err) {
-            console.error('Erreur chargement modèle local:', err);
-            setStatus('Modèle local indisponible, APIs seules', 'fallback');
-            // On continue sans modèle local
-            localModelReady = false;
-            sendBtn.disabled = false;
-            userInput.disabled = false;
-        }
-    }
-
     // ===================== APPELS API =====================
     async function callGroq(messages) {
         const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + GROQ_API_KEY
-            },
-            body: JSON.stringify({
-                model: 'llama-3.3-70b-versatile',
-                messages: messages,
-                temperature: 0.7
-            })
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + GROQ_API_KEY },
+            body: JSON.stringify({ model: 'llama-3.3-70b-versatile', messages, temperature: 0.7 })
         });
         if (response.status === 429) throw new Error('Rate limit');
         if (!response.ok) throw new Error(`Groq error ${response.status}`);
-        const data = await response.json();
-        return data.choices[0].message.content;
+        return (await response.json()).choices[0].message.content;
     }
 
     async function callHuggingFace(messages) {
@@ -210,10 +213,7 @@
         const response = await fetch('https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3', {
             method: 'POST',
             headers,
-            body: JSON.stringify({
-                inputs: prompt,
-                parameters: { max_new_tokens: 1024, temperature: 0.7, return_full_text: false }
-            })
+            body: JSON.stringify({ inputs: prompt, parameters: { max_new_tokens: 1024, temperature: 0.7, return_full_text: false } })
         });
         if (!response.ok) throw new Error(`HF error ${response.status}`);
         const data = await response.json();
@@ -230,61 +230,26 @@
                 'HTTP-Referer': 'http://localhost',
                 'X-Title': 'Ingénierie Structure AI'
             },
-            body: JSON.stringify({
-                model: 'microsoft/phi-3-mini-128k-instruct:free',
-                messages: messages,
-                temperature: 0.7
-            })
+            body: JSON.stringify({ model: 'microsoft/phi-3-mini-128k-instruct:free', messages, temperature: 0.7 })
         });
         if (!response.ok) throw new Error(`OpenRouter error ${response.status}`);
-        const data = await response.json();
-        return data.choices[0].message.content;
+        return (await response.json()).choices[0].message.content;
     }
 
     async function callDeepSeek(messages) {
         if (!DEEPSEEK_API_KEY) throw new Error('No DeepSeek key');
         const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + DEEPSEEK_API_KEY
-            },
-            body: JSON.stringify({
-                model: 'deepseek-chat',
-                messages: messages,
-                temperature: 0.7
-            })
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + DEEPSEEK_API_KEY },
+            body: JSON.stringify({ model: 'deepseek-chat', messages, temperature: 0.7 })
         });
         if (!response.ok) throw new Error(`DeepSeek error ${response.status}`);
-        const data = await response.json();
-        return data.choices[0].message.content;
+        return (await response.json()).choices[0].message.content;
     }
 
-    // ===================== APPEL LOCAL (Transformers.js) =====================
-    async function callLocal(messages) {
-        if (!localGenerator) throw new Error('Modèle local non chargé');
-        // On reconstruit un prompt pour le modèle
-        const system = messages.find(m => m.role === 'system')?.content || '';
-        const userMsg = messages.find(m => m.role === 'user')?.content || '';
-        const history = messages.filter(m => m.role !== 'system' && m.role !== 'user')
-            .map(m => `${m.role}: ${m.content}`).join('\n');
-        const prompt = `${system}\n${history}\nuser: ${userMsg}\nassistant:`;
-
-        const result = await localGenerator(prompt, {
-            max_new_tokens: 512,
-            temperature: 0.7,
-            do_sample: true,
-            pad_token_id: 50256
-        });
-        const full = result[0].generated_text;
-        const reply = full.split('assistant:').pop().trim() || "Je n'ai pas de réponse.";
-        return reply;
-    }
-
-    // ===================== ORCHESTREUR (6 couches) =====================
+    // ===================== ORCHESTREUR AVEC FALLBACK (API → FAQ) =====================
     async function askAI(userQuestion) {
         const messages = buildMessages(userQuestion);
-        let lastError = null;
 
         // 1. Groq
         for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
@@ -294,7 +259,6 @@
                 setStatus('Groq OK', 'online');
                 return reply;
             } catch (err) {
-                lastError = err;
                 if (err.message === 'Rate limit') {
                     const wait = Math.min(1000 * Math.pow(2, attempt), 30000);
                     await new Promise(resolve => setTimeout(resolve, wait));
@@ -306,11 +270,8 @@
         try {
             setStatus('Fallback HF', 'fallback');
             const reply = await callHuggingFace(messages);
-            if (reply) {
-                setStatus('HF OK', 'online');
-                return reply;
-            }
-        } catch (err) { lastError = err; }
+            if (reply) { setStatus('HF OK', 'online'); return reply; }
+        } catch (err) {}
 
         // 3. OpenRouter
         try {
@@ -318,7 +279,7 @@
             const reply = await callOpenRouter(messages);
             setStatus('OpenRouter OK', 'online');
             return reply;
-        } catch (err) { lastError = err; }
+        } catch (err) {}
 
         // 4. DeepSeek
         try {
@@ -326,26 +287,25 @@
             const reply = await callDeepSeek(messages);
             setStatus('DeepSeek OK', 'online');
             return reply;
-        } catch (err) { lastError = err; }
+        } catch (err) {}
 
-        // 5. Modèle local (si disponible)
-        if (localModelReady) {
-            try {
-                setStatus('Mode local (IA)', 'local');
-                const reply = await callLocal(messages);
-                setStatus('Local OK', 'local');
-                return reply;
-            } catch (err) {
-                console.warn('Local model failed:', err);
-                lastError = err;
-            }
+        // 5. Base de connaissances (FAQ)
+        const knowledgeReply = findKnowledgeAnswer(userQuestion);
+        if (knowledgeReply) {
+            setStatus('Réponse depuis la base de connaissances', 'knowledge');
+            return `📚 ${knowledgeReply}`;
         }
 
-        // 6. Dernier recours : message statique
-        setStatus('Mode secours', 'error');
-        return `Désolé, toutes les sources sont saturées. 
-➡️ **Votre question :** "${userQuestion.substring(0, 100)}..."
-📌 Réessayez dans quelques minutes ou contactez Aymane Abidine au 06 67 56 63 01.`;
+        // 6. Dernier recours : message orienté client
+        setStatus('Mode contact', 'error');
+        return `Je suis désolé, tous les services sont saturés pour le moment. 
+        
+Pour toute question technique urgente, je vous invite à contacter directement Aymane Abidine :
+
+📧 aymaneabidine@gmail.com  
+📞 06 67 56 63 01
+
+En attendant, je reste à votre disposition pour des échanges simples.`;
     }
 
     // ===================== GESTION DU FORMULAIRE =====================
@@ -394,14 +354,12 @@
     });
 
     // ===================== INIT =====================
-    window.onload = async () => {
+    window.onload = () => {
         loadConversation();
         if (conversation.length === 1) {
             const welcome = "Bonjour, je suis l'agent virtuel d'Ingénierie Travaux. Comment puis-je vous assister sur vos projets techniques aujourd'hui ?";
             renderMessage('assistant', welcome);
         }
-        // Charger le modèle local en arrière-plan
-        await loadLocalModel();
         userInput.focus();
     };
 </script>
