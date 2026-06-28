@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ingénierie Structure - Interface Agent</title>
+<title>Ingénierie Structure - Interface</title>
 <style>
   body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; display: flex; justify-content: center; height: 100vh; }
   .app { width: 100%; max-width: 700px; background: white; display: flex; flex-direction: column; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
@@ -12,7 +12,10 @@
   .message { padding: 10px 15px; border-radius: 12px; max-width: 85%; font-size: 14px; }
   .user { align-self: flex-end; background: #3498db; color: white; }
   .assistant { align-self: flex-start; background: #ecf0f1; color: #333; }
-  #admin-panel { display: none; background: #fff3cd; padding: 10px; border-bottom: 2px solid #ffc107; font-size: 13px; gap: 5px; display: flex; flex-wrap: wrap; }
+  
+  /* Panneau Admin invisible par défaut */
+  #admin-panel { display: none; background: #fff3cd; padding: 10px; border-bottom: 2px solid #ffc107; font-size: 13px; gap: 5px; flex-wrap: wrap; }
+  
   form { padding: 15px; border-top: 1px solid #ddd; display: flex; gap: 8px; }
   textarea { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px; resize: none; }
   button { padding: 8px 12px; cursor: pointer; border-radius: 4px; border: none; background: #2c3e50; color: white; }
@@ -23,8 +26,9 @@
 <div class="app">
   <header><h1>Ingénierie Structure AI</h1></header>
   
+  <!-- Ce bloc reste invisible pour tout le monde sauf si admin loggé -->
   <div id="admin-panel">
-    <strong>[Mode Admin]</strong>
+    <strong>[Admin]</strong>
     <button onclick="afficherConversationComplete()">Revoir Tout</button>
     <button onclick="downloadHistory()">Exporter JSON</button>
     <button onclick="resetData()" style="background:#e74c3c;">Vider</button>
@@ -40,17 +44,26 @@
 
 <script>
   const GROQ_API_KEY = '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';
+  
+  // Initialisation conversation
   let conversation = JSON.parse(localStorage.getItem('chat_data')) || [{ 
     role: 'system', 
-    content: 'Tu es l assistant officiel d Ingénierie Structure. Ton employeur est Aymane Abidine. Tu es expert en génie civil. Tu es poli, technique et précis.' 
+    content: 'Tu es l assistant officiel d Ingénierie Structure. Ton employeur est Aymane Abidine. Tu es expert en génie civil.' 
   }];
 
-  // Activation Admin via URL : ton_site.vercel.app?mode=admin
-  if (new URLSearchParams(window.location.search).get('mode') === 'admin') {
-    if (prompt("Code Admin:") === 'ton_code_secret') {
-      document.getElementById('admin-panel').style.display = 'flex';
+  // Protection Admin : S'active uniquement si ?mode=admin dans l'URL
+  window.onload = () => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('mode') === 'admin') {
+      const code = prompt("Code Admin :");
+      if (code === 'ton_code_secret') { // CHANGE CE MOT DE PASSE
+        document.getElementById('admin-panel').style.display = 'flex';
+      } else {
+        alert("Accès refusé.");
+        window.history.replaceState({}, document.title, window.location.pathname); // Nettoie l'URL
+      }
     }
-  }
+  };
 
   function renderUI(role, text) {
     const div = document.createElement('div');
@@ -60,7 +73,7 @@
     document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
   }
 
-  // Affiche l'historique au chargement
+  // Charge l'historique
   conversation.forEach(msg => { if(msg.role !== 'system') renderUI(msg.role, msg.content); });
 
   document.getElementById('chat-form').onsubmit = async (e) => {
@@ -83,6 +96,7 @@
     input.value = '';
   };
 
+  // Fonctions Admin
   function afficherConversationComplete() {
     const newWindow = window.open("", "_blank");
     newWindow.document.write("<pre style='padding:20px; font-family:monospace;'>" + JSON.stringify(conversation, null, 2) + "</pre>");
@@ -92,7 +106,7 @@
     const blob = new Blob([JSON.stringify(conversation)], {type: 'application/json'});
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url; a.download = 'historique_chat.json'; a.click();
+    a.href = url; a.download = 'historique.json'; a.click();
   }
   
   function resetData() { 
