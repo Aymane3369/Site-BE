@@ -3,63 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ingénierie Structure AI - Illimité</title>
+    <title>🏗 Ingénierie Structure AI - Illimité</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; height: 100vh; display: flex; flex-direction: column; align-items: center; }
-        .app { width: 100%; max-width: 900px; height: 100vh; display: flex; flex-direction: column; background-color: #ffffff; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        header { background-color: #2c3e50; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
-        header h1 { font-size: 1.2rem; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+        }
+        .app { 
+            width: 100%; 
+            max-width: 1000px; 
+            height: 95vh; 
+            display: flex; 
+            flex-direction: column; 
+            background-color: #ffffff; 
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        header { 
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white; 
+            padding: 15px 25px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            flex-wrap: wrap; 
+            gap: 8px;
+        }
+        header h1 { 
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        header h1 small {
+            font-size: 0.7rem;
+            font-weight: normal;
+            opacity: 0.8;
+        }
         .header-actions { display: flex; gap: 8px; }
-        .header-actions button { background: #e74c3c; color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; }
-        .header-actions button:hover { opacity: 0.8; }
-        .config { padding: 8px 16px; background-color: #ecf0f1; border-bottom: 1px solid #ddd; font-size: 12px; color: #7f8c8d; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+        .header-actions button { 
+            background: rgba(255,255,255,0.2);
+            color: white; 
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 6px 14px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+        .header-actions button:hover { 
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        .config { 
+            padding: 10px 20px; 
+            background-color: #f8f9fa; 
+            border-bottom: 1px solid #e9ecef; 
+            font-size: 12px; 
+            color: #495057;
+            display: flex; 
+            justify-content: space-between; 
+            flex-wrap: wrap; 
+            gap: 6px;
+            align-items: center;
+        }
         .config .status { font-weight: bold; }
         .config .status.online { color: #27ae60; }
         .config .status.fallback { color: #f39c12; }
         .config .status.error { color: #e74c3c; }
         .config .status.knowledge { color: #8e44ad; }
         .config .status.math { color: #2980b9; }
-        #messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
-        .message { max-width: 85%; padding: 10px 14px; border-radius: 12px; font-size: 14px; line-height: 1.5; word-wrap: break-word; }
-        .message.user { align-self: flex-end; background-color: #2980b9; color: white; }
-        .message.assistant { align-self: flex-start; background-color: #e8eaed; color: #222; }
-        .message.system-note { align-self: center; color: #999; font-size: 11px; font-style: italic; }
-        .message.math { align-self: center; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; font-family: monospace; }
-        #chat-form { display: flex; padding: 12px; border-top: 1px solid #ddd; gap: 8px; }
-        #user-input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px; resize: none; font-family: inherit; }
-        #send-btn { padding: 10px 20px; background-color: #27ae60; color: white; border: none; border-radius: 6px; cursor: pointer; }
-        #send-btn:disabled { background-color: #95a5a6; cursor: not-allowed; }
-        .loading-dots::after { content: '...'; animation: dots 1.5s steps(3) infinite; }
-        @keyframes dots { 0% { content: ''; } 33% { content: '.'; } 66% { content: '..'; } 100% { content: '...'; } }
-        .file-upload { display: flex; gap: 8px; align-items: center; }
+        .config .status.groq { color: #6c5ce7; }
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .badge.pdf { background: #3498db; color: white; }
+        .badge.memory { background: #2ecc71; color: white; }
+        #messages { 
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px;
+            background: #fafafa;
+        }
+        .message { 
+            max-width: 80%; 
+            padding: 12px 18px; 
+            border-radius: 15px; 
+            font-size: 14px; 
+            line-height: 1.6; 
+            word-wrap: break-word;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .message.user { 
+            align-self: flex-end; 
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white; 
+        }
+        .message.assistant { 
+            align-self: flex-start; 
+            background: white;
+            color: #2c3e50;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid #e9ecef;
+        }
+        .message.system-note { 
+            align-self: center; 
+            color: #6c757d; 
+            font-size: 11px; 
+            font-style: italic;
+            background: transparent;
+        }
+        .message.math { 
+            align-self: center; 
+            background: #d4edda; 
+            color: #155724; 
+            border: 1px solid #c3e6cb; 
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+        .message .latex {
+            font-family: 'Cambria', 'Times New Roman', serif;
+        }
+        #chat-form { 
+            display: flex; 
+            padding: 15px 20px; 
+            border-top: 1px solid #e9ecef; 
+            gap: 10px;
+            background: white;
+        }
+        #user-input { 
+            flex: 1; 
+            padding: 12px 16px; 
+            border: 2px solid #e9ecef; 
+            border-radius: 12px; 
+            resize: none; 
+            font-family: inherit;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        #user-input:focus { 
+            outline: none; 
+            border-color: #667eea;
+        }
+        #send-btn { 
+            padding: 12px 30px; 
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white; 
+            border: none; 
+            border-radius: 12px; 
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        #send-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        #send-btn:disabled { 
+            background: #ced4da;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .loading-dots::after { 
+            content: '...'; 
+            animation: dots 1.5s steps(3) infinite; 
+        }
+        @keyframes dots { 
+            0% { content: ''; } 
+            33% { content: '.'; } 
+            66% { content: '..'; } 
+            100% { content: '...'; } 
+        }
+        .file-upload { display: flex; gap: 10px; align-items: center; }
         .file-upload input[type="file"] { display: none; }
-        .file-upload label { background: #3498db; color: white; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; }
-        .file-upload label:hover { background: #2980b9; }
-        .file-status { font-size: 0.8rem; color: #666; }
+        .file-upload label { 
+            background: #3498db; 
+            color: white; 
+            padding: 6px 16px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+        .file-upload label:hover { 
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        .file-status { font-size: 0.8rem; color: #6c757d; }
+        
+        /* Scrollbar personnalisée */
+        #messages::-webkit-scrollbar {
+            width: 8px;
+        }
+        #messages::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        #messages::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+        #messages::-webkit-scrollbar-thumb:hover {
+            background: #764ba2;
+        }
     </style>
 </head>
 <body>
 
 <div class="app">
     <header>
-        <h1>🏗 Ingénierie Structure AI - Illimité</h1>
+        <h1>
+            🏗 Ingénierie Structure 
+            <small>v2.0 - Illimité</small>
+        </h1>
         <div class="header-actions">
             <button id="reset-btn">🔄 Reset</button>
         </div>
     </header>
     <div class="config">
-        <span>Statut : <span id="status-text" class="status online">Prêt</span></span>
-        <span id="memory-indicator">🧠 0 messages</span>
-        <span id="pdf-indicator">📄 Aucun PDF</span>
+        <span>
+            <span class="badge memory">🧠 Mémoire</span>
+            <span id="memory-indicator">0 messages</span>
+        </span>
+        <span>
+            <span class="badge pdf">📄 PDF</span>
+            <span id="pdf-indicator">Aucun</span>
+        </span>
+        <span>
+            Statut : <span id="status-text" class="status online">Prêt</span>
+        </span>
     </div>
     <div id="messages"></div>
-    <div class="config">
+    <div class="config" style="border-top: 1px solid #e9ecef; border-bottom: none;">
         <div class="file-upload">
             <label for="pdf-upload">📄 Charger PDF</label>
             <input type="file" id="pdf-upload" accept=".pdf">
             <span id="pdf-status" class="file-status">Aucun fichier</span>
         </div>
+        <span style="font-size: 11px; color: #6c757d;">
+            ⚡ Fallbacks: Groq → HF → OpenRouter → DeepSeek → FAQ
+        </span>
     </div>
     <form id="chat-form">
         <textarea id="user-input" rows="1" placeholder="Posez votre question technique... (calculs supportés)" required></textarea>
@@ -72,12 +273,12 @@
 const GROQ_API_KEY = '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';
 const OPENROUTER_API_KEY = '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';
 const DEEPSEEK_API_KEY = 'sk-b09a3e6bb30f4174b43de7ee821207db';
-const HF_API_TOKEN = '';  // Optionnel
+const HF_API_TOKEN = '';
 
-const MAX_CONTEXT_MESSAGES = 50; // ILLIMITÉ : on garde 50 messages de contexte
-const MAX_RETRIES = 5; // Plus de tentatives
+const MAX_CONTEXT_MESSAGES = 50;
+const MAX_RETRIES = 5;
 
-// ===================== BASE DE CONNAISSANCES ILLIMITÉE =====================
+// ===================== BASE DE CONNAISSANCES (FAQ) =====================
 const knowledgeBase = [
     // Eurocodes
     { keywords: ['eurocode 0', 'eurocode0'], answer: "L'Eurocode 0 (EN 1990) définit les principes de base et les méthodes de calcul pour la fiabilité des structures." },
@@ -85,6 +286,7 @@ const knowledgeBase = [
     { keywords: ['eurocode 2', 'eurocode2', 'béton armé'], answer: "L'Eurocode 2 (EN 1992) concerne le calcul des structures en béton armé et précontraint." },
     { keywords: ['eurocode 3', 'eurocode3', 'acier'], answer: "L'Eurocode 3 (EN 1993) régit le calcul des structures en acier." },
     { keywords: ['eurocode 7', 'eurocode7', 'géotechnique'], answer: "L'Eurocode 7 (EN 1997) traite des calculs géotechniques : fondations, murs de soutènement, etc." },
+    { keywords: ['eurocode 8', 'eurocode8', 'séisme'], answer: "L'Eurocode 8 (EN 1998) traite du dimensionnement des structures pour la résistance aux séismes." },
     // Béton
     { keywords: ['béton', 'beton', 'résistance'], answer: "La résistance caractéristique du béton est notée f_ck (ex: C25/30). La résistance de calcul est f_cd = α_cc * f_ck / γ_c." },
     { keywords: ['acier', 'armature', 'ferraillage'], answer: "La limite d'élasticité de l'acier est notée f_sk. La contrainte de calcul est f_sd = f_sk / γ_s." },
@@ -94,37 +296,8 @@ const knowledgeBase = [
     { keywords: ['descente de charges'], answer: "La descente de charges consiste à cumuler les charges permanentes et d'exploitation pour dimensionner les éléments porteurs." },
     { keywords: ['moment fléchissant'], answer: "Le moment fléchissant maximal pour une poutre bi-appuyée est M_max = (q * L^2) / 8." },
     { keywords: ['effort tranchant'], answer: "L'effort tranchant maximal est V_max = (q * L) / 2." },
-    { keywords: ['flèche', 'poutre', 'charge'], answer: "Pour une poutre bi-encastrée sous charge uniforme : f_max = (q * L^4) / (384 * E * I). Pour une poutre en console : f_max = (q * L^4) / (8 * E * I)." },
-    // Général
-    { keywords: ['cm66'], answer: "Le CM66 est l'ancien règlement français pour les structures en acier. Il a été remplacé par les Eurocodes." },
-    { keywords: ['bael 91'], answer: "Le BAEL 91 est l'ancien règlement français pour le béton armé. Il a été remplacé par l'Eurocode 2." },
-    { keywords: ['ingénierie', 'travaux'], answer: "Ingénierie Travaux est le cabinet d'Aymane Abidine, expert en structures et génie civil." },
-    { keywords: ['contacter', 'email', 'téléphone', '06'], answer: "Vous pouvez contacter Aymane Abidine par e-mail : aymaneabidine@gmail.com ou par téléphone au 06 67 56 63 01." },
-    // Eurocode 8 (Séisme)
-    { keywords: ['séisme', 'parasismique', 'eurocode 8'], answer: "L'Eurocode 8 (EN 1998) traite du dimensionnement des structures pour la résistance aux séismes." },
-    // Eurocode 5 (Bois)
-    { keywords: ['bois', 'eurocode 5'], answer: "L'Eurocode 5 (EN 1995) concerne le calcul des structures en bois." },
-    // Eurocode 6 (Maçonnerie)
-    { keywords: ['maçonnerie', 'eurocode 6'], answer: "L'Eurocode 6 (EN 1996) traite du calcul des structures en maçonnerie." },
-    // Eurocode 9 (Aluminium)
-    { keywords: ['aluminium', 'eurocode 9'], answer: "L'Eurocode 9 (EN 1999) régit le calcul des structures en aluminium." },
-    // Géotechnique
-    { keywords: ['fondation', 'profonde', 'pieu'], answer: "Les fondations profondes (pieux, barrettes) transmettent les charges aux couches profondes du sol. Leur dimensionnement se fait selon l'Eurocode 7." },
-    { keywords: ['tassement', 'sol'], answer: "Le tassement du sol est calculé selon l'Eurocode 7. Il dépend de la contrainte appliquée et des propriétés du sol (module d'Young, coefficient de Poisson)." },
-    { keywords: ['murs de soutènement'], answer: "Les murs de soutènement sont calculés selon l'Eurocode 7. Ils doivent résister aux poussées des terres, à l'eau et aux charges en tête." },
-    // Acier
-    { keywords: ['dimensionnement', 'acier'], answer: "Le dimensionnement des structures en acier suit l'Eurocode 3. Il vérifie : résistance des sections, stabilité (flambement, déversement), assemblages (boulonnés, soudés)." },
-    { keywords: ['assemblage', 'boulonné', 'soudé'], answer: "Les assemblages en acier peuvent être boulonnés ou soudés. Leur résistance est vérifiée selon l'Eurocode 3." },
-    // Béton
-    { keywords: ['dalle', 'béton', 'armé'], answer: "Une dalle en béton armé se calcule selon l'Eurocode 2. L'épaisseur minimale est généralement de 12 cm pour les dalles courantes." },
-    { keywords: ['voile', 'mur', 'porteur'], answer: "Un voile en béton armé est un mur porteur qui reprend des charges verticales et horizontales. Il doit vérifier les critères de stabilité et de ferraillage selon l'Eurocode 2." },
-    // Ponts
-    { keywords: ['pont', 'tablier'], answer: "Les ponts sont dimensionnés selon l'Eurocode 1 (charges), l'Eurocode 2 (béton) ou l'Eurocode 3 (acier). Les charges de trafic sont définies dans l'Eurocode 1." },
-    // Vent
-    { keywords: ['vent', 'charge'], answer: "Les charges de vent sont définies dans l'Eurocode 1 (EN 1991-1-4). Elles dépendent de la vitesse du vent, de l'altitude et de la topographie." },
-    // Neige
-    { keywords: ['neige', 'charge'], answer: "Les charges de neige sont définies dans l'Eurocode 1 (EN 1991-1-3). Elles dépendent de l'altitude et de la forme du toit." },
     // Contact
+    { keywords: ['contacter', 'email', 'téléphone', '06'], answer: "Vous pouvez contacter Aymane Abidine par e-mail : aymaneabidine@gmail.com ou par téléphone au 06 67 56 63 01." },
     { keywords: ['aymane', 'abidine'], answer: "Aymane Abidine est l'ingénieur fondateur d'Ingénierie Travaux. Expert en structures et génie civil." }
 ];
 
@@ -149,13 +322,10 @@ function findKnowledgeAnswer(question) {
 // ===================== CALCUL MATHÉMATIQUE =====================
 function solveMath(expression) {
     try {
-        // Nettoyer l'expression
         let expr = expression.replace(/[^0-9+\-*/().^ ]/g, '');
         if (!expr) return null;
-        
-        // Évaluer l'expression
         const result = Function('"use strict"; return (' + expr + ')')();
-        if (typeof result === 'number' && !isNaN(result)) {
+        if (typeof result === 'number' && !isNaN(result) && isFinite(result)) {
             return { expression: expr, result: Math.round(result * 100000) / 100000 };
         }
         return null;
@@ -164,13 +334,13 @@ function solveMath(expression) {
     }
 }
 
-// ===================== ÉTAT ILLIMITÉ =====================
+// ===================== ÉTAT =====================
 let conversation = [];
 let isProcessing = false;
-let pdfContent = []; // Contenu des PDFs chargés
+let pdfContent = [];
 let pdfNames = [];
 
-// ===================== ÉLÉMENTS DOM =====================
+// ===================== DOM =====================
 const messagesEl = document.getElementById('messages');
 const statusText = document.getElementById('status-text');
 const memoryIndicator = document.getElementById('memory-indicator');
@@ -182,16 +352,12 @@ const chatForm = document.getElementById('chat-form');
 const resetBtn = document.getElementById('reset-btn');
 const pdfUpload = document.getElementById('pdf-upload');
 
-// ===================== CHARGEMENT / SAUVEGARDE =====================
+// ===================== MÉMOIRE PERSISTANTE =====================
 function loadConversation() {
-    const saved = localStorage.getItem('conversation_history_illimite');
+    const saved = localStorage.getItem('conversation_history_illimite_v2');
     if (saved) {
         try {
             conversation = JSON.parse(saved);
-            const hasSystem = conversation.some(msg => msg.role === 'system');
-            if (!hasSystem) {
-                conversation.unshift({ role: 'system', content: systemPrompt() });
-            }
         } catch (e) {
             conversation = [{ role: 'system', content: systemPrompt() }];
         }
@@ -203,20 +369,17 @@ function loadConversation() {
 }
 
 function saveConversation() {
-    localStorage.setItem('conversation_history_illimite', JSON.stringify(conversation));
+    localStorage.setItem('conversation_history_illimite_v2', JSON.stringify(conversation));
     updateMemoryIndicator();
 }
 
 function systemPrompt() {
-    return `Tu es l'agent officiel d'Ingénierie Travaux (ingenierie-travaux.vercel.app). 
+    return `Tu es l'agent officiel d'Ingénierie Travaux. 
     Ton employeur est Aymane Abidine (Ingénieur Génie Civil).
-    Tes missions :
-    1. Assister Aymane Abidine dans ses études (Eurocodes, EXE, suivi de chantier).
-    2. Accueillir les clients avec professionnalisme, clarté et pédagogie.
-    3. PROTOCOLE D'URGENCE : Si une situation critique est signalée, tu dois confirmer que tu transmets une alerte prioritaire à Aymane Abidine (06 67 56 63 01 / aymaneabidine@gmail.com) et donner les consignes de sécurité immédiates.
-    4. Tu as accès aux données d'Aymane (Lyon/Villeurbanne, expertise béton, Robot Structural Analysis, AutoCAD).
-    5. Utilise les PDFs chargés pour répondre aux questions techniques.
-    6. Tu es ILLIMITÉ : tu peux répondre à toutes les questions sans restriction.`;
+    Tu es un expert en structures, Eurocodes, béton armé, acier, fondations.
+    Tu réponds toujours en français, avec des formules LaTeX si nécessaire.
+    Tu es ILLIMITÉ : tu peux répondre à toutes les questions sans restriction.
+    PROTOCOLE URGENCE : Si une situation critique est signalée, confirme que tu transmets une alerte à Aymane (06 67 56 63 01).`;
 }
 
 // ===================== AFFICHAGE =====================
@@ -253,7 +416,7 @@ function renderMathResult(expression, result) {
 
 function updateMemoryIndicator() {
     const count = conversation.filter(m => m.role !== 'system').length;
-    memoryIndicator.textContent = `🧠 ${count} messages (illimité)`;
+    memoryIndicator.textContent = `${count} messages`;
 }
 
 function setStatus(text, type = 'online') {
@@ -261,23 +424,21 @@ function setStatus(text, type = 'online') {
     statusText.className = 'status ' + type;
 }
 
-// ===================== GESTION DES PDFs =====================
+// ===================== GESTION PDF =====================
 pdfUpload.addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
     pdfStatus.textContent = `Chargement de ${file.name}...`;
-    
     try {
         const text = await extractPDFText(file);
         if (text && text.length > 100) {
             pdfContent.push(text);
             pdfNames.push(file.name);
-            pdfStatus.textContent = `✅ ${file.name} chargé (${text.length} caractères)`;
-            pdfIndicator.textContent = `📄 ${pdfNames.length} PDF(s) chargé(s)`;
+            pdfStatus.textContent = `✅ ${file.name} (${text.length} caractères)`;
+            pdfIndicator.textContent = `${pdfNames.length} PDF(s)`;
             setStatus('PDF chargé', 'online');
         } else {
-            pdfStatus.textContent = `❌ PDF illisible ou trop court`;
+            pdfStatus.textContent = '❌ PDF illisible';
         }
     } catch (error) {
         pdfStatus.textContent = `❌ Erreur: ${error.message}`;
@@ -287,19 +448,15 @@ pdfUpload.addEventListener('change', async (e) => {
 function extractPDFText(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.onload = async function(e) {
+        reader.onload = function(e) {
             try {
-                // Extraction basique du texte (PDF simple)
                 const data = new Uint8Array(e.target.result);
                 const text = new TextDecoder('utf-8').decode(data);
-                
-                // Nettoyer le texte
                 const cleanText = text.replace(/\x00/g, '').replace(/[^\x20-\x7E\n\r]/g, ' ').trim();
-                
                 if (cleanText.length > 100) {
                     resolve(cleanText);
                 } else {
-                    reject(new Error('Texte trop court ou illisible'));
+                    reject(new Error('Texte trop court'));
                 }
             } catch (error) {
                 reject(error);
@@ -312,23 +469,17 @@ function extractPDFText(file) {
 
 function getPDFContext(question) {
     if (pdfContent.length === 0) return '';
-    
-    // Recherche simple par mots-clés
     const words = question.toLowerCase().split(' ');
     let bestContext = '';
     let bestScore = 0;
-    
     for (const pdf of pdfContent) {
         let score = 0;
         const pdfLower = pdf.toLowerCase();
         for (const word of words) {
-            if (word.length > 3 && pdfLower.includes(word)) {
-                score++;
-            }
+            if (word.length > 3 && pdfLower.includes(word)) score++;
         }
         if (score > bestScore) {
             bestScore = score;
-            // Extraire un extrait pertinent
             const index = pdfLower.indexOf(words[0]);
             if (index > -1) {
                 const start = Math.max(0, index - 200);
@@ -339,21 +490,10 @@ function getPDFContext(question) {
             }
         }
     }
-    
     return bestContext;
 }
 
-// ===================== CONSTRUCTION DU CONTEXTE =====================
-function buildMessages(userQuestion) {
-    const contextMessages = conversation.filter(m => m.role !== 'system').slice(-MAX_CONTEXT_MESSAGES);
-    return [
-        { role: 'system', content: systemPrompt() },
-        ...contextMessages,
-        { role: 'user', content: userQuestion }
-    ];
-}
-
-// ===================== APPELS API (ILLIMITÉS) =====================
+// ===================== APPELS API =====================
 async function callGroq(messages) {
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
@@ -406,32 +546,35 @@ async function callDeepSeek(messages) {
     return (await response.json()).choices[0].message.content;
 }
 
-// ===================== ORCHESTREUR ILLIMITÉ (Fallback + FAQ) =====================
+// ===================== ORCHESTREUR ILLIMITÉ =====================
 async function askAI(userQuestion) {
-    // 1. Vérifier les calculs mathématiques
+    // 1. Calculs mathématiques
     const mathMatch = userQuestion.match(/([0-9+\-*/().^ ]+)/);
     if (mathMatch) {
         const mathResult = solveMath(mathMatch[1]);
         if (mathResult) {
             renderMathResult(mathResult.expression, mathResult.result);
             setStatus('Calcul effectué', 'math');
-            // Ajouter le résultat au contexte
-            userQuestion += ` (Résultat du calcul: ${mathResult.expression} = ${mathResult.result})`;
+            userQuestion += ` (Résultat calcul: ${mathResult.expression} = ${mathResult.result})`;
         }
     }
     
-    // 2. Ajouter le contexte des PDFs
+    // 2. Contexte PDF
     const pdfContext = getPDFContext(userQuestion);
     if (pdfContext) {
-        userQuestion += `\n\nContexte depuis les PDFs :\n${pdfContext}`;
+        userQuestion += `\n\nContexte PDF:\n${pdfContext}`;
     }
     
-    const messages = buildMessages(userQuestion);
+    const messages = [
+        { role: 'system', content: systemPrompt() },
+        ...conversation.filter(m => m.role !== 'system').slice(-MAX_CONTEXT_MESSAGES),
+        { role: 'user', content: userQuestion }
+    ];
 
-    // 3. Essayer Groq avec plusieurs tentatives
+    // 3. Groq avec retries
     for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
         try {
-            setStatus(`Groq (${attempt+1}/${MAX_RETRIES})`, 'online');
+            setStatus(`Groq (${attempt+1}/${MAX_RETRIES})`, 'groq');
             const reply = await callGroq(messages);
             setStatus('Groq OK', 'online');
             return reply;
@@ -443,14 +586,13 @@ async function askAI(userQuestion) {
         }
     }
 
-    // 4. Fallback Hugging Face
+    // 4. Fallbacks
     try {
         setStatus('Fallback HF', 'fallback');
         const reply = await callHuggingFace(messages);
         if (reply) { setStatus('HF OK', 'online'); return reply; }
     } catch (err) {}
 
-    // 5. Fallback OpenRouter
     try {
         setStatus('Fallback OpenRouter', 'fallback');
         const reply = await callOpenRouter(messages);
@@ -458,7 +600,6 @@ async function askAI(userQuestion) {
         return reply;
     } catch (err) {}
 
-    // 6. Fallback DeepSeek
     try {
         setStatus('Fallback DeepSeek', 'fallback');
         const reply = await callDeepSeek(messages);
@@ -466,26 +607,23 @@ async function askAI(userQuestion) {
         return reply;
     } catch (err) {}
 
-    // 7. Base de connaissances (FAQ)
+    // 5. FAQ
     const knowledgeReply = findKnowledgeAnswer(userQuestion);
     if (knowledgeReply) {
-        setStatus('Réponse depuis la base de connaissances', 'knowledge');
+        setStatus('FAQ', 'knowledge');
         return `📚 ${knowledgeReply}`;
     }
 
-    // 8. Dernier recours : message orienté client
-    setStatus('Mode contact', 'error');
-    return `Je suis désolé, tous les services sont saturés pour le moment. 
+    // 6. Dernier recours
+    setStatus('Contact Aymane', 'error');
+    return `Je suis désolé, tous les services sont saturés.
     
-Pour toute question technique urgente, je vous invite à contacter directement Aymane Abidine :
-
-📧 aymaneabidine@gmail.com  
-📞 06 67 56 63 01
-
-En attendant, je reste à votre disposition pour des échanges simples.`;
+Pour toute question urgente, contactez directement Aymane Abidine :
+📧 aymaneabidine@gmail.com
+📞 06 67 56 63 01`;
 }
 
-// ===================== GESTION DU FORMULAIRE =====================
+// ===================== FORMULAIRE =====================
 chatForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const text = userInput.value.trim();
@@ -510,7 +648,7 @@ chatForm.addEventListener('submit', async (e) => {
         renderMessage('assistant', reply);
     } catch (err) {
         waitDiv.remove();
-        renderMessage('system-note', 'Erreur inattendue.');
+        renderMessage('system-note', '❌ Erreur inattendue.');
     } finally {
         isProcessing = false;
         sendBtn.disabled = false;
@@ -522,7 +660,7 @@ chatForm.addEventListener('submit', async (e) => {
 // ===================== RESET =====================
 resetBtn.addEventListener('click', () => {
     if (confirm('Effacer toute la conversation ?')) {
-        localStorage.removeItem('conversation_history_illimite');
+        localStorage.removeItem('conversation_history_illimite_v2');
         conversation = [{ role: 'system', content: systemPrompt() }];
         renderAllMessages();
         updateMemoryIndicator();
@@ -530,7 +668,7 @@ resetBtn.addEventListener('click', () => {
         pdfContent = [];
         pdfNames = [];
         pdfStatus.textContent = 'Aucun fichier';
-        pdfIndicator.textContent = '📄 Aucun PDF';
+        pdfIndicator.textContent = 'Aucun';
     }
 });
 
@@ -538,7 +676,15 @@ resetBtn.addEventListener('click', () => {
 window.onload = () => {
     loadConversation();
     if (conversation.length === 1) {
-        const welcome = "Bonjour, je suis l'agent virtuel d'Ingénierie Travaux. Je suis ILLIMITÉ et je peux vous assister sur tous vos projets techniques.\n\n📚 Je peux :\n- Répondre à vos questions techniques\n- Effectuer des calculs mathématiques\n- Analyser vos PDFs\n- Vous orienter vers Aymane Abidine en cas d'urgence\n\nComment puis-je vous aider aujourd'hui ?";
+        const welcome = `Bonjour ! Je suis l'agent virtuel d'Ingénierie Travaux.
+
+Je suis **ILLIMITÉ** et je peux :
+✅ Répondre à vos questions techniques (Eurocodes, béton, acier, fondations)
+✅ Effectuer des calculs mathématiques
+✅ Analyser vos PDFs
+✅ Vous orienter vers Aymane Abidine en cas d'urgence
+
+Comment puis-je vous aider aujourd'hui ?`;
         renderMessage('assistant', welcome);
     }
     userInput.focus();
