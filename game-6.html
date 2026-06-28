@@ -54,9 +54,9 @@
 <script>
     // ===================== CONFIGURATION =====================
     const GROQ_API_KEY = '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';
-    const HF_API_TOKEN = '';  // Mettez votre token HF si vous en avez un (gratuit sur huggingface.co/settings/tokens)
-    const OPENROUTER_API_KEY = ''; // Clé OpenRouter gratuite (sk-or-v1-...)
-    const DEEPSEEK_API_KEY = ''; // Clé DeepSeek (gratuite)
+    const HF_API_TOKEN = '';  // Optionnel : mettez votre token HF si vous en avez un
+    const OPENROUTER_API_KEY = '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';
+    const DEEPSEEK_API_KEY = 'sk-b09a3e6bb30f4174b43de7ee821207db';
 
     const MAX_CONTEXT_MESSAGES = 8;
     const MAX_RETRIES = 2;
@@ -228,7 +228,7 @@
         return data.choices[0].message.content;
     }
 
-    // ===================== ORCHESTREUR AVEC 4 COUCHES =====================
+    // ===================== ORCHESTREUR AVEC 5 COUCHES =====================
     async function askAI(userQuestion) {
         const messages = buildMessages(userQuestion);
         let lastError = null;
