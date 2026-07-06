@@ -4,16 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gemma Avatar</title>
-    
-    <!-- Capacitor -->
-    <script src="https://unpkg.com/@capacitor/core@latest/dist/globals.js"></script>
-    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body, html {
             width: 100%;
@@ -23,7 +15,7 @@
             font-family: 'Segoe UI', Arial, sans-serif;
         }
         
-        /* Barre de navigation (style des autres jeux) */
+        /* Navbar */
         .navbar {
             position: fixed;
             top: 0;
@@ -45,11 +37,6 @@
             text-decoration: none;
             padding: 5px 10px;
             border-radius: 8px;
-            transition: background 0.3s;
-        }
-        
-        .navbar .back-btn:hover {
-            background: rgba(255,255,255,0.1);
         }
         
         .navbar .title {
@@ -74,9 +61,6 @@
             height: 8px;
             border-radius: 50%;
             display: inline-block;
-        }
-        
-        .navbar .status .dot.online {
             background: #22c55e;
             animation: pulse 2s infinite;
         }
@@ -86,9 +70,9 @@
             50% { opacity: 0.3; }
         }
         
-        /* Conteneur principal */
+        /* Conteneur */
         #container {
-            margin-top: 60px; /* Hauteur de la navbar */
+            margin-top: 60px;
             width: 100vw;
             height: calc(100vh - 60px);
             height: calc(100dvh - 60px);
@@ -138,7 +122,7 @@
             to { transform: rotate(360deg); }
         }
         
-        /* Permission prompt */
+        /* Permission Prompt - Version Web uniquement */
         #permission-prompt {
             display: none;
             position: fixed;
@@ -200,11 +184,32 @@
             font-size: 0.9rem;
         }
         
-        /* Responsive */
+        /* Message pour les utilisateurs */
+        #manual-instructions {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9);
+            color: #fff;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            z-index: 1002;
+            max-width: 90%;
+            text-align: center;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+        
+        #manual-instructions a {
+            color: #7c3aed;
+            text-decoration: underline;
+        }
+        
         @supports (-webkit-touch-callout: none) {
-            #container {
-                height: -webkit-fill-available;
-            }
+            #container { height: -webkit-fill-available; }
         }
     </style>
 </head>
@@ -224,19 +229,29 @@
         <p>Gemma Avatar a besoin d'accéder à votre micro pour interagir vocalement.</p>
         <button class="btn" id="grantBtn">✅ Autoriser le micro</button>
         <button class="btn btn-secondary" id="retryBtn">🔄 Réessayer</button>
+        <p style="margin-top:20px;font-size:0.8rem;color:#555;">
+            Si le bouton ne fonctionne pas, autorisez manuellement dans les paramètres de votre navigateur.
+        </p>
     </div>
 
-    <!-- Navbar (comme les autres jeux) -->
+    <!-- Instructions manuelles (si échec) -->
+    <div id="manual-instructions">
+        ⚠️ <strong>Action manuelle requise</strong><br>
+        Tapez sur l'icône 🔒 dans la barre d'adresse → <strong>Autoriser le micro</strong><br>
+        Puis rechargez la page.
+    </div>
+
+    <!-- Navbar -->
     <nav class="navbar">
         <a href="espace-détente.html" class="back-btn">←</a>
         <span class="title">🎤 Gemma Avatar</span>
         <span class="status">
-            <span class="dot online"></span>
+            <span class="dot"></span>
             En ligne
         </span>
     </nav>
 
-    <!-- Conteneur de l'application -->
+    <!-- Conteneur -->
     <div id="container">
         <iframe
             id="app-iframe"
@@ -248,148 +263,134 @@
     </div>
 
     <script>
-        // === Configuration ===
+        // === CONFIGURATION ===
         const APP_URL = 'https://victor-gemma-avatar.hf.space';
         const iframe = document.getElementById('app-iframe');
         const loader = document.getElementById('loader');
         const permissionPrompt = document.getElementById('permission-prompt');
+        const manualInstructions = document.getElementById('manual-instructions');
         const grantBtn = document.getElementById('grantBtn');
         const retryBtn = document.getElementById('retryBtn');
 
-        // === Détection Capacitor ===
-        const isCapacitor = typeof Capacitor !== 'undefined' && Capacitor.getPlatform;
-        const platform = isCapacitor ? Capacitor.getPlatform() : 'web';
-        const isAndroid = platform === 'android';
+        let micGranted = false;
+        let retryCount = 0;
 
-        console.log(`Platform: ${platform}, isAndroid: ${isAndroid}`);
-
-        // === Cache le loader quand l'iframe est chargée ===
+        // === Cache le loader ===
         iframe.addEventListener('load', function() {
-            loader.classList.add('hidden');
+            setTimeout(() => loader.classList.add('hidden'), 500);
         });
 
-        // Timeout de sécurité
-        setTimeout(() => {
-            loader.classList.add('hidden');
-        }, 10000);
+        setTimeout(() => loader.classList.add('hidden'), 8000);
 
-        // === Gestion des permissions Capacitor ===
-        async function requestCapacitorPermission() {
-            if (!isAndroid) {
-                permissionPrompt.style.display = 'none';
-                return;
-            }
-
+        // === Vérifier le micro via l'API Web ===
+        async function checkMicrophone() {
             try {
-                // Vérifier si Permissions est disponible
-                if (typeof Capacitor.Plugins !== 'undefined' && Capacitor.Plugins.Permissions) {
-                    const { Permissions } = Capacitor.Plugins;
-                    
-                    const status = await Permissions.checkPermissions();
-                    console.log('Status permissions:', status);
-                    
-                    if (status.microphone === 'granted') {
-                        permissionPrompt.style.display = 'none';
-                        // Recharge l'iframe pour qu'elle détecte le micro
-                        iframe.src = iframe.src;
-                    } else {
-                        permissionPrompt.style.display = 'flex';
-                    }
-                } else {
-                    // Plugin non trouvé, on cache quand même
-                    permissionPrompt.style.display = 'none';
-                }
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                stream.getTracks().forEach(track => track.stop());
+                micGranted = true;
+                console.log('✅ Micro autorisé !');
+                return true;
             } catch (error) {
-                console.error('Erreur Capacitor:', error);
-                permissionPrompt.style.display = 'none';
+                console.warn('❌ Micro refusé:', error.message);
+                micGranted = false;
+                return false;
             }
         }
 
-        // === Demander la permission au clic ===
-        grantBtn.addEventListener('click', async function() {
-            if (isAndroid) {
-                try {
-                    if (typeof Capacitor.Plugins !== 'undefined' && Capacitor.Plugins.Permissions) {
-                        const { Permissions } = Capacitor.Plugins;
-                        
-                        const result = await Permissions.requestPermissions({
-                            permissions: ['microphone']
-                        });
-                        
-                        if (result.microphone === 'granted') {
-                            permissionPrompt.style.display = 'none';
-                            iframe.src = iframe.src;
-                            loader.classList.remove('hidden');
-                            setTimeout(() => loader.classList.add('hidden'), 3000);
-                        } else {
-                            alert('Le micro est nécessaire pour utiliser Gemma Avatar.');
-                        }
-                    } else {
-                        // Fallback : essayer via l'API Web
-                        try {
-                            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                            stream.getTracks().forEach(t => t.stop());
-                            permissionPrompt.style.display = 'none';
-                            iframe.src = iframe.src;
-                        } catch (err) {
-                            alert('Veuillez autoriser le micro dans les paramètres de l\'application.');
-                        }
-                    }
-                } catch (error) {
-                    console.error('Erreur:', error);
-                    alert('Impossible de demander la permission. Vérifiez les paramètres.');
+        // === Demander le micro via l'API Web ===
+        async function requestMicrophone() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                stream.getTracks().forEach(track => track.stop());
+                micGranted = true;
+                permissionPrompt.style.display = 'none';
+                manualInstructions.style.display = 'none';
+                // Recharge l'iframe
+                iframe.src = APP_URL;
+                loader.classList.remove('hidden');
+                setTimeout(() => loader.classList.add('hidden'), 3000);
+                return true;
+            } catch (error) {
+                console.error('❌ Erreur demande micro:', error);
+                micGranted = false;
+                
+                // Si c'est un refus permanent, afficher instructions manuelles
+                if (error.message.includes('permission') || error.message.includes('denied')) {
+                    manualInstructions.style.display = 'block';
+                    setTimeout(() => {
+                        manualInstructions.style.display = 'none';
+                    }, 10000);
                 }
+                
+                return false;
             }
+        }
+
+        // === Initialisation ===
+        async function init() {
+            // Vérifier si le micro est déjà autorisé
+            const hasMic = await checkMicrophone();
+            
+            if (hasMic) {
+                permissionPrompt.style.display = 'none';
+                manualInstructions.style.display = 'none';
+            } else {
+                permissionPrompt.style.display = 'flex';
+            }
+        }
+
+        // === Gestion des clics ===
+        grantBtn.addEventListener('click', async function() {
+            await requestMicrophone();
         });
 
-        // === Réessayer ===
         retryBtn.addEventListener('click', function() {
+            retryCount++;
             iframe.src = APP_URL;
             loader.classList.remove('hidden');
             setTimeout(() => loader.classList.add('hidden'), 5000);
-        });
-
-        // === Initialisation ===
-        document.addEventListener('DOMContentLoaded', function() {
-            if (isAndroid) {
-                // Attendre que Capacitor soit chargé
-                document.addEventListener('deviceready', function() {
-                    console.log('🔵 deviceready triggered');
-                    requestCapacitorPermission();
-                });
-                
-                // Fallback si deviceready ne se déclenche pas
-                setTimeout(function() {
-                    console.log('🔵 Fallback timeout');
-                    requestCapacitorPermission();
-                }, 3000);
-            } else {
-                permissionPrompt.style.display = 'none';
+            
+            // Si trop de tentatives, montrer instructions manuelles
+            if (retryCount >= 3) {
+                manualInstructions.style.display = 'block';
             }
         });
 
-        // === Gestion des erreurs de l'iframe ===
+        // === Détection d'erreur dans l'iframe ===
         iframe.addEventListener('error', function() {
-            console.error('❌ Erreur de chargement de l\'iframe');
+            console.error('❌ Erreur iframe');
             loader.classList.add('hidden');
         });
 
-        // === Fallback : Forcer la demande de micro via l'API Web ===
-        async function forceWebMicro() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                stream.getTracks().forEach(t => t.stop());
-                console.log('✅ Micro fonctionne (via API Web)');
-                // Recharge l'iframe
-                iframe.src = iframe.src;
-            } catch (err) {
-                console.warn('❌ Micro refusé (via API Web):', err);
+        // === Lancement ===
+        document.addEventListener('DOMContentLoaded', init);
+
+        // === Pour les navigateurs qui bloquent getUserMedia sans geste ===
+        document.addEventListener('touchstart', async function firstTouch() {
+            const hasMic = await checkMicrophone();
+            if (!hasMic && permissionPrompt.style.display !== 'flex') {
+                await requestMicrophone();
             }
-        }
+            document.removeEventListener('touchstart', firstTouch);
+        }, { once: true });
 
-        // Lance après un délai
-        setTimeout(forceWebMicro, 2000);
+        // === Forcer le rechargement si l'iframe ne charge pas ===
+        let reloadInterval = setInterval(() => {
+            try {
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+                if (!iframeDoc || iframeDoc.readyState !== 'complete') {
+                    console.log('🔄 Tentative de rechargement...');
+                    iframe.src = APP_URL;
+                } else {
+                    clearInterval(reloadInterval);
+                }
+            } catch (e) {
+                // Cross-origin, on ignore
+            }
+        }, 10000);
+
+        // Nettoyer l'intervalle après 1 minute
+        setTimeout(() => clearInterval(reloadInterval), 60000);
     </script>
-
 </body>
 </html>
