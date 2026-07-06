@@ -10,9 +10,9 @@
         body, html {
             width: 100%;
             height: 100%;
-            overflow: hidden;
-            background: #0d0d0d;
             font-family: 'Segoe UI', Arial, sans-serif;
+            background: #0d0d0d;
+            color: #fff;
         }
         
         /* Navbar */
@@ -40,7 +40,6 @@
         }
         
         .navbar .title {
-            color: #fff;
             font-size: 1.1rem;
             font-weight: 600;
             background: linear-gradient(135deg, #7c3aed, #ec4899);
@@ -48,349 +47,229 @@
             -webkit-text-fill-color: transparent;
         }
         
-        .navbar .status {
-            color: #666;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .navbar .status .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            display: inline-block;
-            background: #22c55e;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-        
-        /* Conteneur */
-        #container {
-            margin-top: 60px;
-            width: 100vw;
-            height: calc(100vh - 60px);
-            height: calc(100dvh - 60px);
-            background: #0d0d0d;
-        }
-        
-        #app-iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            background: #0d0d0d;
-        }
-        
-        /* Loader */
-        #loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #0d0d0d;
-            color: #fff;
-            z-index: 999;
-            flex-direction: column;
-            transition: opacity 0.5s ease;
-        }
-        
-        #loader.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        
-        .spinner {
-            width: 45px;
-            height: 45px;
-            border: 4px solid #1a1a1a;
-            border-top: 4px solid #7c3aed;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin-bottom: 20px;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Permission Prompt - Version Web uniquement */
-        #permission-prompt {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            color: #fff;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 1001;
+        /* Contenu principal */
+        .content {
+            margin-top: 70px;
+            padding: 30px 20px;
             text-align: center;
-            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 70px);
         }
         
-        #permission-prompt .icon {
-            font-size: 4rem;
+        .icon-main {
+            font-size: 5rem;
             margin-bottom: 20px;
         }
         
-        #permission-prompt h2 {
-            font-size: 1.5rem;
+        h1 {
+            font-size: 1.8rem;
             margin-bottom: 10px;
         }
         
-        #permission-prompt p {
-            color: #aaa;
+        .subtitle {
+            color: #999;
             max-width: 350px;
-            margin: 10px auto;
+            margin: 0 auto 30px;
             line-height: 1.6;
         }
         
-        #permission-prompt .btn {
-            margin-top: 20px;
-            padding: 16px 45px;
+        /* Bouton principal */
+        .btn-primary {
+            display: inline-block;
+            padding: 18px 50px;
             background: linear-gradient(135deg, #7c3aed, #6d28d9);
             color: #fff;
             border: none;
             border-radius: 50px;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+            text-decoration: none;
+            box-shadow: 0 4px 25px rgba(124, 58, 237, 0.4);
             transition: transform 0.2s;
+            width: 100%;
+            max-width: 350px;
         }
         
-        #permission-prompt .btn:active {
+        .btn-primary:active {
             transform: scale(0.95);
         }
         
-        #permission-prompt .btn-secondary {
+        .btn-secondary {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 14px 30px;
             background: transparent;
-            box-shadow: none;
+            color: #aaa;
             border: 1px solid #333;
-            margin-top: 10px;
-            padding: 12px 30px;
-            font-size: 0.9rem;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-decoration: none;
+            width: 100%;
+            max-width: 350px;
         }
         
-        /* Message pour les utilisateurs */
-        #manual-instructions {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.9);
-            color: #fff;
+        /* Instructions */
+        .info-box {
+            margin-top: 30px;
             padding: 15px 20px;
+            background: #1a1a1a;
             border-radius: 12px;
-            border: 1px solid #333;
-            z-index: 1002;
-            max-width: 90%;
-            text-align: center;
+            max-width: 350px;
             font-size: 0.85rem;
-            line-height: 1.5;
+            color: #666;
+            line-height: 1.6;
+            text-align: left;
         }
         
-        #manual-instructions a {
+        .info-box strong {
+            color: #fff;
+        }
+        
+        .info-box .highlight {
             color: #7c3aed;
-            text-decoration: underline;
+            word-break: break-all;
         }
         
-        @supports (-webkit-touch-callout: none) {
-            #container { height: -webkit-fill-available; }
+        /* Message d'erreur */
+        .error-msg {
+            display: none;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 10px;
+            color: #f87171;
+            font-size: 0.9rem;
+            max-width: 350px;
+        }
+        
+        @media (max-width: 480px) {
+            .content { padding: 20px 15px; }
+            h1 { font-size: 1.5rem; }
+            .btn-primary { font-size: 1rem; padding: 16px 30px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Loader -->
-    <div id="loader">
-        <div class="spinner"></div>
-        <p style="font-size:1.2rem;">Chargement de Gemma Avatar...</p>
-        <p style="color:#666;font-size:0.85rem;margin-top:10px;">Intelligence artificielle vocale</p>
-    </div>
-
-    <!-- Permission Prompt -->
-    <div id="permission-prompt">
-        <div class="icon">🎤</div>
-        <h2>Accès au micro requis</h2>
-        <p>Gemma Avatar a besoin d'accéder à votre micro pour interagir vocalement.</p>
-        <button class="btn" id="grantBtn">✅ Autoriser le micro</button>
-        <button class="btn btn-secondary" id="retryBtn">🔄 Réessayer</button>
-        <p style="margin-top:20px;font-size:0.8rem;color:#555;">
-            Si le bouton ne fonctionne pas, autorisez manuellement dans les paramètres de votre navigateur.
-        </p>
-    </div>
-
-    <!-- Instructions manuelles (si échec) -->
-    <div id="manual-instructions">
-        ⚠️ <strong>Action manuelle requise</strong><br>
-        Tapez sur l'icône 🔒 dans la barre d'adresse → <strong>Autoriser le micro</strong><br>
-        Puis rechargez la page.
-    </div>
-
     <!-- Navbar -->
     <nav class="navbar">
         <a href="espace-détente.html" class="back-btn">←</a>
         <span class="title">🎤 Gemma Avatar</span>
-        <span class="status">
-            <span class="dot"></span>
-            En ligne
-        </span>
+        <span style="color:#666;font-size:0.8rem;">v1.0</span>
     </nav>
 
-    <!-- Conteneur -->
-    <div id="container">
-        <iframe
-            id="app-iframe"
-            src="https://victor-gemma-avatar.hf.space"
-            allow="microphone; camera; clipboard-read; clipboard-write; autoplay"
-            allowfullscreen
-            loading="lazy"
-        ></iframe>
+    <!-- Contenu -->
+    <div class="content">
+        <div class="icon-main">🎤</div>
+        <h1>Gemma Avatar</h1>
+        <p class="subtitle">
+            Intelligence artificielle vocale.<br>
+            Parlez avec l'avatar IA.
+        </p>
+
+        <!-- Bouton principal : ouvre dans la WebView -->
+        <button class="btn-primary" id="openBtn">
+            🚀 Lancer Gemma Avatar
+        </button>
+
+        <!-- Bouton alternatif : ouvre dans le navigateur -->
+        <button class="btn-secondary" id="openBrowserBtn">
+            📱 Ouvrir dans le navigateur
+        </button>
+
+        <!-- Message d'erreur -->
+        <div class="error-msg" id="errorMsg">
+            ⚠️ Impossible d'ouvrir l'application.<br>
+            Essayez le bouton "Ouvrir dans le navigateur".
+        </div>
+
+        <!-- Instructions -->
+        <div class="info-box">
+            <strong>💡 Astuce :</strong><br>
+            Si l'application ne s'ouvre pas, utilisez le bouton<br>
+            <strong>"Ouvrir dans le navigateur"</strong> ci-dessus.
+        </div>
     </div>
 
     <script>
-        // === CONFIGURATION ===
         const APP_URL = 'https://victor-gemma-avatar.hf.space';
-        const iframe = document.getElementById('app-iframe');
-        const loader = document.getElementById('loader');
-        const permissionPrompt = document.getElementById('permission-prompt');
-        const manualInstructions = document.getElementById('manual-instructions');
-        const grantBtn = document.getElementById('grantBtn');
-        const retryBtn = document.getElementById('retryBtn');
+        const openBtn = document.getElementById('openBtn');
+        const openBrowserBtn = document.getElementById('openBrowserBtn');
+        const errorMsg = document.getElementById('errorMsg');
 
-        let micGranted = false;
-        let retryCount = 0;
-
-        // === Cache le loader ===
-        iframe.addEventListener('load', function() {
-            setTimeout(() => loader.classList.add('hidden'), 500);
-        });
-
-        setTimeout(() => loader.classList.add('hidden'), 8000);
-
-        // === Vérifier le micro via l'API Web ===
-        async function checkMicrophone() {
+        // === Option 1 : Ouvrir dans la WebView (remplacement de page) ===
+        openBtn.addEventListener('click', function() {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                stream.getTracks().forEach(track => track.stop());
-                micGranted = true;
-                console.log('✅ Micro autorisé !');
-                return true;
-            } catch (error) {
-                console.warn('❌ Micro refusé:', error.message);
-                micGranted = false;
-                return false;
-            }
-        }
-
-        // === Demander le micro via l'API Web ===
-        async function requestMicrophone() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                stream.getTracks().forEach(track => track.stop());
-                micGranted = true;
-                permissionPrompt.style.display = 'none';
-                manualInstructions.style.display = 'none';
-                // Recharge l'iframe
-                iframe.src = APP_URL;
-                loader.classList.remove('hidden');
-                setTimeout(() => loader.classList.add('hidden'), 3000);
-                return true;
-            } catch (error) {
-                console.error('❌ Erreur demande micro:', error);
-                micGranted = false;
-                
-                // Si c'est un refus permanent, afficher instructions manuelles
-                if (error.message.includes('permission') || error.message.includes('denied')) {
-                    manualInstructions.style.display = 'block';
-                    setTimeout(() => {
-                        manualInstructions.style.display = 'none';
-                    }, 10000);
+                // Tentative 1 : changer window.location
+                window.location.href = APP_URL;
+            } catch (e) {
+                console.error('Erreur navigation:', e);
+                // Tentative 2 : ouvrir dans un nouvel onglet
+                try {
+                    window.open(APP_URL, '_blank');
+                } catch (e2) {
+                    errorMsg.style.display = 'block';
                 }
-                
-                return false;
-            }
-        }
-
-        // === Initialisation ===
-        async function init() {
-            // Vérifier si le micro est déjà autorisé
-            const hasMic = await checkMicrophone();
-            
-            if (hasMic) {
-                permissionPrompt.style.display = 'none';
-                manualInstructions.style.display = 'none';
-            } else {
-                permissionPrompt.style.display = 'flex';
-            }
-        }
-
-        // === Gestion des clics ===
-        grantBtn.addEventListener('click', async function() {
-            await requestMicrophone();
-        });
-
-        retryBtn.addEventListener('click', function() {
-            retryCount++;
-            iframe.src = APP_URL;
-            loader.classList.remove('hidden');
-            setTimeout(() => loader.classList.add('hidden'), 5000);
-            
-            // Si trop de tentatives, montrer instructions manuelles
-            if (retryCount >= 3) {
-                manualInstructions.style.display = 'block';
             }
         });
 
-        // === Détection d'erreur dans l'iframe ===
-        iframe.addEventListener('error', function() {
-            console.error('❌ Erreur iframe');
-            loader.classList.add('hidden');
-        });
-
-        // === Lancement ===
-        document.addEventListener('DOMContentLoaded', init);
-
-        // === Pour les navigateurs qui bloquent getUserMedia sans geste ===
-        document.addEventListener('touchstart', async function firstTouch() {
-            const hasMic = await checkMicrophone();
-            if (!hasMic && permissionPrompt.style.display !== 'flex') {
-                await requestMicrophone();
-            }
-            document.removeEventListener('touchstart', firstTouch);
-        }, { once: true });
-
-        // === Forcer le rechargement si l'iframe ne charge pas ===
-        let reloadInterval = setInterval(() => {
+        // === Option 2 : Ouvrir dans le navigateur externe ===
+        openBrowserBtn.addEventListener('click', function() {
             try {
-                const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-                if (!iframeDoc || iframeDoc.readyState !== 'complete') {
-                    console.log('🔄 Tentative de rechargement...');
-                    iframe.src = APP_URL;
+                // Pour Android WebView, on utilise intent:// pour ouvrir dans Chrome
+                const browserUrl = APP_URL;
+                
+                // Tentative avec intent (Android)
+                if (navigator.userAgent.toLowerCase().includes('android')) {
+                    // Essayer d'ouvrir avec Chrome
+                    window.location.href = `intent://${APP_URL.replace('https://', '')}#Intent;scheme=https;package=com.android.chrome;end;`;
+                    
+                    // Fallback : ouvrir directement
+                    setTimeout(() => {
+                        window.open(APP_URL, '_system');
+                    }, 500);
                 } else {
-                    clearInterval(reloadInterval);
+                    window.open(APP_URL, '_blank');
                 }
             } catch (e) {
-                // Cross-origin, on ignore
+                console.error('Erreur:', e);
+                errorMsg.style.display = 'block';
+                // Dernier recours
+                window.location.href = APP_URL;
             }
-        }, 10000);
+        });
 
-        // Nettoyer l'intervalle après 1 minute
-        setTimeout(() => clearInterval(reloadInterval), 60000);
+        // === Détection si l'ouverture a échoué ===
+        // Si après 3 secondes on est toujours sur la page, afficher l'erreur
+        let navigationAttempted = false;
+        
+        openBtn.addEventListener('click', function() {
+            navigationAttempted = true;
+            setTimeout(() => {
+                // Si la page n'a pas changé, afficher l'erreur
+                if (window.location.href.includes('game-8.html')) {
+                    errorMsg.style.display = 'block';
+                }
+            }, 3000);
+        });
+
+        // === Pour les utilisateurs qui cliquent sans succès ===
+        // Proposer d'ouvrir manuellement
+        document.addEventListener('click', function() {
+            // Si l'erreur est affichée et que l'utilisateur clique, on cache
+            if (errorMsg.style.display === 'block') {
+                errorMsg.style.display = 'none';
+            }
+        });
+
+        console.log('🔵 Gemma Avatar - Prêt');
+        console.log(`🔵 URL: ${APP_URL}`);
     </script>
 </body>
 </html>
