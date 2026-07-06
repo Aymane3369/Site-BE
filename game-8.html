@@ -16,147 +16,112 @@
             overflow: hidden;
         }
         
-        /* Navbar */
-        .navbar {
+        /* Bannière de retour fixe en haut */
+        .top-bar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            z-index: 100;
-            background: rgba(13, 13, 13, 0.95);
-            padding: 12px 20px;
+            z-index: 1000;
+            background: rgba(13, 13, 13, 0.92);
+            padding: 10px 16px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 12px;
             border-bottom: 1px solid #1a1a1a;
             backdrop-filter: blur(10px);
         }
         
-        .navbar .back-btn {
+        .top-bar .back-btn {
             color: #fff;
             font-size: 1.4rem;
             text-decoration: none;
-            padding: 5px 10px;
+            padding: 4px 10px;
             border-radius: 8px;
             background: none;
             border: none;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.95rem;
         }
         
-        .navbar .title {
-            font-size: 1.1rem;
+        .top-bar .back-btn:hover {
+            background: rgba(255,255,255,0.08);
+        }
+        
+        .top-bar .title {
+            font-size: 1rem;
             font-weight: 600;
             background: linear-gradient(135deg, #7c3aed, #ec4899);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            flex: 1;
         }
         
-        .navbar .status {
+        .top-bar .status {
             color: #666;
             font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
         
-        /* Conteneur principal - prend tout l'écran */
+        .top-bar .status .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            display: inline-block;
+            background: #22c55e;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+        
+        /* Conteneur qui prend tout l'écran sous la barre */
         #container {
-            margin-top: 60px;
+            margin-top: 52px;
             width: 100vw;
-            height: calc(100vh - 60px);
-            height: calc(100dvh - 60px);
+            height: calc(100vh - 52px);
+            height: calc(100dvh - 52px);
             background: #0d0d0d;
-            position: relative;
         }
         
-        /* L'iframe - visible uniquement si le micro est OK */
         #app-iframe {
             width: 100%;
             height: 100%;
             border: none;
             background: #0d0d0d;
-            display: none; /* Caché par défaut */
+            display: block;
         }
         
-        /* Écran d'accueil (visible si micro non autorisé) */
-        #home-screen {
+        /* Écran de chargement */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 30px 20px;
-            text-align: center;
-        }
-        
-        .icon-main {
-            font-size: 4.5rem;
-            margin-bottom: 15px;
-        }
-        
-        #home-screen h1 {
-            font-size: 1.6rem;
-            margin-bottom: 8px;
-        }
-        
-        #home-screen .subtitle {
-            color: #999;
-            max-width: 320px;
-            margin: 0 auto 25px;
-            line-height: 1.6;
-            font-size: 0.95rem;
-        }
-        
-        /* Boutons */
-        .btn-primary {
-            display: inline-block;
-            padding: 16px 45px;
-            background: linear-gradient(135deg, #7c3aed, #6d28d9);
-            color: #fff;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 25px rgba(124, 58, 237, 0.4);
-            transition: transform 0.2s;
-            width: 100%;
-            max-width: 320px;
-        }
-        
-        .btn-primary:active {
-            transform: scale(0.95);
-        }
-        
-        .btn-secondary {
-            display: inline-block;
-            margin-top: 12px;
-            padding: 14px 30px;
-            background: transparent;
-            color: #aaa;
-            border: 1px solid #333;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            width: 100%;
-            max-width: 320px;
-        }
-        
-        /* Loader de chargement */
-        #loader {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
+            background: #0d0d0d;
             z-index: 999;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             color: #fff;
+            transition: opacity 0.5s;
         }
         
-        #loader .spinner {
+        #loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .spinner {
             width: 45px;
             height: 45px;
             border: 4px solid #1a1a1a;
@@ -179,35 +144,35 @@
             font-size: 0.85rem;
             margin-top: 8px;
         }
-
+        
         /* Message d'erreur */
-        #error-msg {
+        #error-box {
             display: none;
-            margin-top: 15px;
-            padding: 12px 18px;
-            background: rgba(239, 68, 68, 0.12);
-            border: 1px solid rgba(239, 68, 68, 0.25);
-            border-radius: 10px;
-            color: #f87171;
-            font-size: 0.85rem;
-            max-width: 320px;
-        }
-
-        /* Info en bas */
-        .info-box {
-            margin-top: 25px;
-            padding: 12px 16px;
-            background: #1a1a1a;
-            border-radius: 10px;
-            max-width: 320px;
-            font-size: 0.75rem;
-            color: #555;
-            line-height: 1.5;
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.92);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 15px 20px;
+            z-index: 1001;
+            max-width: 90%;
             text-align: center;
+            font-size: 0.85rem;
+            color: #f87171;
+            line-height: 1.5;
         }
         
-        .info-box strong {
-            color: #888;
+        #error-box .btn-close {
+            margin-top: 10px;
+            padding: 8px 25px;
+            background: #7c3aed;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            cursor: pointer;
         }
 
         @supports (-webkit-touch-callout: none) {
@@ -217,145 +182,97 @@
 </head>
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar">
-        <button class="back-btn" id="backBtn">←</button>
-        <span class="title">🎤 Gemma Avatar</span>
-        <span class="status" id="statusText">⏳ Connexion...</span>
-    </nav>
-
     <!-- Loader -->
     <div id="loader">
         <div class="spinner"></div>
         <p>Connexion à Gemma Avatar...</p>
-        <p class="sub">Veuillez patienter</p>
+        <p class="sub">Préparation de l'interface</p>
     </div>
 
-    <!-- Conteneur principal -->
-    <div id="container">
-        
-        <!-- Écran d'accueil -->
-        <div id="home-screen">
-            <div class="icon-main">🎤</div>
-            <h1>Gemma Avatar</h1>
-            <p class="subtitle">Intelligence artificielle vocale.<br>Parlez avec l'avatar IA.</p>
-            
-            <button class="btn-primary" id="launchBtn">
-                🚀 Lancer Gemma Avatar
-            </button>
-            
-            <button class="btn-secondary" id="retryBtn">
-                🔄 Réessayer
-            </button>
-            
-            <div id="error-msg">
-                ⚠️ Impossible de charger l'application.<br>
-                Vérifiez votre connexion internet.
-            </div>
-            
-            <div class="info-box">
-                💡 <strong>Astuce :</strong> Si l'application ne se lance pas,<br>
-                redémarrez l'application et réessayez.
-            </div>
-        </div>
+    <!-- Barre de retour -->
+    <div class="top-bar">
+        <button class="back-btn" id="backBtn">← Retour</button>
+        <span class="title">🎤 Gemma Avatar</span>
+        <span class="status">
+            <span class="dot"></span>
+            En ligne
+        </span>
+    </div>
 
-        <!-- Iframe (caché par défaut) -->
+    <!-- Conteneur -->
+    <div id="container">
         <iframe
             id="app-iframe"
             src="https://victor-gemma-avatar.hf.space"
             allow="microphone; camera; clipboard-read; clipboard-write; autoplay"
             allowfullscreen
-            loading="lazy"
+            loading="eager"
         ></iframe>
     </div>
 
+    <!-- Boîte d'erreur -->
+    <div id="error-box">
+        <span>⚠️ Le micro est bloqué par l'application.</span><br>
+        <span style="color:#aaa;font-size:0.8rem;">Autorisez le micro dans les paramètres de votre téléphone.</span>
+        <br>
+        <button class="btn-close" id="errorCloseBtn">Compris</button>
+    </div>
+
     <script>
-        // === CONFIGURATION ===
         const APP_URL = 'https://victor-gemma-avatar.hf.space';
         const iframe = document.getElementById('app-iframe');
-        const homeScreen = document.getElementById('home-screen');
         const loader = document.getElementById('loader');
-        const launchBtn = document.getElementById('launchBtn');
-        const retryBtn = document.getElementById('retryBtn');
+        const errorBox = document.getElementById('error-box');
         const backBtn = document.getElementById('backBtn');
-        const errorMsg = document.getElementById('error-msg');
-        const statusText = document.getElementById('statusText');
+        const errorCloseBtn = document.getElementById('errorCloseBtn');
 
-        let isAppLoaded = false;
+        let iframeLoaded = false;
 
-        // === Fonction pour lancer l'application ===
-        function launchApp() {
-            // Afficher le loader
-            loader.style.display = 'flex';
-            statusText.textContent = '⏳ Chargement...';
-            errorMsg.style.display = 'none';
-
-            // Cacher l'écran d'accueil
-            homeScreen.style.display = 'none';
-
-            // Afficher l'iframe
-            iframe.style.display = 'block';
-
-            // Recharger l'iframe
-            iframe.src = APP_URL;
-
-            // Timeout de sécurité : si l'iframe ne charge pas
-            setTimeout(() => {
-                if (!isAppLoaded) {
-                    loader.style.display = 'none';
-                    errorMsg.style.display = 'block';
-                    statusText.textContent = '❌ Erreur';
-                    
-                    // Proposer de réessayer
-                    setTimeout(() => {
-                        if (confirm('❌ Gemma Avatar ne répond pas.\nVoulez-vous réessayer ?')) {
-                            launchApp();
-                        } else {
-                            // Retour à l'accueil
-                            goHome();
-                        }
-                    }, 2000);
-                }
-            }, 15000);
-        }
-
-        // === Retour à l'écran d'accueil ===
-        function goHome() {
-            iframe.style.display = 'none';
-            homeScreen.style.display = 'flex';
-            loader.style.display = 'none';
-            statusText.textContent = '⏸️ En attente';
-            errorMsg.style.display = 'none';
-            isAppLoaded = false;
-        }
-
-        // === Quand l'iframe est chargée ===
+        // === Cache le loader quand l'iframe est chargée ===
         iframe.addEventListener('load', function() {
-            isAppLoaded = true;
-            loader.style.display = 'none';
-            statusText.textContent = '✅ Connecté';
-            errorMsg.style.display = 'none';
-            console.log('✅ Gemma Avatar chargé !');
-        });
-
-        // === Quand l'iframe a une erreur ===
-        iframe.addEventListener('error', function() {
-            console.error('❌ Erreur iframe');
-            if (!isAppLoaded) {
-                loader.style.display = 'none';
-                errorMsg.style.display = 'block';
-                statusText.textContent = '❌ Erreur';
+            iframeLoaded = true;
+            loader.classList.add('hidden');
+            console.log('✅ Iframe chargée');
+            
+            // Détecter si le micro est bloqué dans l'iframe
+            try {
+                // Tenter d'injecter un script dans l'iframe pour détecter l'état du micro
+                const iframeWindow = iframe.contentWindow;
+                if (iframeWindow) {
+                    // On écoute les messages de l'iframe
+                    window.addEventListener('message', function(event) {
+                        if (event.data && event.data.type === 'mic_status') {
+                            if (event.data.status === 'blocked') {
+                                errorBox.style.display = 'block';
+                            }
+                        }
+                    });
+                }
+            } catch (e) {
+                // Cross-origin, on ignore
+                console.log('Cross-origin, impossible d\'injecter');
             }
         });
 
-        // === Bouton Lancer ===
-        launchBtn.addEventListener('click', launchApp);
-
-        // === Bouton Réessayer ===
-        retryBtn.addEventListener('click', function() {
-            goHome();
-            setTimeout(launchApp, 500);
+        // === Erreur de chargement ===
+        iframe.addEventListener('error', function() {
+            loader.classList.add('hidden');
+            errorBox.style.display = 'block';
+            errorBox.innerHTML = `
+                <span>❌ Impossible de charger Gemma Avatar.</span><br>
+                <span style="color:#aaa;font-size:0.8rem;">Vérifiez votre connexion internet.</span>
+                <br>
+                <button class="btn-close" onclick="location.reload()">🔄 Réessayer</button>
+            `;
         });
+
+        // === Timeout de sécurité ===
+        setTimeout(function() {
+            if (!iframeLoaded) {
+                loader.classList.add('hidden');
+                errorBox.style.display = 'block';
+            }
+        }, 12000);
 
         // === Bouton Retour ===
         backBtn.addEventListener('click', function() {
@@ -363,78 +280,44 @@
             window.location.href = 'espace-détente.html';
         });
 
+        // === Fermer l'erreur ===
+        errorCloseBtn.addEventListener('click', function() {
+            errorBox.style.display = 'none';
+        });
+
         // === Gestion du bouton retour Android ===
         document.addEventListener('backbutton', function(e) {
-            if (iframe.style.display === 'block' && isAppLoaded) {
-                goHome();
-            } else {
-                window.location.href = 'espace-détente.html';
-            }
+            e.preventDefault();
+            window.location.href = 'espace-détente.html';
         });
 
-        // === FORCER la demande de micro via l'API Web ===
-        async function forceMicroAccess() {
+        // === Pour les appareils qui nécessitent un geste ===
+        // Si l'utilisateur tape sur l'écran, on essaie de forcer le micro
+        document.addEventListener('click', async function() {
             try {
-                console.log('🔵 Tentative d\'accès au micro...');
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                stream.getTracks().forEach(track => track.stop());
-                console.log('✅ Micro accessible !');
-                return true;
+                stream.getTracks().forEach(t => t.stop());
+                console.log('✅ Micro actif');
+                // Recharger l'iframe pour qu'elle détecte le micro
+                iframe.src = iframe.src;
             } catch (err) {
-                console.warn('❌ Micro non accessible:', err.message);
-                return false;
+                console.warn('❌ Micro toujours bloqué');
             }
-        }
-
-        // === Détection si le micro est déjà autorisé ===
-        async function checkMicroAndLaunch() {
-            const hasMic = await forceMicroAccess();
-            if (hasMic) {
-                // Si micro OK, on lance directement
-                setTimeout(launchApp, 500);
-            } else {
-                // Sinon on reste sur l'écran d'accueil
-                statusText.textContent = '🎤 Micro requis';
-            }
-        }
-
-        // === Lancer la vérification au démarrage ===
-        document.addEventListener('DOMContentLoaded', function() {
-            statusText.textContent = '🔄 Vérification...';
-            
-            // Attendre 1 seconde puis vérifier
-            setTimeout(checkMicroAndLaunch, 1000);
-        });
-
-        // === Pour les appareils qui nécessitent un geste utilisateur ===
-        document.addEventListener('touchstart', async function firstTouch() {
-            // Vérifier si on est sur l'écran d'accueil
-            if (homeScreen.style.display !== 'none') {
-                const hasMic = await forceMicroAccess();
-                if (hasMic) {
-                    launchApp();
-                }
-            }
-            document.removeEventListener('touchstart', firstTouch);
         }, { once: true });
 
-        // === Recharger l'iframe si perte de connexion ===
-        let reconnectInterval = setInterval(() => {
-            if (isAppLoaded && iframe.style.display === 'block') {
-                try {
-                    // Vérifier si l'iframe répond
-                    const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-                    if (!iframeDoc || iframeDoc.readyState !== 'complete') {
-                        console.log('🔄 Reconnexion...');
-                        iframe.src = APP_URL;
-                    }
-                } catch (e) {
-                    // Cross-origin, on ignore
+        // === Détecter si l'utilisateur clique sur "Start talking" ===
+        // On écoute les clics globaux pour détecter l'interaction
+        document.addEventListener('click', function() {
+            // Si l'erreur est affichée, on la cache après un délai
+            setTimeout(() => {
+                if (errorBox.style.display === 'block') {
+                    // L'utilisateur a cliqué, peut-être que le micro est maintenant autorisé
+                    iframe.src = iframe.src;
                 }
-            }
-        }, 30000);
+            }, 3000);
+        });
 
-        console.log('🔵 Gemma Avatar - Version intégrée');
+        console.log('🔵 Gemma Avatar - Mode plein écran');
         console.log(`🔵 URL: ${APP_URL}`);
     </script>
 </body>
