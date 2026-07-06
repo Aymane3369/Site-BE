@@ -13,311 +13,262 @@
             font-family: 'Segoe UI', Arial, sans-serif;
             background: #0d0d0d;
             color: #fff;
-            overflow: hidden;
         }
         
-        /* Bannière de retour fixe en haut */
-        .top-bar {
+        /* Navbar */
+        .navbar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            z-index: 1000;
-            background: rgba(13, 13, 13, 0.92);
-            padding: 10px 16px;
+            z-index: 100;
+            background: rgba(13, 13, 13, 0.95);
+            padding: 12px 20px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            justify-content: space-between;
             border-bottom: 1px solid #1a1a1a;
             backdrop-filter: blur(10px);
         }
         
-        .top-bar .back-btn {
+        .navbar .back-btn {
             color: #fff;
             font-size: 1.4rem;
             text-decoration: none;
-            padding: 4px 10px;
+            padding: 5px 10px;
             border-radius: 8px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.95rem;
         }
         
-        .top-bar .back-btn:hover {
-            background: rgba(255,255,255,0.08);
-        }
-        
-        .top-bar .title {
-            font-size: 1rem;
+        .navbar .title {
+            font-size: 1.1rem;
             font-weight: 600;
             background: linear-gradient(135deg, #7c3aed, #ec4899);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            flex: 1;
         }
         
-        .top-bar .status {
-            color: #666;
-            font-size: 0.7rem;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .top-bar .status .dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            display: inline-block;
-            background: #22c55e;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.2; }
-        }
-        
-        /* Conteneur qui prend tout l'écran sous la barre */
-        #container {
-            margin-top: 52px;
-            width: 100vw;
-            height: calc(100vh - 52px);
-            height: calc(100dvh - 52px);
-            background: #0d0d0d;
-        }
-        
-        #app-iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            background: #0d0d0d;
-            display: block;
-        }
-        
-        /* Écran de chargement */
-        #loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+        /* Contenu principal */
+        .content {
+            margin-top: 70px;
+            padding: 30px 20px;
+            text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: #0d0d0d;
-            z-index: 999;
-            color: #fff;
-            transition: opacity 0.5s;
+            min-height: calc(100vh - 70px);
         }
         
-        #loader.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        
-        .spinner {
-            width: 45px;
-            height: 45px;
-            border: 4px solid #1a1a1a;
-            border-top: 4px solid #7c3aed;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+        .icon-main {
+            font-size: 5rem;
             margin-bottom: 20px;
         }
         
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
         }
         
-        #loader p {
-            font-size: 1.1rem;
+        .subtitle {
+            color: #999;
+            max-width: 350px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
         }
         
-        #loader .sub {
-            color: #666;
+        /* Bouton principal */
+        .btn-primary {
+            display: inline-block;
+            padding: 18px 50px;
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 4px 25px rgba(124, 58, 237, 0.4);
+            transition: transform 0.2s;
+            width: 100%;
+            max-width: 350px;
+        }
+        
+        .btn-primary:active {
+            transform: scale(0.95);
+        }
+        
+        .btn-secondary {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 14px 30px;
+            background: transparent;
+            color: #aaa;
+            border: 1px solid #333;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-decoration: none;
+            width: 100%;
+            max-width: 350px;
+        }
+        
+        /* Instructions */
+        .info-box {
+            margin-top: 30px;
+            padding: 15px 20px;
+            background: #1a1a1a;
+            border-radius: 12px;
+            max-width: 350px;
             font-size: 0.85rem;
-            margin-top: 8px;
+            color: #666;
+            line-height: 1.6;
+            text-align: left;
+        }
+        
+        .info-box strong {
+            color: #fff;
+        }
+        
+        .info-box .highlight {
+            color: #7c3aed;
+            word-break: break-all;
         }
         
         /* Message d'erreur */
-        #error-box {
+        .error-msg {
             display: none;
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.92);
-            border: 1px solid #333;
-            border-radius: 12px;
-            padding: 15px 20px;
-            z-index: 1001;
-            max-width: 90%;
-            text-align: center;
-            font-size: 0.85rem;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 10px;
             color: #f87171;
-            line-height: 1.5;
+            font-size: 0.9rem;
+            max-width: 350px;
         }
         
-        #error-box .btn-close {
-            margin-top: 10px;
-            padding: 8px 25px;
-            background: #7c3aed;
-            color: #fff;
-            border: none;
-            border-radius: 25px;
-            font-size: 0.85rem;
-            cursor: pointer;
-        }
-
-        @supports (-webkit-touch-callout: none) {
-            #container { height: -webkit-fill-available; }
+        @media (max-width: 480px) {
+            .content { padding: 20px 15px; }
+            h1 { font-size: 1.5rem; }
+            .btn-primary { font-size: 1rem; padding: 16px 30px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Loader -->
-    <div id="loader">
-        <div class="spinner"></div>
-        <p>Connexion à Gemma Avatar...</p>
-        <p class="sub">Préparation de l'interface</p>
-    </div>
-
-    <!-- Barre de retour -->
-    <div class="top-bar">
-        <button class="back-btn" id="backBtn">← Retour</button>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="espace-détente.html" class="back-btn">←</a>
         <span class="title">🎤 Gemma Avatar</span>
-        <span class="status">
-            <span class="dot"></span>
-            En ligne
-        </span>
-    </div>
+        <span style="color:#666;font-size:0.8rem;">v1.0</span>
+    </nav>
 
-    <!-- Conteneur -->
-    <div id="container">
-        <iframe
-            id="app-iframe"
-            src="https://victor-gemma-avatar.hf.space"
-            allow="microphone; camera; clipboard-read; clipboard-write; autoplay"
-            allowfullscreen
-            loading="eager"
-        ></iframe>
-    </div>
+    <!-- Contenu -->
+    <div class="content">
+        <div class="icon-main">🎤</div>
+        <h1>Gemma Avatar</h1>
+        <p class="subtitle">
+            Intelligence artificielle vocale.<br>
+            Parlez avec l'avatar IA.
+        </p>
 
-    <!-- Boîte d'erreur -->
-    <div id="error-box">
-        <span>⚠️ Le micro est bloqué par l'application.</span><br>
-        <span style="color:#aaa;font-size:0.8rem;">Autorisez le micro dans les paramètres de votre téléphone.</span>
-        <br>
-        <button class="btn-close" id="errorCloseBtn">Compris</button>
+        <!-- Bouton principal : ouvre dans la WebView -->
+        <button class="btn-primary" id="openBtn">
+            🚀 Lancer Gemma Avatar
+        </button>
+
+        <!-- Bouton alternatif : ouvre dans le navigateur -->
+        <button class="btn-secondary" id="openBrowserBtn">
+            📱 Ouvrir dans le navigateur
+        </button>
+
+        <!-- Message d'erreur -->
+        <div class="error-msg" id="errorMsg">
+            ⚠️ Impossible d'ouvrir l'application.<br>
+            Essayez le bouton "Ouvrir dans le navigateur".
+        </div>
+
+        <!-- Instructions -->
+        <div class="info-box">
+            <strong>💡 Astuce :</strong><br>
+            Si l'application ne s'ouvre pas, utilisez le bouton<br>
+            <strong>"Ouvrir dans le navigateur"</strong> ci-dessus.
+        </div>
     </div>
 
     <script>
         const APP_URL = 'https://victor-gemma-avatar.hf.space';
-        const iframe = document.getElementById('app-iframe');
-        const loader = document.getElementById('loader');
-        const errorBox = document.getElementById('error-box');
-        const backBtn = document.getElementById('backBtn');
-        const errorCloseBtn = document.getElementById('errorCloseBtn');
+        const openBtn = document.getElementById('openBtn');
+        const openBrowserBtn = document.getElementById('openBrowserBtn');
+        const errorMsg = document.getElementById('errorMsg');
 
-        let iframeLoaded = false;
-
-        // === Cache le loader quand l'iframe est chargée ===
-        iframe.addEventListener('load', function() {
-            iframeLoaded = true;
-            loader.classList.add('hidden');
-            console.log('✅ Iframe chargée');
-            
-            // Détecter si le micro est bloqué dans l'iframe
+        // === Option 1 : Ouvrir dans la WebView (remplacement de page) ===
+        openBtn.addEventListener('click', function() {
             try {
-                // Tenter d'injecter un script dans l'iframe pour détecter l'état du micro
-                const iframeWindow = iframe.contentWindow;
-                if (iframeWindow) {
-                    // On écoute les messages de l'iframe
-                    window.addEventListener('message', function(event) {
-                        if (event.data && event.data.type === 'mic_status') {
-                            if (event.data.status === 'blocked') {
-                                errorBox.style.display = 'block';
-                            }
-                        }
-                    });
+                // Tentative 1 : changer window.location
+                window.location.href = APP_URL;
+            } catch (e) {
+                console.error('Erreur navigation:', e);
+                // Tentative 2 : ouvrir dans un nouvel onglet
+                try {
+                    window.open(APP_URL, '_blank');
+                } catch (e2) {
+                    errorMsg.style.display = 'block';
+                }
+            }
+        });
+
+        // === Option 2 : Ouvrir dans le navigateur externe ===
+        openBrowserBtn.addEventListener('click', function() {
+            try {
+                // Pour Android WebView, on utilise intent:// pour ouvrir dans Chrome
+                const browserUrl = APP_URL;
+                
+                // Tentative avec intent (Android)
+                if (navigator.userAgent.toLowerCase().includes('android')) {
+                    // Essayer d'ouvrir avec Chrome
+                    window.location.href = `intent://${APP_URL.replace('https://', '')}#Intent;scheme=https;package=com.android.chrome;end;`;
+                    
+                    // Fallback : ouvrir directement
+                    setTimeout(() => {
+                        window.open(APP_URL, '_system');
+                    }, 500);
+                } else {
+                    window.open(APP_URL, '_blank');
                 }
             } catch (e) {
-                // Cross-origin, on ignore
-                console.log('Cross-origin, impossible d\'injecter');
+                console.error('Erreur:', e);
+                errorMsg.style.display = 'block';
+                // Dernier recours
+                window.location.href = APP_URL;
             }
         });
 
-        // === Erreur de chargement ===
-        iframe.addEventListener('error', function() {
-            loader.classList.add('hidden');
-            errorBox.style.display = 'block';
-            errorBox.innerHTML = `
-                <span>❌ Impossible de charger Gemma Avatar.</span><br>
-                <span style="color:#aaa;font-size:0.8rem;">Vérifiez votre connexion internet.</span>
-                <br>
-                <button class="btn-close" onclick="location.reload()">🔄 Réessayer</button>
-            `;
-        });
-
-        // === Timeout de sécurité ===
-        setTimeout(function() {
-            if (!iframeLoaded) {
-                loader.classList.add('hidden');
-                errorBox.style.display = 'block';
-            }
-        }, 12000);
-
-        // === Bouton Retour ===
-        backBtn.addEventListener('click', function() {
-            // Retourner à l'espace détente
-            window.location.href = 'espace-détente.html';
-        });
-
-        // === Fermer l'erreur ===
-        errorCloseBtn.addEventListener('click', function() {
-            errorBox.style.display = 'none';
-        });
-
-        // === Gestion du bouton retour Android ===
-        document.addEventListener('backbutton', function(e) {
-            e.preventDefault();
-            window.location.href = 'espace-détente.html';
-        });
-
-        // === Pour les appareils qui nécessitent un geste ===
-        // Si l'utilisateur tape sur l'écran, on essaie de forcer le micro
-        document.addEventListener('click', async function() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                stream.getTracks().forEach(t => t.stop());
-                console.log('✅ Micro actif');
-                // Recharger l'iframe pour qu'elle détecte le micro
-                iframe.src = iframe.src;
-            } catch (err) {
-                console.warn('❌ Micro toujours bloqué');
-            }
-        }, { once: true });
-
-        // === Détecter si l'utilisateur clique sur "Start talking" ===
-        // On écoute les clics globaux pour détecter l'interaction
-        document.addEventListener('click', function() {
-            // Si l'erreur est affichée, on la cache après un délai
+        // === Détection si l'ouverture a échoué ===
+        // Si après 3 secondes on est toujours sur la page, afficher l'erreur
+        let navigationAttempted = false;
+        
+        openBtn.addEventListener('click', function() {
+            navigationAttempted = true;
             setTimeout(() => {
-                if (errorBox.style.display === 'block') {
-                    // L'utilisateur a cliqué, peut-être que le micro est maintenant autorisé
-                    iframe.src = iframe.src;
+                // Si la page n'a pas changé, afficher l'erreur
+                if (window.location.href.includes('game-8.html')) {
+                    errorMsg.style.display = 'block';
                 }
             }, 3000);
         });
 
-        console.log('🔵 Gemma Avatar - Mode plein écran');
+        // === Pour les utilisateurs qui cliquent sans succès ===
+        // Proposer d'ouvrir manuellement
+        document.addEventListener('click', function() {
+            // Si l'erreur est affichée et que l'utilisateur clique, on cache
+            if (errorMsg.style.display === 'block') {
+                errorMsg.style.display = 'none';
+            }
+        });
+
+        console.log('🔵 Gemma Avatar - Prêt');
         console.log(`🔵 URL: ${APP_URL}`);
     </script>
 </body>
