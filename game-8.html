@@ -1,147 +1,105 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gemma Avatar</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html {
-            width: 100%;
-            height: 100%;
+        * { margin: 0; padding: 0; }
+        body, html { 
+            width: 100%; 
+            height: 100%; 
             overflow: hidden;
             background: #0d0d0d;
-            font-family: Arial, sans-serif;
         }
-        #container {
+        #app {
             width: 100vw;
             height: 100vh;
             height: 100dvh;
-            display: flex;
-            flex-direction: column;
-            background: #0d0d0d;
         }
-        #app-iframe {
-            flex: 1;
+        #app iframe {
             width: 100%;
+            height: 100%;
             border: none;
-            background: #0d0d0d;
         }
-        #mic-prompt {
-            display: none;
+        #loader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.9);
-            color: #fff;
-            flex-direction: column;
+            display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
-            text-align: center;
-            padding: 30px;
-            font-size: 1.2rem;
+            background: #0d0d0d;
+            color: #fff;
+            z-index: 999;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
         }
-        #mic-prompt .btn {
-            margin-top: 25px;
-            padding: 15px 40px;
+        .spinner {
+            width: 45px;
+            height: 45px;
+            border: 4px solid #333;
+            border-top: 4px solid #7c3aed;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .btn-retry {
+            margin-top: 20px;
+            padding: 12px 30px;
             background: #7c3aed;
             color: #fff;
             border: none;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: bold;
+            border-radius: 25px;
+            font-size: 1rem;
             cursor: pointer;
-        }
-        #mic-prompt .icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-        }
-        @supports (-webkit-touch-callout: none) {
-            #container { height: -webkit-fill-available; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Prompt d'autorisation -->
-    <div id="mic-prompt">
-        <div class="icon">🎤</div>
-        <h2>Autoriser le micro</h2>
-        <p style="max-width:350px;margin:15px auto;color:#aaa;">
-            Gemma Avatar a besoin d'accéder à votre micro pour fonctionner.
-        </p>
-        <button class="btn" id="mic-btn">✅ Autoriser le micro</button>
-        <p style="margin-top:20px;font-size:0.9rem;color:#666;">
-            Si le bouton ne fonctionne pas, autorisez manuellement dans les paramètres du navigateur.
-        </p>
+    <div id="loader">
+        <div class="spinner"></div>
+        <p style="font-size:1.2rem;">Chargement de Gemma Avatar...</p>
+        <p style="font-size:0.8rem;color:#666;margin-top:10px;">Accès au micro en cours...</p>
+        <button class="btn-retry" id="retryBtn">🔄 Réessayer</button>
     </div>
 
-    <!-- Conteneur principal -->
-    <div id="container">
+    <div id="app">
         <iframe
             id="app-iframe"
             src="https://victor-gemma-avatar.hf.space"
             allow="microphone; camera; clipboard-read; clipboard-write; autoplay"
             allowfullscreen
-            loading="lazy"
         ></iframe>
     </div>
 
     <script>
-        const promptDiv = document.getElementById('mic-prompt');
-        const micBtn = document.getElementById('mic-btn');
         const iframe = document.getElementById('app-iframe');
+        const loader = document.getElementById('loader');
+        const retryBtn = document.getElementById('retryBtn');
 
-        // Vérifie si le micro est déjà autorisé
-        async function checkMic() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                stream.getTracks().forEach(track => track.stop());
-                return true;
-            } catch {
-                return false;
-            }
-        }
+        // Cache le loader quand l'iframe est chargée
+        iframe.addEventListener('load', function() {
+            loader.style.display = 'none';
+        });
 
-        // Demande l'autorisation
-        async function requestMic() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                stream.getTracks().forEach(track => track.stop());
-                promptDiv.style.display = 'none';
-                // Recharge l'iframe pour qu'elle détecte le micro
-                iframe.src = iframe.src;
-                return true;
-            } catch (err) {
-                alert("❌ Micro refusé. Veuillez l'autoriser dans les paramètres de votre navigateur puis recharger la page.");
-                return false;
-            }
-        }
+        // Si l'utilisateur clique sur réessayer
+        retryBtn.addEventListener('click', function() {
+            // Recharge l'iframe
+            iframe.src = iframe.src;
+            loader.style.display = 'flex';
+        });
 
-        // Au chargement, on teste
-        (async function init() {
-            const hasMic = await checkMic();
-            if (!hasMic) {
-                promptDiv.style.display = 'flex';
-            } else {
-                promptDiv.style.display = 'none';
-            }
-        })();
-
-        // Clic sur le bouton
-        micBtn.addEventListener('click', requestMic);
-
-        // Pour iOS : un clic n'importe où déclenche la demande
-        document.addEventListener('touchstart', async function firstTouch() {
-            const hasMic = await checkMic();
-            if (!hasMic) {
-                await requestMic();
-            }
-            document.removeEventListener('touchstart', firstTouch);
-        }, { once: true });
+        // Timeout de sécurité : cacher le loader après 10s
+        setTimeout(() => {
+            loader.style.display = 'none';
+        }, 10000);
     </script>
 
 </body>
