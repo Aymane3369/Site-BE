@@ -208,11 +208,14 @@ Promise.all([adminPromise, clientPromise])
     document.getElementById("date").dispatchEvent(new Event("change"));
 
 })
+
 .catch((err) => {
-    console.log("Erreur admin email :", err);
+    console.error("Erreur EmailJS :", err);
+
     msg.style.color = "red";
-    msg.textContent = "Erreur critique ❌ (RDV non enregistré)";
+    msg.textContent = err.text || err.message || JSON.stringify(err);
 });
+
 
 // refresh horaires
 document.getElementById("date").dispatchEvent(new Event("change"));
