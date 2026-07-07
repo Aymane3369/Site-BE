@@ -26,9 +26,15 @@ body {
     box-shadow:0 10px 25px rgba(0,0,0,0.2);
 }
 
-h2 { text-align:center; }
+h2 { 
+    text-align:center; 
+}
 
-label { display:block; margin-top:10px; font-weight:bold; }
+label { 
+    display:block; 
+    margin-top:10px; 
+    font-weight:bold; 
+}
 
 input, select {
     width:100%;
@@ -60,166 +66,310 @@ button {
 <body>
 
 <div class="card">
+
 <h2>Prise de RDV</h2>
 
 <input type="text" id="name" placeholder="Nom">
+
 <input type="email" id="email" placeholder="Email">
+
 <input type="text" id="motif" placeholder="Motif / description du RDV">
 
 <label>Date</label>
 <input type="date" id="date">
 
 <label>Horaire</label>
+
 <select id="heure">
-    <option>Choisir une date</option>
+<option value="">Choisir une date</option>
 </select>
 
 <button onclick="reserver()">Confirmer RDV</button>
 
 <div class="msg" id="msg"></div>
+
 </div>
 
+
 <script>
-// 🔑 EMAILJS CONFIG
+
+// EMAILJS CONFIG
+
 emailjs.init({
-  publicKey: "YfECB4XzMq03NfFpz"
+    publicKey: "YfECB4XzMq03NfFpz"
 });
 
-const SERVICE_ID = "service_ues8f94";
-const TEMPLATE_ID = "template_dywry5b";
 
-// horaires 30 min
+const SERVICE_ID = "service_ift1ag2";
+
+const ADMIN_TEMPLATE = "template_974xxji";
+
+const CLIENT_TEMPLATE = "template_dywry5b";
+
+
+// horaires
+
 const horaires = [
-"08:00 - 08:30","08:30 - 09:00",
-"09:00 - 09:30","09:30 - 10:00",
-"10:00 - 10:30","10:30 - 11:00",
-"11:00 - 11:30","11:30 - 12:00",
-"14:00 - 14:30","14:30 - 15:00",
-"15:00 - 15:30","15:30 - 16:00",
-"16:00 - 16:30","16:30 - 17:00"
+"08:00 - 08:30",
+"08:30 - 09:00",
+"09:00 - 09:30",
+"09:30 - 10:00",
+"10:00 - 10:30",
+"10:30 - 11:00",
+"11:00 - 11:30",
+"11:30 - 12:00",
+"14:00 - 14:30",
+"14:30 - 15:00",
+"15:00 - 15:30",
+"15:30 - 16:00",
+"16:00 - 16:30",
+"16:30 - 17:00"
 ];
 
-// localStorage
+
+// stockage
+
 function getData(){
-return JSON.parse(localStorage.getItem("rdv")) || {};
+
+    return JSON.parse(localStorage.getItem("rdv")) || {};
+
 }
+
 
 function saveData(data){
-localStorage.setItem("rdv", JSON.stringify(data));
+
+    localStorage.setItem("rdv", JSON.stringify(data));
+
 }
 
-// génération horaires
+
+
+// création horaires selon date
+
 document.getElementById("date").addEventListener("change", function(){
 
-const select = document.getElementById("heure");
-select.innerHTML = "";
+    const select = document.getElementById("heure");
 
-if(!this.value) return;
+    select.innerHTML = "";
 
-const d = new Date(this.value + "T00:00:00");
-const jour = d.getDay();
 
-// week-end
-if(jour === 0 || jour === 6){
-select.innerHTML = "<option>Fermé le week-end</option>";
-return;
-}
+    if(!this.value) return;
 
-const data = getData();
-const pris = data[this.value] || [];
 
-let def = document.createElement("option");
-def.text = "Choisir un horaire";
-def.value = "";
-select.appendChild(def);
+    const d = new Date(this.value + "T00:00:00");
 
-horaires.forEach(h => {
-if(!pris.includes(h)){
-let opt = document.createElement("option");
-opt.value = h;
-opt.text = h;
-select.appendChild(opt);
-}
+    const jour = d.getDay();
+
+
+
+    if(jour === 0 || jour === 6){
+
+        select.innerHTML = "<option>Fermé le week-end</option>";
+
+        return;
+
+    }
+
+
+
+    const data = getData();
+
+    const pris = data[this.value] || [];
+
+
+
+    let option = document.createElement("option");
+
+    option.text = "Choisir un horaire";
+
+    option.value = "";
+
+    select.appendChild(option);
+
+
+
+    horaires.forEach(h => {
+
+
+        if(!pris.includes(h)){
+
+
+            let opt = document.createElement("option");
+
+            opt.value = h;
+
+            opt.text = h;
+
+            select.appendChild(opt);
+
+
+        }
+
+    });
+
+
+
+    if(select.options.length === 1){
+
+        select.innerHTML = "<option>Aucun créneau disponible</option>";
+
+    }
+
+
 });
 
-if(select.options.length === 1){
-select.innerHTML = "<option>Aucun créneau disponible</option>";
-}
-});
 
-// réservation + email
+
+
+// réservation
+
 function reserver(){
 
+
 const name = document.getElementById("name").value;
+
 const email = document.getElementById("email").value;
+
 const date = document.getElementById("date").value;
+
 const heure = document.getElementById("heure").value;
+
+const motif = document.getElementById("motif").value;
+
 const msg = document.getElementById("msg");
 
+
+
 if(!name || !email || !date || !heure){
-msg.style.color = "red";
-msg.textContent = "Remplis tous les champs";
-return;
+
+
+    msg.style.color="red";
+
+    msg.textContent="Remplis tous les champs";
+
+    return;
+
 }
 
-// localStorage
+
+
+
 let data = getData();
-if(!data[date]) data[date] = [];
+
+
+
+if(!data[date]){
+
+    data[date]=[];
+
+}
+
+
 
 if(data[date].includes(heure)){
-msg.style.color = "red";
-msg.textContent = "Créneau déjà pris";
-return;
+
+
+    msg.style.color="red";
+
+    msg.textContent="Créneau déjà pris";
+
+    return;
+
 }
 
-data[date].push(heure);
-saveData(data);
 
-// EMAILJS
-const adminPromise = emailjs.send("service_ues8f94", "template_974xxji", {
-    name,
-    email,
-    date,
-    time: heure,
-    motif: document.getElementById("motif").value
+
+// EMAIL ADMIN
+
+const adminPromise = emailjs.send(
+
+    SERVICE_ID,
+
+    ADMIN_TEMPLATE,
+
+    {
+        name:name,
+        email:email,
+        date:date,
+        time:heure,
+        motif:motif
+    }
+
+);
+
+
+
+// EMAIL CLIENT
+
+const clientPromise = emailjs.send(
+
+    SERVICE_ID,
+
+    CLIENT_TEMPLATE,
+
+    {
+        name:name,
+        email:email,
+        date:date,
+        time:heure,
+        motif:motif
+    }
+
+).catch(err=>{
+
+    console.log("Email client ignoré :",err);
+
 });
 
-// client email (on s’en fiche s’il échoue)
-const clientPromise = emailjs.send("service_ues8f94", "template_dywry5b", {
-    name,
-    email,
-    date,
-    time: heure,
-    motif: document.getElementById("motif").value
-}).catch(err => {
-    console.log("Client email échoué (ignoré)", err);
-});
+
+
+
+// résultat
 
 Promise.all([adminPromise, clientPromise])
-.then(() => {
 
-    let data = getData();
+
+.then(()=>{
+
+
     data[date].push(heure);
+
     saveData(data);
 
-    msg.style.color = "green";
-    msg.textContent = "RDV confirmé ✔️ (email admin garanti)";
 
-    document.getElementById("date").dispatchEvent(new Event("change"));
+
+    msg.style.color="green";
+
+    msg.textContent="RDV confirmé ✔️";
+
+
+
+    document.getElementById("date")
+    .dispatchEvent(new Event("change"));
+
+
 
 })
 
-.catch((err) => {
-    console.error("Erreur EmailJS :", err);
 
-    msg.style.color = "red";
-    msg.textContent = err.text || err.message || JSON.stringify(err);
+
+.catch(err=>{
+
+
+    console.error("Erreur EmailJS :",err);
+
+
+    msg.style.color="red";
+
+    msg.textContent = err.text || "Erreur d'envoi email";
+
+
 });
 
 
-// refresh horaires
-document.getElementById("date").dispatchEvent(new Event("change"));
+
 }
+
 </script>
 
 </body>
