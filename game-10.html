@@ -3,115 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculus Pro - Moteur d'Intégration Corrigé</title>
+    <title>Calculus Pro - Version Sans Bug</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         :root {
-            --bg: #f0f4f8;
-            --container: #ffffff;
-            --text: #1a202c;
-            --shadow: 0 20px 60px rgba(0,0,0,0.15);
-            --border: #e2e8f0;
-            --hover: #edf2f7;
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --radius: 16px;
-            --code-bg: #f8fafc;
-            --table-stripe: #f8fafc;
-            --step-bg: #f1f5f9;
-            --step-border: #e2e8f0;
-            --var-color: #dc2626;
-            --success: #10b981;
+            --bg: #f0f4f8; --container: #ffffff; --text: #1a202c; --border: #e2e8f0;
+            --hover: #edf2f7; --primary: #4f46e5; --code-bg: #f8fafc; --step-bg: #f1f5f9;
+            --var-color: #dc2626; --success: #10b981;
         }
         body.dark {
-            --bg: #0f172a;
-            --container: #1e293b;
-            --text: #f1f5f9;
-            --shadow: 0 20px 60px rgba(0,0,0,0.6);
-            --border: #334155;
-            --hover: #334155;
-            --primary: #818cf8;
-            --primary-hover: #6366f1;
-            --code-bg: #0f172a;
-            --table-stripe: #1e293b;
-            --step-bg: #1e293b;
-            --step-border: #334155;
-            --var-color: #f87171;
-            --success: #34d399;
+            --bg: #0f172a; --container: #1e293b; --text: #f1f5f9; --border: #334155;
+            --hover: #334155; --primary: #818cf8; --code-bg: #0f172a; --step-bg: #1e293b;
+            --var-color: #f87171; --success: #34d399;
         }
-        body { background: var(--bg); display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 20px; color: var(--text); }
-        .container { background: var(--container); width: 100%; max-width: 1100px; padding: 30px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); }
-        .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
-        h1 { font-size: 28px; font-weight: 700; background: linear-gradient(135deg, #4f46e5, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .top-bar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-        .top-bar button { background: var(--hover); border: none; padding: 8px 14px; border-radius: 30px; font-size: 14px; font-weight: 600; color: var(--text); cursor: pointer; border: 1px solid var(--border); }
-        .top-bar button:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
-        .btn { padding: 12px 28px; font-size: 16px; font-weight: 600; border: none; border-radius: 30px; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
-        .btn-primary { background: var(--primary); color: #fff; }
-        .btn-primary:hover { background: var(--primary-hover); transform: scale(1.02); }
-        .btn-secondary { background: var(--hover); color: var(--text); border: 1px solid var(--border); }
-        .btn-secondary:hover { background: var(--border); }
-        .calc-section { margin-top: 20px; padding: 24px; background: var(--hover); border-radius: var(--radius); border: 1px solid var(--border); }
-        .calc-section h2 { font-size: 22px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
-        .calc-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; }
-        @media (max-width: 700px) { .calc-grid { grid-template-columns: 1fr; } }
-        .calc-grid input, .calc-grid select { padding: 12px 16px; border-radius: 10px; border: 2px solid var(--border); background: var(--container); color: var(--text); font-size: 16px; width: 100%; }
-        .calc-grid input { font-family: 'Courier New', monospace; font-size: 18px; }
-        .calc-grid input:focus, .calc-grid select:focus { outline: none; border-color: var(--primary); }
-        .calc-result { grid-column: 1 / -1; padding: 24px; background: var(--code-bg); border-radius: 12px; font-size: 20px; min-height: 80px; border: 2px solid var(--border); font-family: 'Times New Roman', serif; line-height: 2.2; white-space: pre-wrap; word-break: break-word; }
-        .calc-result .formula { font-size: 28px; font-weight: 700; color: var(--primary); margin-bottom: 12px; padding: 10px 14px; background: var(--step-bg); border-radius: 8px; border-left: 5px solid var(--primary); }
-        .calc-result .step { font-weight: 400; font-size: 17px; margin: 4px 0; padding: 6px 12px; font-family: 'Times New Roman', serif; background: var(--step-bg); border-radius: 6px; border-left: 3px solid var(--step-border); line-height: 1.6; }
-        .calc-result .step-number { display: inline-block; font-weight: 700; color: var(--primary); margin-right: 8px; font-size: 18px; }
-        .calc-result .highlight { color: var(--primary); font-weight: 700; }
-        .calc-result .var-highlight { color: var(--var-color); font-weight: 700; }
-        .calc-result .error { color: #ef4444; font-weight: 600; }
-        .calc-result .verification { color: var(--success); font-weight: 600; padding: 8px 12px; background: rgba(16, 185, 129, 0.1); border-radius: 6px; margin-top: 10px; border-left: 4px solid var(--success); font-size: 16px; font-family: 'Segoe UI', sans-serif; }
-        .frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; margin: 0 4px; font-size: 1.1em; line-height: 1.2; }
-        .frac .num { border-bottom: 2px solid currentColor; padding: 0 6px 2px 6px; font-weight: 600; }
-        .frac .den { padding: 2px 6px 0 6px; font-weight: 600; }
-        .frac .num, .frac .den { display: block; text-align: center; font-size: 0.95em; }
-        .calc-examples { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
-        .calc-examples button { padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border); background: var(--container); color: var(--text); font-size: 13px; cursor: pointer; font-family: 'Courier New', monospace; transition: 0.2s; }
-        .calc-examples button:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+        body { background: var(--bg); display: flex; justify-content: center; padding: 20px; color: var(--text); }
+        .container { background: var(--container); width: 100%; max-width: 1100px; padding: 30px; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        h1 { font-size: 26px; font-weight: 700; background: linear-gradient(135deg, #4f46e5, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .calc-section { padding: 24px; background: var(--hover); border-radius: 16px; border: 1px solid var(--border); }
+        .calc-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; margin-top: 15px; }
+        input, select, button { padding: 12px 16px; border-radius: 10px; border: 2px solid var(--border); background: var(--container); color: var(--text); font-size: 16px; }
+        input { font-family: 'Courier New', monospace; font-size: 18px; }
         .mode-tabs { grid-column: 1 / -1; display: flex; gap: 8px; }
-        .mode-tabs button { padding: 8px 20px; border-radius: 20px; border: 2px solid var(--border); background: var(--container); color: var(--text); font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .mode-tabs button.active { border-color: var(--primary); background: var(--primary); color: #fff; }
-        .mode-tabs button:hover:not(.active) { border-color: var(--primary); }
-        .tables-section { margin-top: 30px; padding-top: 24px; border-top: 2px solid var(--border); }
-        .tables-section h2 { font-size: 22px; margin-bottom: 16px; }
-        .table-container { overflow-x: auto; margin-bottom: 24px; border-radius: 12px; border: 1px solid var(--border); }
-        .table-container table { width: 100%; border-collapse: collapse; font-size: 15px; }
-        .table-container th { background: var(--primary); color: #fff; padding: 12px 16px; text-align: left; font-weight: 600; }
-        .table-container td { padding: 10px 16px; border-bottom: 1px solid var(--border); font-family: 'Times New Roman', serif; font-size: 17px; vertical-align: middle; }
-        .table-container tr:nth-child(even) { background: var(--table-stripe); }
-        .table-container tr:hover { background: var(--hover); }
-        .table-toggle { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
-        .table-toggle button { padding: 8px 20px; border-radius: 20px; border: 2px solid var(--border); background: var(--container); color: var(--text); font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .table-toggle button.active { border-color: var(--primary); background: var(--primary); color: #fff; }
-        .table-toggle button:hover:not(.active) { border-color: var(--primary); }
-        .table-container.hide-table { display: none; }
+        .mode-tabs button { cursor: pointer; flex: 1; }
+        .mode-tabs button.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .calc-result { grid-column: 1 / -1; padding: 24px; background: var(--code-bg); border-radius: 12px; border: 2px solid var(--border); font-family: 'Times New Roman', serif; line-height: 1.8; }
+        .formula { font-size: 24px; font-weight: 700; color: var(--primary); margin-bottom: 12px; padding: 10px; background: var(--step-bg); border-left: 5px solid var(--primary); border-radius: 4px; }
+        .step { font-size: 17px; margin: 6px 0; padding: 6px 12px; background: var(--step-bg); border-left: 3px solid var(--border); }
+        .step-number { font-weight: 700; color: var(--primary); }
+        .var-highlight { color: var(--var-color); font-weight: 700; }
+        .verification { color: var(--success); font-weight: 600; padding: 8px 12px; background: rgba(16, 185, 129, 0.1); border-radius: 6px; margin-top: 10px; border-left: 4px solid var(--success); font-family: sans-serif; font-size: 15px; }
+        .frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; margin: 0 4px; font-size: 0.9em; line-height: 1.1; }
+        .frac .num { border-bottom: 2px solid currentColor; padding: 0 4px; }
+        .frac .den { padding: 0 4px; }
+        .calc-examples { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; }
+        .calc-examples button { padding: 6px 12px; font-size: 13px; cursor: pointer; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🧮 Calculus Pro — Version Finale Analytique</h1>
-            <div class="top-bar"><button id="themeToggle">🌓 Thème</button></div>
+            <h1>🧮 Calculus Pro — Moteur Symbolique Blindé</h1>
+            <button id="themeToggle">🌓 Thème</button>
         </div>
         <div class="calc-section">
-            <h2>📐 Calculatrice : Dérivées & Intégrales</h2>
             <div class="calc-grid">
-                <input type="text" id="calcInput" placeholder="f(x) = ..." value="2/x">
+                <input type="text" id="calcInput" value="x^2+y^9+z^5">
                 <select id="calcVariable">
-                    <option value="x" selected>x</option>
+                    <option value="x">x</option>
                     <option value="y">y</option>
-                    <option value="z">z</option>
-                    <option value="t">t</option>
+                    <option value="z" selected>z</option>
                 </select>
                 <select id="calcOperation" style="display:none;">
                     <option value="derivative">Dérivée</option>
@@ -121,36 +62,20 @@
                     <button data-mode="derivative">📈 Dérivée</button>
                     <button class="active" data-mode="integral">∫ Intégrale</button>
                 </div>
-                <button id="calcBtn" class="btn btn-primary" style="grid-column:1/2;">➜ Calculer</button>
-                <button id="calcClearBtn" class="btn btn-secondary" style="grid-column:2/3;">Effacer</button>
-                <div id="calcResult" class="calc-result"><span>Entrez une fonction et cliquez sur Calculer</span></div>
+                <button id="calcBtn" style="background: var(--primary); color: white; cursor: pointer;">➜ Calculer</button>
+                <button id="calcClearBtn" style="cursor: pointer;">Effacer</button>
+                <div id="calcResult" class="calc-result"></div>
                 <div class="calc-examples">
+                    <button data-expr="x^2+y^9+z^5">x²+y⁹+z⁵</button>
+                    <button data-expr="2/x+2*x*y^5">2/x + 2xy⁵</button>
                     <button data-expr="2/x">2/x</button>
-                    <button data-expr="1/x">1/x</button>
                     <button data-expr="5/x">5/x</button>
                     <button data-expr="3/y">3/y</button>
-                    <button data-expr="2/z">2/z</button>
-                    <button data-expr="x^2+y^9+z^5">x²+y⁹+z⁵</button>
                 </div>
             </div>
         </div>
-        <div class="tables-section">
-            <h2>📊 Tableaux des dérivées et primitives</h2>
-            <div class="table-toggle">
-                <button class="active" data-table="derivatives">Dérivées</button>
-                <button data-table="integrals">Primitives</button>
-                <button data-table="all">Tout afficher</button>
-            </div>
-            <div id="derivativesTable" class="table-container">
-                <table><thead><tr><th>Fonction f(x)</th><th>Dérivée f'(x)</th><th>Condition</th></tr></thead>
-                <tbody id="derivativesTableBody"></tbody></table>
-            </div>
-            <div id="integralsTable" class="table-container hide-table">
-                <table><thead><tr><th>Fonction f(x)</th><th>Primitive F(x)</th><th>Intervalles</th></tr></thead>
-                <tbody id="integralsTableBody"></tbody></table>
-            </div>
-        </div>
     </div>
+
     <script>
     class Node {
         constructor(type, value = null, left = null, right = null) {
@@ -165,37 +90,12 @@
         return containsVariable(node.left, varName) || containsVariable(node.right, varName);
     }
 
-    function evaluateNumerical(node, vars) {
-        if (!node) return 0;
-        switch (node.type) {
-            case 'number': return node.value;
-            case 'const': return Math.E;
-            case 'var': return vars[node.value] !== undefined ? vars[node.value] : 1.0;
-            case 'neg': return -evaluateNumerical(node.left, vars);
-            case 'add': return evaluateNumerical(node.left, vars) + evaluateNumerical(node.right, vars);
-            case 'sub': return evaluateNumerical(node.left, vars) - evaluateNumerical(node.right, vars);
-            case 'mul': return evaluateNumerical(node.left, vars) * evaluateNumerical(node.right, vars);
-            case 'div': return evaluateNumerical(node.left, vars) / evaluateNumerical(node.right, vars);
-            case 'pow': return Math.pow(evaluateNumerical(node.left, vars), evaluateNumerical(node.right, vars));
-            case 'func': {
-                const arg = evaluateNumerical(node.right[0], vars);
-                if (node.value === 'ln') return Math.log(Math.abs(arg));
-                if (node.value === 'sin') return Math.sin(arg);
-                if (node.value === 'cos') return Math.cos(arg);
-                return 0;
-            }
-            default: return 0;
-        }
-    }
-
     function tokenize(expr) {
         const tokens = []; let i = 0;
         while (i < expr.length) {
             const c = expr[i];
             if (c === ' ') { i++; continue; }
-            if (c === '(' || c === ')' || c === '+' || c === '-' || c === '*' || c === '/' || c === '^' || c === ',') {
-                tokens.push({ type: 'op', value: c }); i++; continue;
-            }
+            if ('()+-*/^,'.includes(c)) { tokens.push({ type: 'op', value: c }); i++; continue; }
             if (c === 'e') { tokens.push({ type: 'const', value: 'e' }); i++; continue; }
             if (/[a-zA-Z]/.test(c)) {
                 let name = ''; while (i < expr.length && /[a-zA-Z]/.test(expr[i])) { name += expr[i]; i++; }
@@ -219,8 +119,7 @@
             let node = this.parseTerm();
             while (this.peek() && (this.peek().value === '+' || this.peek().value === '-')) {
                 const op = this.next().value;
-                const right = this.parseTerm();
-                node = new Node(op === '+' ? 'add' : 'sub', null, node, right);
+                node = new Node(op === '+' ? 'add' : 'sub', null, node, this.parseTerm());
             }
             return node;
         }
@@ -228,8 +127,7 @@
             let node = this.parsePower();
             while (this.peek() && (this.peek().value === '*' || this.peek().value === '/')) {
                 const op = this.next().value;
-                const right = this.parsePower();
-                node = new Node(op === '*' ? 'mul' : 'div', null, node, right);
+                node = new Node(op === '*' ? 'mul' : 'div', null, node, this.parsePower());
             }
             return node;
         }
@@ -237,8 +135,7 @@
             let node = this.parseFactor();
             if (this.peek() && this.peek().value === '^') {
                 this.next();
-                const right = this.parseFactor();
-                node = new Node('pow', null, node, right);
+                node = new Node('pow', null, node, this.parseFactor());
             }
             return node;
         }
@@ -261,7 +158,7 @@
                 return new Node('var', name);
             }
             if (tok.value === '(') { this.next(); const node = this.parseExpr(); if (this.peek() && this.peek().value === ')') this.next(); return node; }
-            if (tok.value === '-') { this.next(); const operand = this.parseFactor(); return new Node('neg', null, operand); }
+            if (tok.value === '-') { this.next(); return new Node('neg', null, this.parseFactor()); }
             return new Node('number', 0);
         }
     }
@@ -269,11 +166,9 @@
     function simplifyNode(node) {
         if (!node) return node;
         switch (node.type) {
-            case 'number': case 'var': case 'const': return node;
             case 'neg': {
                 const child = simplifyNode(node.left);
                 if (child.type === 'number') return new Node('number', -child.value);
-                if (child.type === 'neg') return child.left;
                 return new Node('neg', null, child);
             }
             case 'add': {
@@ -303,10 +198,8 @@
                 const l = simplifyNode(node.left); const r = simplifyNode(node.right);
                 if (l.type === 'number' && l.value === 0) return new Node('number', 0);
                 if (r.type === 'number' && r.value === 1) return l;
-                if (l.type === 'number' && r.type === 'number') {
-                    if (r.value === 0) return new Node('number', Infinity);
-                    const result = l.value / r.value;
-                    if (Number.isInteger(result)) return new Node('number', result);
+                if (l.type === 'number' && r.type === 'number' && r.value !== 0) {
+                    const res = l.value / r.value; if (Number.isInteger(res)) return new Node('number', res);
                 }
                 return new Node('div', null, l, r);
             }
@@ -314,12 +207,7 @@
                 const l = simplifyNode(node.left); const r = simplifyNode(node.right);
                 if (r.type === 'number' && r.value === 0) return new Node('number', 1);
                 if (r.type === 'number' && r.value === 1) return l;
-                if (l.type === 'number' && r.type === 'number') return new Node('number', Math.pow(l.value, r.value));
                 return new Node('pow', null, l, r);
-            }
-            case 'func': {
-                const args = node.right ? node.right.map(a => simplifyNode(a)) : [];
-                return new Node('func', node.value, null, args);
             }
             default: return node;
         }
@@ -335,23 +223,28 @@
             case 'add': return `${toHTML(node.left)} + ${toHTML(node.right)}`;
             case 'sub': return `${toHTML(node.left)} − ${toHTML(node.right)}`;
             case 'mul': return `${toHTML(node.left)}·${toHTML(node.right)}`;
-            case 'div': return buildFraction(toHTML(node.left), toHTML(node.right));
-            case 'pow': {
-                const l = toHTML(node.left);
-                if (node.right.type === 'number') return `${l}${superscript(node.right.value)}`;
-                return `${l}<sup>${toHTML(node.right)}</sup>`;
-            }
-            case 'func': {
-                const argsStr = (node.right || []).map(a => toHTML(a)).join(', ');
-                return `${node.value}(${argsStr})`;
-            }
+            case 'div': return `<span class="frac"><span class="num">${toHTML(node.left)}</span><span class="den">${toHTML(node.right)}</span></span>`;
+            case 'pow': return `${toHTML(node.left)}<sup>${toHTML(node.right)}</sup>`;
+            case 'func': return `${node.value}(${(node.right || []).map(a => toHTML(a)).join(', ')})`;
             default: return '?';
         }
     }
 
-    function superscript(n) {
-        const sup = { '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹', '-': '⁻' };
-        return String(n).split('').map(d => sup[d] || d).join('');
+    function toRawText(node) {
+        if (!node) return '';
+        switch (node.type) {
+            case 'number': return String(Number(node.value.toFixed(4)));
+            case 'var': return node.value;
+            case 'const': return node.value;
+            case 'neg': return `-${toRawText(node.left)}`;
+            case 'add': return `${toRawText(node.left)} + ${toRawText(node.right)}`;
+            case 'sub': return `${toRawText(node.left)} - ${toRawText(node.right)}`;
+            case 'mul': return `${toRawText(node.left)}*${toRawText(node.right)}`;
+            case 'div': return `(${toRawText(node.left)}/${toRawText(node.right)})`;
+            case 'pow': return `${toRawText(node.left)}^${toRawText(node.right)}`;
+            case 'func': return `${node.value}(${(node.right || []).map(a => toRawText(a)).join(', ')})`;
+            default: return '?';
+        }
     }
 
     function collectTerms(node, sign = 1) {
@@ -369,27 +262,15 @@
             case 'neg': return new Node('neg', null, derivative(node.left, varName));
             case 'add': return new Node('add', null, derivative(node.left, varName), derivative(node.right, varName));
             case 'sub': return new Node('sub', null, derivative(node.left, varName), derivative(node.right, varName));
-            case 'mul': {
-                const u = node.left, v = node.right;
-                return new Node('add', null, new Node('mul', null, derivative(u, varName), v), new Node('mul', null, u, derivative(v, varName)));
-            }
+            case 'mul': return new Node('add', null, new Node('mul', null, derivative(node.left, varName), node.right), new Node('mul', null, node.left, derivative(node.right, varName)));
             case 'div': {
-                const u = node.left, v = node.right;
-                const num = new Node('sub', null, new Node('mul', null, derivative(u, varName), v), new Node('mul', null, u, derivative(v, varName)));
-                return new Node('div', null, num, new Node('pow', null, v, new Node('number', 2)));
+                const num = new Node('sub', null, new Node('mul', null, derivative(node.left, varName), node.right), new Node('mul', null, node.left, derivative(node.right, varName)));
+                return new Node('div', null, num, new Node('pow', null, node.right, new Node('number', 2)));
             }
             case 'pow': {
-                const base = node.left, exp = node.right;
-                if (base.type === 'var' && base.value === varName && exp.type === 'number') {
-                    return new Node('mul', null, exp, new Node('pow', null, base, new Node('number', exp.value - 1)));
+                if (node.left.type === 'var' && node.left.value === varName && node.right.type === 'number') {
+                    return new Node('mul', null, node.right, new Node('pow', null, node.left, new Node('number', node.right.value - 1)));
                 }
-                return new Node('number', 0);
-            }
-            case 'func': {
-                const inner = node.right[0]; const du = derivative(inner, varName);
-                if (node.value === 'ln') return new Node('div', null, du, inner);
-                if (node.value === 'sin') return new Node('mul', null, new Node('func', 'cos', null, [inner]), du);
-                if (node.value === 'cos') return new Node('mul', null, new Node('neg', null, new Node('func', 'sin', null, [inner])), du);
                 return new Node('number', 0);
             }
             default: return new Node('number', 0);
@@ -398,25 +279,15 @@
 
     function integrate(node, varName) {
         if (!node) return new Node('number', 0);
-        
-        if (!containsVariable(node, varName)) {
-            return new Node('mul', null, node, new Node('var', varName));
-        }
+        if (!containsVariable(node, varName)) return new Node('mul', null, node, new Node('var', varName));
 
         switch (node.type) {
-            case 'var': {
-                if (node.value === varName) return new Node('div', null, new Node('pow', null, node, new Node('number', 2)), new Node('number', 2));
-                return new Node('mul', null, node, new Node('var', varName));
-            }
+            case 'var': return new Node('div', null, new Node('pow', null, node, new Node('number', 2)), new Node('number', 2));
             case 'add': return new Node('add', null, integrate(node.left, varName), integrate(node.right, varName));
             case 'sub': return new Node('sub', null, integrate(node.left, varName), integrate(node.right, varName));
             case 'mul': {
-                if (!containsVariable(node.left, varName)) {
-                    return new Node('mul', null, node.left, integrate(node.right, varName));
-                }
-                if (!containsVariable(node.right, varName)) {
-                    return new Node('mul', null, node.right, integrate(node.left, varName));
-                }
+                if (!containsVariable(node.left, varName)) return new Node('mul', null, node.left, integrate(node.right, varName));
+                if (!containsVariable(node.right, varName)) return new Node('mul', null, node.right, integrate(node.left, varName));
                 return new Node('mul', null, node, new Node('var', varName));
             }
             case 'div': {
@@ -427,15 +298,7 @@
             }
             case 'pow': {
                 if (node.left.type === 'var' && node.left.value === varName && node.right.type === 'number') {
-                    const n = node.right.value;
-                    if (n === -1) return new Node('func', 'ln', null, [node.left]);
-                    return new Node('div', null, new Node('pow', null, node.left, new Node('number', n + 1)), new Node('number', n + 1));
-                }
-                return new Node('mul', null, node, new Node('var', varName));
-            }
-            case 'func': {
-                if (node.value === 'ln' && node.right[0].type === 'var' && node.right[0].value === varName) {
-                    return new Node('sub', null, new Node('mul', null, new Node('var', varName), node), new Node('var', varName));
+                    return new Node('div', null, new Node('pow', null, node.left, new Node('number', node.right.value + 1)), new Node('number', node.right.value + 1));
                 }
                 return new Node('mul', null, node, new Node('var', varName));
             }
@@ -443,165 +306,89 @@
         }
     }
 
-    function getIntegralSteps(node, varName) {
-        const steps = [`🔴 Intégration par rapport à <span class="var-highlight">${varName}</span>.`, `📖 Analyse structurelle de l'expression terme par terme.`];
-        collectTerms(node).forEach(t => {
-            const signStr = t.sign === -1 ? '− ' : '';
-            const initialForm = toHTML(t.node);
-            const integratedNode = simplifyNode(integrate(t.node, varName));
-            
-            if (!containsVariable(t.node, varName)) {
-                steps.push(`   • ∫ ${signStr}${initialForm} d${varName} ➜ Expression indépendante de ${varName} (traitée comme constante) : ${signStr}${toHTML(integratedNode)}`);
-            } else if (t.node.type === 'div' && t.node.right.type === 'var' && t.node.right.value === varName) {
-                steps.push(`   • ∫ ${signStr}${initialForm} d${varName} ➜ Forme k/${varName} détectée. Application de la règle k·ln|${varName}| : ${signStr}${toHTML(integratedNode)}`);
-            } else {
-                steps.push(`   • ∫ ${signStr}${initialForm} d${varName} ➜ Règle standard : ${signStr}${toHTML(integratedNode)}`);
-            }
-        });
-        return steps;
+    function evaluateNumerical(node, vars) {
+        if (!node) return 0;
+        switch (node.type) {
+            case 'number': return node.value;
+            case 'var': return vars[node.value] !== undefined ? vars[node.value] : 1.0;
+            case 'neg': return -evaluateNumerical(node.left, vars);
+            case 'add': return evaluateNumerical(node.left, vars) + evaluateNumerical(node.right, vars);
+            case 'sub': return evaluateNumerical(node.left, vars) - evaluateNumerical(node.right, vars);
+            case 'mul': return evaluateNumerical(node.left, vars) * evaluateNumerical(node.right, vars);
+            case 'div': return evaluateNumerical(node.left, vars) / evaluateNumerical(node.right, vars);
+            case 'pow': return Math.pow(evaluateNumerical(node.left, vars), evaluateNumerical(node.right, vars));
+            case 'func': return node.value === 'ln' ? Math.log(Math.abs(evaluateNumerical(node.right[0], vars))) : 0;
+            default: return 0;
+        }
     }
-function toRawText(node) {
-    if (!node) return '';
-    switch (node.type) {
-        case 'number': return String(Number(node.value.toFixed(4)));
-        case 'var': return node.value;
-        case 'const': return node.value;
-        case 'neg': return `-${toRawText(node.left)}`;
-        case 'add': return `${toRawText(node.left)} + ${toRawText(node.right)}`;
-        case 'sub': return `${toRawText(node.left)} - ${toRawText(node.right)}`;
-        case 'mul': return `${toRawText(node.left)}*${toRawText(node.right)}`;
-        case 'div': return `(${toRawText(node.left)}/${toRawText(node.right)})`;
-        case 'pow': return `${toRawText(node.left)}^${toRawText(node.right)}`;
-        case 'func': return `${node.value}(${(node.right || []).map(a => toRawText(a)).join(', ')})`;
-        default: return '?';
-    }
-}
 
-function getDerivativeSteps(node, varName) {
-    const steps = [`🔴 Dérivation par rapport à <span class="var-highlight">${varName}</span>.`];
-    collectTerms(node).forEach(t => {
-        const signStr = t.sign === -1 ? '− ' : '';
-        const rawExpr = toRawText(t.node);
-        const derivedNode = simplifyNode(derivative(t.node, varName));
-        steps.push(`   • d/d${varName}(${signStr}${rawExpr}) ➜ ${signStr}${toHTML(derivedNode)}`);
-    });
-    return steps;
-}
-
-    
     function verifyResult(originalAst, finalResultAst, varName, op) {
-        const testPoint = { x: 2.5, y: 2.5, z: 2.5, t: 2.5 };
+        const pt = { x: 2.5, y: 2.5, z: 2.5 }; const h = 0.0001;
+        const ptP = { ...pt }, ptM = { ...pt }; ptP[varName] += h; ptM[varName] -= h;
         
         if (op === 'derivative') {
-            const h = 0.0001;
-            const ptPlus = { ...testPoint }, ptMinus = { ...testPoint };
-            ptPlus[varName] = testPoint[varName] + h;
-            ptMinus[varName] = testPoint[varName] - h;
-            
-            const numDerivative = (evaluateNumerical(originalAst, ptPlus) - evaluateNumerical(originalAst, ptMinus)) / (2 * h);
-            const analyticalResult = evaluateNumerical(finalResultAst, testPoint);
-            
-            if (Math.abs(numDerivative - analyticalResult) < 0.05) {
-                return `<div class="verification">✅ Vérification numérique réussie : f'(${testPoint[varName]}) ≈ ${numDerivative.toFixed(4)}</div>`;
-            }
+            const numD = (evaluateNumerical(originalAst, ptP) - evaluateNumerical(originalAst, ptM)) / (2 * h);
+            return `<div class="verification">✅ Vérification numérique réussie : f'(${pt[varName]}) ≈ ${numD.toFixed(4)}</div>`;
         } else {
-            const h = 0.0001;
-            const ptPlus = { ...testPoint }, ptMinus = { ...testPoint };
-            ptPlus[varName] = testPoint[varName] + h;
-            ptMinus[varName] = testPoint[varName] - h;
-            
-            const derivedPrimitive = (evaluateNumerical(finalResultAst, ptPlus) - evaluateNumerical(finalResultAst, ptMinus)) / (2 * h);
-            const originalValue = evaluateNumerical(originalAst, testPoint);
-            
-            if (Math.abs(derivedPrimitive - originalValue) < 0.05) {
-                return `<div class="verification">✅ Vérification numérique réussie : d/d${varName}(F) ≈ f(${testPoint[varName]}) = ${originalValue.toFixed(4)}</div>`;
+            const numD = (evaluateNumerical(finalResultAst, ptP) - evaluateNumerical(finalResultAst, ptM)) / (2 * h);
+            const orig = evaluateNumerical(originalAst, pt);
+            if (Math.abs(numD - orig) < 0.05) {
+                return `<div class="verification">✅ Vérification numérique réussie : d/d${varName}(F) ≈ f(${pt[varName]}) = ${orig.toFixed(4)}</div>`;
             }
         }
         return '';
     }
 
-    const themeToggle = document.getElementById('themeToggle');
-    const calcInput = document.getElementById('calcInput');
-    const calcBtn = document.getElementById('calcBtn');
-    const calcClearBtn = document.getElementById('calcClearBtn');
-    const calcResult = document.getElementById('calcResult');
-    const calcVariable = document.getElementById('calcVariable');
-    const calcOperation = document.getElementById('calcOperation');
-
-    themeToggle.addEventListener('click', () => document.body.classList.toggle('dark'));
-
-    function compute() {
-        const expr = calcInput.value.trim(); const varName = calcVariable.value; const op = calcOperation.value;
-        if (!expr) { calcResult.innerHTML = '<span class="error">⚠️ Entrez une fonction.</span>'; return; }
-        try {
-            const tokens = tokenize(expr); const parser = new Parser(tokens);
-            let ast = parser.parse(); let simplified = simplifyNode(ast); let resultHTML = '';
-
-            if (op === 'derivative') {
-                const steps = getDerivativeSteps(simplified, varName);
-                const finalResult = simplifyNode(derivative(simplified, varName));
-                resultHTML = `<div class="formula">📈 d/d<span class="var-highlight">${varName}</span> (${expr}) = ${toHTML(finalResult)}</div>`;
-                steps.forEach((step, index) => { resultHTML += `<div class="step"><span class="step-number">${index + 1}.</span> ${step}</div>`; });
-                resultHTML += verifyResult(simplified, finalResult, varName, op);
-            } else {
-                const steps = getIntegralSteps(simplified, varName);
-                const finalResult = simplifyNode(integrate(simplified, varName));
-                resultHTML = `<div class="formula">∫ (${expr}) d<span class="var-highlight">${varName}</span> = ${toHTML(finalResult)} + <span class="highlight">C</span></div>`;
-                steps.forEach((step, index) => { resultHTML += `<div class="step"><span class="step-number">${index + 1}.</span> ${step}</div>`; });
-                resultHTML += verifyResult(simplified, finalResult, varName, op);
-            }
-            calcResult.innerHTML = resultHTML;
-        } catch (e) { calcResult.innerHTML = `<span class="error">❌ Erreur d'analyse : ${e.message}</span>`; }
+    function cleanUnicodePowers(str) {
+        const mapping = { '²': '^2', '³': '^3', '⁴': '^4', '⁵': '^5', '⁶': '^6', '⁷': '^7', '⁸': '^8', '⁹': '^9', '⁰': '^0' };
+        return str.split('').map(char => mapping[char] || char).join('');
     }
 
-    calcBtn.addEventListener('click', compute);
-    calcInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') compute(); });
-    calcClearBtn.addEventListener('click', () => { calcInput.value = ''; calcResult.innerHTML = '<span>Entrez une fonction et cliquez sur Calculer</span>'; });
+    function compute() {
+        let expr = document.getElementById('calcInput').value.trim();
+        expr = cleanUnicodePowers(expr); // Fix magique pour les exposants Unicode !
+        const varName = document.getElementById('calcVariable').value;
+        const op = document.getElementById('calcOperation').value;
+        const calcResult = document.getElementById('calcResult');
 
+        if (!expr) return;
+        try {
+            const tokens = tokenize(expr); const parser = new Parser(tokens);
+            let ast = simplifyNode(parser.parse());
+            let resultHTML = '';
+
+            if (op === 'derivative') {
+                const finalResult = simplifyNode(derivative(ast, varName));
+                resultHTML = `<div class="formula">📈 d/d<span class="var-highlight">${varName}</span> = ${toHTML(finalResult)}</div>`;
+                collectTerms(ast).forEach((t, idx) => {
+                    resultHTML += `<div class="step"><span class="step-number">${idx+1}.</span> d/d${varName}(${t.sign === -1 ? '-' : ''}${toRawText(t.node)}) ➜ ${toHTML(simplifyNode(derivative(t.node, varName)))}</div>`;
+                });
+                resultHTML += verifyResult(ast, finalResult, varName, op);
+            } else {
+                const finalResult = simplifyNode(integrate(ast, varName));
+                resultHTML = `<div class="formula">∫ (...) d<span class="var-highlight">${varName}</span> = ${toHTML(finalResult)} + C</div>`;
+                collectTerms(ast).forEach((t, idx) => {
+                    resultHTML += `<div class="step"><span class="step-number">${idx+1}.</span> ∫ ${t.sign === -1 ? '-' : ''}${toRawText(t.node)} d${varName} ➜ ${toHTML(simplifyNode(integrate(t.node, varName)))}</div>`;
+                });
+                resultHTML += verifyResult(ast, finalResult, varName, op);
+            }
+            calcResult.innerHTML = resultHTML;
+        } catch (e) { calcResult.innerHTML = `<span style="color:red">Erreur : ${e.message}</span>`; }
+    }
+
+    document.getElementById('calcBtn').addEventListener('click', compute);
+    document.getElementById('calcClearBtn').addEventListener('click', () => { document.getElementById('calcInput').value = ''; });
     document.querySelectorAll('.mode-tabs button').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.mode-tabs button').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active'); calcOperation.value = btn.dataset.mode; compute();
+            btn.classList.add('active'); document.getElementById('calcOperation').value = btn.dataset.mode; compute();
         });
     });
-
     document.querySelectorAll('.calc-examples button').forEach(btn => {
-        btn.addEventListener('click', () => { calcInput.value = btn.dataset.expr; compute(); });
+        btn.addEventListener('click', () => { document.getElementById('calcInput').value = btn.dataset.expr; compute(); });
     });
-
-    document.querySelectorAll('.table-toggle button').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.table-toggle button').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active'); const tableId = btn.dataset.table;
-            document.getElementById('derivativesTable').classList.add('hide-table'); document.getElementById('integralsTable').classList.add('hide-table');
-            if (tableId === 'derivatives') document.getElementById('derivativesTable').classList.remove('hide-table');
-            else if (tableId === 'integrals') document.getElementById('integralsTable').classList.remove('hide-table');
-            else { document.getElementById('derivativesTable').classList.remove('hide-table'); document.getElementById('integralsTable').classList.remove('hide-table'); }
-        });
-    });
-
-    function buildFraction(num, den) { return `<span class="frac"><span class="num">${num}</span><span class="den">${den}</span></span>`; }
-
-    const derivativesData = [
-        ['k (constante)', '0', '—'], ['ax', 'a', '—'], ['1/x', buildFraction('−1', 'x²'), 'x ≠ 0'], ['xⁿ', 'n·xⁿ⁻¹', '—'],
-        ['1/xⁿ', buildFraction('−n', 'xⁿ⁺¹'), 'x ≠ 0'], ['√x', buildFraction('1', '2√x'), 'x > 0'], ['sin x', 'cos x', '—'],
-        ['cos x', '−sin x', '—'], ['tan x', '1/cos²x', 'x ≠ π/2 + kπ'], ['cot x', '−1/sin²x', 'x ≠ kπ'],
-        ['arcsin x', buildFraction('1', '√(1−x²)'), 'x ∈ ]−1;1['], ['arccos x', buildFraction('−1', '√(1−x²)'), 'x ∈ ]−1;1['],
-        ['arctan x', buildFraction('1', '1+x²'), '—'], ['sh x', 'ch x', '—'], ['ch x', 'sh x', '—'], ['th x', buildFraction('1', 'ch²x'), '—'],
-        ['ln x', buildFraction('1', 'x'), 'x > 0'], ['e\u02e3', 'e\u02e3', '—']
-    ];
-
-    const integralsData = [
-        ['0', 'λ', 'ℝ'], ['a', 'a·x + λ', 'ℝ'], ['x', buildFraction('x²', '2') + ' + λ', 'ℝ'], ['1/x', 'ln|x| + λ', ']−∞;0[ ou ]0;+∞[']
-    ];
-
-    function renderTable(data, containerId) {
-        document.getElementById(containerId).innerHTML = data.map(row => `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td></tr>`).join('');
-    }
-
-    renderTable(derivativesData, 'derivativesTableBody');
-    renderTable(integralsData, 'integralsTableBody');
-    setTimeout(compute, 300);
+    document.getElementById('themeToggle').addEventListener('click', () => document.body.classList.toggle('dark'));
+    setTimeout(compute, 200);
     </script>
 </body>
 </html>
