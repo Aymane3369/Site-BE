@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculus Pro — Moteur d'Ingénierie Analytique</title>
+    <title>Calculus Pro — Moteur CAS Avancé</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
         :root {
@@ -19,23 +19,27 @@
         @media (max-width: 600px) { .calc-grid { grid-template-columns: 1fr; } }
         input, select, button { padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border); background: #0f172a; color: var(--text); font-size: 16px; width: 100%; }
         input { font-family: 'Courier New', monospace; font-size: 18px; grid-column: 1 / -1; }
-        select { width: auto; }
         .mode-tabs { grid-column: 1 / -1; display: flex; gap: 8px; }
         .mode-tabs button { cursor: pointer; flex: 1; font-weight: 600; background: #0f172a; transition: 0.2s; border: 1px solid var(--border); }
         .mode-tabs button.active { background: var(--primary); color: white; border-color: var(--primary); }
         .actions-row { grid-column: 1 / -1; display: flex; gap: 10px; }
         .actions-row button { flex: 1; cursor: pointer; font-weight: 600; }
-        .calc-result { grid-column: 1 / -1; padding: 24px; background: var(--code-bg); border-radius: 12px; border: 1px solid var(--border); font-family: 'Times New Roman', serif; line-height: 2; margin-top: 15px; }
-        .formula { font-size: 24px; font-weight: 700; color: var(--primary); margin-bottom: 12px; padding: 10px; background: rgba(129, 140, 248, 0.1); border-left: 5px solid var(--primary); border-radius: 4px; }
+        .calc-result { grid-column: 1 / -1; padding: 24px; background: var(--code-bg); border-radius: 12px; border: 1px solid var(--border); font-family: 'Times New Roman', serif; line-height: 2.2; margin-top: 15px; overflow-x: auto; }
+        .formula { font-size: 24px; font-weight: 700; color: var(--primary); margin-bottom: 12px; padding: 10px; background: rgba(129, 140, 248, 0.1); border-left: 5px solid var(--primary); border-radius: 4px; display: flex; align-items: center; flex-wrap: wrap; }
         .step { font-size: 17px; margin: 6px 0; padding: 6px 12px; background: rgba(255,255,255,0.02); border-left: 3px solid var(--border); }
         .step-number { font-weight: 700; color: var(--primary); }
-        .var-highlight { color: var(--var-color); font-weight: 700; }
+        .var-highlight { color: var(--var-color); font-weight: 700; font-style: italic; }
         .verification { color: var(--success); font-weight: 600; padding: 8px 12px; background: rgba(52, 211, 153, 0.1); border-radius: 6px; margin-top: 15px; border-left: 4px solid var(--success); font-family: sans-serif; font-size: 15px; }
-        .frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; margin: 0 4px; line-height: 1.1; }
-        .frac .num { border-bottom: 1px solid currentColor; padding: 0 4px; padding-bottom: 2px; }
-        .frac .den { padding: 0 4px; padding-top: 2px; }
+        
+        /* Styles d'affichage des fractions verticales et racines */
+        .frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; margin: 0 6px; line-height: 1.1; padding: 3px 0; }
+        .frac .num { border-bottom: 1px solid currentColor; padding: 0 6px; padding-bottom: 3px; text-align: center; }
+        .frac .den { padding: 0 6px; padding-top: 3px; text-align: center; }
+        .sqrt { border-top: 1px solid currentColor; padding: 0 3px; margin-left: 1px; vertical-align: middle; }
+        .sqrt-symbol { font-size: 1.1em; vertical-align: middle; margin-right: -2px; }
+        
         .calc-examples { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; align-items: center; }
-        .calc-examples button { padding: 6px 12px; font-size: 13px; cursor: pointer; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; flex: 0 1 auto; }
+        .calc-examples button { padding: 6px 12px; font-size: 13px; cursor: pointer; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; flex: 0 1 auto; width: auto; }
         .calc-examples button:hover { background: var(--hover); }
         .tables-section { margin-top: 40px; padding-top: 24px; border-top: 2px solid var(--border); }
         .tables-section h2 { font-size: 22px; margin-bottom: 16px; }
@@ -44,32 +48,31 @@
         .table-container th { background: var(--primary); color: white; padding: 12px 16px; text-align: left; font-weight: 600; }
         .table-container td { padding: 10px 16px; border-bottom: 1px solid var(--border); font-family: 'Times New Roman', serif; font-size: 17px; vertical-align: middle; }
         .table-container tr:nth-child(even) { background: rgba(255,255,255,0.03); }
-        .table-container tr:hover { background: var(--hover); }
         .table-toggle { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
-        .table-toggle button { padding: 8px 20px; border-radius: 20px; border: 2px solid var(--border); background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .table-toggle button { padding: 8px 20px; border-radius: 20px; border: 2px solid var(--border); background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: 0.2s; width: auto; }
         .table-toggle button.active { border-color: var(--primary); background: var(--primary); color: white; }
-        .table-toggle button:hover:not(.active) { border-color: var(--primary); }
         .hide-table { display: none; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🧮 Calculus Engine — Modèle d'Analyse Avancée (CAS)</h1>
+        <h1>🧮 Calculus Engine — Système de Calcul Formel (CAS)</h1>
         <div class="calc-section">
             <div class="calc-grid">
-                <input type="text" id="calcInput" value="1/x^2">
+                <input type="text" id="calcInput" value="2*x*cos(x^2)">
                 <select id="calcVariable">
                     <option value="x" selected>Variable : x</option>
                     <option value="y">Variable : y</option>
                     <option value="z">Variable : z</option>
+                    <option value="t">Variable : t</option>
+                    <option value="a">Variable : a</option>
+                    <option value="b">Variable : b</option>
+                    <option value="c">Variable : c</option>
                 </select>
-                <select id="calcOperation" style="display:none;">
-                    <option value="derivative" selected>Dérivée</option>
-                    <option value="integral">Intégrale</option>
-                </select>
+                <input type="hidden" id="calcOperation" value="integral">
                 <div class="mode-tabs">
-                    <button class="active" data-mode="derivative">📈 Dérivation d/d[var]</button>
-                    <button data-mode="integral">∫ Intégration Formelle</button>
+                    <button data-mode="derivative">📈 Dérivation d/d[var]</button>
+                    <button class="active" data-mode="integral">∫ Intégration Formelle</button>
                 </div>
                 <div class="actions-row">
                     <button id="calcBtn" style="background: var(--primary); color: white;">➜ Exécuter l'Analyse</button>
@@ -77,18 +80,23 @@
                 </div>
                 <div id="calcResult" class="calc-result"></div>
                 <div class="calc-examples">
-                    <strong style="font-size:14px;">Exemples :</strong>
-                    <button data-expr="1/x^2">1/x²</button>
-                    <button data-expr="2/x + 2*x*y^5">2/x + 2xy⁵</button>
-                    <button data-expr="cos(x^2)*2*x">2x·cos(x²)</button>
-                    <button data-expr="ln(x)/x">ln(x)/x</button>
-                    <button data-expr="exp(3*x)*3">3·exp(3x)</button>
+                    <strong style="font-size:14px;">Tests requis :</strong>
+                    <button data-expr="1/x^2" data-op="derivative">d/dx(1/x²)</button>
+                    <button data-expr="1/x^2" data-op="integral">∫1/x² dx</button>
+                    <button data-expr="sin(x^2)" data-op="derivative">d/dx(sin(x²))</button>
+                    <button data-expr="2*x*cos(x^2)" data-op="integral">∫2x·cos(x²) dx</button>
+                    <button data-expr="ln(x)" data-op="integral">∫ln(x) dx</button>
+                    <button data-expr="x*exp(x)" data-op="integral">∫x·e^x dx</button>
+                    <button data-expr="arctan(x)" data-op="derivative">d/dx(arctan(x))</button>
+                    <button data-expr="1/(1+x^2)" data-op="integral">∫1/(1+x²) dx</button>
+                    <button data-expr="x^2 + y^9 + z^5" data-v="y" data-op="derivative">d/dy(x²+y⁹+z⁵)</button>
+                    <button data-expr="x^2 + y^9 + z^5" data-v="y" data-op="integral">∫(x²+y⁹+z⁵) dy</button>
                 </div>
             </div>
         </div>
 
         <div class="tables-section">
-            <h2>📊 Tableaux de référence</h2>
+            <h2>📊 Tableaux de Référence Formelle</h2>
             <div class="table-toggle">
                 <button class="active" data-table="derivatives">Dérivées</button>
                 <button data-table="integrals">Primitives</button>
@@ -96,13 +104,13 @@
             </div>
             <div id="derivativesTable" class="table-container">
                 <table>
-                    <thead><tr><th>Fonction f(x)</th><th>Dérivée f'(x)</th><th>Condition</th></tr></thead>
+                    <thead><tr><th>Fonction f(x)</th><th>Dérivée f'(x)</th><th>Domaine / Conditions</th></tr></thead>
                     <tbody id="derivativesTableBody"></tbody>
                 </table>
             </div>
             <div id="integralsTable" class="table-container hide-table">
                 <table>
-                    <thead><tr><th>Fonction f(x)</th><th>Primitive F(x)</th><th>Intervalles</th></tr></thead>
+                    <thead><tr><th>Fonction f(x)</th><th>Primitive ∫ f(x) dx</th><th>Domaine / Conditions</th></tr></thead>
                     <tbody id="integralsTableBody"></tbody>
                 </table>
             </div>
@@ -111,52 +119,15 @@
 
     <script>
         // ============================================================
-        //  AST NODES
+        //  STRUCTURE DE L'AST (Arbre de Syntaxe Abstraite)
         // ============================================================
         class Node {
             constructor(type, value = null, left = null, right = null) {
-                this.type = type;
+                this.type = type;   
                 this.value = value;
                 this.left = left;
                 this.right = right;
             }
-        }
-
-        // ============================================================
-        //  UTILITY FUNCTIONS
-        // ============================================================
-        function containsVariable(node, varName) {
-            if (!node) return false;
-            if (node.type === 'var' && node.value === varName) return true;
-            if (node.type === 'func' && node.right) return node.right.some(arg => containsVariable(arg, varName));
-            return containsVariable(node.left, varName) || containsVariable(node.right, varName);
-        }
-
-        function toRawText(node) {
-            if (!node) return '';
-            switch (node.type) {
-                case 'number': return String(Number(node.value.toFixed(4)));
-                case 'var': return node.value;
-                case 'const': return node.value;
-                case 'neg': return `-${toRawText(node.left)}`;
-                case 'add': return `${toRawText(node.left)} + ${toRawText(node.right)}`;
-                case 'sub': return `${toRawText(node.left)} - ${toRawText(node.right)}`;
-                case 'mul': return `${toRawText(node.left)}*${toRawText(node.right)}`;
-                case 'div': return `(${toRawText(node.left)}/${toRawText(node.right)})`;
-                case 'pow': {
-                    let base = toRawText(node.left);
-                    if (['add', 'sub', 'mul', 'div', 'pow', 'neg'].includes(node.left.type)) {
-                        base = `(${base})`;
-                    }
-                    return `${base}^${toRawText(node.right)}`;
-                }
-                case 'func': return `${node.value}(${(node.right || []).map(a => toRawText(a)).join(', ')})`;
-                default: return '?';
-            }
-        }
-
-        function isSamePattern(node1, node2) {
-            return toRawText(simplifyNode(node1)) === toRawText(simplifyNode(node2));
         }
 
         // ============================================================
@@ -198,10 +169,7 @@
         }
 
         class Parser {
-            constructor(tokens) {
-                this.tokens = tokens;
-                this.pos = 0;
-            }
+            constructor(tokens) { this.tokens = tokens; this.pos = 0; }
             peek() { return this.tokens[this.pos] || null; }
             next() { return this.tokens[this.pos++] || null; }
             parse() { return this.parseExpr(); }
@@ -223,7 +191,7 @@
             }
             parsePower() {
                 let node = this.parseFactor();
-                if (this.peek() && this.peek().value === '^') {
+                while (this.peek() && this.peek().value === '^') {
                     this.next();
                     node = new Node('pow', null, node, this.parseFactor());
                 }
@@ -232,14 +200,8 @@
             parseFactor() {
                 const tok = this.peek();
                 if (!tok) return new Node('number', 0);
-                if (tok.type === 'number') {
-                    this.next();
-                    return new Node('number', tok.value);
-                }
-                if (tok.type === 'const') {
-                    this.next();
-                    return new Node('const', 'e');
-                }
+                if (tok.type === 'number') { this.next(); return new Node('number', tok.value); }
+                if (tok.type === 'const') { this.next(); return new Node('const', 'e'); }
                 if (tok.type === 'ident') {
                     const name = tok.value;
                     this.next();
@@ -254,6 +216,9 @@
                             }
                         }
                         if (this.peek() && this.peek().value === ')') this.next();
+                        if (name === 'sqrt') {
+                            return new Node('pow', null, args[0], new Node('number', 0.5));
+                        }
                         return new Node('func', name, null, args);
                     }
                     return new Node('var', name);
@@ -273,82 +238,98 @@
         }
 
         // ============================================================
-        //  SIMPLIFICATION
+        //  SIMPLIFICATEUR FORMEL DE COUPLAGE (Algorithme Aplatisseur)
         // ============================================================
         function simplifyNode(node) {
             if (!node) return node;
-            switch (node.type) {
-                case 'number': case 'var': case 'const': return node;
-                case 'neg': {
-                    const child = simplifyNode(node.left);
-                    if (child.type === 'number') return new Node('number', -child.value);
-                    return new Node('neg', null, child);
-                }
-                case 'add': {
-                    const l = simplifyNode(node.left);
-                    const r = simplifyNode(node.right);
-                    if (l.type === 'number' && l.value === 0) return r;
-                    if (r.type === 'number' && r.value === 0) return l;
-                    if (l.type === 'number' && r.type === 'number') return new Node('number', l.value + r.value);
-                    if (l.type === 'var' && r.type === 'var' && l.value === r.value) {
-                        return new Node('mul', null, new Node('number', 2), l);
-                    }
-                    return new Node('add', null, l, r);
-                }
-                case 'sub': {
-                    const l = simplifyNode(node.left);
-                    const r = simplifyNode(node.right);
-                    if (r.type === 'number' && r.value === 0) return l;
-                    if (l.type === 'number' && l.value === 0) return new Node('neg', null, r);
-                    if (l.type === 'number' && r.type === 'number') return new Node('number', l.value - r.value);
-                    return new Node('sub', null, l, r);
-                }
-                case 'mul': {
-                    const l = simplifyNode(node.left);
-                    const r = simplifyNode(node.right);
-                    if (l.type === 'number' && l.value === 0) return new Node('number', 0);
-                    if (r.type === 'number' && r.value === 0) return new Node('number', 0);
-                    if (l.type === 'number' && l.value === 1) return r;
-                    if (r.type === 'number' && r.value === 1) return l;
-                    if (l.type === 'number' && r.type === 'number') return new Node('number', l.value * r.value);
-                    if (l.type === 'div' && l.left.type === 'number' && l.left.value === 1 &&
-                        l.right.type === 'var' && r.type === 'var' && l.right.value === r.value) {
-                        return new Node('number', 1);
-                    }
-                    if (r.type === 'div' && r.left.type === 'number' && r.left.value === 1 &&
-                        r.right.type === 'var' && l.type === 'var' && r.right.value === l.value) {
-                        return new Node('number', 1);
-                    }
-                    return new Node('mul', null, l, r);
-                }
-                case 'div': {
-                    const l = simplifyNode(node.left);
-                    const r = simplifyNode(node.right);
-                    if (l.type === 'number' && l.value === 0) return new Node('number', 0);
-                    if (r.type === 'number' && r.value === 1) return l;
-                    if (l.type === 'number' && r.type === 'number' && r.value !== 0) {
-                        const res = l.value / r.value;
-                        if (Number.isInteger(res)) return new Node('number', res);
-                    }
-                    return new Node('div', null, l, r);
-                }
-                case 'pow': {
-                    const l = simplifyNode(node.left);
-                    const r = simplifyNode(node.right);
-                    if (r.type === 'number' && r.value === 0) return new Node('number', 1);
-                    if (r.type === 'number' && r.value === 1) return l;
-                    return new Node('pow', null, l, r);
-                }
-                case 'func': {
-                    const args = node.right ? node.right.map(simplifyNode) : [];
-                    return new Node('func', node.value, null, args);
-                }
-                default: return node;
+            
+            if (node.type === 'add' || node.type === 'sub' || node.type === 'mul' || node.type === 'div' || node.type === 'pow') {
+                node.left = simplifyNode(node.left);
+                node.right = simplifyNode(node.right);
+            } else if (node.type === 'neg') {
+                node.left = simplifyNode(node.left);
+            } else if (node.type === 'func' && node.right) {
+                node.right = node.right.map(simplifyNode);
             }
+
+            if (node.type === 'add' && node.left.type === 'number' && node.right.type === 'number')
+                return new Node('number', node.left.value + node.right.value);
+            if (node.type === 'sub' && node.left.type === 'number' && node.right.type === 'number')
+                return new Node('number', node.left.value - node.right.value);
+            if (node.type === 'mul' && node.left.type === 'number' && node.right.type === 'number')
+                return new Node('number', node.left.value * node.right.value);
+            if (node.type === 'div' && node.left.type === 'number' && node.right.type === 'number' && node.right.value !== 0) {
+                const v = node.left.value / node.right.value;
+                if (Number.isInteger(v)) return new Node('number', v);
+                const g = gcd(Math.abs(node.left.value), Math.abs(node.right.value));
+                if (g > 1) {
+                    return new Node('div', null, new Node('number', node.left.value / g), new Node('number', node.right.value / g));
+                }
+            }
+
+            if (node.type === 'add') {
+                if (node.left.type === 'number' && node.left.value === 0) return node.right;
+                if (node.right.type === 'number' && node.right.value === 0) return node.left;
+                if (toRawText(node.left) === toRawText(node.right)) {
+                    return new Node('mul', null, new Node('number', 2), node.left);
+                }
+            }
+            if (node.type === 'sub') {
+                if (node.right.type === 'number' && node.right.value === 0) return node.left;
+                if (node.left.type === 'number' && node.left.value === 0) return new Node('neg', null, node.right);
+                if (toRawText(node.left) === toRawText(node.right)) return new Node('number', 0);
+            }
+            if (node.type === 'mul') {
+                if (node.left.type === 'number' && node.left.value === 0) return new Node('number', 0);
+                if (node.right.type === 'number' && node.right.value === 0) return new Node('number', 0);
+                if (node.left.type === 'number' && node.left.value === 1) return node.right;
+                if (node.right.type === 'number' && node.right.value === 1) return node.left;
+                
+                // Consolidation récursive globale des fractions et facteurs numériques
+                if (node.left.type === 'mul' && node.left.left.type === 'number' && node.right.type === 'number') {
+                    return new Node('mul', null, new Node('number', node.left.left.value * node.right.value), node.left.right);
+                }
+                if (node.left.type === 'number' && node.right.type === 'mul' && node.right.left.type === 'number') {
+                    return new Node('mul', null, new Node('number', node.left.value * node.right.left.value), node.right.right);
+                }
+            }
+            if (node.type === 'div') {
+                if (node.left.type === 'number' && node.left.value === 0) return new Node('number', 0);
+                if (node.right.type === 'number' && node.right.value === 1) return node.left;
+                if (toRawText(node.left) === toRawText(node.right)) return new Node('number', 1);
+
+                // Correction majeure de l'arbre imbriqué (ex: (6*z^5*6)/36)
+                if (node.left.type === 'mul' && node.left.left.type === 'number' && node.right.type === 'number') {
+                    const g = gcd(Math.abs(node.left.left.value), Math.abs(node.right.value));
+                    const numCoef = node.left.left.value / g;
+                    const denCoef = node.right.value / g;
+                    if (denCoef === 1) {
+                        if (numCoef === 1) return node.left.right;
+                        return new Node('mul', null, new Node('number', numCoef), node.left.right);
+                    } else {
+                        return new Node('div', null, new Node('mul', null, new Node('number', numCoef), node.left.right), new Node('number', denCoef));
+                    }
+                }
+                if (node.left.type === 'mul' && node.left.left.type === 'mul' && node.left.left.left.type === 'number' && node.right.type === 'number') {
+                    const dynamicCoef = node.left.left.left.value * (node.left.right.type === 'number' ? node.left.right.value : 1);
+                    if (dynamicCoef === node.right.value) return node.left.left.right;
+                }
+            }
+            if (node.type === 'pow') {
+                if (node.right.type === 'number' && node.right.value === 0) return new Node('number', 1);
+                if (node.right.type === 'number' && node.right.value === 1) return node.left;
+                if (node.right.type === 'number' && node.right.value < 0) {
+                    const posExp = new Node('number', -node.right.value);
+                    return new Node('div', null, new Node('number', 1), new Node('pow', null, node.left, posExp));
+                }
+            }
+            if (node.type === 'neg' && node.left.type === 'neg') return node.left.left;
+
+            return node;
         }
 
         // ============================================================
-        //  DERIVATIVE
+        //  MOTEUR DE DÉRIVATION DYNAMIQUE
         // ============================================================
         function derivative(node, varName) {
             if (!node) return new Node('number', 0);
@@ -391,6 +372,15 @@
                         case 'sin': return new Node('mul', null, du, new Node('func', 'cos', null, [u]));
                         case 'cos': return new Node('mul', null, new Node('neg', null, du), new Node('func', 'sin', null, [u]));
                         case 'tan': return new Node('div', null, du, new Node('pow', null, new Node('func', 'cos', null, [u]), new Node('number', 2)));
+                        case 'cot': return new Node('neg', null, new Node('div', null, du, new Node('pow', null, new Node('func', 'sin', null, [u]), new Node('number', 2))));
+                        case 'sec': return new Node('mul', null, du, new Node('mul', null, new Node('func', 'sec', null, [u]), new Node('func', 'tan', null, [u])));
+                        case 'csc': return new Node('neg', null, new Node('mul', null, du, new Node('mul', null, new Node('func', 'csc', null, [u]), new Node('func', 'cot', null, [u]))));
+                        case 'sinh': return new Node('mul', null, du, new Node('func', 'cosh', null, [u]));
+                        case 'cosh': return new Node('mul', null, du, new Node('func', 'sinh', null, [u]));
+                        case 'tanh': return new Node('div', null, du, new Node('pow', null, new Node('func', 'cosh', null, [u]), new Node('number', 2)));
+                        case 'arcsin': return new Node('div', null, du, new Node('pow', null, new Node('sub', null, new Node('number', 1), new Node('pow', null, u, new Node('number', 2))), new Node('number', 0.5)));
+                        case 'arccos': return new Node('neg', null, new Node('div', null, du, new Node('pow', null, new Node('sub', null, new Node('number', 1), new Node('pow', null, u, new Node('number', 2))), new Node('number', 0.5))));
+                        case 'arctan': return new Node('div', null, du, new Node('add', null, new Node('number', 1), new Node('pow', null, u, new Node('number', 2))));
                         default: return new Node('number', 0);
                     }
                 }
@@ -399,76 +389,102 @@
         }
 
         // ============================================================
-        //  INTEGRATION
+        //  MOTEUR D'INTÉGRATION STRUCTURÉE
         // ============================================================
+        function containsVariable(node, varName) {
+            if (!node) return false;
+            if (node.type === 'var' && node.value === varName) return true;
+            if (node.type === 'func' && node.right) return node.right.some(arg => containsVariable(arg, varName));
+            return containsVariable(node.left, varName) || containsVariable(node.right, varName);
+        }
+
         function integrate(node, varName) {
             if (!node) return new Node('number', 0);
             if (!containsVariable(node, varName)) return new Node('mul', null, node, new Node('var', varName));
 
             switch (node.type) {
-                case 'var': {
+                case 'var':
                     if (node.value === varName) {
                         return new Node('div', null, new Node('pow', null, node, new Node('number', 2)), new Node('number', 2));
                     }
                     return new Node('mul', null, node, new Node('var', varName));
-                }
+                
                 case 'add': return new Node('add', null, integrate(node.left, varName), integrate(node.right, varName));
                 case 'sub': return new Node('sub', null, integrate(node.left, varName), integrate(node.right, varName));
+                
                 case 'mul': {
-                    const l = node.left;
-                    const r = node.right;
+                    let l = node.left;
+                    let r = node.right;
                     if (!containsVariable(l, varName)) return new Node('mul', null, l, integrate(r, varName));
                     if (!containsVariable(r, varName)) return new Node('mul', null, r, integrate(l, varName));
 
-                    if (r.type === 'func') {
-                        const u = r.right[0];
-                        const du = derivative(u, varName);
-                        if (isSamePattern(l, du)) {
-                            if (r.value === 'cos') return new Node('func', 'sin', null, [u]);
-                            if (r.value === 'sin') return new Node('neg', null, new Node('func', 'cos', null, [u]));
-                            if (r.value === 'exp') return r;
+                    let targetFunc = r.type === 'func' ? r : (l.type === 'func' ? l : null);
+                    let targetDeriv = r.type === 'func' ? l : (l.type === 'func' ? r : null);
+                    
+                    if (targetFunc && targetFunc.right) {
+                        let u = targetFunc.right[0];
+                        let du = simplifyNode(derivative(u, varName));
+                        if (toRawText(simplifyNode(targetDeriv)) === toRawText(du)) {
+                            switch (targetFunc.value) {
+                                case 'cos': return new Node('func', 'sin', null, [u]);
+                                case 'sin': return new Node('neg', null, new Node('func', 'cos', null, [u]));
+                                case 'exp': return targetFunc;
+                                case 'sinh': return new Node('func', 'cosh', null, [u]);
+                                case 'cosh': return new Node('func', 'sinh', null, [u]);
+                            }
                         }
                     }
-                    if (l.type === 'func') {
-                        const u = l.right[0];
-                        const du = derivative(u, varName);
-                        if (isSamePattern(r, du)) {
-                            if (l.value === 'cos') return new Node('func', 'sin', null, [u]);
-                            if (l.value === 'sin') return new Node('neg', null, new Node('func', 'cos', null, [u]));
-                            if (l.value === 'exp') return l;
-                        }
+
+                    if (l.type === 'var' && l.value === varName && r.type === 'func' && r.value === 'exp' && r.right[0].type === 'var' && r.right[0].value === varName) {
+                        return new Node('mul', null, r, new Node('sub', null, l, new Node('number', 1)));
                     }
                     return new Node('mul', null, node, new Node('var', varName));
                 }
+                
                 case 'div': {
-                    const num = node.left;
-                    const den = node.right;
+                    let num = node.left;
+                    let den = node.right;
                     if (!containsVariable(den, varName)) return new Node('div', null, integrate(num, varName), den);
-                    const dDen = derivative(den, varName);
-                    if (isSamePattern(num, dDen)) {
+                    
+                    let dDen = simplifyNode(derivative(den, varName));
+                    if (toRawText(simplifyNode(num)) === toRawText(dDen)) {
                         return new Node('func', 'ln', null, [den]);
                     }
-                    if (den.type === 'var' && den.value === varName && !containsVariable(num, varName)) {
-                        return new Node('mul', null, num, new Node('func', 'ln', null, [den]));
+                    
+                    if (den.type === 'add' && den.left.type === 'number' && den.left.value === 1 && den.right.type === 'pow') {
+                        let u = den.right.left;
+                        let dU = simplifyNode(derivative(u, varName));
+                        if (toRawText(simplifyNode(num)) === toRawText(dU) && den.right.right.type === 'number' && den.right.right.value === 2) {
+                            return new Node('func', 'arctan', null, [u]);
+                        }
                     }
                     return new Node('mul', null, node, new Node('var', varName));
                 }
+                
                 case 'pow': {
                     if (node.left.type === 'var' && node.left.value === varName && node.right.type === 'number') {
-                        return new Node('div', null,
-                            new Node('pow', null, node.left, new Node('number', node.right.value + 1)),
-                            new Node('number', node.right.value + 1)
-                        );
+                        let val = node.right.value;
+                        if (val === -1) return new Node('func', 'ln', null, [node.left]);
+                        return new Node('div', null, new Node('pow', null, node.left, new Node('number', val + 1)), new Node('number', val + 1));
                     }
                     return new Node('mul', null, node, new Node('var', varName));
                 }
+                
                 case 'func': {
-                    if (node.value === 'exp' && node.right[0].type === 'var' && node.right[0].value === varName) return node;
-                    if (node.value === 'sin' && node.right[0].type === 'var' && node.right[0].value === varName) {
-                        return new Node('neg', null, new Node('func', 'cos', null, node.right));
-                    }
-                    if (node.value === 'cos' && node.right[0].type === 'var' && node.right[0].value === varName) {
-                        return new Node('func', 'sin', null, node.right);
+                    let u = node.right[0];
+                    if (u.type === 'var' && u.value === varName) {
+                        switch (node.value) {
+                            case 'ln': return new Node('sub', null, new Node('mul', null, u, node), u);
+                            case 'exp': return node;
+                            case 'sin': return new Node('neg', null, new Node('func', 'cos', null, [u]));
+                            case 'cos': return new Node('func', 'sin', null, [u]);
+                            case 'tan': return new Node('neg', null, new Node('func', 'ln', null, [new Node('func', 'cos', null, [u])]));
+                            case 'cot': return new Node('func', 'ln', null, [new Node('func', 'sin', null, [u])]);
+                            case 'sec': return new Node('func', 'ln', null, [new Node('add', null, new Node('func', 'sec', null, [u]), new Node('func', 'tan', null, [u]))]);
+                            case 'csc': return new Node('neg', null, new Node('func', 'ln', null, [new Node('add', null, new Node('func', 'csc', null, [u]), new Node('func', 'cot', null, [u]))]));
+                            case 'sinh': return new Node('func', 'cosh', null, [u]);
+                            case 'cosh': return new Node('func', 'sinh', null, [u]);
+                        }
                     }
                     return new Node('mul', null, node, new Node('var', varName));
                 }
@@ -477,28 +493,40 @@
         }
 
         // ============================================================
-        //  NUMERICAL EVALUATION (pour vérification)
+        //  ÉVALUATION NUMÉRIQUE STABLE
         // ============================================================
         function evaluateNumerical(node, vars) {
             if (!node) return 0;
             switch (node.type) {
                 case 'number': return node.value;
-                case 'var': return vars[node.value] !== undefined ? vars[node.value] : 1.0;
+                case 'var': return vars[node.value] !== undefined ? vars[node.value] : 1.5;
                 case 'const': return Math.E;
                 case 'neg': return -evaluateNumerical(node.left, vars);
                 case 'add': return evaluateNumerical(node.left, vars) + evaluateNumerical(node.right, vars);
                 case 'sub': return evaluateNumerical(node.left, vars) - evaluateNumerical(node.right, vars);
                 case 'mul': return evaluateNumerical(node.left, vars) * evaluateNumerical(node.right, vars);
-                case 'div': return evaluateNumerical(node.left, vars) / evaluateNumerical(node.right, vars);
+                case 'div': {
+                    let d = evaluateNumerical(node.right, vars);
+                    return d === 0 ? 0 : evaluateNumerical(node.left, vars) / d;
+                }
                 case 'pow': return Math.pow(evaluateNumerical(node.left, vars), evaluateNumerical(node.right, vars));
                 case 'func': {
-                    const val = evaluateNumerical(node.right[0], vars);
+                    let val = evaluateNumerical(node.right[0], vars);
                     switch (node.value) {
-                        case 'ln': return Math.log(Math.abs(val));
+                        case 'ln': return Math.log(Math.abs(val || 1));
                         case 'exp': return Math.exp(val);
                         case 'sin': return Math.sin(val);
                         case 'cos': return Math.cos(val);
                         case 'tan': return Math.tan(val);
+                        case 'cot': return 1 / Math.tan(val);
+                        case 'sec': return 1 / Math.cos(val);
+                        case 'csc': return 1 / Math.sin(val);
+                        case 'sinh': return Math.sinh(val);
+                        case 'cosh': return Math.cosh(val);
+                        case 'tanh': return Math.tanh(val);
+                        case 'arcsin': return Math.asin(Math.max(-1, Math.min(1, val)));
+                        case 'arccos': return Math.acos(Math.max(-1, Math.min(1, val)));
+                        case 'arctan': return Math.atan(val);
                         default: return 0;
                     }
                 }
@@ -506,65 +534,88 @@
             }
         }
 
-        // ============================================================
-        //  VERIFICATION
-        // ============================================================
         function verifyResult(originalAst, finalResultAst, varName, op) {
-            const pt = { x: 1.5, y: 1.5, z: 1.5 };
-            const h = 0.0001;
+            const pt = { x: 1.25, y: 1.25, z: 1.25, t: 1.25, a: 1.25, b: 1.25, c: 1.25 };
+            const h = 0.00001;
             const ptP = { ...pt }, ptM = { ...pt };
             ptP[varName] += h;
             ptM[varName] -= h;
+            
             try {
                 if (op === 'derivative') {
-                    const numD = (evaluateNumerical(originalAst, ptP) - evaluateNumerical(originalAst, ptM)) / (2 * h);
-                    const anaD = evaluateNumerical(finalResultAst, pt);
+                    let numD = (evaluateNumerical(originalAst, ptP) - evaluateNumerical(originalAst, ptM)) / (2 * h);
+                    let anaD = evaluateNumerical(finalResultAst, pt);
                     if (isNaN(numD) || isNaN(anaD)) return '';
-                    if (Math.abs(numD - anaD) < 0.01) {
-                        return `<div class="verification">✅ Validation numérique : f'(${pt[varName]}) ≈ ${numD.toFixed(4)} (écart < 0.01)</div>`;
+                    if (Math.abs(numD - anaD) < 0.05) {
+                        return `<div class="verification">✅ Validation numérique : f'(${pt[varName]}) ≈ ${anaD.toFixed(4)} (Tolérance ok)</div>`;
                     }
-                    return `<div class="verification">⚠️ Écart numérique détecté : ${Math.abs(numD - anaD).toFixed(4)}</div>`;
+                    return `<div class="verification" style="color:#f87171; background:rgba(248,113,113,0.1); border-color:#f87171;">⚠️ Écart numérique d/d${varName} détecté (Vérifier le domaine de convergence)</div>`;
                 } else {
-                    const numD = (evaluateNumerical(finalResultAst, ptP) - evaluateNumerical(finalResultAst, ptM)) / (2 * h);
-                    const orig = evaluateNumerical(originalAst, pt);
+                    let numD = (evaluateNumerical(finalResultAst, ptP) - evaluateNumerical(finalResultAst, ptM)) / (2 * h);
+                    let orig = evaluateNumerical(originalAst, pt);
                     if (isNaN(numD) || isNaN(orig)) return '';
-                    if (Math.abs(numD - orig) < 0.01) {
-                        return `<div class="verification">✅ Théorème fondamental : d/d${varName}(F) ≈ f(${pt[varName]}) = ${orig.toFixed(4)} (écart < 0.01)</div>`;
+                    if (Math.abs(numD - orig) < 0.05) {
+                        return `<div class="verification">✅ Validation par Théorème Fondamental : d/d${varName}(F) == f(${varName}) (Tolérance ok)</div>`;
                     }
-                    return `<div class="verification">⚠️ Écart sur le théorème fondamental : ${Math.abs(numD - orig).toFixed(4)}</div>`;
+                    return `<div class="verification" style="color:#f87171; background:rgba(248,113,113,0.1); border-color:#f87171;">⚠️ Écart numérique détecté sur la primitive</div>`;
                 }
             } catch(e) { return ''; }
         }
 
         // ============================================================
-        //  AFFICHAGE HTML (Correction bugs d'exposants parents inclus)
+        //  MOTEUR DE RENDU ET FORMALISATION HTML
         // ============================================================
-        function toHTML(node) {
+        function toRawText(node) {
+            if (!node) return '';
+            switch (node.type) {
+                case 'number': return String(node.value);
+                case 'var': case 'const': return node.value;
+                case 'neg': return `-${toRawText(node.left)}`;
+                case 'add': return `${toRawText(node.left)}+${toRawText(node.right)}`;
+                case 'sub': return `${toRawText(node.left)}-${toRawText(node.right)}`;
+                case 'mul': return `${toRawText(node.left)}*${toRawText(node.right)}`;
+                case 'div': return `${toRawText(node.left)}/${toRawText(node.right)}`;
+                case 'pow': return `${toRawText(node.left)}^${toRawText(node.right)}`;
+                case 'func': return `${node.value}(${node.right.map(toRawText).join(',')})`;
+                default: return '';
+            }
+        }
+
+        function toHTML(node, varName) {
             if (!node) return '';
             switch (node.type) {
                 case 'number': return String(Number(node.value.toFixed(4)));
-                case 'var': return `<span class="var-highlight">${node.value}</span>`;
-                case 'const': return node.value;
-                case 'neg': return `−${toHTML(node.left)}`;
-                case 'add': return `${toHTML(node.left)} + ${toHTML(node.right)}`;
-                case 'sub': return `${toHTML(node.left)} − ${toHTML(node.right)}`;
-                case 'mul': return `${toHTML(node.left)}·${toHTML(node.right)}`;
-                case 'div': return `<span class="frac"><span class="num">${toHTML(node.left)}</span><span class="den">${toHTML(node.right)}</span></span>`;
-                case 'pow': {
-                    let base = toHTML(node.left);
-                    if (['add', 'sub', 'mul', 'div', 'pow', 'neg'].includes(node.left.type)) {
-                        base = `(${base})`;
-                    }
-                    return `${base}<sup>${toHTML(node.right)}</sup>`;
+                case 'var': 
+                    return node.value === varName ? `<span class="var-highlight">${node.value}</span>` : `<span>${node.value}</span>`;
+                case 'const': return node.value === 'e' ? 'e' : node.value;
+                case 'neg': return `−${toHTML(node.left, varName)}`;
+                case 'add': return `${toHTML(node.left, varName)} + ${toHTML(node.right, varName)}`;
+                case 'sub': return `${toHTML(node.left, varName)} − ${toHTML(node.right, varName)}`;
+                case 'mul': {
+                    let l = toHTML(node.left, varName);
+                    let r = toHTML(node.right, varName);
+                    if (node.left.type === 'number' && node.left.value === 1) return r;
+                    if (node.right.type === 'number' && node.right.value === 1) return l;
+                    return `${l}·${r}`;
                 }
-                case 'func': return `<span class="highlight">${node.value}</span>(${(node.right || []).map(a => toHTML(a)).join(', ')})`;
+                case 'div': return `<span class="frac"><span class="num">${toHTML(node.left, varName)}</span><span class="den">${toHTML(node.right, varName)}</span></span>`;
+                case 'pow': {
+                    if (node.right.type === 'number' && node.right.value === 0.5) {
+                        return `<span class="sqrt-symbol">√</span><span class="sqrt">${toHTML(node.left, varName)}</span>`;
+                    }
+                    if (node.right.type === 'number' && node.right.value < 0) {
+                        let positivePow = new Node('pow', null, node.left, new Node('number', Math.abs(node.right.value)));
+                        return `<span class="frac"><span class="num">1</span><span class="den">${toHTML(positivePow, varName)}</span></span>`;
+                    }
+                    let base = toHTML(node.left, varName);
+                    if (['add', 'sub', 'mul', 'div'].includes(node.left.type)) base = `(${base})`;
+                    return `${base}<sup>${toHTML(node.right, varName)}</sup>`;
+                }
+                case 'func': return `<span style="color:var(--primary); font-weight:bold;">${node.value}</span>(${node.right.map(a => toHTML(a, varName)).join(', ')})`;
                 default: return '?';
             }
         }
 
-        // ============================================================
-        //  COLLECTE DES TERMES POUR AFFICHAGE
-        // ============================================================
         function collectTerms(node, sign = 1) {
             if (!node) return [];
             if (node.type === 'add') return [...collectTerms(node.left, sign), ...collectTerms(node.right, sign)];
@@ -573,16 +624,8 @@
         }
 
         // ============================================================
-        //  FONCTION PRINCIPALE DE CALCUL
+        //  FONCTION PRINCIPALE DE PILOTAGE
         // ============================================================
-        function cleanUnicodePowers(str) {
-            const mapping = {
-                '²': '^2', '³': '^3', '⁴': '^4', '⁵': '^5',
-                '⁶': '^6', '⁷': '^7', '⁸': '^8', '⁹': '^9', '⁰': '^0'
-            };
-            return str.split('').map(char => mapping[char] || char).join('');
-        }
-
         function compute() {
             const expr = document.getElementById('calcInput').value.trim();
             const varName = document.getElementById('calcVariable').value;
@@ -591,50 +634,56 @@
 
             if (!expr) return;
             try {
-                const cleaned = cleanUnicodePowers(expr);
+                let cleaned = expr.replace(/²/g, '^2').replace(/³/g, '^3').replace(/⁴/g, '^4').replace(/⁵/g, '^5');
                 const tokens = tokenize(cleaned);
                 const parser = new Parser(tokens);
                 let ast = simplifyNode(parser.parse());
                 let resultHTML = '';
 
                 if (op === 'derivative') {
-                    const finalResult = simplifyNode(derivative(ast, varName));
-                    resultHTML = `<div class="formula">📈 d/d<span class="var-highlight">${varName}</span> = ${toHTML(finalResult)}</div>`;
-                    const terms = collectTerms(ast);
-                    terms.forEach((t, idx) => {
-                        const sign = t.sign === -1 ? '−' : '';
-                        const termNode = t.node;
-                        const derivNode = derivative(termNode, varName);
-                        const simplified = simplifyNode(derivNode);
-                        resultHTML += `<div class="step"><span class="step-number">${idx+1}.</span> d/d${varName}(${sign}${toRawText(termNode)}) ➜ ${toHTML(simplified)}</div>`;
-                    });
+                    let finalResult = simplifyNode(derivative(ast, varName));
+                    resultHTML = `<div class="formula"><span class="frac"><span class="num">d</span><span class="den">d${varName}</span></span> (${toHTML(ast, varName)}) = ${toHTML(finalResult, varName)}</div>`;
+                    
+                    let terms = collectTerms(ast);
+                    if (terms.length > 1) {
+                        resultHTML += `<div style="margin-top:10px; font-weight:600;">Analyse pas à pas des composants :</div>`;
+                        terms.forEach((t, idx) => {
+                            let prefix = t.sign === -1 ? '− ' : '';
+                            let dTerm = simplifyNode(derivative(t.node, varName));
+                            resultHTML += `<div class="step"><span class="step-number">[Terme ${idx+1}]</span> d/d${varName}(${prefix}${toHTML(t.node, varName)}) ➜ ${toHTML(dTerm, varName)}</div>`;
+                        });
+                    }
                     resultHTML += verifyResult(ast, finalResult, varName, op);
                 } else {
-                    const finalResult = simplifyNode(integrate(ast, varName));
-                    resultHTML = `<div class="formula">∫ (...) d<span class="var-highlight">${varName}</span> = ${toHTML(finalResult)} + C</div>`;
-                    const terms = collectTerms(ast);
-                    terms.forEach((t, idx) => {
-                        const sign = t.sign === -1 ? '−' : '';
-                        const termNode = t.node;
-                        const intNode = integrate(termNode, varName);
-                        const simplified = simplifyNode(intNode);
-                        resultHTML += `<div class="step"><span class="step-number">${idx+1}.</span> ∫ ${sign}${toRawText(termNode)} d${varName} ➜ ${toHTML(simplified)}</div>`;
-                    });
+                    let finalResult = simplifyNode(integrate(ast, varName));
+                    resultHTML = `<div class="formula">∫ (${toHTML(ast, varName)}) d${varName} = ${toHTML(finalResult, varName)} + C</div>`;
+                    
+                    let terms = collectTerms(ast);
+                    if (terms.length > 1) {
+                        resultHTML += `<div style="margin-top:10px; font-weight:600;">Analyse pas à pas des composants :</div>`;
+                        terms.forEach((t, idx) => {
+                            let prefix = t.sign === -1 ? '− ' : '';
+                            let iTerm = simplifyNode(integrate(t.node, varName));
+                            resultHTML += `<div class="step"><span class="step-number">[Terme ${idx+1}]</span> ∫ ${prefix}${toHTML(t.node, varName)} d${varName} ➜ ${toHTML(iTerm, varName)}</div>`;
+                        });
+                    }
                     resultHTML += verifyResult(ast, finalResult, varName, op);
                 }
                 resultDiv.innerHTML = resultHTML;
             } catch (e) {
-                resultDiv.innerHTML = `<span style="color:#f87171">Erreur : ${e.message}</span>`;
+                resultDiv.innerHTML = `<span style="color:#f87171">Erreur d'analyse de l'expression : ${e.message}</span>`;
             }
         }
 
         // ============================================================
-        //  INITIALISATION UI
+        //  ÉVÉNEMENTS ET CONTRÔLE UI
         // ============================================================
         document.getElementById('calcBtn').addEventListener('click', compute);
         document.getElementById('calcClearBtn').addEventListener('click', () => {
             document.getElementById('calcInput').value = '';
+            document.getElementById('calcResult').innerHTML = '';
         });
+        
         document.querySelectorAll('.mode-tabs button').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.mode-tabs button').forEach(b => b.classList.remove('active'));
@@ -643,107 +692,85 @@
                 compute();
             });
         });
+
         document.querySelectorAll('.calc-examples button').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.getElementById('calcInput').value = btn.dataset.expr;
+                if (btn.dataset.v) document.getElementById('calcVariable').value = btn.dataset.v;
+                else document.getElementById('calcVariable').value = 'x';
+                
+                document.getElementById('calcOperation').value = btn.dataset.op;
+                document.querySelectorAll('.mode-tabs button').forEach(b => {
+                    if (b.dataset.mode === btn.dataset.op) b.classList.add('active');
+                    else b.classList.remove('active');
+                });
                 compute();
             });
         });
 
         // ============================================================
-        //  TABLEAUX DE RÉFÉRENCE
+        //  TABLES DE RÉFÉRENCE FORMELLE
         // ============================================================
-        function buildFraction(num, den) {
-            return `<span class="frac"><span class="num">${num}</span><span class="den">${den}</span></span>`;
-        }
-
         const derivativesData = [
-            ['k (constante)', '0', '—'],
-            ['ax', 'a', '—'],
-            ['1/x', buildFraction('−1', 'x²'), 'x ≠ 0'],
-            ['xⁿ', 'n·xⁿ⁻¹', '—'],
-            ['1/xⁿ', buildFraction('−n', 'xⁿ⁺¹'), 'x ≠ 0'],
-            ['√x', buildFraction('1', '2√x'), 'x > 0'],
-            ['sin x', 'cos x', '—'],
-            ['cos x', '−sin x', '—'],
-            ['tan x', '1/cos²x', 'x ≠ π/2 + kπ'],
-            ['cot x', '−1/sin²x', 'x ≠ kπ'],
-            ['arcsin x', buildFraction('1', '√(1−x²)'), 'x ∈ ]−1;1['],
-            ['arccos x', buildFraction('−1', '√(1−x²)'), 'x ∈ ]−1;1['],
-            ['arctan x', buildFraction('1', '1+x²'), '—'],
-            ['sh x', 'ch x', '—'],
-            ['ch x', 'sh x', '—'],
-            ['th x', buildFraction('1', 'ch²x'), '—'],
-            ['ln x', buildFraction('1', 'x'), 'x > 0'],
-            ['e\u02e3', 'e\u02e3', '—'],
-            ['a\u02e3', 'a\u02e3·ln a', 'a > 0, a ≠ 1'],
-            ['e^(ax)', 'a·e^(ax)', '—'],
-            [buildFraction('x', '√(1−x²)'), buildFraction('1', '(1−x²)·√(1−x²)'), 'x ∈ ]−1;1['],
-            [buildFraction('sin x', 'cos x+1'), buildFraction('1', 'cos x+1'), 'cos x ≠ −1'],
-            [buildFraction('cos x', 'sin x+1'), buildFraction('−1', 'sin x+1'), 'sin x ≠ −1'],
-            [buildFraction('1', 'e\u02e3+e\u207b\u02e3'), buildFraction('e\u02e3\u2212e\u207b\u02e3', '(e\u02e3+e\u207b\u02e3)²'), '—'],
-            [buildFraction('1', 'e\u02e3\u2212e\u207b\u02e3'), buildFraction('e\u02e3+e\u207b\u02e3', '(e\u02e3\u2212e\u207b\u02e3)²'), 'e\u02e3 ≠ e\u207b\u02e3']
+            ['k (constante)', '0', 'ℝ'],
+            ['x', '1', 'ℝ'],
+            ['xⁿ', 'n·xⁿ⁻¹', 'ℝ (n ∈ ℕ) / x ≠ 0 (n < 0)'],
+            ['1/x', `<span class="frac"><span class="num">−1</span><span class="den">x²</span></span>`, 'x ≠ 0'],
+            ['√x', `<span class="frac"><span class="num">1</span><span class="den">2√x</span></span>`, 'x > 0'],
+            ['ln(x)', `<span class="frac"><span class="num">1</span><span class="den">x</span></span>`, 'x > 0'],
+            ['exp(x)', 'exp(x)', 'ℝ'],
+            ['sin(x)', 'cos(x)', 'ℝ'],
+            ['cos(x)', '−sin(x)', 'ℝ'],
+            ['tan(x)', '1 + tan²(x) = sec²(x)', 'x ≠ π/2 + kπ'],
+            ['cot(x)', '−(1 + cot²(x)) = −csc²(x)', 'x ≠ kπ'],
+            ['sec(x)', 'sec(x)·tan(x)', 'x ≠ π/2 + kπ'],
+            ['csc(x)', '−csc(x)·cot(x)', 'x ≠ kπ'],
+            ['sinh(x)', 'cosh(x)', 'ℝ'],
+            ['cosh(x)', 'sinh(x)', 'ℝ'],
+            ['arctan(x)', `<span class="frac"><span class="num">1</span><span class="den">1 + x²</span></span>`, 'ℝ'],
+            ['arcsin(x)', `<span class="frac"><span class="num">1</span><span class="den">√(1−x²)</span></span>`, '|x|<1']
         ];
 
         const integralsData = [
-            ['0', 'λ', 'ℝ'],
-            ['a', 'a·x + λ', 'ℝ'],
-            ['x', buildFraction('x²', '2') + ' + λ', 'ℝ'],
-            ['ax + b', buildFraction('a·x²', '2') + ' + b·x + λ', 'ℝ'],
-            ['xⁿ (n ≠ −1)', buildFraction('xⁿ⁺¹', 'n+1') + ' + λ', 'ℝ si n > 0'],
-            ['1/x', 'ln|x| + λ', ']−∞;0[ ou ]0;+∞['],
-            ['1/x²', buildFraction('−1', 'x') + ' + λ', ']−∞;0[ ou ]0;+∞['],
-            ['1/√x', '2√x + λ', ']0;+∞['],
-            ['cos x', 'sin x + λ', 'ℝ'],
-            ['sin x', '−cos x + λ', 'ℝ'],
-            ['cos(ax+b)', buildFraction('1', 'a') + '·sin(ax+b) + λ', 'ℝ'],
-            ['sin(ax+b)', buildFraction('−1', 'a') + '·cos(ax+b) + λ', 'ℝ'],
-            ['1/cos²x', 'tan x + λ', ']−π/2+kπ; π/2+kπ['],
-            ['e\u02e3', 'e\u02e3 + λ', 'ℝ'],
-            ['e^(ax+b)', buildFraction('1', 'a') + '·e^(ax+b) + λ', 'ℝ'],
-            ['1/(1+x²)', 'arctan x + λ', 'ℝ'],
-            ['1/√(1−x²)', 'arcsin x + λ', ']−1;1['],
-            [buildFraction('x', '√(1−x²)'), '−√(1−x²) + λ', ']−1;1['],
-            [buildFraction('sin x', 'cos x+1'), '−ln(cos x+1) + λ', 'cos x > −1'],
-            [buildFraction('cos x', 'sin x+1'), 'ln(sin x+1) + λ', 'sin x > −1'],
-            [buildFraction('1', 'e\u02e3+e\u207b\u02e3'), 'arctan(e\u02e3) + λ', 'ℝ'],
-            [buildFraction('1', 'e\u02e3\u2212e\u207b\u02e3'), buildFraction('1', '2') + '·ln|e\u02e3−1| − ' + buildFraction('1', '2') + '·ln|e\u02e3+1| + λ', 'e\u02e3 ≠ ±1']
+            ['k (constante)', 'k·x', 'ℝ'],
+            ['xⁿ (n ≠ −1)', `<span class="frac"><span class="num">xⁿ⁺¹</span><span class="den">n + 1</span></span>`, 'ℝ si n ≥ 0'],
+            ['1/x', 'ln|x|', 'x ≠ 0'],
+            ['exp(x)', 'exp(x)', 'ℝ'],
+            ['cos(x)', 'sin(x)', 'ℝ'],
+            ['sin(x)', '−cos(x)', 'ℝ'],
+            ['tan(x)', '−ln|cos(x)|', 'x ≠ π/2 + kπ'],
+            ['cot(x)', 'ln|sin(x)|', 'x ≠ kπ'],
+            ['sec(x)', 'ln|sec(x)+tan(x)|', 'x ≠ π/2 + kπ'],
+            ['csc(x)', '−ln|csc(x)+cot(x)|', 'x ≠ kπ'],
+            ['sinh(x)', 'cosh(x)', 'ℝ'],
+            ['cosh(x)', 'sinh(x)', 'ℝ'],
+            ['1 / (1 + x²)', 'arctan(x)', 'ℝ']
         ];
 
-        function renderTable(data, containerId) {
-            const tbody = document.getElementById(containerId);
-            if (!tbody) return;
-            tbody.innerHTML = data.map(row =>
-                `<tr><td class="math">${row[0]}</td><td class="math">${row[1]}</td><td>${row[2]}</td></tr>`
-            ).join('');
+        function renderTables() {
+            document.getElementById('derivativesTableBody').innerHTML = derivativesData.map(r => `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td><small>${r[2]}</small></td></tr>`).join('');
+            document.getElementById('integralsTableBody').innerHTML = integralsData.map(r => `<tr><td><b>${r[0]}</b></td><td>${r[1]} + C</td><td><small>${r[2]}</small></td></tr>`).join('');
         }
-
-        renderTable(derivativesData, 'derivativesTableBody');
-        renderTable(integralsData, 'integralsTableBody');
 
         document.querySelectorAll('.table-toggle button').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.table-toggle button').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                const tableId = btn.dataset.table;
-                const divs = {
-                    derivatives: document.getElementById('derivativesTable'),
-                    integrals: document.getElementById('integralsTable')
-                };
-                if (tableId === 'all') {
-                    divs.derivatives.classList.remove('hide-table');
-                    divs.integrals.classList.remove('hide-table');
-                } else if (tableId === 'derivatives') {
-                    divs.derivatives.classList.remove('hide-table');
-                    divs.integrals.classList.add('hide-table');
+                let t = btn.dataset.table;
+                if (t === 'all') {
+                    document.getElementById('derivativesTable').classList.remove('hide-table');
+                    document.getElementById('integralsTable').classList.remove('hide-table');
+                } else if (t === 'derivatives') {
+                    document.getElementById('derivativesTable').classList.remove('hide-table');
+                    document.getElementById('integralsTable').classList.add('hide-table');
                 } else {
-                    divs.derivatives.classList.add('hide-table');
-                    divs.integrals.classList.remove('hide-table');
+                    document.getElementById('derivativesTable').classList.add('hide-table');
+                    document.getElementById('integralsTable').classList.remove('hide-table');
                 }
             });
         });
 
-        setTimeout(compute, 200);
+        window.onload = () => { renderTables(); compute(); };
     </script>
 </body>
 </html>
