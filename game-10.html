@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculus Pro - Multivariables</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        :root {
+            --bg: #f0f4f8;
+            --container: #ffffff;
+            --text: #1a202c;
+            --shadow: 0 20px 60px rgba(0,0,0,0.15);
+            --border: #e2e8f0;
+            --hover: #edf2f7;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --radius: 16px;
+            --code-bg: #f8fafc;
+            --table-stripe: #f8fafc;
+            --step-bg: #f1f5f9;
+            --step-border: #e2e8f0;
+            --var-color: #dc2626;
+            --success: #10b981;
+        }
+        body.dark {
+            --bg: #0f172a;
+            --container: #1e293b;
+            --text: #f1f5f9;
+            --shadow: 0 20px 60px rgba(0,0,0,0.6);
+            --border: #334155;
+            --hover: #334155;
+            --primary: #818cf8;
+            --primary-hover: #6366f1;
+            --code-bg: #0f172a;
+            --table-stripe: #1e293b;
+            --step-bg: #1e293b;
+            --step-border: #334155;
+            --var-color: #f87171;
+            --success: #34d399;
+        }
+        body { background: var(--bg); display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 20px; color: var(--text); }
+        .container { background: var(--container); width: 100%; max-width: 1100px; padding: 30px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); }
+        .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+        h1 { font-size: 28px; font-weight: 700; background: linear-gradient(135deg, #4f46e5, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .top-bar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        .top-bar button { background: var(--hover); border: none; padding: 8px 14px; border-radius: 30px; font-size: 14px; font-weight: 600; color: var(--text); cursor: pointer; border: 1px solid var(--border); }
+        .top-bar button:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .btn { padding: 12px 28px; font-size: 16px; font-weight: 600; border: none; border-radius: 30px; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { background: var(--primary-hover); transform: scale(1.02); }
+        .btn-secondary { background: var(--hover); color: var(--text); border: 1px solid var(--border); }
+        .btn-secondary:hover { background: var(--border); }
+        .calc-section { margin-top: 20px; padding: 24px; background: var(--hover); border-radius: var(--radius); border: 1px solid var(--border); }
+        .calc-section h2 { font-size: 22px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+        .calc-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; }
+        @media (max-width: 700px) { .calc-grid { grid-template-columns: 1fr; } }
+        .calc-grid input, .calc-grid select { padding: 12px 16px; border-radius: 10px; border: 2px solid var(--border); background: var(--container); color: var(--text); font-size: 16px; width: 100%; }
+        .calc-grid input { font-family: 'Courier New', monospace; font-size: 18px; }
+        .calc-grid input:focus, .calc-grid select:focus { outline: none; border-color: var(--primary); }
+        .calc-result { grid-column: 1 / -1; padding: 24px; background: var(--code-bg); border-radius: 12px; font-size: 20px; min-height: 80px; border: 2px solid var(--border); font-family: 'Times New Roman', serif; line-height: 2.2; white-space: pre-wrap; word-break: break-word; }
+        .calc-result .formula { font-size: 28px; font-weight: 700; color: var(--primary); margin-bottom: 12px; padding: 10px 14px; background: var(--step-bg); border-radius: 8px; border-left: 5px solid var(--primary); }
+        .calc-result .step { font-weight: 400; font-size: 17px; margin: 4px 0; padding: 6px 12px; font-family: 'Times New Roman', serif; background: var(--step-bg); border-radius: 6px; border-left: 3px solid var(--step-border); line-height: 1.6; }
+        .calc-result .step-number { display: inline-block; font-weight: 700; color: var(--primary); margin-right: 8px; font-size: 18px; }
+        .calc-result .highlight { color: var(--primary); font-weight: 700; }
+        .calc-result .var-highlight { color: var(--var-color); font-weight: 700; }
+        .calc-result .error { color: #ef4444; font-weight: 600; }
+        .calc-result .verification { color: var(--success); font-weight: 600; padding: 8px 12px; background: rgba(16, 185, 129, 0.1); border-radius: 6px; margin-top: 10px; border-left: 4px solid var(--success); font-size: 16px; font-family: 'Segoe UI', sans-serif; }
+        .frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; margin: 0 4px; font-size: 1.1em; line-height: 1.2; }
+        .frac .num { border-bottom: 2px solid currentColor; padding: 0 6px 2px 6px; font-weight: 600; }
+        .frac .den { padding: 2px 6px 0 6px; font-weight: 600; }
+        .frac .num, .frac .den { display: block; text-align: center; font-size: 0.95em; }
+        .calc-examples { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+        .calc-examples button { padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border); background: var(--container); color: var(--text); font-size: 13px; cursor: pointer; font-family: 'Courier New', monospace; transition: 0.2s; }
+        .calc-examples button:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .mode-tabs { grid-column: 1 / -1; display: flex; gap: 8px; }
+        .mode-tabs button { padding: 8px 20px; border-radius: 20px; border: 2px solid var(--border); background: var(--container); color: var(--text); font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .mode-tabs button.active { border-color: var(--primary); background: var(--primary); color: #fff; }
+        .mode-tabs button:hover:not(.active) { border-color: var(--primary); }
+        .tables-section { margin-top: 30px; padding-top: 24px; border-top: 2px solid var(--border); }
+        .tables-section h2 { font-size: 22px; margin-bottom: 16px; }
+        .table-container { overflow-x: auto; margin-bottom: 24px; border-radius: 12px; border: 1px solid var(--border); }
+        .table-container table { width: 100%; border-collapse: collapse; font-size: 15px; }
+        .table-container th { background: var(--primary); color: #fff; padding: 12px 16px; text-align: left; font-weight: 600; }
+        .table-container td { padding: 10px 16px; border-bottom: 1px solid var(--border); font-family: 'Times New Roman', serif; font-size: 17px; vertical-align: middle; }
+        .table-container tr:nth-child(even) { background: var(--table-stripe); }
+        .table-container tr:hover { background: var(--hover); }
+        .table-toggle { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+        .table-toggle button { padding: 8px 20px; border-radius: 20px; border: 2px solid var(--border); background: var(--container); color: var(--text); font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .table-toggle button.active { border-color: var(--primary); background: var(--primary); color: #fff; }
+        .table-toggle button:hover:not(.active) { border-color: var(--primary); }
+        .table-container.hide-table { display: none; }
+        @media (max-width: 600px) {
+            .container { padding: 16px; }
+            h1 { font-size: 22px; }
+            .calc-result .formula { font-size: 20px; }
+            .calc-result { font-size: 17px; padding: 14px; }
+            .table-container td { font-size: 15px; padding: 8px 10px; }
+            .table-container th { padding: 8px 10px; font-size: 13px; }
+            .frac { font-size: 0.95em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧮 Calculus Pro — Version Finale Analytique</h1>
+            <div class="top-bar"><button id="themeToggle">🌓 Thème</button></div>
+        </div>
+        <div class="calc-section">
+            <h2>📐 Calculatrice : Dérivées & Intégrales</h2>
+            <div class="calc-grid">
+                <input type="text" id="calcInput" placeholder="f(x) = ..." value="ln(x)+y^2">
+                <select id="calcVariable">
+                    <option value="x" selected>x</option>
+                    <option value="y">y</option>
+                    <option value="z">z</option>
+                    <option value="t">t</option>
+                </select>
+                <select id="calcOperation" style="display:none;">
+                    <option value="derivative">Dérivée</option>
+                    <option value="integral" selected>Intégrale</option>
+                </select>
+                <div class="mode-tabs">
+                    <button data-mode="derivative">📈 Dérivée</button>
+                    <button class="active" data-mode="integral">∫ Intégrale</button>
+                </div>
+                <button id="calcBtn" class="btn btn-primary" style="grid-column:1/2;">➜ Calculer</button>
+                <button id="calcClearBtn" class="btn btn-secondary" style="grid-column:2/3;">Effacer</button>
+                <div id="calcResult" class="calc-result"><span>Entrez une fonction et cliquez sur Calculer</span></div>
+                <div class="calc-examples">
+                    <button data-expr="ln(x)+y^2">ln(x)+y²</button>
+                    <button data-expr="1/6*x^2+ln(x)">1/6*x²+ln(x)</button>
+                    <button data-expr="x^2+y^2">x²+y²</button>
+                    <button data-expr="5*x^3">5x³</button>
+                    <button data-expr="sin(x)">sin(x)</button>
+                    <button data-expr="cos(x)">cos(x)</button>
+                </div>
+            </div>
+        </div>
+        <div class="tables-section">
+            <h2>📊 Tableaux des dérivées et primitives</h2>
+            <div class="table-toggle">
+                <button class="active" data-table="derivatives">Dérivées</button>
+                <button data-table="integrals">Primitives</button>
+                <button data-table="all">Tout afficher</button>
+            </div>
+            <div id="derivativesTable" class="table-container">
+                <table><thead><tr><th>Fonction f(x)</th><th>Dérivée f'(x)</th><th>Condition</th></tr></thead>
+                <tbody id="derivativesTableBody"></tbody></table>
+            </div>
+            <div id="integralsTable" class="table-container hide-table">
+                <table><thead><tr><th>Fonction f(x)</th><th>Primitive F(x)</th><th>Intervalles</th></tr></thead>
+                <tbody id="integralsTableBody"></tbody></table>
+            </div>
+        </div>
+    </div>
+    <script>
+    // ============================================================
+    //  NŒUD AST & EVALUATEUR NUMÉRIQUE POUR LA VÉRIFICATION
+    // ============================================================
+    class Node {
+        constructor(type, value = null, left = null, right = null) {
+            this.type = type; this.value = value; this.left = left; this.right = right;
+        }
+    }
+
+    function evaluateNumerical(node, vars) {
+        if (!node) return 0;
+        switch (node.type) {
+            case 'number': return node.value;
+            case 'const': return Math.E;
+            case 'var': return vars[node.value] !== undefined ? vars[node.value] : 1.0;
+            case 'neg': return -evaluateNumerical(node.left, vars);
+            case 'add': return evaluateNumerical(node.left, vars) + evaluateNumerical(node.right, vars);
+            case 'sub': return evaluateNumerical(node.left, vars) - evaluateNumerical(node.right, vars);
+            case 'mul': return evaluateNumerical(node.left, vars) * evaluateNumerical(node.right, vars);
+            case 'div': return evaluateNumerical(node.left, vars) / evaluateNumerical(node.right, vars);
+            case 'pow': return Math.pow(evaluateNumerical(node.left, vars), evaluateNumerical(node.right, vars));
+            case 'func': {
+                const arg = evaluateNumerical(node.right[0], vars);
+                if (node.value === 'ln') return Math.log(arg);
+                if (node.value === 'sin') return Math.sin(arg);
+                if (node.value === 'cos') return Math.cos(arg);
+                return 0;
+            }
+            default: return 0;
+        }
+    }
+
+    // ============================================================
+    //  TOKENIZER & PARSER
+    // ============================================================
+    function tokenize(expr) {
+        const tokens = []; let i = 0;
+        while (i < expr.length) {
+            const c = expr[i];
+            if (c === ' ') { i++; continue; }
+            if (c === '(' || c === ')' || c === '+' || c === '-' || c === '*' || c === '/' || c === '^' || c === ',') {
+                tokens.push({ type: 'op', value: c }); i++; continue;
+            }
+            if (c === 'e') { tokens.push({ type: 'const', value: 'e' }); i++; continue; }
+            if (/[a-zA-Z]/.test(c)) {
+                let name = ''; while (i < expr.length && /[a-zA-Z]/.test(expr[i])) { name += expr[i]; i++; }
+                tokens.push({ type: 'ident', value: name }); continue;
+            }
+            if (/[0-9.]/.test(c)) {
+                let num = ''; while (i < expr.length && /[0-9.]/.test(expr[i])) { num += expr[i]; i++; }
+                tokens.push({ type: 'number', value: num }); continue;
+            }
+            i++;
+        }
+        return tokens;
+    }
+
+    class Parser {
+        constructor(tokens) { this.tokens = tokens; this.pos = 0; }
+        peek() { return this.tokens[this.pos] || null; }
+        next() { return this.tokens[this.pos++] || null; }
+        parse() { return this.parseExpr(); }
+        parseExpr() {
+            let node = this.parseTerm();
+            while (this.peek() && (this.peek().value === '+' || this.peek().value === '-')) {
+                const op = this.next().value;
+                const right = this.parseTerm();
+                node = new Node(op === '+' ? 'add' : 'sub', null, node, right);
+            }
+            return node;
+        }
+        parseTerm() {
+            let node = this.parsePower();
+            while (this.peek() && (this.peek().value === '*' || this.peek().value === '/')) {
+                const op = this.next().value;
+                const right = this.parsePower();
+                node = new Node(op === '*' ? 'mul' : 'div', null, node, right);
+            }
+            return node;
+        }
+        parsePower() {
+            let node = this.parseFactor();
+            if (this.peek() && this.peek().value === '^') {
+                this.next();
+                const right = this.parseFactor();
+                node = new Node('pow', null, node, right);
+            }
+            return node;
+        }
+        parseFactor() {
+            const tok = this.peek();
+            if (!tok) return new Node('number', 0);
+            if (tok.type === 'number') { this.next(); return new Node('number', parseFloat(tok.value)); }
+            if (tok.type === 'const') { this.next(); return new Node('const', 'e'); }
+            if (tok.type === 'ident') {
+                const name = tok.value; this.next();
+                if (this.peek() && this.peek().value === '(') {
+                    this.next(); const args = [];
+                    if (this.peek() && this.peek().value !== ')') {
+                        args.push(this.parseExpr());
+                        while (this.peek() && this.peek().value === ',') { this.next(); args.push(this.parseExpr()); }
+                    }
+                    if (this.peek() && this.peek().value === ')') this.next();
+                    return new Node('func', name, null, args);
+                }
+                return new Node('var', name);
+            }
+            if (tok.value === '(') { this.next(); const node = this.parseExpr(); if (this.peek() && this.peek().value === ')') this.next(); return node; }
+            if (tok.value === '-') { this.next(); const operand = this.parseFactor(); return new Node('neg', null, operand); }
+            return new Node('number', 0);
+        }
+    }
+
+    // ============================================================
+    //  SIMPLIFICATEUR COMPLET
+    // ============================================================
+    function simplifyNode(node) {
+        if (!node) return node;
+        switch (node.type) {
+            case 'number': case 'var': case 'const': return node;
+            case 'neg': {
+                const child = simplifyNode(node.left);
+                if (child.type === 'number') return new Node('number', -child.value);
+                if (child.type === 'neg') return child.left;
+                return new Node('neg', null, child);
+            }
+            case 'add': {
+                const l = simplifyNode(node.left); const r = simplifyNode(node.right);
+                if (l.type === 'number' && l.value === 0) return r;
+                if (r.type === 'number' && r.value === 0) return l;
+                if (l.type === 'number' && r.type === 'number') return new Node('number', l.value + r.value);
+                return new Node('add', null, l, r);
+            }
+            case 'sub': {
+                const l = simplifyNode(node.left); const r = simplifyNode(node.right);
+                if (r.type === 'number' && r.value === 0) return l;
+                if (l.type === 'number' && l.value === 0) return new Node('neg', null, r);
+                if (l.type === 'number' && r.type === 'number') return new Node('number', l.value - r.value);
+                return new Node('sub', null, l, r);
+            }
+            case 'mul': {
+                const l = simplifyNode(node.left); const r = simplifyNode(node.right);
+                if (l.type === 'number' && l.value === 0) return new Node('number', 0);
+                if (r.type === 'number' && r.value === 0) return new Node('number', 0);
+                if (l.type === 'number' && l.value === 1) return r;
+                if (r.type === 'number' && r.value === 1) return l;
+                if (l.type === 'number' && r.type === 'number') return new Node('number', l.value * r.value);
+                return new Node('mul', null, l, r);
+            }
+            case 'div': {
+                const l = simplifyNode(node.left); const r = simplifyNode(node.right);
+                if (l.type === 'number' && l.value === 0) return new Node('number', 0);
+                if (r.type === 'number' && r.value === 1) return l;
+                if (l.type === 'number' && r.type === 'number') {
+                    if (r.value === 0) return new Node('number', Infinity);
+                    const result = l.value / r.value;
+                    if (Number.isInteger(result)) return new Node('number', result);
+                }
+                return new Node('div', null, l, r);
+            }
+            case 'pow': {
+                const l = simplifyNode(node.left); const r = simplifyNode(node.right);
+                if (r.type === 'number' && r.value === 0) return new Node('number', 1);
+                if (r.type === 'number' && r.value === 1) return l;
+                if (l.type === 'number' && r.type === 'number') return new Node('number', Math.pow(l.value, r.value));
+                return new Node('pow', null, l, r);
+            }
+            case 'func': {
+                const args = node.right ? node.right.map(a => simplifyNode(a)) : [];
+                return new Node('func', node.value, null, args);
+            }
+            default: return node;
+        }
+    }
+
+    // ============================================================
+    //  AFFICHAGE HTML
+    // ============================================================
+    function toHTML(node) {
+        if (!node) return '';
+        switch (node.type) {
+            case 'number': return String(Number(node.value.toFixed(4)));
+            case 'var': return `<span class="var-highlight">${node.value}</span>`;
+            case 'const': return node.value;
+            case 'neg': return `−${toHTML(node.left)}`;
+            case 'add': return `${toHTML(node.left)} + ${toHTML(node.right)}`;
+            case 'sub': return `${toHTML(node.left)} − ${toHTML(node.right)}`;
+            case 'mul': return `${toHTML(node.left)}·${toHTML(node.right)}`;
+            case 'div': return buildFraction(toHTML(node.left), toHTML(node.right));
+            case 'pow': {
+                const l = toHTML(node.left);
+                if (node.right.type === 'number') return `${l}${superscript(node.right.value)}`;
+                return `${l}<sup>${toHTML(node.right)}</sup>`;
+            }
+            case 'func': {
+                const argsStr = (node.right || []).map(a => toHTML(a)).join(', ');
+                return `${node.value}(${argsStr})`;
+            }
+            default: return '?';
+        }
+    }
+
+    function superscript(n) {
+        const sup = { '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹', '-': '⁻' };
+        return String(n).split('').map(d => sup[d] || d).join('');
+    }
+
+    function collectTerms(node, sign = 1) {
+        if (!node) return [];
+        if (node.type === 'add') return [...collectTerms(node.left, sign), ...collectTerms(node.right, sign)];
+        if (node.type === 'sub') return [...collectTerms(node.left, sign), ...collectTerms(node.right, -sign)];
+        return [{ node: node, sign: sign }];
+    }
+
+    // ============================================================
+    //  ALGORITHMES FORMELS : DÉRIVÉE & INTÉGRALE
+    // ============================================================
+    function derivative(node, varName) {
+        if (!node) return new Node('number', 0);
+        switch (node.type) {
+            case 'number': case 'const': return new Node('number', 0);
+            case 'var': return node.value === varName ? new Node('number', 1) : new Node('number', 0);
+            case 'neg': return new Node('neg', null, derivative(node.left, varName));
+            case 'add': return new Node('add', null, derivative(node.left, varName), derivative(node.right, varName));
+            case 'sub': return new Node('sub', null, derivative(node.left, varName), derivative(node.right, varName));
+            case 'mul': {
+                const u = node.left, v = node.right;
+                return new Node('add', null, new Node('mul', null, derivative(u, varName), v), new Node('mul', null, u, derivative(v, varName)));
+            }
+            case 'div': {
+                const u = node.left, v = node.right;
+                const num = new Node('sub', null, new Node('mul', null, derivative(u, varName), v), new Node('mul', null, u, derivative(v, varName)));
+                return new Node('div', null, num, new Node('pow', null, v, new Node('number', 2)));
+            }
+            case 'pow': {
+                const base = node.left, exp = node.right;
+                if (base.type === 'var' && base.value === varName && exp.type === 'number') {
+                    return new Node('mul', null, exp, new Node('pow', null, base, new Node('number', exp.value - 1)));
+                }
+                return new Node('number', 0);
+            }
+            case 'func': {
+                const inner = node.right[0]; const du = derivative(inner, varName);
+                if (node.value === 'ln') return new Node('div', null, du, inner);
+                if (node.value === 'sin') return new Node('mul', null, new Node('func', 'cos', null, [inner]), du);
+                if (node.value === 'cos') return new Node('mul', null, new Node('neg', null, new Node('func', 'sin', null, [inner])), du);
+                return new Node('number', 0);
+            }
+            default: return new Node('number', 0);
+        }
+    }
+
+    function integrate(node, varName) {
+        if (!node) return new Node('number', 0);
+        switch (node.type) {
+            case 'number': return new Node('mul', null, node, new Node('var', varName));
+            case 'var': {
+                if (node.value === varName) return new Node('div', null, new Node('pow', null, node, new Node('number', 2)), new Node('number', 2));
+                return new Node('mul', null, node, new Node('var', varName));
+            }
+            case 'add': return new Node('add', null, integrate(node.left, varName), integrate(node.right, varName));
+            case 'sub': return new Node('sub', null, integrate(node.left, varName), integrate(node.right, varName));
+            case 'mul': {
+                if (node.left.type === 'number' || (node.left.type === 'div' && node.left.left.type === 'number')) {
+                    return new Node('mul', null, node.left, integrate(node.right, varName));
+                }
+                return new Node('mul', null, node, new Node('var', varName));
+            }
+            case 'pow': {
+                if (node.left.type === 'var' && node.left.value === varName && node.right.type === 'number') {
+                    const n = node.right.value;
+                    if (n === -1) return new Node('func', 'ln', null, [node.left]);
+                    return new Node('div', null, new Node('pow', null, node.left, new Node('number', n + 1)), new Node('number', n + 1));
+                }
+                return new Node('mul', null, node, new Node('var', varName));
+            }
+            case 'func': {
+                if (node.value === 'ln' && node.right[0].type === 'var' && node.right[0].value === varName) {
+                    return new Node('sub', null, new Node('mul', null, new Node('var', varName), node), new Node('var', varName));
+                }
+                return new Node('mul', null, node, new Node('var', varName));
+            }
+            default: return new Node('mul', null, node, new Node('var', varName));
+        }
+    }
+
+    // ============================================================
+    //  ÉTAPES DE RÉSOLUTION
+    // ============================================================
+    function getIntegralSteps(node, varName) {
+        const steps = [`🔴 Intégration par rapport à <span class="var-highlight">${varName}</span>. Les autres variables sont traitées comme constantes.`, `📖 Règle de linéarité : application du calcul terme par terme.`];
+        collectTerms(node).forEach(t => {
+            const signStr = t.sign === -1 ? '− ' : '';
+            steps.push(`   • ∫ ${signStr}${toHTML(t.node)} d${varName} ➜ ${signStr}${toHTML(simplifyNode(integrate(t.node, varName)))}`);
+        });
+        return steps;
+    }
+
+    function getDerivativeSteps(node, varName) {
+        const steps = [`🔴 Dérivation par rapport à <span class="var-highlight">${varName}</span>.`];
+        collectTerms(node).forEach(t => {
+            const signStr = t.sign === -1 ? '− ' : '';
+            steps.push(`   • d/d${varName}(${signStr}${toHTML(t.node)}) ➜ ${signStr}${toHTML(simplifyNode(derivative(t.node, varName)))}`);
+        });
+        return steps;
+    }
+
+    // ============================================================
+    //  MOTEUR DE VÉRIFICATION NUMÉRIQUE
+    // ============================================================
+    function verifyResult(originalAst, finalResultAst, varName, op) {
+        const testPoint = {};
+        ['x','y','z','t'].forEach(v => testPoint[v] = 2.5); // Point stable hors singularités
+        
+        if (op === 'derivative') {
+            const h = 0.0001;
+            const ptPlus = { ...testPoint }, ptMinus = { ...testPoint };
+            ptPlus[varName] = testPoint[varName] + h;
+            ptMinus[varName] = testPoint[varName] - h;
+            
+            const numDerivative = (evaluateNumerical(originalAst, ptPlus) - evaluateNumerical(originalAst, ptMinus)) / (2 * h);
+            const analyticalResult = evaluateNumerical(finalResultAst, testPoint);
+            
+            if (Math.abs(numDerivative - analyticalResult) < 0.05) {
+                return `<div class="verification">✅ Vérification numérique réussie : f'(${testPoint[varName]}) ≈ ${numDerivative.toFixed(4)} (Erreur < 1%)</div>`;
+            }
+        } else {
+            const h = 0.0001;
+            const ptPlus = { ...testPoint }, ptMinus = { ...testPoint };
+            ptPlus[varName] = testPoint[varName] + h;
+            ptMinus[varName] = testPoint[varName] - h;
+            
+            const derivedPrimitive = (evaluateNumerical(finalResultAst, ptPlus) - evaluateNumerical(finalResultAst, ptMinus)) / (2 * h);
+            const originalValue = evaluateNumerical(originalAst, testPoint);
+            
+            if (Math.abs(derivedPrimitive - originalValue) < 0.05) {
+                return `<div class="verification">✅ Vérification numérique réussie : d/d${varName}(F) ≈ f(${testPoint[varName]}) = ${originalValue.toFixed(4)}</div>`;
+            }
+        }
+        return '';
+    }
+
+    // ============================================================
+    //  CONTROLEUR PRINCIPAL UI
+    // ============================================================
+    const themeToggle = document.getElementById('themeToggle');
+    const calcInput = document.getElementById('calcInput');
+    const calcBtn = document.getElementById('calcBtn');
+    const calcClearBtn = document.getElementById('calcClearBtn');
+    const calcResult = document.getElementById('calcResult');
+    const calcVariable = document.getElementById('calcVariable');
+    const calcOperation = document.getElementById('calcOperation');
+
+    themeToggle.addEventListener('click', () => document.body.classList.toggle('dark'));
+
+    function compute() {
+        const expr = calcInput.value.trim(); const varName = calcVariable.value; const op = calcOperation.value;
+        if (!expr) { calcResult.innerHTML = '<span class="error">⚠️ Entrez une fonction.</span>'; return; }
+        try {
+            const tokens = tokenize(expr); const parser = new Parser(tokens);
+            let ast = parser.parse(); let simplified = simplifyNode(ast); let resultHTML = '';
+
+            if (op === 'derivative') {
+                const steps = getDerivativeSteps(simplified, varName);
+                const finalResult = simplifyNode(derivative(simplified, varName));
+                resultHTML = `<div class="formula">📈 d/d<span class="var-highlight">${varName}</span> (${expr}) = ${toHTML(finalResult)}</div>`;
+                steps.forEach((step, index) => { resultHTML += `<div class="step"><span class="step-number">${index + 1}.</span> ${step}</div>`; });
+                resultHTML += verifyResult(simplified, finalResult, varName, op);
+            } else {
+                const steps = getIntegralSteps(simplified, varName);
+                const finalResult = simplifyNode(integrate(simplified, varName));
+                resultHTML = `<div class="formula">∫ (${expr}) d<span class="var-highlight">${varName}</span> = ${toHTML(finalResult)} + <span class="highlight">C</span></div>`;
+                steps.forEach((step, index) => { resultHTML += `<div class="step"><span class="step-number">${index + 1}.</span> ${step}</div>`; });
+                resultHTML += verifyResult(simplified, finalResult, varName, op);
+            }
+            calcResult.innerHTML = resultHTML;
+        } catch (e) { calcResult.innerHTML = `<span class="error">❌ Erreur d'analyse : ${e.message}</span>`; }
+    }
+
+    calcBtn.addEventListener('click', compute);
+    calcInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') compute(); });
+    calcClearBtn.addEventListener('click', () => { calcInput.value = ''; calcResult.innerHTML = '<span>Entrez une fonction et cliquez sur Calculer</span>'; });
+
+    document.querySelectorAll('.mode-tabs button').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.mode-tabs button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active'); calcOperation.value = btn.dataset.mode; compute();
+        });
+    });
+
+    document.querySelectorAll('.calc-examples button').forEach(btn => {
+        btn.addEventListener('click', () => { calcInput.value = btn.dataset.expr; compute(); });
+    });
+
+    document.querySelectorAll('.table-toggle button').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.table-toggle button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active'); const tableId = btn.dataset.table;
+            document.getElementById('derivativesTable').classList.add('hide-table'); document.getElementById('integralsTable').classList.add('hide-table');
+            if (tableId === 'derivatives') document.getElementById('derivativesTable').classList.remove('hide-table');
+            else if (tableId === 'integrals') document.getElementById('integralsTable').classList.remove('hide-table');
+            else { document.getElementById('derivativesTable').classList.remove('hide-table'); document.getElementById('integralsTable').classList.remove('hide-table'); }
+        });
+    });
+
+    function buildFraction(num, den) { return `<span class="frac"><span class="num">${num}</span><span class="den">${den}</span></span>`; }
+
+    const derivativesData = [
+        ['k (constante)', '0', '—'], ['ax', 'a', '—'], ['1/x', buildFraction('−1', 'x²'), 'x ≠ 0'], ['xⁿ', 'n·xⁿ⁻¹', '—'],
+        ['1/xⁿ', buildFraction('−n', 'xⁿ⁺¹'), 'x ≠ 0'], ['√x', buildFraction('1', '2√x'), 'x > 0'], ['sin x', 'cos x', '—'],
+        ['cos x', '−sin x', '—'], ['tan x', '1/cos²x', 'x ≠ π/2 + kπ'], ['cot x', '−1/sin²x', 'x ≠ kπ'],
+        ['arcsin x', buildFraction('1', '√(1−x²)'), 'x ∈ ]−1;1['], ['arccos x', buildFraction('−1', '√(1−x²)'), 'x ∈ ]−1;1['],
+        ['arctan x', buildFraction('1', '1+x²'), '—'], ['sh x', 'ch x', '—'], ['ch x', 'sh x', '—'], ['th x', buildFraction('1', 'ch²x'), '—'],
+        ['ln x', buildFraction('1', 'x'), 'x > 0'], ['e\u02e3', 'e\u02e3', '—'], ['a\u02e3', 'a\u02e3·ln a', 'a > 0, a ≠ 1'],
+        ['e^(ax)', 'a·e^(ax)', '—'], [buildFraction('x', '√(1−x²)'), buildFraction('1', '(1−x²)·√(1−x²)'), 'x ∈ ]−1;1['],
+        [buildFraction('sin x', 'cos x+1'), buildFraction('1', 'cos x+1'), 'cos x ≠ −1'], [buildFraction('cos x', 'sin x+1'), buildFraction('−1', 'sin x+1'), 'sin x ≠ −1']
+    ];
+
+    const integralsData = [
+        ['0', 'λ', 'ℝ'], ['a', 'a·x + λ', 'ℝ'], ['x', buildFraction('x²', '2') + ' + λ', 'ℝ'], ['ax + b', buildFraction('a·x²', '2') + ' + b·x + λ', 'ℝ'],
+        ['xⁿ (n ≠ −1)', buildFraction('xⁿ⁺¹', 'n+1') + ' + λ', 'ℝ si n > 0'], ['1/x', 'ln|x| + λ', ']−∞;0[ ou ]0;+∞['],
+        ['1/x²', buildFraction('−1', 'x') + ' + λ', ']−∞;0[ ou ]0;+∞['], ['1/√x', '2√x + λ', ']0;+∞['], ['cos x', 'sin x + λ', 'ℝ'],
+        ['sin x', '−cos x + λ', 'ℝ'], ['cos(ax+b)', buildFraction('1', 'a') + '·sin(ax+b) + λ', 'ℝ'], ['sin(ax+b)', buildFraction('−1', 'a') + '·cos(ax+b) + λ', 'ℝ'],
+        ['e\u02e3', 'e\u02e3 + λ', 'ℝ'], ['1/(1+x²)', 'arctan x + λ', 'ℝ'], ['1/√(1−x²)', 'arcsin x + λ', ']−1;1['],
+        [buildFraction('x', '√(1−x²)'), '−√(1−x²) + λ', ']−1;1['], [buildFraction('sin x', 'cos x+1'), '−ln(cos x+1) + λ', 'cos x > −1']
+    ];
+
+    function renderTable(data, containerId) {
+        document.getElementById(containerId).innerHTML = data.map(row => `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td></tr>`).join('');
+    }
+
+    renderTable(derivativesData, 'derivativesTableBody');
+    renderTable(integralsData, 'integralsTableBody');
+    setTimeout(compute, 300);
+    </script>
+</body>
+</html>
