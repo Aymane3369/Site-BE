@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculus Pro - Multivariables</title>
+    <title>Calculus Pro - Moteur d'Intégration Corrigé</title>
     <style>
         * {
             margin: 0;
@@ -95,15 +95,6 @@
         .table-toggle button.active { border-color: var(--primary); background: var(--primary); color: #fff; }
         .table-toggle button:hover:not(.active) { border-color: var(--primary); }
         .table-container.hide-table { display: none; }
-        @media (max-width: 600px) {
-            .container { padding: 16px; }
-            h1 { font-size: 22px; }
-            .calc-result .formula { font-size: 20px; }
-            .calc-result { font-size: 17px; padding: 14px; }
-            .table-container td { font-size: 15px; padding: 8px 10px; }
-            .table-container th { padding: 8px 10px; font-size: 13px; }
-            .frac { font-size: 0.95em; }
-        }
     </style>
 </head>
 <body>
@@ -115,7 +106,7 @@
         <div class="calc-section">
             <h2>📐 Calculatrice : Dérivées & Intégrales</h2>
             <div class="calc-grid">
-                <input type="text" id="calcInput" placeholder="f(x) = ..." value="ln(x)+y^2">
+                <input type="text" id="calcInput" placeholder="f(x) = ..." value="2/x">
                 <select id="calcVariable">
                     <option value="x" selected>x</option>
                     <option value="y">y</option>
@@ -134,12 +125,12 @@
                 <button id="calcClearBtn" class="btn btn-secondary" style="grid-column:2/3;">Effacer</button>
                 <div id="calcResult" class="calc-result"><span>Entrez une fonction et cliquez sur Calculer</span></div>
                 <div class="calc-examples">
-                    <button data-expr="ln(x)+y^2">ln(x)+y²</button>
-                    <button data-expr="1/6*x^2+ln(x)">1/6*x²+ln(x)</button>
-                    <button data-expr="x^2+y^2">x²+y²</button>
-                    <button data-expr="5*x^3">5x³</button>
-                    <button data-expr="sin(x)">sin(x)</button>
-                    <button data-expr="cos(x)">cos(x)</button>
+                    <button data-expr="2/x">2/x</button>
+                    <button data-expr="1/x">1/x</button>
+                    <button data-expr="5/x">5/x</button>
+                    <button data-expr="3/y">3/y</button>
+                    <button data-expr="2/z">2/z</button>
+                    <button data-expr="x^2+y^9+z^5">x²+y⁹+z⁵</button>
                 </div>
             </div>
         </div>
@@ -161,13 +152,17 @@
         </div>
     </div>
     <script>
-    // ============================================================
-    //  NŒUD AST & EVALUATEUR NUMÉRIQUE POUR LA VÉRIFICATION
-    // ============================================================
     class Node {
         constructor(type, value = null, left = null, right = null) {
             this.type = type; this.value = value; this.left = left; this.right = right;
         }
+    }
+
+    function containsVariable(node, varName) {
+        if (!node) return false;
+        if (node.type === 'var' && node.value === varName) return true;
+        if (node.type === 'func' && node.right) return node.right.some(arg => containsVariable(arg, varName));
+        return containsVariable(node.left, varName) || containsVariable(node.right, varName);
     }
 
     function evaluateNumerical(node, vars) {
@@ -184,7 +179,7 @@
             case 'pow': return Math.pow(evaluateNumerical(node.left, vars), evaluateNumerical(node.right, vars));
             case 'func': {
                 const arg = evaluateNumerical(node.right[0], vars);
-                if (node.value === 'ln') return Math.log(arg);
+                if (node.value === 'ln') return Math.log(Math.abs(arg));
                 if (node.value === 'sin') return Math.sin(arg);
                 if (node.value === 'cos') return Math.cos(arg);
                 return 0;
@@ -193,9 +188,6 @@
         }
     }
 
-    // ============================================================
-    //  TOKENIZER & PARSER
-    // ============================================================
     function tokenize(expr) {
         const tokens = []; let i = 0;
         while (i < expr.length) {
@@ -274,9 +266,6 @@
         }
     }
 
-    // ============================================================
-    //  SIMPLIFICATEUR COMPLET
-    // ============================================================
     function simplifyNode(node) {
         if (!node) return node;
         switch (node.type) {
@@ -336,9 +325,6 @@
         }
     }
 
-    // ============================================================
-    //  AFFICHAGE HTML
-    // ============================================================
     function toHTML(node) {
         if (!node) return '';
         switch (node.type) {
@@ -375,9 +361,6 @@
         return [{ node: node, sign: sign }];
     }
 
-    // ============================================================
-    //  ALGORITHMES FORMELS : DÉRIVÉE & INTÉGRALE
-    // ============================================================
     function derivative(node, varName) {
         if (!node) return new Node('number', 0);
         switch (node.type) {
@@ -415,8 +398,12 @@
 
     function integrate(node, varName) {
         if (!node) return new Node('number', 0);
+        
+        if (!containsVariable(node, varName)) {
+            return new Node('mul', null, node, new Node('var', varName));
+        }
+
         switch (node.type) {
-            case 'number': return new Node('mul', null, node, new Node('var', varName));
             case 'var': {
                 if (node.value === varName) return new Node('div', null, new Node('pow', null, node, new Node('number', 2)), new Node('number', 2));
                 return new Node('mul', null, node, new Node('var', varName));
@@ -424,8 +411,17 @@
             case 'add': return new Node('add', null, integrate(node.left, varName), integrate(node.right, varName));
             case 'sub': return new Node('sub', null, integrate(node.left, varName), integrate(node.right, varName));
             case 'mul': {
-                if (node.left.type === 'number' || (node.left.type === 'div' && node.left.left.type === 'number')) {
+                if (!containsVariable(node.left, varName)) {
                     return new Node('mul', null, node.left, integrate(node.right, varName));
+                }
+                if (!containsVariable(node.right, varName)) {
+                    return new Node('mul', null, node.right, integrate(node.left, varName));
+                }
+                return new Node('mul', null, node, new Node('var', varName));
+            }
+            case 'div': {
+                if (node.right.type === 'var' && node.right.value === varName && !containsVariable(node.left, varName)) {
+                    return new Node('mul', null, node.left, new Node('func', 'ln', null, [node.right]));
                 }
                 return new Node('mul', null, node, new Node('var', varName));
             }
@@ -447,14 +443,20 @@
         }
     }
 
-    // ============================================================
-    //  ÉTAPES DE RÉSOLUTION
-    // ============================================================
     function getIntegralSteps(node, varName) {
-        const steps = [`🔴 Intégration par rapport à <span class="var-highlight">${varName}</span>. Les autres variables sont traitées comme constantes.`, `📖 Règle de linéarité : application du calcul terme par terme.`];
+        const steps = [`🔴 Intégration par rapport à <span class="var-highlight">${varName}</span>.`, `📖 Analyse structurelle de l'expression terme par terme.`];
         collectTerms(node).forEach(t => {
             const signStr = t.sign === -1 ? '− ' : '';
-            steps.push(`   • ∫ ${signStr}${toHTML(t.node)} d${varName} ➜ ${signStr}${toHTML(simplifyNode(integrate(t.node, varName)))}`);
+            const initialForm = toHTML(t.node);
+            const integratedNode = simplifyNode(integrate(t.node, varName));
+            
+            if (!containsVariable(t.node, varName)) {
+                steps.push(`   • ∫ ${signStr}${initialForm} d${varName} ➜ Expression indépendante de ${varName} (traitée comme constante) : ${signStr}${toHTML(integratedNode)}`);
+            } else if (t.node.type === 'div' && t.node.right.type === 'var' && t.node.right.value === varName) {
+                steps.push(`   • ∫ ${signStr}${initialForm} d${varName} ➜ Forme k/${varName} détectée. Application de la règle k·ln|${varName}| : ${signStr}${toHTML(integratedNode)}`);
+            } else {
+                steps.push(`   • ∫ ${signStr}${initialForm} d${varName} ➜ Règle standard : ${signStr}${toHTML(integratedNode)}`);
+            }
         });
         return steps;
     }
@@ -468,12 +470,8 @@
         return steps;
     }
 
-    // ============================================================
-    //  MOTEUR DE VÉRIFICATION NUMÉRIQUE
-    // ============================================================
     function verifyResult(originalAst, finalResultAst, varName, op) {
-        const testPoint = {};
-        ['x','y','z','t'].forEach(v => testPoint[v] = 2.5); // Point stable hors singularités
+        const testPoint = { x: 2.5, y: 2.5, z: 2.5, t: 2.5 };
         
         if (op === 'derivative') {
             const h = 0.0001;
@@ -485,7 +483,7 @@
             const analyticalResult = evaluateNumerical(finalResultAst, testPoint);
             
             if (Math.abs(numDerivative - analyticalResult) < 0.05) {
-                return `<div class="verification">✅ Vérification numérique réussie : f'(${testPoint[varName]}) ≈ ${numDerivative.toFixed(4)} (Erreur < 1%)</div>`;
+                return `<div class="verification">✅ Vérification numérique réussie : f'(${testPoint[varName]}) ≈ ${numDerivative.toFixed(4)}</div>`;
             }
         } else {
             const h = 0.0001;
@@ -503,9 +501,6 @@
         return '';
     }
 
-    // ============================================================
-    //  CONTROLEUR PRINCIPAL UI
-    // ============================================================
     const themeToggle = document.getElementById('themeToggle');
     const calcInput = document.getElementById('calcInput');
     const calcBtn = document.getElementById('calcBtn');
@@ -574,18 +569,11 @@
         ['cos x', '−sin x', '—'], ['tan x', '1/cos²x', 'x ≠ π/2 + kπ'], ['cot x', '−1/sin²x', 'x ≠ kπ'],
         ['arcsin x', buildFraction('1', '√(1−x²)'), 'x ∈ ]−1;1['], ['arccos x', buildFraction('−1', '√(1−x²)'), 'x ∈ ]−1;1['],
         ['arctan x', buildFraction('1', '1+x²'), '—'], ['sh x', 'ch x', '—'], ['ch x', 'sh x', '—'], ['th x', buildFraction('1', 'ch²x'), '—'],
-        ['ln x', buildFraction('1', 'x'), 'x > 0'], ['e\u02e3', 'e\u02e3', '—'], ['a\u02e3', 'a\u02e3·ln a', 'a > 0, a ≠ 1'],
-        ['e^(ax)', 'a·e^(ax)', '—'], [buildFraction('x', '√(1−x²)'), buildFraction('1', '(1−x²)·√(1−x²)'), 'x ∈ ]−1;1['],
-        [buildFraction('sin x', 'cos x+1'), buildFraction('1', 'cos x+1'), 'cos x ≠ −1'], [buildFraction('cos x', 'sin x+1'), buildFraction('−1', 'sin x+1'), 'sin x ≠ −1']
+        ['ln x', buildFraction('1', 'x'), 'x > 0'], ['e\u02e3', 'e\u02e3', '—']
     ];
 
     const integralsData = [
-        ['0', 'λ', 'ℝ'], ['a', 'a·x + λ', 'ℝ'], ['x', buildFraction('x²', '2') + ' + λ', 'ℝ'], ['ax + b', buildFraction('a·x²', '2') + ' + b·x + λ', 'ℝ'],
-        ['xⁿ (n ≠ −1)', buildFraction('xⁿ⁺¹', 'n+1') + ' + λ', 'ℝ si n > 0'], ['1/x', 'ln|x| + λ', ']−∞;0[ ou ]0;+∞['],
-        ['1/x²', buildFraction('−1', 'x') + ' + λ', ']−∞;0[ ou ]0;+∞['], ['1/√x', '2√x + λ', ']0;+∞['], ['cos x', 'sin x + λ', 'ℝ'],
-        ['sin x', '−cos x + λ', 'ℝ'], ['cos(ax+b)', buildFraction('1', 'a') + '·sin(ax+b) + λ', 'ℝ'], ['sin(ax+b)', buildFraction('−1', 'a') + '·cos(ax+b) + λ', 'ℝ'],
-        ['e\u02e3', 'e\u02e3 + λ', 'ℝ'], ['1/(1+x²)', 'arctan x + λ', 'ℝ'], ['1/√(1−x²)', 'arcsin x + λ', ']−1;1['],
-        [buildFraction('x', '√(1−x²)'), '−√(1−x²) + λ', ']−1;1['], [buildFraction('sin x', 'cos x+1'), '−ln(cos x+1) + λ', 'cos x > −1']
+        ['0', 'λ', 'ℝ'], ['a', 'a·x + λ', 'ℝ'], ['x', buildFraction('x²', '2') + ' + λ', 'ℝ'], ['1/x', 'ln|x| + λ', ']−∞;0[ ou ]0;+∞[']
     ];
 
     function renderTable(data, containerId) {
