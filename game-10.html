@@ -451,6 +451,83 @@
         btn.addEventListener('click', () => { document.getElementById('calcInput').value = btn.dataset.expr; compute(); });
     });
     setTimeout(compute, 200);
+===========================================================
+    //  Tableaux
+    // ============================================================
+
+    function buildFraction(num, den) {
+        return `<span class="frac"><span class="num">${num}</span><span class="den">${den}</span></span>`;
+    }
+
+    const derivativesData = [
+        ['k (constante)', '0', '—'],
+        ['ax', 'a', '—'],
+        ['1/x', buildFraction('−1', 'x²'), 'x ≠ 0'],
+        ['xⁿ', 'n·xⁿ⁻¹', '—'],
+        ['1/xⁿ', buildFraction('−n', 'xⁿ⁺¹'), 'x ≠ 0'],
+        ['√x', buildFraction('1', '2√x'), 'x > 0'],
+        ['sin x', 'cos x', '—'],
+        ['cos x', '−sin x', '—'],
+        ['tan x', '1/cos²x', 'x ≠ π/2 + kπ'],
+        ['cot x', '−1/sin²x', 'x ≠ kπ'],
+        ['arcsin x', buildFraction('1', '√(1−x²)'), 'x ∈ ]−1;1['],
+        ['arccos x', buildFraction('−1', '√(1−x²)'), 'x ∈ ]−1;1['],
+        ['arctan x', buildFraction('1', '1+x²'), '—'],
+        ['sh x', 'ch x', '—'],
+        ['ch x', 'sh x', '—'],
+        ['th x', buildFraction('1', 'ch²x'), '—'],
+        ['ln x', buildFraction('1', 'x'), 'x > 0'],
+        ['eˣ', 'eˣ', '—'],
+        ['aˣ', 'aˣ·ln a', 'a > 0, a ≠ 1'],
+        ['e^(ax)', 'a·e^(ax)', '—'],
+        [buildFraction('x', '√(1−x²)'), buildFraction('1', '(1−x²)·√(1−x²)'), 'x ∈ ]−1;1['],
+        [buildFraction('sin x', 'cos x+1'), buildFraction('1', 'cos x+1'), 'cos x ≠ −1'],
+        [buildFraction('cos x', 'sin x+1'), buildFraction('−1', 'sin x+1'), 'sin x ≠ −1'],
+        [buildFraction('1', 'eˣ+e⁻ˣ'), buildFraction('eˣ−e⁻ˣ', '(eˣ+e⁻ˣ)²'), '—'],
+        [buildFraction('1', 'eˣ−e⁻ˣ'), buildFraction('eˣ+e⁻ˣ', '(eˣ−e⁻ˣ)²'), 'eˣ ≠ e⁻ˣ']
+    ];
+
+    const integralsData = [
+        ['0', 'λ', 'ℝ'],
+        ['a', 'a·x + λ', 'ℝ'],
+        ['x', buildFraction('x²', '2') + ' + λ', 'ℝ'],
+        ['ax + b', buildFraction('a·x²', '2') + ' + b·x + λ', 'ℝ'],
+        ['xⁿ (n ≠ −1)', buildFraction('xⁿ⁺¹', 'n+1') + ' + λ', 'ℝ si n > 0'],
+        ['1/x', 'ln|x| + λ', ']−∞;0[ ou ]0;+∞['],
+        ['1/x²', buildFraction('−1', 'x') + ' + λ', ']−∞;0[ ou ]0;+∞['],
+        ['1/√x', '2√x + λ', ']0;+∞['],
+        ['cos x', 'sin x + λ', 'ℝ'],
+        ['sin x', '−cos x + λ', 'ℝ'],
+        ['cos(ax+b)', buildFraction('1', 'a') + '·sin(ax+b) + λ', 'ℝ'],
+        ['sin(ax+b)', buildFraction('−1', 'a') + '·cos(ax+b) + λ', 'ℝ'],
+        ['1/cos²x', 'tan x + λ', ']−π/2+kπ; π/2+kπ['],
+        ['eˣ', 'eˣ + λ', 'ℝ'],
+        ['e^(ax+b)', buildFraction('1', 'a') + '·e^(ax+b) + λ', 'ℝ'],
+        ['1/(1+x²)', 'arctan x + λ', 'ℝ'],
+        ['1/√(1−x²)', 'arcsin x + λ', ']−1;1['],
+        [buildFraction('x', '√(1−x²)'), '−√(1−x²) + λ', ']−1;1['],
+        [buildFraction('sin x', 'cos x+1'), '−ln(cos x+1) + λ', 'cos x > −1'],
+        [buildFraction('cos x', 'sin x+1'), 'ln(sin x+1) + λ', 'sin x > −1'],
+        [buildFraction('1', 'eˣ+e⁻ˣ'), 'arctan(eˣ) + λ', 'ℝ'],
+        [buildFraction('1', 'eˣ−e⁻ˣ'), buildFraction('1', '2') + '·ln|eˣ−1| − ' + buildFraction('1', '2') + '·ln|eˣ+1| + λ', 'eˣ ≠ ±1']
+    ];
+
+    function renderTable(data, containerId) {
+        const tbody = document.getElementById(containerId);
+        tbody.innerHTML = data.map(row =>
+            `<tr><td class="math">${row[0]}</td><td class="math">${row[1]}</td><td>${row[2]}</td></tr>`
+        ).join('');
+    }
+
+    renderTable(derivativesData, 'derivativesTableBody');
+    renderTable(integralsData, 'integralsTableBody');
+
+    setTimeout(compute, 300);
+    </script>
+</body>
+</html>
+
+        
     </script>
 </body>
 </html>
