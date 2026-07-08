@@ -460,16 +460,35 @@
         });
         return steps;
     }
-
-    function getDerivativeSteps(node, varName) {
-        const steps = [`🔴 Dérivation par rapport à <span class="var-highlight">${varName}</span>.`];
-        collectTerms(node).forEach(t => {
-            const signStr = t.sign === -1 ? '− ' : '';
-            steps.push(`   • d/d${varName}(${signStr}${toHTML(t.node)}) ➜ ${signStr}${toHTML(simplifyNode(derivative(t.node, varName)))}`);
-        });
-        return steps;
+function toRawText(node) {
+    if (!node) return '';
+    switch (node.type) {
+        case 'number': return String(Number(node.value.toFixed(4)));
+        case 'var': return node.value;
+        case 'const': return node.value;
+        case 'neg': return `-${toRawText(node.left)}`;
+        case 'add': return `${toRawText(node.left)} + ${toRawText(node.right)}`;
+        case 'sub': return `${toRawText(node.left)} - ${toRawText(node.right)}`;
+        case 'mul': return `${toRawText(node.left)}*${toRawText(node.right)}`;
+        case 'div': return `(${toRawText(node.left)}/${toRawText(node.right)})`;
+        case 'pow': return `${toRawText(node.left)}^${toRawText(node.right)}`;
+        case 'func': return `${node.value}(${(node.right || []).map(a => toRawText(a)).join(', ')})`;
+        default: return '?';
     }
+}
 
+function getDerivativeSteps(node, varName) {
+    const steps = [`🔴 Dérivation par rapport à <span class="var-highlight">${varName}</span>.`];
+    collectTerms(node).forEach(t => {
+        const signStr = t.sign === -1 ? '− ' : '';
+        const rawExpr = toRawText(t.node);
+        const derivedNode = simplifyNode(derivative(t.node, varName));
+        steps.push(`   • d/d${varName}(${signStr}${rawExpr}) ➜ ${signStr}${toHTML(derivedNode)}`);
+    });
+    return steps;
+}
+
+    
     function verifyResult(originalAst, finalResultAst, varName, op) {
         const testPoint = { x: 2.5, y: 2.5, z: 2.5, t: 2.5 };
         
