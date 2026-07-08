@@ -57,7 +57,7 @@
         <h1>🧮 Calculus Engine — Modèle d'Analyse Avancée (CAS)</h1>
         <div class="calc-section">
             <div class="calc-grid">
-                <input type="text" id="calcInput" value="2/x + 2*x*y^5">
+                <input type="text" id="calcInput" value="1/x^2">
                 <select id="calcVariable">
                     <option value="x" selected>Variable : x</option>
                     <option value="y">Variable : y</option>
@@ -78,8 +78,8 @@
                 <div id="calcResult" class="calc-result"></div>
                 <div class="calc-examples">
                     <strong style="font-size:14px;">Exemples :</strong>
+                    <button data-expr="1/x^2">1/x²</button>
                     <button data-expr="2/x + 2*x*y^5">2/x + 2xy⁵</button>
-                    <button data-expr="x^2 + y^9 + z^5">x² + y⁹ + z⁵</button>
                     <button data-expr="cos(x^2)*2*x">2x·cos(x²)</button>
                     <button data-expr="ln(x)/x">ln(x)/x</button>
                     <button data-expr="exp(3*x)*3">3·exp(3x)</button>
@@ -87,7 +87,6 @@
             </div>
         </div>
 
-        <!-- Tables -->
         <div class="tables-section">
             <h2>📊 Tableaux de référence</h2>
             <div class="table-toggle">
@@ -144,7 +143,13 @@
                 case 'sub': return `${toRawText(node.left)} - ${toRawText(node.right)}`;
                 case 'mul': return `${toRawText(node.left)}*${toRawText(node.right)}`;
                 case 'div': return `(${toRawText(node.left)}/${toRawText(node.right)})`;
-                case 'pow': return `${toRawText(node.left)}^${toRawText(node.right)}`;
+                case 'pow': {
+                    let base = toRawText(node.left);
+                    if (['add', 'sub', 'mul', 'div', 'pow', 'neg'].includes(node.left.type)) {
+                        base = `(${base})`;
+                    }
+                    return `${base}^${toRawText(node.right)}`;
+                }
                 case 'func': return `${node.value}(${(node.right || []).map(a => toRawText(a)).join(', ')})`;
                 default: return '?';
             }
@@ -285,7 +290,6 @@
                     if (l.type === 'number' && l.value === 0) return r;
                     if (r.type === 'number' && r.value === 0) return l;
                     if (l.type === 'number' && r.type === 'number') return new Node('number', l.value + r.value);
-                    // x + x → 2x
                     if (l.type === 'var' && r.type === 'var' && l.value === r.value) {
                         return new Node('mul', null, new Node('number', 2), l);
                     }
@@ -307,12 +311,10 @@
                     if (l.type === 'number' && l.value === 1) return r;
                     if (r.type === 'number' && r.value === 1) return l;
                     if (l.type === 'number' && r.type === 'number') return new Node('number', l.value * r.value);
-                    // (1/x)*x → 1
                     if (l.type === 'div' && l.left.type === 'number' && l.left.value === 1 &&
                         l.right.type === 'var' && r.type === 'var' && l.right.value === r.value) {
                         return new Node('number', 1);
                     }
-                    // x*(1/x) → 1
                     if (r.type === 'div' && r.left.type === 'number' && r.left.value === 1 &&
                         r.right.type === 'var' && l.type === 'var' && r.right.value === l.value) {
                         return new Node('number', 1);
@@ -418,7 +420,6 @@
                     if (!containsVariable(l, varName)) return new Node('mul', null, l, integrate(r, varName));
                     if (!containsVariable(r, varName)) return new Node('mul', null, r, integrate(l, varName));
 
-                    // Forme u' * f(u)
                     if (r.type === 'func') {
                         const u = r.right[0];
                         const du = derivative(u, varName);
@@ -443,12 +444,10 @@
                     const num = node.left;
                     const den = node.right;
                     if (!containsVariable(den, varName)) return new Node('div', null, integrate(num, varName), den);
-                    // Forme u' / u → ln|u|
                     const dDen = derivative(den, varName);
                     if (isSamePattern(num, dDen)) {
                         return new Node('func', 'ln', null, [den]);
                     }
-                    // k / x
                     if (den.type === 'var' && den.value === varName && !containsVariable(num, varName)) {
                         return new Node('mul', null, num, new Node('func', 'ln', null, [den]));
                     }
@@ -538,7 +537,7 @@
         }
 
         // ============================================================
-        //  AFFICHAGE HTML
+        //  AFFICHAGE HTML (Correction bugs d'exposants parents inclus)
         // ============================================================
         function toHTML(node) {
             if (!node) return '';
@@ -551,7 +550,13 @@
                 case 'sub': return `${toHTML(node.left)} − ${toHTML(node.right)}`;
                 case 'mul': return `${toHTML(node.left)}·${toHTML(node.right)}`;
                 case 'div': return `<span class="frac"><span class="num">${toHTML(node.left)}</span><span class="den">${toHTML(node.right)}</span></span>`;
-                case 'pow': return `${toHTML(node.left)}<sup>${toHTML(node.right)}</sup>`;
+                case 'pow': {
+                    let base = toHTML(node.left);
+                    if (['add', 'sub', 'mul', 'div', 'pow', 'neg'].includes(node.left.type)) {
+                        base = `(${base})`;
+                    }
+                    return `${base}<sup>${toHTML(node.right)}</sup>`;
+                }
                 case 'func': return `<span class="highlight">${node.value}</span>(${(node.right || []).map(a => toHTML(a)).join(', ')})`;
                 default: return '?';
             }
@@ -670,14 +675,14 @@
             ['ch x', 'sh x', '—'],
             ['th x', buildFraction('1', 'ch²x'), '—'],
             ['ln x', buildFraction('1', 'x'), 'x > 0'],
-            ['eˣ', 'eˣ', '—'],
-            ['aˣ', 'aˣ·ln a', 'a > 0, a ≠ 1'],
+            ['e\u02e3', 'e\u02e3', '—'],
+            ['a\u02e3', 'a\u02e3·ln a', 'a > 0, a ≠ 1'],
             ['e^(ax)', 'a·e^(ax)', '—'],
             [buildFraction('x', '√(1−x²)'), buildFraction('1', '(1−x²)·√(1−x²)'), 'x ∈ ]−1;1['],
             [buildFraction('sin x', 'cos x+1'), buildFraction('1', 'cos x+1'), 'cos x ≠ −1'],
             [buildFraction('cos x', 'sin x+1'), buildFraction('−1', 'sin x+1'), 'sin x ≠ −1'],
-            [buildFraction('1', 'eˣ+e⁻ˣ'), buildFraction('eˣ−e⁻ˣ', '(eˣ+e⁻ˣ)²'), '—'],
-            [buildFraction('1', 'eˣ−e⁻ˣ'), buildFraction('eˣ+e⁻ˣ', '(eˣ−e⁻ˣ)²'), 'eˣ ≠ e⁻ˣ']
+            [buildFraction('1', 'e\u02e3+e\u207b\u02e3'), buildFraction('e\u02e3\u2212e\u207b\u02e3', '(e\u02e3+e\u207b\u02e3)²'), '—'],
+            [buildFraction('1', 'e\u02e3\u2212e\u207b\u02e3'), buildFraction('e\u02e3+e\u207b\u02e3', '(e\u02e3\u2212e\u207b\u02e3)²'), 'e\u02e3 ≠ e\u207b\u02e3']
         ];
 
         const integralsData = [
@@ -694,15 +699,15 @@
             ['cos(ax+b)', buildFraction('1', 'a') + '·sin(ax+b) + λ', 'ℝ'],
             ['sin(ax+b)', buildFraction('−1', 'a') + '·cos(ax+b) + λ', 'ℝ'],
             ['1/cos²x', 'tan x + λ', ']−π/2+kπ; π/2+kπ['],
-            ['eˣ', 'eˣ + λ', 'ℝ'],
+            ['e\u02e3', 'e\u02e3 + λ', 'ℝ'],
             ['e^(ax+b)', buildFraction('1', 'a') + '·e^(ax+b) + λ', 'ℝ'],
             ['1/(1+x²)', 'arctan x + λ', 'ℝ'],
             ['1/√(1−x²)', 'arcsin x + λ', ']−1;1['],
             [buildFraction('x', '√(1−x²)'), '−√(1−x²) + λ', ']−1;1['],
             [buildFraction('sin x', 'cos x+1'), '−ln(cos x+1) + λ', 'cos x > −1'],
             [buildFraction('cos x', 'sin x+1'), 'ln(sin x+1) + λ', 'sin x > −1'],
-            [buildFraction('1', 'eˣ+e⁻ˣ'), 'arctan(eˣ) + λ', 'ℝ'],
-            [buildFraction('1', 'eˣ−e⁻ˣ'), buildFraction('1', '2') + '·ln|eˣ−1| − ' + buildFraction('1', '2') + '·ln|eˣ+1| + λ', 'eˣ ≠ ±1']
+            [buildFraction('1', 'e\u02e3+e\u207b\u02e3'), 'arctan(e\u02e3) + λ', 'ℝ'],
+            [buildFraction('1', 'e\u02e3\u2212e\u207b\u02e3'), buildFraction('1', '2') + '·ln|e\u02e3−1| − ' + buildFraction('1', '2') + '·ln|e\u02e3+1| + λ', 'e\u02e3 ≠ ±1']
         ];
 
         function renderTable(data, containerId) {
@@ -716,7 +721,6 @@
         renderTable(derivativesData, 'derivativesTableBody');
         renderTable(integralsData, 'integralsTableBody');
 
-        // Gestion des onglets des tableaux
         document.querySelectorAll('.table-toggle button').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.table-toggle button').forEach(b => b.classList.remove('active'));
@@ -739,7 +743,6 @@
             });
         });
 
-        // Exécution initiale
         setTimeout(compute, 200);
     </script>
 </body>
