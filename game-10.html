@@ -30,14 +30,12 @@
         .step-number { font-weight: 700; color: var(--primary); }
         .var-highlight { color: var(--var-color); font-weight: 700; font-style: italic; }
         .verification { color: var(--success); font-weight: 600; padding: 8px 12px; background: rgba(52, 211, 153, 0.1); border-radius: 6px; margin-top: 15px; border-left: 4px solid var(--success); font-family: sans-serif; font-size: 15px; }
-        
-        /* Styles pour fractions verticales et racines */
+        .verification.warning { color: #f87171; background: rgba(248,113,113,0.1); border-color: #f87171; }
         .frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; margin: 0 6px; line-height: 1.1; padding: 3px 0; }
         .frac .num { border-bottom: 1px solid currentColor; padding: 0 6px; padding-bottom: 3px; text-align: center; }
         .frac .den { padding: 0 6px; padding-top: 3px; text-align: center; }
         .sqrt { border-top: 1px solid currentColor; padding: 0 3px; margin-left: 1px; vertical-align: middle; }
         .sqrt-symbol { font-size: 1.1em; vertical-align: middle; margin-right: -2px; }
-        
         .calc-examples { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; align-items: center; }
         .calc-examples button { padding: 6px 12px; font-size: 13px; cursor: pointer; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; flex: 0 1 auto; width: auto; }
         .calc-examples button:hover { background: var(--hover); }
@@ -80,7 +78,7 @@
                 </div>
                 <div id="calcResult" class="calc-result"></div>
                 <div class="calc-examples">
-                    <strong style="font-size:14px;">Tests Requis Obligatoires :</strong>
+                    <strong style="font-size:14px;">Tests Requis :</strong>
                     <button data-expr="1/x^2" data-op="derivative">d/dx(1/x²)</button>
                     <button data-expr="1/x^2" data-op="integral">∫1/x² dx</button>
                     <button data-expr="sin(x^2)" data-op="derivative">d/dx(sin(x²))</button>
@@ -135,7 +133,6 @@
         //  TOKENIZER & PARSER AVEC MULTIPLICATION IMPLICITE
         // ============================================================
         function tokenize(expr) {
-            // Nettoyage unicode des puissances communes insérées par copier/coller
             expr = expr.replace(/²/g, '^2').replace(/³/g, '^3').replace(/⁴/g, '^4').replace(/⁵/g, '^5').replace(/⁹/g, '^9').replace(/¹⁰/g, '^10');
             const tokens = [];
             let i = 0;
@@ -166,21 +163,15 @@
                     tokens.push({ type: 'number', value: parseFloat(num) });
                     continue;
                 }
-                i++; // ignore les caractères inconnus
+                i++;
             }
             
-            // Injection intelligente des tokens de multiplication implicite
             const implicitTokens = [];
             for (let j = 0; j < tokens.length; j++) {
                 implicitTokens.push(tokens[j]);
                 if (j < tokens.length - 1) {
                     const curr = tokens[j];
                     const next = tokens[j + 1];
-                    
-                    // Conditions d'apparition de la multiplication implicite :
-                    // Nombre suivi d'un Identifiant/Constante/Parenthèse : 2x, 2sin(x), 2(x+1)
-                    // Identifiant/Constante suivi d'un autre Identifiant/Parenthèse : x sin(x), e x
-                    // Parenthèse fermante suivie d'une parenthèse ouvrante ou d'un Identifiant : (x+1)(x+2), (x+1)x
                     if (
                         (curr.type === 'number' && (next.type === 'ident' || next.type === 'const' || next.value === '(')) ||
                         ((curr.type === 'ident' || curr.type === 'const') && (next.type === 'ident' || next.type === 'const' || next.value === '(')) ||
@@ -235,7 +226,7 @@
                     const name = tok.value;
                     this.next();
                     if (this.peek() && this.peek().value === '(') {
-                        this.next(); // Passer '('
+                        this.next();
                         const args = [];
                         if (this.peek() && this.peek().value !== ')') {
                             args.push(this.parseExpr());
@@ -245,8 +236,6 @@
                             }
                         }
                         if (this.peek() && this.peek().value === ')') this.next();
-                        
-                        // Normalisation immédiate de sqrt(u) en u^0.5
                         if (name === 'sqrt') {
                             return new Node('pow', null, args[0], new Node('number', 0.5));
                         }
@@ -269,12 +258,11 @@
         }
 
         // ============================================================
-        //  SIMPLIFICATEUR FORMEL (Réduction Algébrique de l'AST)
+        //  SIMPLIFICATEUR FORMEL
         // ============================================================
         function simplifyNode(node) {
             if (!node) return node;
             
-            // Traitement récursif profond d'abord
             if (node.type === 'add' || node.type === 'sub' || node.type === 'mul' || node.type === 'div' || node.type === 'pow') {
                 node.left = simplifyNode(node.left);
                 node.right = simplifyNode(node.right);
@@ -284,7 +272,6 @@
                 node.right = node.right.map(simplifyNode);
             }
 
-            // Évaluations purement numériques directes
             if (node.type === 'add' && node.left.type === 'number' && node.right.type === 'number')
                 return new Node('number', node.left.value + node.right.value);
             if (node.type === 'sub' && node.left.type === 'number' && node.right.type === 'number')
@@ -300,7 +287,6 @@
                 }
             }
 
-            // Règles d'identités mathématiques fondamentales (Neutres et Absorbants)
             if (node.type === 'add') {
                 if (node.left.type === 'number' && node.left.value === 0) return node.right;
                 if (node.right.type === 'number' && node.right.value === 0) return node.left;
@@ -319,7 +305,6 @@
                 if (node.left.type === 'number' && node.left.value === 1) return node.right;
                 if (node.right.type === 'number' && node.right.value === 1) return node.left;
                 
-                // Association de coefficients constants : (k1 * u) * k2 -> (k1 * k2) * u
                 if (node.left.type === 'mul' && node.left.left.type === 'number' && node.right.type === 'number') {
                     return new Node('mul', null, new Node('number', node.left.left.value * node.right.value), node.left.right);
                 }
@@ -332,7 +317,6 @@
                 if (node.right.type === 'number' && node.right.value === 1) return node.left;
                 if (toRawText(node.left) === toRawText(node.right)) return new Node('number', 1);
 
-                // Simplification des expressions fractionnaires complexes (ex: (4*x)/2 -> 2*x)
                 if (node.left.type === 'mul' && node.left.left.type === 'number' && node.right.type === 'number') {
                     const g = gcd(Math.abs(node.left.left.value), Math.abs(node.right.value));
                     const nCoef = node.left.left.value / g;
@@ -360,7 +344,51 @@
         function gcd(a, b) { return b ? gcd(b, a % b) : Math.abs(a); }
 
         // ============================================================
-        //  MOTEUR DE DÉRIVATION SYMBOLE
+        //  COMPARAISON STRUCTURELLE PROFONDE DE DEUX AST
+        // ============================================================
+        function compareNodes(a, b) {
+            if (!a && !b) return true;
+            if (!a || !b) return false;
+            
+            a = simplifyNode(a);
+            b = simplifyNode(b);
+            
+            if (a.type !== b.type) return false;
+            
+            switch (a.type) {
+                case 'number': 
+                case 'var': 
+                case 'const': 
+                    return a.value === b.value;
+                    
+                case 'neg': 
+                    return compareNodes(a.left, b.left);
+                    
+                case 'add': 
+                case 'sub': 
+                case 'mul': 
+                case 'div': 
+                case 'pow':
+                    return compareNodes(a.left, b.left) && compareNodes(a.right, b.right);
+                    
+                case 'func':
+                    if (a.value !== b.value) return false;
+                    if (!a.right && !b.right) return true;
+                    if (!a.right || !b.right) return false;
+                    if (a.right.length !== b.right.length) return false;
+                    
+                    for (let i = 0; i < a.right.length; i++) {
+                        if (!compareNodes(a.right[i], b.right[i])) return false;
+                    }
+                    return true;
+                    
+                default: 
+                    return false;
+            }
+        }
+
+        // ============================================================
+        //  MOTEUR DE DÉRIVATION
         // ============================================================
         function derivative(node, varName) {
             if (!node) return new Node('number', 0);
@@ -371,14 +399,12 @@
                 case 'add': return new Node('add', null, derivative(node.left, varName), derivative(node.right, varName));
                 case 'sub': return new Node('sub', null, derivative(node.left, varName), derivative(node.right, varName));
                 case 'mul': {
-                    // (u*v)' = u'*v + u*v'
                     return new Node('add', null,
                         new Node('mul', null, derivative(node.left, varName), node.right),
                         new Node('mul', null, node.left, derivative(node.right, varName))
                     );
                 }
                 case 'div': {
-                    // (u/v)' = (u'*v - u*v') / v^2
                     const num = new Node('sub', null,
                         new Node('mul', null, derivative(node.left, varName), node.right),
                         new Node('mul', null, node.left, derivative(node.right, varName))
@@ -389,7 +415,6 @@
                     const u = node.left;
                     const n = node.right;
                     if (n.type === 'number') {
-                        // (u^n)' = n * u' * u^(n-1)
                         return new Node('mul', null,
                             n,
                             new Node('mul', null, derivative(u, varName), new Node('pow', null, u, new Node('number', n.value - 1)))
@@ -407,14 +432,11 @@
                         case 'cos': return new Node('mul', null, new Node('neg', null, du), new Node('func', 'sin', null, [u]));
                         case 'tan': return new Node('div', null, du, new Node('pow', null, new Node('func', 'cos', null, [u]), new Node('number', 2)));
                         case 'cot': return new Node('neg', null, new Node('div', null, du, new Node('pow', null, new Node('func', 'sin', null, [u]), new Node('number', 2))));
-                        case 'sec': return new Node('mul', null, du, new Node('mul', null, new Node('func', 'sec', null, [u]), new Node('func', 'tan', null, [u])));
-                        case 'csc': return new Node('neg', null, new Node('div', null, du, new Node('pow', null, new Node('func', 'sin', null, [u]), new Node('number', 2))));
                         case 'sinh': return new Node('mul', null, du, new Node('func', 'cosh', null, [u]));
                         case 'cosh': return new Node('mul', null, du, new Node('func', 'sinh', null, [u]));
-                        case 'tanh': return new Node('div', null, du, new Node('pow', null, new Node('func', 'cosh', null, [u]), new Node('number', 2)));
+                        case 'arctan': return new Node('div', null, du, new Node('add', null, new Node('number', 1), new Node('pow', null, u, new Node('number', 2))));
                         case 'arcsin': return new Node('div', null, du, new Node('pow', null, new Node('sub', null, new Node('number', 1), new Node('pow', null, u, new Node('number', 2))), new Node('number', 0.5)));
                         case 'arccos': return new Node('neg', null, new Node('div', null, du, new Node('pow', null, new Node('sub', null, new Node('number', 1), new Node('pow', null, u, new Node('number', 2))), new Node('number', 0.5))));
-                        case 'arctan': return new Node('div', null, du, new Node('add', null, new Node('number', 1), new Node('pow', null, u, new Node('number', 2))));
                         default: return new Node('number', 0);
                     }
                 }
@@ -423,7 +445,7 @@
         }
 
         // ============================================================
-        //  MOTEUR D'INTÉGRATION SYMBOLE (Primitives fondamentales)
+        //  MOTEUR D'INTÉGRATION (AVEC COMPARENODES CLÉ)
         // ============================================================
         function containsVariable(node, varName) {
             if (!node) return false;
@@ -435,7 +457,6 @@
         function integrate(node, varName) {
             if (!node) return new Node('number', 0);
             
-            // Si le sous-arbre ne contient pas la variable active, c'est une constante : intégrale = k * varName
             if (!containsVariable(node, varName)) {
                 return new Node('mul', null, node, new Node('var', varName));
             }
@@ -454,18 +475,18 @@
                     let l = node.left;
                     let r = node.right;
                     
-                    // Facteurs constants extraits immédiatement de l'intégrale
                     if (!containsVariable(l, varName)) return new Node('mul', null, l, integrate(r, varName));
                     if (!containsVariable(r, varName)) return new Node('mul', null, r, integrate(l, varName));
 
-                    // Reconnaissance de formes u' * f(u)
+                    // Détection u' * f(u)
                     let targetFunc = r.type === 'func' ? r : (l.type === 'func' ? l : null);
                     let targetDeriv = r.type === 'func' ? l : (l.type === 'func' ? r : null);
                     
                     if (targetFunc && targetFunc.right) {
                         let u = targetFunc.right[0];
                         let du = simplifyNode(derivative(u, varName));
-                        if (toRawText(simplifyNode(targetDeriv)) === toRawText(du)) {
+                        
+                        if (compareNodes(targetDeriv, du)) {
                             switch (targetFunc.value) {
                                 case 'cos': return new Node('func', 'sin', null, [u]);
                                 case 'sin': return new Node('neg', null, new Node('func', 'cos', null, [u]));
@@ -476,8 +497,10 @@
                         }
                     }
 
-                    // Intégration par parties canonique : x * e^x -> e^x * (x - 1)
-                    if (l.type === 'var' && l.value === varName && r.type === 'func' && r.value === 'exp' && r.right[0].type === 'var' && r.right[0].value === varName) {
+                    // Intégration par parties canonique : x * e^x
+                    if (l.type === 'var' && l.value === varName && 
+                        r.type === 'func' && r.value === 'exp' && 
+                        r.right[0].type === 'var' && r.right[0].value === varName) {
                         return new Node('mul', null, r, new Node('sub', null, l, new Node('number', 1)));
                     }
                     return new Node('mul', null, node, new Node('var', varName));
@@ -489,17 +512,16 @@
                     
                     if (!containsVariable(den, varName)) return new Node('div', null, integrate(num, varName), den);
                     
-                    // Forme u' / u -> ln|u|
                     let dDen = simplifyNode(derivative(den, varName));
-                    if (toRawText(simplifyNode(num)) === toRawText(dDen)) {
+                    if (compareNodes(num, dDen)) {
                         return new Node('func', 'ln', null, [den]);
                     }
                     
-                    // Forme u' / (1 + u^2) -> arctan(u)
+                    // Cas u' / (1 + u^2) -> arctan(u)
                     if (den.type === 'add' && den.left.type === 'number' && den.left.value === 1 && den.right.type === 'pow') {
                         let u = den.right.left;
                         let dU = simplifyNode(derivative(u, varName));
-                        if (toRawText(simplifyNode(num)) === toRawText(dU) && den.right.right.type === 'number' && den.right.right.value === 2) {
+                        if (compareNodes(num, dU) && den.right.right.type === 'number' && den.right.right.value === 2) {
                             return new Node('func', 'arctan', null, [u]);
                         }
                     }
@@ -512,7 +534,6 @@
                         if (val === -1) return new Node('func', 'ln', null, [node.left]);
                         return new Node('div', null, new Node('pow', null, node.left, new Node('number', val + 1)), new Node('number', val + 1));
                     }
-                    // Traitement de l'écriture alternative fractionnaire de 1/x^2 (convertie par l'AST)
                     if (node.left.type === 'div' && node.left.left.type === 'number' && node.left.left.value === 1 && node.left.right.type === 'pow') {
                         let base = node.left.right.left;
                         let expVal = node.left.right.right.value;
@@ -527,12 +548,10 @@
                     let u = node.right[0];
                     if (u.type === 'var' && u.value === varName) {
                         switch (node.value) {
-                            case 'ln': return new Node('sub', null, new Node('mul', null, u, node), u); // x*ln(x) - x
+                            case 'ln': return new Node('sub', null, new Node('mul', null, u, node), u);
                             case 'exp': return node;
                             case 'sin': return new Node('neg', null, new Node('func', 'cos', null, [u]));
                             case 'cos': return new Node('func', 'sin', null, [u]);
-                            case 'tan': return new Node('neg', null, new Node('func', 'ln', null, [new Node('func', 'cos', null, [u])]));
-                            case 'cot': return new Node('func', 'ln', null, [new Node('func', 'sin', null, [u])]);
                             case 'sinh': return new Node('func', 'cosh', null, [u]);
                             case 'cosh': return new Node('func', 'sinh', null, [u]);
                         }
@@ -544,13 +563,13 @@
         }
 
         // ============================================================
-        //  ÉVALUATION NUMÉRIQUE FILTRÉE ET STABLE
+        //  ÉVALUATION NUMÉRIQUE & GRADIENT DE VÉRIFICATION
         // ============================================================
         function evaluateNumerical(node, vars) {
             if (!node) return 0;
             switch (node.type) {
                 case 'number': return node.value;
-                case 'var': return vars[node.value] !== undefined ? vars[node.value] : 1.2;
+                case 'var': return vars[node.value] !== undefined ? vars[node.value] : 0.65;
                 case 'const': return Math.E;
                 case 'neg': return -evaluateNumerical(node.left, vars);
                 case 'add': return evaluateNumerical(node.left, vars) + evaluateNumerical(node.right, vars);
@@ -581,7 +600,6 @@
         }
 
         function verifyResult(originalAst, finalResultAst, varName, op) {
-            // Sélection d'un point d'évaluation sûr hors singularités classiques (0 ou 1)
             const pt = { x: 0.65, y: 0.65, z: 0.65, t: 0.65, a: 0.65, b: 0.65, c: 0.65 };
             const h = 0.00001;
             const ptP = { ...pt }, ptM = { ...pt };
@@ -594,23 +612,23 @@
                     let anaD = evaluateNumerical(finalResultAst, pt);
                     if (isNaN(numD) || isNaN(anaD)) return '';
                     if (Math.abs(numD - anaD) < 0.05) {
-                        return `<div class="verification">✅ Validation numérique : f'(${pt[varName]}) ≈ ${anaD.toFixed(4)} (Tolérance ok)</div>`;
+                        return `<div class="verification">✅ Validation numérique : f'(${pt[varName]}) ≈ ${anaD.toFixed(4)} (Tolérance locale OK)</div>`;
                     }
-                    return `<div class="verification" style="color:#f87171; background:rgba(248,113,113,0.1); border-color:#f87171;">⚠️ Écart de convergence numérique détecté sur le domaine local.</div>`;
+                    return `<div class="verification warning">⚠️ Écart de convergence numérique détecté sur le domaine de test local.</div>`;
                 } else {
                     let numD = (evaluateNumerical(finalResultAst, ptP) - evaluateNumerical(finalResultAst, ptM)) / (2 * h);
                     let orig = evaluateNumerical(originalAst, pt);
                     if (isNaN(numD) || isNaN(orig)) return '';
                     if (Math.abs(numD - orig) < 0.05) {
-                        return `<div class="verification">✅ Validation par Théorème Fondamental : d/d${varName}(F) == f(${varName}) (Tolérance ok)</div>`;
+                        return `<div class="verification">✅ Validation par Théorème Fondamental : d/d${varName}(F) == f(${varName}) (Tolérance OK)</div>`;
                     }
-                    return `<div class="verification" style="color:#f87171; background:rgba(248,113,113,0.1); border-color:#f87171;">⚠️ Écart numérique détecté sur le gradient de la primitive.</div>`;
+                    return `<div class="verification warning">⚠️ Écart numérique détecté sur le gradient de la primitive calculée.</div>`;
                 }
             } catch(e) { return ''; }
         }
 
         // ============================================================
-        //  RENDU TEXTUEL ET INJECTION DE COMPOSANTS HTML
+        //  RENDU TEXTE ET RENDU GRAPHIQUE HTML CUSTOM
         // ============================================================
         function toRawText(node) {
             if (!node) return '';
@@ -665,7 +683,7 @@
         }
 
         // ============================================================
-        //  FONCTION DE COMMANDE ET D'EXECUTION DE L'ANALYSE
+        //  FONCTION DE COMMANDE EXÉCUTION PRINCIPALE
         // ============================================================
         function compute() {
             const expr = document.getElementById('calcInput').value.trim();
@@ -716,7 +734,7 @@
         }
 
         // ============================================================
-        //  UI ET ÉVÉNEMENTS
+        //  UI ÉVÉNEMENTS
         // ============================================================
         document.getElementById('calcBtn').addEventListener('click', compute);
         document.getElementById('calcClearBtn').addEventListener('click', () => {
@@ -749,7 +767,7 @@
         });
 
         // ============================================================
-        //  TABLES DE RÉFÉRENCE FORMELLE
+        //  TABLES DE RÉFÉRENCE STATIQUE
         // ============================================================
         const derivativesData = [
             ['k (constante)', '0', 'ℝ'],
