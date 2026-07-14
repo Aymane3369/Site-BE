@@ -226,10 +226,10 @@
   <div class="title">GAME HUB // CONSOLE</div>
 
   <div class="menu">
-    <div class="item selected" onclick="go('game-balls')">
-      🎮 Game 1 Balls <span>▶</span>
+    <div class="item selected" onclick="go('game-balls/index.html')">
+  🎮 Game 1 Balls <span>▶</span>
     </div>
-
+    
     <div class="item" onclick="go('game-2.html')">
       🧩 Game 2 Your name <span>▶</span>
     </div>
@@ -302,11 +302,11 @@ function update(){
   items.forEach(i=>i.classList.remove("selected"));
   items[index].classList.add("selected");
 }
-
-function go(url){
+  function go(url){
   selectSound();
   setTimeout(()=>location.href=url,120);
-}
+  }
+
 document.addEventListener("keydown",(e)=>{
   if(e.key==="ArrowDown"){
     index=(index+1)%items.length;
