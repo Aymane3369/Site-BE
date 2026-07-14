@@ -1,1 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-Theme Calculator</title>
+  <style>
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap');
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+  transition: background 0.5s ease;
+}
+
+.hidden {
+  display: none !important;
+}
+
+body.theme-start { background: #ffffff; }
+
+.theme-selector {
+  position: relative;
+  z-index: 10;
+  width: 340px;
+  background: #ffffff;
+  border: 1px solid #000000;
+  padding: 40px 30px;
+  text-align: center;
+  color: #000000;
+}
+
+.theme-selector h1 {
+  font-size: 1.1rem;
+  margin-bottom: 35px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.theme-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #000000;
+  transition: all 0.3s ease;
+}
+
+.calculator {
+  position: relative;
+  z-index: 1;
+  width: 340px;
+  padding: 25px;
+  transition: all 0.5s ease;
+}
+
+.display {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 2.8rem;
+  padding: 10px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.btn {
+  border: none;
+  outline: none;
+  font-size: 1.3rem;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.zero { grid-column: span 2; }
+
+.back-btn {
+  margin-top: 20px;
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: none;
+  text-decoration: underline;
+  font-size: 0.9rem;
+}
+
+body.theme-glassmorphism { background: #0b0c10; }
+.theme-glassmorphism .back-btn { color: rgba(255,255,255,0.5); }
+
+.background-blobs { position: absolute; width: 100vw; height: 100vh; z-index: 0; overflow: hidden; display: none; }
+.theme-glassmorphism .background-blobs { display: block; }
+.blob { position: absolute; filter: blur(80px); border-radius: 50%; opacity: 0.6; }
+.color1 { width: 300px; height: 300px; background: #ff007f; top: 15%; left: 25%; animation: float 8s ease-in-out infinite; }
+.color2 { width: 400px; height: 400px; background: #7000ff; bottom: 15%; right: 25%; animation: float 10s ease-in-out infinite reverse; }
+.color3 { width: 250px; height: 250px; background: #00d2ff; bottom: 40%; left: 45%; animation: float 12s ease-in-out infinite; }
+
+@keyframes float {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-30px) scale(1.1); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+.theme-glassmorphism .calculator {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5);
+  border-radius: 24px;
+}
+.theme-glassmorphism .display { color: #ffffff; font-weight: 300; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+.theme-glassmorphism .btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  border-radius: 14px;
+}
+.theme-glassmorphism .operator { color: #00d2ff; font-weight: 500; background: rgba(0, 210, 255, 0.05); }
+.theme-glassmorphism .clear { color: #ff007f; font-weight: 500; background: rgba(255, 0, 127, 0.05); }
+.theme-glassmorphism .equals { background: linear-gradient(135deg, #7000ff, #ff007f); color: white; font-weight: 500; box-shadow: 0 5px 15px rgba(112, 0, 255, 0.4); }
+
+body.theme-neobrutalism { background: #b0e0e6; } 
+.theme-neobrutalism .back-btn { color: #000; font-weight: bold; }
+
+.theme-neobrutalism .calculator {
+  background: #ffffff;
+  border: 4px solid #000000;
+  box-shadow: 12px 12px 0px #000000;
+  border-radius: 0px;
+}
+.theme-neobrutalism .display { color: #000000; font-weight: 700; border-bottom: 4px solid #000000; }
+.theme-neobrutalism .btn {
+  background: #ffffff;
+  border: 3px solid #000000;
+  box-shadow: 4px 4px 0px #000000;
+  color: #000000;
+  border-radius: 0px;
+  font-weight: 700;
+}
+.theme-neobrutalism .operator { background: #ffb703; } 
+.theme-neobrutalism .clear { background: #ff5454; } 
+.theme-neobrutalism .equals { background: #4361ee; color: #ffffff; } 
+
+body.theme-minimalism { background: #f0f0f0; }
+.theme-minimalism .back-btn { color: #888; }
+
+.theme-minimalism .calculator {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  border-radius: 0px;
+}
+.theme-minimalism .display { color: #000000; font-weight: 300; border-bottom: 1px solid #eeeeee; }
+.theme-minimalism .btn {
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+  color: #000000;
+  border-radius: 0px;
+  font-weight: 400;
+}
+.theme-minimalism .operator { background: #fafafa; font-weight: 500; }
+.theme-minimalism .clear { color: #000000; font-weight: 500; }
+.theme-minimalism .equals { background: #000000; color: #ffffff; border-color: #000000; }
+
+body.theme-colorfulism { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+.theme-colorfulism .back-btn { color: #555; }
+
+.theme-colorfulism .calculator {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border: none;
+  box-shadow: 0 20px 40px rgba(255, 105, 180, 0.2);
+  border-radius: 35px;
+}
+.theme-colorfulism .display { color: #ff0844; font-weight: 700; border-bottom: 2px dashed rgba(255, 8, 68, 0.3); }
+.theme-colorfulism .btn {
+  background: #ffffff;
+  border: none;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  color: #555;
+  border-radius: 20px;
+  font-weight: 600;
+}
+.theme-colorfulism .operator { background: #4facfe; color: #ffffff; box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4); }
+.theme-colorfulism .clear { background: #ff0844; color: #ffffff; box-shadow: 0 5px 15px rgba(255, 8, 68, 0.4); }
+.theme-colorfulism .equals { background: linear-gradient(45deg, #fa709a 0%, #fee140 100%); color: #ffffff; box-shadow: 0 5px 15px rgba(250, 112, 154, 0.5); }
+
+body.theme-neumorphism { background: #e0e5ec; }
+.theme-neumorphism .back-btn { color: #6b7280; text-shadow: 1px 1px 0px #ffffff; }
+
+.theme-neumorphism .calculator {
+  background: #e0e5ec;
+  border: none;
+  box-shadow: 9px 9px 16px rgba(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.5);
+  border-radius: 30px;
+}
+
+.theme-neumorphism .display {
+  color: #31344b;
+  font-weight: 500;
+  background: #e0e5ec;
+  border: none;
+  border-radius: 15px;
+  box-shadow: inset 6px 6px 10px 0 rgba(163, 177, 198, 0.7), inset -6px -6px 10px 0 rgba(255, 255, 255, 0.8);
+  margin-bottom: 25px;
+  padding: 15px;
+}
+
+.theme-neumorphism .btn {
+  background: #e0e5ec;
+  border: none;
+  color: #31344b;
+  border-radius: 15px;
+  font-weight: 500;
+  box-shadow: 5px 5px 10px #b1b6be, -5px -5px 10px #ffffff;
+}
+
+.theme-neumorphism .operator { color: #ff7b00; }
+.theme-neumorphism .clear { color: #e63946; }
+.theme-neumorphism .equals { color: #4361ee; }
+
+  </style>
+</head>
+<body class="theme-start">
+  <div class="background-blobs" id="bg-blobs">
+    <div class="blob color1"></div>
+    <div class="blob color2"></div>
+    <div class="blob color3"></div>
+  </div>
+  
+  <div class="theme-selector" id="theme-selector">
+    <h1>Select Theme</h1>
+    <button class="theme-btn" onclick="startApp('theme-glassmorphism')">Glassmorphism</button>
+    <button class="theme-btn" onclick="startApp('theme-neobrutalism')">Neo Brutalism</button>
+    <button class="theme-btn" onclick="startApp('theme-minimalism')">Minimalism</button>
+    <button class="theme-btn" onclick="startApp('theme-colorfulism')">Colorfulism</button>
+    <button class="theme-btn" onclick="startApp('theme-neumorphism')">Neumorphism</button>
+  </div>
+
+  <div class="calculator hidden" id="calculator">
+    <div class="display" id="display">0</div>
+    <div class="buttons">
+      <button class="btn clear" onclick="clearDisplay()">AC</button>
+      <button class="btn operator" onclick="deleteLast()">DEL</button>
+      <button class="btn operator" onclick="appendOperator('%')">%</button>
+      <button class="btn operator" onclick="appendOperator('/')">÷</button>
+
+      <button class="btn" onclick="appendNumber('7')">7</button>
+      <button class="btn" onclick="appendNumber('8')">8</button>
+      <button class="btn" onclick="appendNumber('9')">9</button>
+      <button class="btn operator" onclick="appendOperator('*')">×</button>
+
+      <button class="btn" onclick="appendNumber('4')">4</button>
+      <button class="btn" onclick="appendNumber('5')">5</button>
+      <button class="btn" onclick="appendNumber('6')">6</button>
+      <button class="btn operator" onclick="appendOperator('-')">−</button>
+
+      <button class="btn" onclick="appendNumber('1')">1</button>
+      <button class="btn" onclick="appendNumber('2')">2</button>
+      <button class="btn" onclick="appendNumber('3')">3</button>
+      <button class="btn operator" onclick="appendOperator('+')">+</button>
+
+      <button class="btn zero" onclick="appendNumber('0')">0</button>
+      <button class="btn" onclick="appendNumber('.')">.</button>
+      <button class="btn equals" onclick="calculate()">=</button>
+    </div>
+    
+    <button class="back-btn" onclick="goBack()">Change Theme</button>
+  </div>
+<script>
+    const themeSelector = document.getElementById('theme-selector');
+const calculatorApp = document.getElementById('calculator');
+
+function startApp(themeClass) {
+  document.body.className = themeClass;
+  themeSelector.classList.add('hidden');
+  calculatorApp.classList.remove('hidden');
+}
+
+function goBack() {
+  calculatorApp.classList.add('hidden');
+  themeSelector.classList.remove('hidden');
+  document.body.className = 'theme-start'; 
+}
+
+let currentInput = '0';
+let previousInput = '';
+let operator = null;
+
+const display = document.getElementById('display');
+
+function updateDisplay() {
+  if (currentInput.length > 11) {
+    display.innerText = currentInput.substring(0, 11);
+  } else {
+    display.innerText = currentInput;
+  }
+}
+
+function appendNumber(number) {
+  if (currentInput === '0' && number !== '.') {
+    currentInput = number;
+  } else {
+    if (number === '.' && currentInput.includes('.')) return;
+    currentInput += number;
+  }
+  updateDisplay();
+}
+
+function appendOperator(op) {
+  if (currentInput === '') return;
+  if (previousInput !== '') {
+    calculate();
+  }
+  operator = op;
+  previousInput = currentInput;
+  currentInput = '';
+}
+
+function calculate() {
+  let computation;
+  const prev = parseFloat(previousInput);
+  const current = parseFloat(currentInput);
+  
+  if (isNaN(prev) || isNaN(current)) return;
+  
+  switch (operator) {
+    case '+':
+      computation = prev + current;
+      break;
+    case '-':
+      computation = prev - current;
+      break;
+    case '*':
+      computation = prev * current;
+      break;
+    case '/':
+      if (current === 0) {
+        computation = 'Error';
+      } else {
+        computation = prev / current;
+      }
+      break;
+    case '%':
+      computation = prev % current;
+      break;
+    default:
+      return;
+  }
+  
+  currentInput = computation.toString();
+  operator = null;
+  previousInput = '';
+  updateDisplay();
+}
+
+function clearDisplay() {
+  currentInput = '0';
+  previousInput = '';
+  operator = null;
+  updateDisplay();
+}
+
+function deleteLast() {
+  if (currentInput === 'Error') {
+    clearDisplay();
+    return;
+  }
+  
+  currentInput = currentInput.toString().slice(0, -1);
+  
+  if (currentInput === '') {
+    currentInput = '0';
+  }
+  updateDisplay();
+}
+</script>
+</body>
+</html>
