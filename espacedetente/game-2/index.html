@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Starcharter — your name, as a constellation</title>
+  <a href="https://buy.stripe.com/7sY14g6fX9u09ph9EJ5Vu05"
+   target="_blank"
+   rel="noopener noreferrer"
+   style="
+      position: fixed;
+      bottom: 15px;
+      left: 15px;
+      z-index: 9999;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 14px;
+      background:linear-gradient(90deg, #ffb347, #ffcc33);
+      color:#fff3e0;      text-decoration: none;
+      font-weight: 600;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      border-radius: 22px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      white-space: nowrap;">
+   ☕ cadeau café
+</a>
+
+<style>
+  @font-face {
+    font-family: 'Space';
+    src: local('Georgia');
+  }
+  :root {
+    --bg-deep: #0b0e1a;
+    --bg-mid: #141a2e;
+    --line: #2a3354;
+    --accent: #ffd76a;
+    --accent-dim: #8a6b2a;
+    --text: #e8ecf7;
+    --text-dim: #8b93b3;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    min-height: 100%;
+    background: var(--bg-deep);
+    color: var(--text);
+    font-family: Georgia, 'Space Grotesk/', serif;
+    overflow-x: hidden;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 20px 80px;
+    position: relative;
+  }
+
+  /* ambient starfield */
+  #ambient {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 620px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+  .eyebrow {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.25em;
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  h1 {
+    font-size: clamp(32px, 8vw, 52px);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    line-height: 1.15;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .sub {
+    margin-top: 14px;
+    color: var(--text-dim);
+    font-size: 15px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.02em;
+  }
+
+  form {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  input[type="text"] {
+    flex: 1;
+    background: var(--bg-mid);
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 14px 18px;
+    font-size: 16px;
+    font-family: 'Courier New', monospace;
+    border-radius: 2px;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+  input[type="text"]::placeholder { color: var(--text-dim); }
+  input[type="text"]:focus {
+    border-color: var(--accent-dim);
+  }
+  input[type="text"]:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  button {
+    background: var(--accent);
+    color: #1a1406;
+    border: none;
+    padding: 14px 26px;
+    font-size: 14px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  button:hover { background: #ffe39a; }
+  button:active { transform: scale(0.97); }
+  button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .hint {
+    color: var(--text-dim);
+    font-size: 12px;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 40px;
+    letter-spacing: 0.02em;
+  }
+
+  .card {
+    width: 100%;
+    background: var(--bg-mid);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  canvas {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(255,215,106,0.06), transparent 50%),
+      var(--bg-deep);
+  }
+
+  .card-info {
+    padding: 28px 28px 32px;
+    border-top: 1px solid var(--line);
+  }
+  .card-info .name {
+    font-size: 26px;
+    margin-bottom: 4px;
+  }
+  .card-info .designation {
+    font-family: 'Courier New', monospace;
+    color: var(--accent);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+  .stat {
+    border-left: 2px solid var(--accent-dim);
+    padding-left: 10px;
+  }
+  .stat .label {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+  .stat .value {
+    font-size: 19px;
+    color: var(--text);
+  }
+  .traits {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    font-style: italic;
+  }
+  .traits .star-name {
+    color: var(--accent);
+    font-style: normal;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    padding: 0 28px 28px;
+  }
+  .actions button {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--text-dim);
+    flex: 1;
+  }
+  .actions button:hover {
+    border-color: var(--accent-dim);
+    color: var(--text);
+    background: transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+
+  footer {
+    margin-top: 50px;
+    color: var(--text-dim);
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.5;
+  }
+</style>
+</head>
+<body>
+<canvas id="ambient"></canvas>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Stellar Cartography Dept. — Est. tonight</div>
+    <h1>Every name<br>has a <em>sky</em>.</h1>
+    <div class="sub">Type a name. Get its constellation, designation, and reading.</div>
+  </header>
+
+  <form id="genForm" autocomplete="off">
+    <input type="text" id="nameInput" placeholder="Enter a name…" maxlength="24" required>
+    <button type="submit">Chart it</button>
+  </form>
+  <div class="hint">Same name always maps to the same sky. Try your friends' names.</div>
+
+  <div class="card" id="card">
+    <canvas id="starCanvas" width="600" height="600"></canvas>
+    <div class="card-info">
+      <div class="name" id="outName">—</div>
+      <div class="designation" id="outDesignation">—</div>
+      <div class="stats">
+        <div class="stat"><div class="label">Magnitude</div><div class="value" id="outMag">—</div></div>
+        <div class="stat"><div class="label">Stars</div><div class="value" id="outStars">—</div></div>
+        <div class="stat"><div class="label">Distance</div><div class="value" id="outDist">—</div></div>
+      </div>
+      <div class="traits" id="outTraits">—</div>
+    </div>
+    <div class="actions">
+      <button type="button" id="saveBtn">Save image</button>
+      <button type="button" id="shuffleBtn">Re-chart</button>
+    </div>
+  </div>
+
+  <footer>No two skies the same · all charts permanent · zero data leaves this page</footer>
+</div>
+
+<script>
+// ---------- ambient starfield ----------
+(function(){
+  const c = document.getElementById('ambient');
+  const ctx = c.getContext('2d');
+  let stars = [];
+  function resize(){
+    c.width = innerWidth;
+    c.height = innerHeight;
+    stars = [];
+    const count = Math.floor((innerWidth * innerHeight) / 4000);
+    for (let i=0;i<count;i++){
+      stars.push({
+        x: Math.random()*c.width,
+        y: Math.random()*c.height,
+        r: Math.random()*1.3 + 0.2,
+        phase: Math.random()*Math.PI*2,
+        speed: Math.random()*0.02 + 0.005
+      });
+    }
+  }
+  let t = 0;
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    for (const s of stars){
+      const tw = 0.4 + 0.6 * Math.abs(Math.sin(t*s.speed + s.phase));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(232,236,247,${tw*0.6})`;
+      ctx.fill();
+    }
+    t += 1;
+    if (!reduced) requestAnimationFrame(draw);
+  }
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  resize();
+  window.addEventListener('resize', resize);
+  draw();
+  if (reduced) { draw = function(){}; ctx.clearRect(0,0,c.width,c.height); for(const s of stars){ ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fillStyle='rgba(232,236,247,0.5)'; ctx.fill(); } }
+})();
+
+// ---------- deterministic hash ----------
+function hashString(str){
+  let h1 = 0xdeadbeef ^ str.length, h2 = 0x41c6ce57 ^ str.length;
+  for (let i=0; i<str.length; i++){
+    const ch = str.charCodeAt(i);
+    h1 = Math.imul(h1 ^ ch, 2654435761);
+    h2 = Math.imul(h2 ^ ch, 1597334677);
+  }
+  h1 = Math.imul(h1 ^ (h1>>>16), 2246822507) ^ Math.imul(h2 ^ (h2>>>13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2>>>16), 2246822507) ^ Math.imul(h1 ^ (h1>>>13), 3266489909);
+  return 4294967296 * (2097151 & h2) + (h1>>>0);
+}
+
+function mulberry32(seed){
+  return function(){
+    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+    let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  }
+}
+
+// ---------- vocabulary for reading ----------
+const designations = ['NGC','MSR','HD','KEP','VLA','ESO','PSR','TYC'];
+const traitsBank = [
+  "burns brightest when no one is watching",
+  "marks the turning point others orbit around",
+  "holds steady light across long distances",
+  "drifts slightly off the expected path, on purpose",
+  "is visible only after the eyes adjust to dark",
+  "anchors the whole formation without trying to",
+  "flickers in a rhythm nobody else has noticed yet",
+  "sits closer than it appears",
+  "was charted twice by mistake, both times correctly",
+  "outshines stars with better reputations",
+  "moves so slowly the shift is only visible over years",
+  "is the reason the rest of the sky makes sense",
+  "casts the faintest shadow of any star in the chart",
+  "has a twin somewhere that hasn't been found",
+  "was the last one mapped, and the first one noticed",
+];
+const distances = ['4.2 ly','11.9 ly','38 ly','127 ly','640 ly','1,300 ly','8,700 ly','25,000 ly','0.0003 ly (closer than expected)'];
+
+function buildIdentity(name){
+  const seed = hashString(name.trim().toLowerCase());
+  const rand = mulberry32(seed);
+
+  const starCount = 5 + Math.floor(rand()*5); // 5-9
+  const points = [];
+  for (let i=0;i<starCount;i++){
+    points.push({
+      x: 0.12 + rand()*0.76,
+      y: 0.12 + rand()*0.76,
+      r: 1.4 + rand()*3.2
+    });
+  }
+
+  // build a connection path (each star connects to nearest unvisited-ish, gives organic constellation feel)
+  const order = [...points.keys()];
+  // shuffle deterministically a bit then connect sequentially with some skips
+  const edges = [];
+  for (let i=0;i<order.length-1;i++){
+    edges.push([order[i], order[i+1]]);
+  }
+  // add 1-2 extra cross connections
+  const extra = Math.floor(rand()*2)+1;
+  for (let i=0;i<extra;i++){
+    const a = Math.floor(rand()*points.length);
+    let b = Math.floor(rand()*points.length);
+    if (b===a) b = (b+1)%points.length;
+    edges.push([a,b]);
+  }
+
+  const desigPrefix = designations[Math.floor(rand()*designations.length)];
+  const desigNum = 1000 + Math.floor(rand()*8999);
+  const designation = `${desigPrefix}-${desigNum}`;
+
+  const magnitude = (rand()*4 - 1.5).toFixed(2); // can be negative (brighter)
+  const distance = distances[Math.floor(rand()*distances.length)];
+
+  const traitIdx1 = Math.floor(rand()*traitsBank.length);
+  let traitIdx2 = Math.floor(rand()*traitsBank.length);
+  if (traitIdx2 === traitIdx1) traitIdx2 = (traitIdx2+1) % traitsBank.length;
+
+  // pick a "lead star" name from constellation latin-ish fragments
+  const fragA = ['Vel','Cor','Lyr','Per','Aur','Cas','Dra','Sol','Nyx','Ori'];
+  const fragB = ['ara','ion','eth','ux','is','andra','os','ium','ae','or'];
+  const starName = fragA[Math.floor(rand()*fragA.length)] + fragB[Math.floor(rand()*fragB.length)];
+
+  // brightest star index
+  let brightest = 0;
+  for (let i=1;i<points.length;i++) if (points[i].r > points[brightest].r) brightest = i;
+
+  return { points, edges, designation, magnitude, distance, starCount, traitIdx1, traitIdx2, starName, brightest, seed };
+}
+
+// ---------- drawing ----------
+const canvas = document.getElementById('starCanvas');
+const ctx = canvas.getContext('2d');
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+let current = null;
+let animStart = 0;
+
+function drawFrame(progress){
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+
+  // subtle grid
+  ctx.strokeStyle = 'rgba(42,51,84,0.35)';
+  ctx.lineWidth = 1;
+  for (let i=1;i<6;i++){
+    const x = (W/6)*i;
+    ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke();
+    const y = (H/6)*i;
+    ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke();
+  }
+
+  if (!current) return;
+  const { points, edges, brightest } = current;
+  const px = points.map(p => ({x: p.x*W, y: p.y*H, r: p.r}));
+
+  // edges (drawn progressively)
+  const edgeProgress = Math.min(1, progress * 1.6);
+  ctx.strokeStyle = 'rgba(255,215,106,0.35)';
+  ctx.lineWidth = 1.3;
+  edges.forEach((e, idx) => {
+    const segStart = idx / edges.length;
+    if (edgeProgress < segStart) return;
+    const localT = Math.min(1, (edgeProgress - segStart) * edges.length);
+    const a = px[e[0]], b = px[e[1]];
+    const ex = a.x + (b.x - a.x) * localT;
+    const ey = a.y + (b.y - a.y) * localT;
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    ctx.lineTo(ex, ey);
+    ctx.stroke();
+  });
+
+  // stars (fade/scale in)
+  px.forEach((p, idx) => {
+    const appear = Math.min(1, Math.max(0, (progress - idx*0.06) * 4));
+    if (appear <= 0) return;
+    const isBright = idx === brightest;
+    const glow = isBright ? 14 : 6;
+    const r = p.r * appear;
+
+    const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, glow);
+    grad.addColorStop(0, isBright ? 'rgba(255,215,106,0.9)' : 'rgba(232,236,247,0.5)');
+    grad.addColorStop(1, 'rgba(232,236,247,0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(p.x-glow, p.y-glow, glow*2, glow*2);
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, r, 0, Math.PI*2);
+    ctx.fillStyle = isBright ? '#ffe39a' : '#e8ecf7';
+    ctx.fill();
+  });
+}
+
+function animate(ts){
+  if (!animStart) animStart = ts;
+  const elapsed = ts - animStart;
+  const duration = 1400;
+  const progress = Math.min(1, elapsed / duration);
+  drawFrame(progress);
+  if (progress < 1) requestAnimationFrame(animate);
+}
+
+function renderIdentity(name){
+  current = buildIdentity(name);
+
+  document.getElementById('outName').textContent = name;
+  document.getElementById('outDesignation').textContent = current.designation + ' · ' + current.starCount + '-star formation';
+  document.getElementById('outMag').textContent = current.magnitude;
+  document.getElementById('outStars').textContent = current.starCount;
+  document.getElementById('outDist').textContent = current.distance;
+
+  const t1 = traitsBank[current.traitIdx1];
+  const t2 = traitsBank[current.traitIdx2];
+  document.getElementById('outTraits').innerHTML =
+    `<span class="star-name">${current.starName}</span>, the lead star, ${t1}. The formation overall ${t2}.`;
+
+  const card = document.getElementById('card');
+  card.classList.add('visible');
+
+  if (reducedMotion){
+    drawFrame(1);
+  } else {
+    animStart = 0;
+    requestAnimationFrame(animate);
+  }
+}
+
+document.getElementById('genForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const val = document.getElementById('nameInput').value.trim();
+  if (!val) return;
+  renderIdentity(val);
+  document.getElementById('card').scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'nearest' });
+});
+
+document.getElementById('shuffleBtn').addEventListener('click', () => {
+  const val = document.getElementById('outName').textContent;
+  if (val && val !== '—'){
+    // add invisible variant char to reshuffle while keeping displayed name same... 
+    // simpler: just re-render with a tiny salt toggle stored on element
+    const salt = (current.seed % 7) + '_';
+    current = buildIdentity(val + '\u200b'.repeat((Date.now()%5)+1));
+    document.getElementById('outDesignation').textContent = current.designation + ' · ' + current.starCount + '-star formation';
+    document.getElementById('outMag').textContent = current.magnitude;
+    document.getElementById('outStars').textContent = current.starCount;
+    document.getElementById('outDist').textContent = current.distance;
+    const t1 = traitsBank[current.traitIdx1];
+    const t2 = traitsBank[current.traitIdx2];
+    document.getElementById('outTraits').innerHTML =
+      `<span class="star-name">${current.starName}</span>, the lead star, ${t1}. The formation overall ${t2}.`;
+    if (reducedMotion) drawFrame(1);
+    else { animStart = 0; requestAnimationFrame(animate); }
+  }
+});
+
+document.getElementById('saveBtn').addEventListener('click', () => {
+  // composite canvas + text into a downloadable image
+  const exportCanvas = document.createElement('canvas');
+  exportCanvas.width = 600;
+  exportCanvas.height = 760;
+  const ex = exportCanvas.getContext('2d');
+
+  ex.fillStyle = '#141a2e';
+  ex.fillRect(0,0,600,760);
+  ex.drawImage(canvas, 0, 0, 600, 600);
+
+  ex.strokeStyle = '#2a3354';
+  ex.beginPath(); ex.moveTo(0,600); ex.lineTo(600,600); ex.stroke();
+
+  ex.fillStyle = '#e8ecf7';
+  ex.font = '28px Georgia';
+  ex.fillText(document.getElementById('outName').textContent, 28, 650);
+
+  ex.fillStyle = '#ffd76a';
+  ex.font = '12px monospace';
+  ex.fillText(document.getElementById('outDesignation').textContent.toUpperCase(), 28, 678);
+
+  ex.fillStyle = '#8b93b3';
+  ex.font = '13px monospace';
+  ex.fillText(`MAG ${document.getElementById('outMag').textContent}   STARS ${document.getElementById('outStars').textContent}   DIST ${document.getElementById('outDist').textContent}`, 28, 710);
+
+  ex.fillStyle = '#8b93b3';
+  ex.font = 'italic 13px Georgia';
+  const traitsText = document.getElementById('outTraits').textContent;
+  wrapText(ex, traitsText, 28, 735, 544, 18);
+
+  const link = document.createElement('a');
+  link.download = `${document.getElementById('outName').textContent.replace(/\s+/g,'_')}_starchart.png`;
+  link.href = exportCanvas.toDataURL('image/png');
+  link.click();
+});
+
+function wrapText(ctx, text, x, y, maxWidth, lineHeight){
+  const words = text.split(' ');
+  let line = '';
+  for (let n=0;n<words.length;n++){
+    const test = line + words[n] + ' ';
+    if (ctx.measureText(test).width > maxWidth && n > 0){
+      ctx.fillText(line, x, y);
+      line = words[n] + ' ';
+      y += lineHeight;
+    } else {
+      line = test;
+    }
+  }
+  ctx.fillText(line, x, y);
+}
+
+// load a default example on first paint
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('nameInput').focus();
+});
+</script>
+</body>
+</html>
