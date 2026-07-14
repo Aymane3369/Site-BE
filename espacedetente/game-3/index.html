@@ -1,1 +1,711 @@
 
+<!--made by UNKNOWN with ❤️-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <a href="https://buy.stripe.com/7sY14g6fX9u09ph9EJ5Vu05"
+   target="_blank"
+   rel="noopener noreferrer"
+   style="
+      position: fixed;
+      bottom: 15px;
+      left: 15px;
+      z-index: 9999;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 14px;
+      background:linear-gradient(90deg, #ffb347, #ffcc33);
+      color:#fff3e0;      text-decoration: none;
+      font-weight: 600;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      border-radius: 22px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      white-space: nowrap;">
+   ☕ cadeau café
+</a>
+
+<title>Realistic 3D Earth</title>
+<style>
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #000; overflow: hidden; width: 100vw; height: 100vh; font-family: 'Courier New', monospace; }
+  canvas { display: block; position: absolute; top:0; left:0; z-index: 1; }
+  
+  #intro-screen {
+    position: absolute;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: #000;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 2s ease-in-out;
+  }
+  #intro-text {
+    color: #a0c8ff;
+    font-size: 16px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    text-align: center;
+    opacity: 0;
+    animation: fadeIn 1.5s forwards 0.5s;
+  }
+  #start-btn {
+    background: transparent;
+    border: 1px solid rgba(160,200,255,0.4);
+    color: #a0c8ff;
+    padding: 12px 30px;
+    font-family: inherit;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: pointer;
+    outline: none;
+    opacity: 0;
+    animation: fadeIn 1.5s forwards 1.2s;
+    transition: all 0.3s ease;
+  }
+  #start-btn:hover {
+    background: rgba(160,200,255,0.1);
+    box-shadow: 0 0 15px rgba(160,200,255,0.3);
+    border-color: rgba(160,200,255,0.8);
+  }
+
+  #danger-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 7;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    transition: background 0.5s ease;
+  }
+  #danger-box {
+    text-align: center;
+    max-width: 600px;
+    padding: 30px;
+    background: rgba(40, 0, 0, 0.7);
+    border: 2px solid #ff1133;
+    box-shadow: 0 0 30px rgba(255, 17, 51, 0.4);
+    border-radius: 8px;
+    backdrop-filter: blur(5px);
+    display: none;
+  }
+  #danger-box h1 {
+    color: #ff1133;
+    font-size: 28px;
+    letter-spacing: 0.3em;
+    margin-bottom: 15px;
+    animation: blink 0.6s infinite alternate;
+  }
+  #danger-box p {
+    color: #ff99aa;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    line-height: 1.6;
+    text-transform: uppercase;
+  }
+
+  #rotate-prompt {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffffff;
+    font-size: 14px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    border: 1px dashed rgba(160,200,255,0.5);
+    padding: 15px 25px;
+    background: rgba(0,8,20,0.6);
+    backdrop-filter: blur(4px);
+    border-radius: 4px;
+    pointer-events: none;
+    z-index: 8;
+    opacity: 0;
+    transition: opacity 1.5s ease, transform 1.5s ease;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  }
+
+  #info {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(160,200,255,0.5);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 2s ease;
+  }
+  #loading {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(160,200,255,0.8);
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    z-index: 5;
+    pointer-events: none;
+    display: none;
+  }
+
+  @keyframes fadeIn { to { opacity: 1; } }
+  @keyframes blink { from { opacity: 0.2; } to { opacity: 1; } }
+</style>
+</head>
+<body>
+
+<div id="intro-screen">
+  <div id="intro-text">made by UNKNOWN with ❤️</div>
+  <button id="start-btn">Launch Mission</button>
+</div>
+
+<div id="danger-overlay">
+  <div id="danger-box">
+    <h1>⚠️ WARNING ⚠️</h1>
+    <p>We are having a trouble in the space ship so we should find a safe planet to land.</p>
+  </div>
+</div>
+
+<div id="rotate-prompt">Drag to rotate the earth</div>
+
+<canvas id="c"></canvas>
+<div id="loading">Syncing Orbit…</div>
+<div id="info">drag to rotate · scroll to zoom</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+alert('please upvote and follow so you can encourage me more in doing like these stuff make sure to comment')
+alert('raise your volume ⚠️🔊')
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.z = 3;
+
+let audioCtx, oscSub, oscMain, engineGain, engineFilter, noiseNode, noiseGain, windFilter, earthGain, alarmOsc, alarmGain;
+let browserVoices = [];
+
+// Pre-load browser voice list early to fix async loading limitations
+if ('speechSynthesis' in window) {
+  browserVoices = window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = () => {
+    browserVoices = window.speechSynthesis.getVoices();
+  };
+}
+
+function initAudio() {
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  
+  oscMain = audioCtx.createOscillator();
+  oscMain.type = 'sawtooth';
+  oscMain.frequency.setValueAtTime(55, audioCtx.currentTime); 
+  
+  oscSub = audioCtx.createOscillator();
+  oscSub.type = 'square';
+  oscSub.frequency.setValueAtTime(27.5, audioCtx.currentTime); 
+  
+  engineFilter = audioCtx.createBiquadFilter();
+  engineFilter.type = 'lowpass';
+  engineFilter.frequency.setValueAtTime(100, audioCtx.currentTime);
+  engineFilter.Q.setValueAtTime(6, audioCtx.currentTime); 
+  
+  engineGain = audioCtx.createGain();
+  engineGain.gain.setValueAtTime(0, audioCtx.currentTime);
+  
+  oscMain.connect(engineFilter);
+  oscSub.connect(engineFilter);
+  engineFilter.connect(engineGain);
+  engineGain.connect(audioCtx.destination);
+  
+  oscMain.start();
+  oscSub.start();
+
+  const bufferSize = 2 * audioCtx.sampleRate;
+  const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const output = noiseBuffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) {
+    output[i] = Math.random() * 2 - 1;
+  }
+  
+  noiseNode = audioCtx.createBufferSource();
+  noiseNode.buffer = noiseBuffer;
+  noiseNode.loop = true;
+  
+  windFilter = audioCtx.createBiquadFilter();
+  windFilter.type = 'bandpass';
+  windFilter.frequency.setValueAtTime(350, audioCtx.currentTime);
+  windFilter.Q.setValueAtTime(1.5, audioCtx.currentTime);
+  
+  noiseGain = audioCtx.createGain();
+  noiseGain.gain.setValueAtTime(0, audioCtx.currentTime);
+  
+  noiseNode.connect(windFilter);
+  windFilter.connect(noiseGain);
+  noiseGain.connect(audioCtx.destination);
+  noiseNode.start();
+
+  alarmOsc = audioCtx.createOscillator();
+  alarmOsc.type = 'sine';
+  alarmOsc.frequency.setValueAtTime(600, audioCtx.currentTime);
+  
+  alarmGain = audioCtx.createGain();
+  alarmGain.gain.setValueAtTime(0, audioCtx.currentTime);
+  
+  alarmOsc.connect(alarmGain);
+  alarmGain.connect(audioCtx.destination);
+  alarmOsc.start();
+
+  earthGain = audioCtx.createGain();
+  earthGain.gain.setValueAtTime(0, audioCtx.currentTime);
+  earthGain.connect(audioCtx.destination);
+  
+  setupEarthAmbience();
+}
+
+function speakWarning() {
+  if ('speechSynthesis' in window) {
+    // Cancel any accidental ongoing speech cues
+    window.speechSynthesis.cancel();
+    
+    const text = "We are having a trouble in the space ship so we should find a safe planet to land.";
+    const msg = new SpeechSynthesisUtterance(text);
+    const targetVoice = browserVoices.find(v => 
+      v.name.toLowerCase().includes('google us english') || 
+      v.name.toLowerCase().includes('microsoft david') || 
+      v.name.toLowerCase().includes('zira') ||
+      v.name.toLowerCase().includes('robot')
+    );
+    
+    if (targetVoice) {
+      msg.voice = targetVoice;
+    }
+    msg.rate = 0.88; 
+    msg.pitch = 0.65; 
+    msg.volume = 1.0;
+    
+    window.speechSynthesis.speak(msg);
+  }
+}
+
+function setupEarthAmbience() {
+  const bufferSize = 2 * audioCtx.sampleRate;
+  const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const output = noiseBuffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) {
+    output[i] = Math.random() * 2 - 1;
+  }
+  
+  const ambientNoise = audioCtx.createBufferSource();
+  ambientNoise.buffer = noiseBuffer;
+  ambientNoise.loop = true;
+  
+  const filter = audioCtx.createBiquadFilter();
+  filter.type = 'lowpass';
+  filter.frequency.setValueAtTime(300, audioCtx.currentTime);
+  
+  ambientNoise.connect(filter);
+  filter.connect(earthGain);
+  ambientNoise.start();
+  
+  scheduleChirp();
+}
+
+function scheduleChirp() {
+  if (!audioCtx) return;
+  const now = audioCtx.currentTime;
+  
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(2200 + Math.random() * 800, now);
+  osc.frequency.exponentialRampToValueAtTime(3200 + Math.random() * 400, now + 0.06);
+  osc.frequency.exponentialRampToValueAtTime(2000 + Math.random() * 200, now + 0.18);
+  
+  gain.gain.setValueAtTime(0, now);
+  gain.gain.linearRampToValueAtTime(0.012, now + 0.03);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+  
+  osc.connect(gain);
+  gain.connect(earthGain);
+  osc.start(now);
+  osc.stop(now + 0.2);
+  
+  setTimeout(scheduleChirp, 2500 + Math.random() * 4500);
+}
+
+(function addStars() {
+  const geo = new THREE.BufferGeometry();
+  const n = 12000;
+  const pos = new Float32Array(n * 3);
+  for (let i = 0; i < n; i++) {
+    const theta = Math.random() * 2 * Math.PI;
+    const phi   = Math.acos(2 * Math.random() - 1);
+    const r     = 100 + Math.random() * 300;
+    pos[i*3]   = r * Math.sin(phi) * Math.cos(theta);
+    pos[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
+    pos[i*3+2] = r * Math.cos(phi);
+  }
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  scene.add(new THREE.Points(geo, new THREE.PointsMaterial({
+    color: 0xffffff, size: 0.5, sizeAttenuation: false,
+    transparent: true, opacity: 0.9
+  })));
+})();
+
+const loader = new THREE.TextureLoader();
+loader.crossOrigin = 'anonymous';
+const BASE = 'https://raw.githubusercontent.com/mrdoob/three.js/r128/examples/textures/planets/';
+
+let loaded = 0;
+const total = 4;
+function onLoad() { loaded++; }
+
+const dayTex   = loader.load(BASE + 'earth_atmos_2048.jpg',   onLoad);
+const specTex  = loader.load(BASE + 'earth_specular_2048.jpg', onLoad);
+const normTex  = loader.load(BASE + 'earth_normal_2048.jpg',   onLoad);
+const cloudTex = loader.load(BASE + 'earth_clouds_2048.png',   onLoad);
+
+const earthGroup = new THREE.Group();
+scene.add(earthGroup);
+
+const earthGeo = new THREE.SphereGeometry(1, 128, 128);
+const earthMat = new THREE.MeshPhongMaterial({
+  map:         dayTex,
+  specularMap: specTex,
+  specular:    new THREE.Color(0x4488cc),
+  shininess:   25,
+  normalMap:   normTex,
+  normalScale: new THREE.Vector2(6, 6),
+});
+const earth = new THREE.Mesh(earthGeo, earthMat);
+earthGroup.add(earth);
+
+const cloudGeo = new THREE.SphereGeometry(1.005, 64, 64);
+const cloudMat = new THREE.MeshPhongMaterial({
+  map:        cloudTex,
+  transparent: true,
+  opacity:     0.85,
+  depthWrite:  false,
+  blending:    THREE.NormalBlending,
+});
+const clouds = new THREE.Mesh(cloudGeo, cloudMat);
+earthGroup.add(clouds);
+
+const atmGeo = new THREE.SphereGeometry(1.02, 64, 64);
+const atmMat = new THREE.MeshPhongMaterial({
+  color:       0x3399ff,
+  transparent: true,
+  opacity:     0.08,
+  side:        THREE.FrontSide,
+  depthWrite:  false,
+  blending:    THREE.AdditiveBlending,
+});
+earthGroup.add(new THREE.Mesh(atmGeo, atmMat));
+
+const haloGeo = new THREE.SphereGeometry(1.08, 64, 64);
+const haloMat = new THREE.MeshPhongMaterial({
+  color:       0x1155ff,
+  transparent: true,
+  opacity:     0.04,
+  side:        THREE.BackSide,
+  depthWrite:  false,
+  blending:    THREE.AdditiveBlending,
+});
+earthGroup.add(new THREE.Mesh(haloGeo, haloMat));
+
+const sun = new THREE.DirectionalLight(0xfff8f0, 2.2);
+sun.position.set(5, 2, 3);
+scene.add(sun);
+
+const ambient = new THREE.AmbientLight(0x111830, 0.3);
+scene.add(ambient);
+
+earth.rotation.x = THREE.MathUtils.degToRad(-23.5);
+earth.rotation.y = THREE.MathUtils.degToRad(80);
+clouds.rotation.x = earth.rotation.x;
+clouds.rotation.y = earth.rotation.y;
+
+earthGroup.position.set(0, 0, -55);
+earthGroup.visible = false;
+
+const shipGroup = new THREE.Group();
+scene.add(shipGroup);
+
+const bodyGeo = new THREE.ConeGeometry(0.04, 0.25, 4);
+bodyGeo.rotateX(Math.PI / 2);
+const shipMat = new THREE.MeshPhongMaterial({ color: 0xddeeff, specular: 0xffffff, shininess: 80 });
+const shipBody = new THREE.Mesh(bodyGeo, shipMat);
+shipGroup.add(shipBody);
+
+const wingGeo = new THREE.BoxGeometry(0.22, 0.01, 0.08);
+const shipWings = new THREE.Mesh(wingGeo, shipMat);
+shipWings.position.set(0, -0.01, -0.02);
+shipGroup.add(shipWings);
+
+const engineGeo = new THREE.ConeGeometry(0.012, 0.04, 8);
+engineGeo.rotateX(-Math.PI / 2);
+const engineMat = new THREE.MeshBasicMaterial({ color: 0x00aaff });
+const leftEngine = new THREE.Mesh(engineGeo, engineMat);
+leftEngine.position.set(-0.04, -0.01, -0.13);
+const rightEngine = leftEngine.clone();
+rightEngine.position.x = 0.04;
+shipGroup.add(leftEngine, rightEngine);
+
+shipGroup.position.set(0, -0.15, 1.2);
+
+const warpCount = 700;
+const warpGeo = new THREE.BufferGeometry();
+const warpPos = new Float32Array(warpCount * 3);
+const warpVel = [];
+for(let i=0; i<warpCount; i++) {
+  warpPos[i*3] = (Math.random() - 0.5) * 12;
+  warpPos[i*3+1] = (Math.random() - 0.5) * 12;
+  warpPos[i*3+2] = -Math.random() * 50 - 5;
+  warpVel.push(Math.random() * 0.6 + 0.4);
+}
+warpGeo.setAttribute('position', new THREE.BufferAttribute(warpPos, 3));
+const warpMat = new THREE.LineBasicMaterial({ color: 0xa0c8ff, transparent: true, opacity: 0 });
+const warpLines = new THREE.LineSegments(warpGeo, warpMat);
+scene.add(warpLines);
+
+let isDragging = false;
+let hasInteracted = false;
+let prev = { x: 0, y: 0 };
+let vel  = { x: 0, y: 0 };
+let targetX = earth.rotation.x;
+let targetY = earth.rotation.y;
+let curX = targetX, curY = targetY;
+
+function clearPrompt() {
+  if (!hasInteracted) {
+    hasInteracted = true;
+    const promptEl = document.getElementById('rotate-prompt');
+    promptEl.style.opacity = '0';
+    promptEl.style.transform = 'translate(-50%, -70%)';
+  }
+}
+
+const el = canvas;
+el.addEventListener('mousedown', e => { 
+  if(animStage===3) { 
+    isDragging=true; 
+    prev={x:e.clientX,y:e.clientY}; 
+    vel={x:0,y:0}; 
+    clearPrompt();
+  } 
+});
+window.addEventListener('mousemove', e => {
+  if (!isDragging || animStage!==3) return;
+  const dx = e.clientX - prev.x, dy = e.clientY - prev.y;
+  vel = { x: dy*0.005, y: dx*0.005 };
+  targetX += dy*0.005;
+  targetY += dx*0.005;
+  targetX = Math.max(-Math.PI/2.1, Math.min(Math.PI/2.1, targetX));
+  prev = { x: e.clientX, y: e.clientY };
+});
+window.addEventListener('mouseup', () => isDragging = false);
+
+el.addEventListener('touchstart', e => { 
+  if(animStage===3) { 
+    isDragging=true; 
+    prev={x:e.touches[0].clientX,y:e.touches[0].clientY}; 
+    clearPrompt();
+  } 
+});
+window.addEventListener('touchmove', e => {
+  if (!isDragging || animStage!==3) return;
+  const dx = e.touches[0].clientX - prev.x, dy = e.touches[0].clientY - prev.y;
+  vel = { x: dy*0.005, y: dx*0.005 };
+  targetX += dy*0.005;
+  targetY += dx*0.005;
+  targetX = Math.max(-Math.PI/2.1, Math.min(Math.PI/2.1, targetX));
+  prev = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+}, { passive: true });
+window.addEventListener('touchend', () => isDragging = false);
+
+el.addEventListener('wheel', e => {
+  if(animStage===3) {
+    camera.position.z = Math.max(1.6, Math.min(6, camera.position.z + e.deltaY * 0.003));
+    clearPrompt();
+  }
+}, { passive: true });
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+let animStage = 0; 
+let animTimer = 0;
+let voiceTriggered = false;
+const clock = new THREE.Clock();
+
+document.getElementById('start-btn').addEventListener('click', () => {
+  initAudio();
+  document.getElementById('intro-screen').style.opacity = '0';
+  setTimeout(() => {
+    document.getElementById('intro-screen').style.display = 'none';
+    if(loaded < total) document.getElementById('loading').style.display = 'block';
+  }, 2000);
+  animStage = 1;
+  clock.getDelta(); 
+});
+
+function animate() {
+  requestAnimationFrame(animate);
+  const t = clock.getDelta();
+  const elapsed = clock.getElapsedTime();
+
+  if (animStage === 1) {
+    animTimer += t;
+    if (loaded >= total && animTimer > 1) {
+      document.getElementById('loading').style.display = 'none';
+      animStage = 2;
+      animTimer = 0;
+    }
+  } 
+  else if (animStage === 2) {
+    animTimer += t;
+
+    if (animTimer < 3) {
+      shipGroup.position.z -= t * 0.15;
+      shipGroup.position.y += t * 0.02;
+      warpMat.opacity = Math.min(1, warpMat.opacity + t * 0.5);
+      
+      let now = audioCtx.currentTime;
+      let ratio = animTimer / 3;
+      engineGain.gain.setValueAtTime(ratio * 0.45, now);
+      oscMain.frequency.setValueAtTime(55 + ratio * 45, now);
+      oscSub.frequency.setValueAtTime(27.5 + ratio * 22, now);
+      engineFilter.frequency.setValueAtTime(100 + ratio * 250, now);
+    } 
+    else if (animTimer >= 3 && animTimer < 10) {
+      warpMat.opacity = 1;
+      
+      let shakeIntensity = (animTimer > 4.5) ? 0.009 : 0.001;
+      shipGroup.position.z += (Math.sin(elapsed * 50) * shakeIntensity); 
+      shipGroup.position.x += (Math.cos(elapsed * 40) * shakeIntensity);
+      
+      leftEngine.scale.set(1, 1, 4 + Math.sin(elapsed*50)*2);
+      rightEngine.scale.set(1, 1, 4 + Math.cos(elapsed*50)*2);
+
+      let now = audioCtx.currentTime;
+      
+      if (animTimer > 4.5 && animTimer < 10) {
+        document.getElementById('danger-box').style.display = 'block';
+        document.getElementById('danger-overlay').style.background = (Math.floor(elapsed * 5) % 2 === 0) ? 'rgba(255, 0, 0, 0.15)' : 'transparent';
+        
+        alarmGain.gain.setValueAtTime((Math.floor(elapsed * 3) % 2 === 0) ? 0.15 : 0, now);
+        alarmOsc.frequency.setValueAtTime(500 + Math.sin(elapsed * 10) * 100, now);
+        
+        engineGain.gain.setValueAtTime(0.25 + Math.sin(elapsed * 40) * 0.1, now);
+        oscMain.frequency.setValueAtTime(80 + Math.sin(elapsed * 30) * 15, now);
+
+        if(!voiceTriggered) {
+          speakWarning();
+          voiceTriggered = true;
+        }
+      } else {
+        engineGain.gain.setValueAtTime(0.45 + Math.sin(elapsed * 25) * 0.02, now);
+        oscMain.frequency.setValueAtTime(100, now);
+      }
+      
+      noiseGain.gain.setValueAtTime(0.12, now);
+    } 
+    else if (animTimer >= 10 && animTimer < 13.5) {
+      if (!earthGroup.visible) {
+        earthGroup.visible = true;
+        document.getElementById('danger-box').style.opacity = '0';
+        document.getElementById('danger-overlay').style.background = 'transparent';
+      }
+      
+      earthGroup.position.z += t * 15.0; 
+      warpMat.opacity = Math.max(0, warpMat.opacity - t * 0.4);
+      
+      shipGroup.position.z -= t * 0.5;
+      shipGroup.position.y -= t * 0.3;
+
+      let now = audioCtx.currentTime;
+      let outProgress = (animTimer - 10) / 3.5;
+      engineGain.gain.setValueAtTime(0.35 * (1 - outProgress), now);
+      alarmGain.gain.setValueAtTime(0, now);
+      noiseGain.gain.setValueAtTime(0.12 * (1 - outProgress), now);
+      earthGain.gain.setValueAtTime(outProgress * 0.5, now);
+    } 
+    else if (animTimer >= 13.5 && animTimer < 16.5) {
+      document.getElementById('danger-box').style.display = 'none';
+      const progress = (animTimer - 13.5) / 3;
+      camera.position.z = 3 + (1.5 * (1 - progress));
+      earthGroup.position.z = 0;
+      shipGroup.visible = false;
+      warpMat.opacity = 0;
+      
+      let now = audioCtx.currentTime;
+      earthGain.gain.setValueAtTime(0.5, now);
+    } 
+    else if (animTimer >= 16.5) {
+      animStage = 3;
+      camera.position.z = 3;
+      document.getElementById('info').style.opacity = '1';
+      document.getElementById('rotate-prompt').style.opacity = '1';
+    }
+
+    const posAttr = warpGeo.getAttribute('position');
+    for (let i = 0; i < warpCount; i++) {
+      let z = posAttr.getZ(i);
+      let mult = (animTimer > 3 && animTimer < 10) ? 6 : (animTimer >= 10 ? 2 : 1);
+      z += warpVel[i] * mult * 60 * t;
+      if (z > 5) {
+        z = -Math.random() * 50 - 5;
+      }
+      posAttr.setZ(i, z);
+    }
+    posAttr.needsUpdate = true;
+  }
+  else if (animStage === 3) {
+    if (!isDragging) {
+      vel.x *= 0.93;
+      vel.y *= 0.93;
+      targetX += vel.x;
+      targetY += vel.y;
+      if (Math.abs(vel.y) < 0.0003) targetY += 0.0010;
+    }
+
+    curX += (targetX - curX) * 0.09;
+    curY += (targetY - curY) * 0.09;
+
+    earth.rotation.x  = curX;
+    earth.rotation.y  = curY;
+    clouds.rotation.x = curX;
+    clouds.rotation.y = curY + elapsed * 0.0005;
+  }
+
+  renderer.render(scene, camera);
+}
+animate();
+</script>
+</body>
+  </html>
