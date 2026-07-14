@@ -307,7 +307,6 @@ function go(url){
   selectSound();
   setTimeout(()=>location.href=url,120);
 }
-
 document.addEventListener("keydown",(e)=>{
   if(e.key==="ArrowDown"){
     index=(index+1)%items.length;
