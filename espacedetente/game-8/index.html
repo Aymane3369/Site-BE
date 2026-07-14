@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gemma Avatar</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body, html {
+            width: 100%;
+            height: 100%;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #0d0d0d;
+            color: #fff;
+        }
+        
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(13, 13, 13, 0.95);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #1a1a1a;
+            backdrop-filter: blur(10px);
+        }
+        
+        .navbar .back-btn {
+            color: #fff;
+            font-size: 1.4rem;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+        
+        .navbar .title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Contenu principal */
+        .content {
+            margin-top: 70px;
+            padding: 30px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 70px);
+        }
+        
+        .icon-main {
+            font-size: 5rem;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #999;
+            max-width: 350px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+        }
+        
+        /* Bouton principal */
+        .btn-primary {
+            display: inline-block;
+            padding: 18px 50px;
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 4px 25px rgba(124, 58, 237, 0.4);
+            transition: transform 0.2s;
+            width: 100%;
+            max-width: 350px;
+        }
+        
+        .btn-primary:active {
+            transform: scale(0.95);
+        }
+        
+        .btn-secondary {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 14px 30px;
+            background: transparent;
+            color: #aaa;
+            border: 1px solid #333;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-decoration: none;
+            width: 100%;
+            max-width: 350px;
+        }
+        
+        /* Instructions */
+        .info-box {
+            margin-top: 30px;
+            padding: 15px 20px;
+            background: #1a1a1a;
+            border-radius: 12px;
+            max-width: 350px;
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.6;
+            text-align: left;
+        }
+        
+        .info-box strong {
+            color: #fff;
+        }
+        
+        .info-box .highlight {
+            color: #7c3aed;
+            word-break: break-all;
+        }
+        
+        /* Message d'erreur */
+        .error-msg {
+            display: none;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 10px;
+            color: #f87171;
+            font-size: 0.9rem;
+            max-width: 350px;
+        }
+        
+        @media (max-width: 480px) {
+            .content { padding: 20px 15px; }
+            h1 { font-size: 1.5rem; }
+            .btn-primary { font-size: 1rem; padding: 16px 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="espace-détente.html" class="back-btn">←</a>
+        <span class="title">🎤 Gemma Avatar</span>
+        <span style="color:#666;font-size:0.8rem;">v1.0</span>
+    </nav>
+
+    <!-- Contenu -->
+    <div class="content">
+        <div class="icon-main">🎤</div>
+        <h1>Gemma Avatar</h1>
+        <p class="subtitle">
+            Intelligence artificielle vocale.<br>
+            Parlez avec l'avatar IA.
+        </p>
+
+        <!-- Bouton principal : ouvre dans la WebView -->
+        <button class="btn-primary" id="openBtn">
+            🚀 Lancer Gemma Avatar
+        </button>
+
+        <!-- Bouton alternatif : ouvre dans le navigateur -->
+        <button class="btn-secondary" id="openBrowserBtn">
+            📱 Ouvrir dans le navigateur
+        </button>
+
+        <!-- Message d'erreur -->
+        <div class="error-msg" id="errorMsg">
+            ⚠️ Impossible d'ouvrir l'application.<br>
+            Essayez le bouton "Ouvrir dans le navigateur".
+        </div>
+
+        <!-- Instructions -->
+        <div class="info-box">
+            <strong>💡 Astuce :</strong><br>
+            Si l'application ne s'ouvre pas, utilisez le bouton<br>
+            <strong>"Ouvrir dans le navigateur"</strong> ci-dessus.
+        </div>
+    </div>
+
+    <script>
+        const APP_URL = 'https://victor-gemma-avatar.hf.space';
+        const openBtn = document.getElementById('openBtn');
+        const openBrowserBtn = document.getElementById('openBrowserBtn');
+        const errorMsg = document.getElementById('errorMsg');
+
+        // === Option 1 : Ouvrir dans la WebView (remplacement de page) ===
+        openBtn.addEventListener('click', function() {
+            try {
+                // Tentative 1 : changer window.location
+                window.location.href = APP_URL;
+            } catch (e) {
+                console.error('Erreur navigation:', e);
+                // Tentative 2 : ouvrir dans un nouvel onglet
+                try {
+                    window.open(APP_URL, '_blank');
+                } catch (e2) {
+                    errorMsg.style.display = 'block';
+                }
+            }
+        });
+
+        // === Option 2 : Ouvrir dans le navigateur externe ===
+        openBrowserBtn.addEventListener('click', function() {
+            try {
+                // Pour Android WebView, on utilise intent:// pour ouvrir dans Chrome
+                const browserUrl = APP_URL;
+                
+                // Tentative avec intent (Android)
+                if (navigator.userAgent.toLowerCase().includes('android')) {
+                    // Essayer d'ouvrir avec Chrome
+                    window.location.href = `intent://${APP_URL.replace('https://', '')}#Intent;scheme=https;package=com.android.chrome;end;`;
+                    
+                    // Fallback : ouvrir directement
+                    setTimeout(() => {
+                        window.open(APP_URL, '_system');
+                    }, 500);
+                } else {
+                    window.open(APP_URL, '_blank');
+                }
+            } catch (e) {
+                console.error('Erreur:', e);
+                errorMsg.style.display = 'block';
+                // Dernier recours
+                window.location.href = APP_URL;
+            }
+        });
+
+        // === Détection si l'ouverture a échoué ===
+        // Si après 3 secondes on est toujours sur la page, afficher l'erreur
+        let navigationAttempted = false;
+        
+        openBtn.addEventListener('click', function() {
+            navigationAttempted = true;
+            setTimeout(() => {
+                // Si la page n'a pas changé, afficher l'erreur
+                if (window.location.href.includes('game-8.html')) {
+                    errorMsg.style.display = 'block';
+                }
+            }, 3000);
+        });
+
+        // === Pour les utilisateurs qui cliquent sans succès ===
+        // Proposer d'ouvrir manuellement
+        document.addEventListener('click', function() {
+            // Si l'erreur est affichée et que l'utilisateur clique, on cache
+            if (errorMsg.style.display === 'block') {
+                errorMsg.style.display = 'none';
+            }
+        });
+
+        console.log('🔵 Gemma Avatar - Prêt');
+        console.log(`🔵 URL: ${APP_URL}`);
+    </script>
+</body>
+</html>
