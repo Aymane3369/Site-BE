@@ -1,1 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Mini Logiciel RDM</title>
+   <a href="https://buy.stripe.com/7sY14g6fX9u09ph9EJ5Vu05"
+   target="_blank"
+   rel="noopener noreferrer"
+   style="
+      position: fixed;
+      bottom: 15px;
+      left: 15px;
+      z-index: 9999;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 14px;
+      background:linear-gradient(90deg, #ffb347, #ffcc33);
+      color:#fff3e0;      text-decoration: none;
+      font-weight: 600;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      border-radius: 22px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      white-space: nowrap;">
+   ☕ cadeau café
+</a>
 
+<style>
+body{font-family:Arial;margin:0;background:#f4f4f4}
+.container{display:grid;grid-template-columns:320px 1fr;height:100vh}
+.left{padding:15px;background:#fff;border-right:1px solid #ccc;overflow:auto}
+.right{padding:15px;overflow:auto}
+.panel{background:#fff;border:1px solid #ccc;padding:10px;margin-bottom:12px}
+input,select,button{width:100%;padding:8px;margin:4px 0}
+canvas{border:1px solid #bbb;background:white}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="left">
+<div class="panel">
+<h3>Modélisation</h3>
+<select id="type"><option value="point">Charge ponctuelle</option><option value="repartie">Charge répartie</option></select>
+<input id="L" type="number" placeholder="L (m)" value="8">
+<input id="b" type="number" placeholder="b (m)" value="0.3">
+<input id="h" type="number" placeholder="h (m)" value="0.6">
+<input id="q" type="number" placeholder="P (kN) ou q (kN/m)" value="10">
+<select id="mat">
+<option value="30000">Béton (30 GPa)</option>
+<option value="210000">Acier (210 GPa)</option>
+<option value="11000">Bois (11 GPa)</option>
+</select>
+<button onclick="calc()">Calculer</button>
+</div>
+<div class="panel"><h3>Résumé</h3><div id="resume"></div></div>
+</div>
+
+<div class="right">
+<div class="panel"><h3>Modélisation graphique</h3><canvas id="model" width="900" height="180"></canvas></div>
+<div class="panel"><h3>Diagramme V(x) [kN]</h3><canvas id="V" width="900" height="220"></canvas></div>
+<div class="panel"><h3>Diagramme M(x) [kN·m]</h3><canvas id="M" width="900" height="220"></canvas></div>
+<div class="panel"><h3>Déformée w(x) [mm]</h3><canvas id="W" width="900" height="220"></canvas></div>
+</div>
+</div>
+
+<script>
+function drawAxis(ctx,w,h,L){
+ ctx.strokeStyle="#000";
+ ctx.beginPath();ctx.moveTo(50,h-30);ctx.lineTo(w-20,h-30);ctx.stroke();
+ for(let i=0;i<=4;i++){
+  let x=50+i*(w-70)/4;
+  ctx.beginPath();ctx.moveTo(x,h-35);ctx.lineTo(x,h-25);ctx.stroke();
+  ctx.fillText((L*i/4).toFixed(2)+" m",x-12,h-10);
+ }
+}
+function calc(){
+ let type=document.getElementById('type').value;
+ let L=+document.getElementById('L').value;
+ let b=+document.getElementById('b').value;
+ let h=+document.getElementById('h').value;
+ let Q=+document.getElementById('q').value;
+ let E=+document.getElementById('mat').value*1e6; // Pa
+ let I=b*Math.pow(h,3)/12;
+
+ let RA,RB,Vmax,Mmax,delta,sigma;
+ if(type==='point'){
+   RA=RB=Q/2;
+   Vmax=Q/2;
+   Mmax=Q*L/4;
+   delta=(Q*1000*Math.pow(L,3))/(48*E*I)*1000;
+ } else {
+   RA=RB=Q*L/2;
+   Vmax=Q*L/2;
+   Mmax=Q*L*L/8;
+   delta=(5*(Q*1000)*Math.pow(L,4))/(384*E*I)*1000;
+ }
+ sigma=(Mmax*1000*(h/2))/I/1e6;
+
+ document.getElementById('resume').innerHTML=`
+ L=${L.toFixed(3)} m<br>
+ b=${b.toFixed(3)} m ; h=${h.toFixed(3)} m<br>
+ I=${I.toExponential(3)} m⁴<br>
+ RA=RB=${RA.toFixed(3)} kN<br>
+ Vmax=${Vmax.toFixed(3)} kN<br>
+ Mmax=${Mmax.toFixed(3)} kN·m<br>
+ σmax=${sigma.toFixed(3)} MPa<br>
+ δmax=${delta.toFixed(3)} mm<br>
+ Vérification L/300 : ${(delta < (L*1000/300)) ? "✅ Conforme":"❌ Non conforme"}
+ `;
+
+ drawModel(type,L);
+ drawV(type,L,Q,Vmax);
+ drawM(type,L,Q,Mmax);
+ drawW(L,delta);
+}
+function drawModel(type,L){
+ let c=document.getElementById('model'),ctx=c.getContext('2d');
+ ctx.clearRect(0,0,c.width,c.height);
+ ctx.fillText("A",50,110); ctx.fillText("B",850,110);
+ ctx.beginPath();ctx.moveTo(60,90);ctx.lineTo(840,90);ctx.stroke();
+ if(type==='point'){ctx.fillText("↓ P",450,50);ctx.beginPath();ctx.moveTo(450,55);ctx.lineTo(450,85);ctx.stroke();}
+ else {for(let x=80;x<840;x+=40){ctx.fillText("↓",x,55);}}
+ drawAxis(ctx,c.width,c.height,L);
+}
+function drawV(type,L,Q,Vmax){
+ let c=document.getElementById('V'),ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);drawAxis(ctx,c.width,c.height,L);
+ ctx.beginPath();
+ for(let i=0;i<=100;i++){
+  let x=i/100*L, px=50+i*(c.width-70)/100;
+  let V=(type==='point')?(x<L/2?Q/2:-Q/2):(Q*(L/2-x));
+  let py=100-(V/Vmax)*60;
+  if(i==0)ctx.moveTo(px,py); else ctx.lineTo(px,py);
+ }
+ ctx.stroke();
+ ctx.fillText("Vmax="+Vmax.toFixed(2)+" kN",700,25);
+}
+function drawM(type,L,Q,Mmax){
+ let c=document.getElementById('M'),ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);drawAxis(ctx,c.width,c.height,L);
+ ctx.beginPath();
+ for(let i=0;i<=100;i++){
+  let x=i/100*L, px=50+i*(c.width-70)/100;
+  let M=(type==='point')?(x<=L/2?(Q*x/2):(Q*(L-x)/2)):Q*x*(L-x)/2;
+  let py=160-(M/Mmax)*100;
+  if(i==0)ctx.moveTo(px,py); else ctx.lineTo(px,py);
+ }
+ ctx.stroke();
+ ctx.fillText("Mmax="+Mmax.toFixed(2)+" kN·m",680,25);
+}
+function drawW(L,d){
+ let c=document.getElementById('W'),ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);drawAxis(ctx,c.width,c.height,L);
+ ctx.beginPath();
+ for(let i=0;i<=100;i++){
+  let px=50+i*(c.width-70)/100;
+  let t=i/100; let y=60+4*d*t*(1-t);
+  if(i==0)ctx.moveTo(px,y); else ctx.lineTo(px,y);
+ }
+ ctx.stroke();
+ ctx.fillText("δmax="+d.toFixed(2)+" mm",700,25);
+}
+calc();
+</script>
+</body>
+</html>
