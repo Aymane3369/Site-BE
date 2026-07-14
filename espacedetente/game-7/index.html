@@ -1,1 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Neon Breaker Mobile</title>
 
+<style>
+* {
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    background: #0b0f19;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    color: #00f0ff;
+    font-size: 20px;
+    margin: 5px;
+}
+
+#scoreDisplay {
+    color: #ff007f;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+canvas {
+    width: 95vw;
+    max-width: 420px;
+    height: 70vh;
+    max-height: 650px;
+    background: #111827;
+    border: 3px solid #00f0ff;
+    border-radius: 12px;
+    display: block;
+}
+
+#winLossMessage {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+    min-height: 24px;
+}
+
+button {
+    padding: 10px 25px;
+    font-size: 14px;
+    background: #ff007f;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    display: none;
+    margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="game-wrapper">
+    <h1>⚡ NEON BREAKER ⚡</h1>
+    <div id="scoreDisplay">SCORE: <span id="score">0</span></div>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="winLossMessage"></div>
+    <button id="resetBtn" onclick="resetGame()">PLAY AGAIN 🔄</button>
+</div>
+
+<script>
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+// GAME STATE
+let score, x, y, dx, dy, paddleX, bricks;
+
+// SETTINGS
+const ballRadius = 8;
+const paddleHeight = 12;
+const paddleWidth = 70;
+const brickRowCount = 4;
+const brickColumnCount = 4;
+const brickWidth = 60;
+const brickHeight = 18;
+const brickPadding = 8;
+const brickOffsetTop = 40;
+const brickOffsetLeft = 28;
+
+function resizeCanvas() {
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+}
+
+function initGame() {
+    score = 0;
+
+    x = canvas.width / 2;
+    y = canvas.height - 60;
+    dx = 2.5;
+    dy = -2.5;
+
+    paddleX = (canvas.width - paddleWidth) / 2;
+
+    bricks = [];
+    for (let c = 0; c < brickColumnCount; c++) {
+        bricks[c] = [];
+        for (let r = 0; r < brickRowCount; r++) {
+            bricks[c][r] = { x: 0, y: 0, status: 1 };
+        }
+    }
+
+    document.getElementById("score").innerText = score;
+    document.getElementById("winLossMessage").innerText = "";
+    document.getElementById("resetBtn").style.display = "none";
+}
+
+canvas.addEventListener("touchmove", function (e) {
+    e.preventDefault();
+    let rect = canvas.getBoundingClientRect();
+    let touch = e.touches[0];
+    let relativeX = touch.clientX - rect.left;
+
+    if (relativeX > 0 && relativeX < canvas.width) {
+        paddleX = relativeX - paddleWidth / 2;
+    }
+}, { passive: false });
+
+function collisionDetection() {
+    for (let c = 0; c < brickColumnCount; c++) {
+        for (let r = 0; r < brickRowCount; r++) {
+            let b = bricks[c][r];
+            if (b.status === 1) {
+                if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
+                    dy = -dy;
+                    b.status = 0;
+                    score += 10;
+                    document.getElementById("score").innerText = score;
+
+                    if (score === brickRowCount * brickColumnCount * 10) {
+                        gameOver("🏆 YOU WIN!", "#00f0ff");
+                    }
+                }
+            }
+        }
+    }
+}
+
+function drawBall() {
+    ctx.beginPath();
+    ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+    ctx.fillStyle = "#ff007f";
+    ctx.fill();
+    ctx.closePath();
+}
+
+function drawPaddle() {
+    ctx.beginPath();
+    ctx.rect(paddleX, canvas.height - paddleHeight - 10, paddleWidth, paddleHeight);
+    ctx.fillStyle = "#00f0ff";
+    ctx.fill();
+    ctx.closePath();
+}
+
+function drawBricks() {
+    for (let c = 0; c < brickColumnCount; c++) {
+        for (let r = 0; r < brickRowCount; r++) {
+            if (bricks[c][r].status === 1) {
+                let brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
+                let brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+
+                bricks[c][r].x = brickX;
+                bricks[c][r].y = brickY;
+
+                ctx.beginPath();
+                ctx.rect(brickX, brickY, brickWidth, brickHeight);
+                ctx.fillStyle = "#39ff14";
+                ctx.fill();
+                ctx.closePath();
+            }
+        }
+    }
+}
+
+function gameOver(text, color) {
+    document.getElementById("winLossMessage").innerText = text;
+    document.getElementById("winLossMessage").style.color = color;
+    document.getElementById("resetBtn").style.display = "block";
+    cancelAnimationFrame(animationId);
+}
+
+let animationId;
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    drawBricks();
+    drawBall();
+    drawPaddle();
+    collisionDetection();
+
+    if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) dx = -dx;
+    if (y + dy < ballRadius) dy = -dy;
+    else if (y + dy > canvas.height - ballRadius - 10) {
+        if (x > paddleX && x < paddleX + paddleWidth) {
+            dy = -dy;
+            dx = 6 * ((x - (paddleX + paddleWidth / 2)) / paddleWidth);
+        } else {
+            gameOver("💥 GAME OVER", "#ff007f");
+            return;
+        }
+    }
+
+    x += dx;
+    y += dy;
+
+    animationId = requestAnimationFrame(draw);
+}
+
+function resetGame() {
+    cancelAnimationFrame(animationId);
+    initGame();
+    draw();
+}
+
+// START
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+initGame();
+draw();
+</script>
+
+</body>
+</html>
