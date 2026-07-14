@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Poutre Béton Armé — Aymane Abidine</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=JetBrains+Mono:wght@300;400;500&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg2:#161b27;--bg3:#1e2535;--bg4:#252d40;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--cobalt:#3b82f6;--cobalt2:#1d4ed8;--gold:#d4a853;--gold2:#b8882f;--text:#e8eaf0;--muted:#8892a4;--faint:#4a5568;--ok:#10b981;--ok-bg:rgba(16,185,129,0.1);--warn:#f59e0b;--warn-bg:rgba(245,158,11,0.1);--bad:#ef4444;--bad-bg:rgba(239,68,68,0.1);--r:12px;--r-sm:7px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+.hero{background:var(--bg2);border-bottom:1px solid var(--border2);padding:2.5rem 2rem 2rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-80px;right:-80px;width:320px;height:320px;background:radial-gradient(circle,rgba(59,130,246,0.12) 0%,transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-60px;left:30%;width:200px;height:200px;background:radial-gradient(circle,rgba(212,168,83,0.08) 0%,transparent 70%);pointer-events:none}
+.hero-inner{max-width:860px;margin:0 auto;position:relative;z-index:1}
+.hero-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:0.62rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--cobalt);background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.25);border-radius:999px;padding:0.3rem 0.9rem;margin-bottom:1rem}
+.hero h1{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:600;letter-spacing:-0.02em;line-height:1.15;background:linear-gradient(135deg,#e8eaf0 0%,#b0bac8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.6rem}
+.hero-sub{font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--muted);letter-spacing:0.04em;line-height:1.7}
+.hero-sub span{color:var(--gold)}
+.author-line{margin-top:1.25rem;display:flex;align-items:center;gap:0.75rem}
+.author-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--cobalt2),var(--cobalt));display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:0.85rem;color:#fff;flex-shrink:0}
+.author-name{font-family:'Lato',sans-serif;font-size:0.82rem;color:var(--muted)}
+.author-name strong{color:var(--text);font-weight:400}
+.main{max-width:860px;margin:0 auto;padding:2rem}
+.stitle{font-family:'JetBrains Mono',monospace;font-size:0.6rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--faint);margin-bottom:1.1rem;padding-bottom:0.7rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.6rem}
+.stitle::before{content:'';display:inline-block;width:3px;height:12px;background:var(--cobalt);border-radius:2px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem;margin-bottom:1.1rem;transition:border-color 0.2s}
+.card:hover{border-color:var(--border2)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.85rem}
+.field{display:flex;flex-direction:column;gap:0.45rem}
+.field label{font-family:'JetBrains Mono',monospace;font-size:0.63rem;color:var(--muted);letter-spacing:0.06em}
+.field input,.field select{font-family:'JetBrains Mono',monospace;font-size:0.9rem;padding:0.6rem 0.85rem;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r-sm);color:var(--text);transition:border-color 0.2s,box-shadow 0.2s;-webkit-appearance:none}
+.field input:focus,.field select:focus{outline:none;border-color:var(--cobalt);box-shadow:0 0 0 3px rgba(59,130,246,0.15)}
+.field select option{background:var(--bg3)}
+.btn{width:100%;margin-top:1.25rem;padding:0.9rem 1rem;background:linear-gradient(135deg,var(--cobalt2),var(--cobalt));color:#fff;border:none;border-radius:var(--r-sm);font-family:'JetBrains Mono',monospace;font-size:0.72rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s,transform 0.15s,box-shadow 0.2s;box-shadow:0 4px 20px rgba(59,130,246,0.25)}
+.btn:hover{opacity:0.9;box-shadow:0 6px 28px rgba(59,130,246,0.35)}
+.btn:active{transform:scale(0.99)}
+.results{display:none;animation:fadeUp 0.4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:0.75rem;margin-bottom:1.1rem}
+.metric{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:1rem 1.1rem;transition:border-color 0.2s}
+.metric:hover{border-color:var(--border2)}
+.metric .lbl{font-family:'JetBrains Mono',monospace;font-size:0.58rem;font-weight:300;color:var(--faint);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.55rem}
+.metric .val{font-family:'JetBrains Mono',monospace;font-size:1.25rem;font-weight:500;color:var(--text);line-height:1}
+.metric .unit{font-size:0.6rem;color:var(--muted);margin-left:0.25rem}
+.metric.accent{border-color:rgba(59,130,246,0.4)}
+.metric.accent .val{color:var(--cobalt)}
+.metric.gold-m{border-color:rgba(212,168,83,0.4)}
+.metric.gold-m .val{color:var(--gold)}
+.rebar-row{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.75rem}
+.rebar-chip{font-family:'JetBrains Mono',monospace;font-size:0.75rem;background:var(--bg4);border:1px solid var(--border2);border-radius:var(--r-sm);padding:0.4rem 0.85rem;color:var(--gold)}
+.rebar-chip:first-child{border-color:var(--gold2);background:rgba(212,168,83,0.08)}
+.check-table{width:100%;border-collapse:collapse}
+.check-table tr{border-bottom:1px solid var(--border)}
+.check-table tr:last-child{border-bottom:none}
+.check-table td{padding:0.9rem 0;vertical-align:middle}
+.check-lbl{font-size:0.87rem;font-weight:300;color:var(--text)}
+.check-sub{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--faint);margin-top:0.3rem;letter-spacing:0.02em}
+.check-right{text-align:right;min-width:140px}
+.check-val{font-family:'JetBrains Mono',monospace;font-size:0.95rem;font-weight:500;color:var(--text);display:block;margin-bottom:0.3rem}
+.tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:0.58rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:0.22rem 0.65rem;border-radius:999px}
+.tag-ok{background:var(--ok-bg);color:var(--ok);border:1px solid rgba(16,185,129,0.3)}
+.tag-warn{background:var(--warn-bg);color:var(--warn);border:1px solid rgba(245,158,11,0.3)}
+.tag-bad{background:var(--bad-bg);color:var(--bad);border:1px solid rgba(239,68,68,0.3)}
+.etrier-block{font-family:'JetBrains Mono',monospace;font-size:0.75rem;font-weight:300;line-height:2;color:var(--muted);margin-top:1rem;background:var(--bg);border:1px solid var(--border);border-radius:var(--r-sm);padding:1rem 1.25rem}
+.etrier-block strong{color:var(--cobalt);font-weight:500}
+.sub-lbl{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--faint);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.6rem}
+.formula-box{background:var(--bg);border:1px solid var(--border2);border-radius:var(--r-sm);padding:0.85rem 1.1rem;margin-top:0.85rem;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--muted);line-height:2.2}
+.formula-box .hi{color:var(--cobalt)}
+.formula-box .gold{color:var(--gold)}
+.formula-box .ok{color:var(--ok)}
+.formula-box .bad{color:var(--bad)}
+footer{max-width:860px;margin:0 auto;padding:1.5rem 2rem 3rem;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border)}
+.footer-left{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--faint);letter-spacing:0.08em;line-height:1.8}
+.footer-right{font-family:'Playfair Display',serif;font-size:0.8rem;color:var(--faint)}
+.footer-right span{color:var(--gold)}
+@media(max-width:560px){.grid3{grid-template-columns:1fr 1fr}.hero h1{font-size:1.6rem}.main{padding:1.25rem}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">Bureau d'études · Génie Civil</div>
+    <h1>Calcul de Poutre<br>en Béton Armé</h1>
+    <div class="hero-sub">
+      ELU · ELS · Flèche · Cisaillement · Étriers<br>
+      <span>fyk = 400 MPa</span> &nbsp;·&nbsp; <span>E = 30 000 MPa</span> &nbsp;·&nbsp; <span>n = 15</span> &nbsp;·&nbsp; <span>d = 0.9 h</span>
+    </div>
+    <div class="author-line">
+      <div class="author-avatar">AA</div>
+      <div class="author-name">Développé par <strong>Aymane Abidine</strong></div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="card">
+    <div class="stitle">Données de la poutre</div>
+    <div class="grid3" style="margin-bottom:0.9rem">
+      <div class="field"><label>g — charge perm. (kN/m)</label><input id="g" type="number" value="10" step="0.1"></div>
+      <div class="field"><label>q — surcharge (kN/m)</label><input id="q" type="number" value="5" step="0.1"></div>
+      <div class="field"><label>L — portée (m)</label><input id="L" type="number" value="5" step="0.1"></div>
+    </div>
+    <div class="grid3" style="margin-bottom:0.9rem">
+      <div class="field"><label>b — largeur (cm)</label><input id="b" type="number" value="20" step="1"></div>
+      <div class="field"><label>h — hauteur (cm)</label><input id="h" type="number" value="50" step="1"></div>
+      <div class="field"><label>fck (MPa)</label><input id="fck" type="number" value="25" step="1"></div>
+    </div>
+    <div class="field" style="max-width:300px">
+      <label>Reprise de bétonnage</label>
+      <select id="reprise">
+        <option value="0">Non — k = 1</option>
+        <option value="1">Oui — k = 0</option>
+      </select>
+    </div>
+    <button class="btn" onclick="calc()">▶&nbsp;&nbsp;Lancer le calcul</button>
+  </div>
+
+  <div class="results" id="results">
+
+    <!-- ELU -->
+    <div class="card">
+      <div class="stitle">État limite ultime — ELU</div>
+      <div class="metrics">
+        <div class="metric"><div class="lbl">P<sub>elu</sub></div><div class="val"><span id="pelu"></span><span class="unit">kN/m</span></div></div>
+        <div class="metric"><div class="lbl">M<sub>elu</sub></div><div class="val"><span id="melu"></span><span class="unit">kN·m</span></div></div>
+        <div class="metric"><div class="lbl">f<sub>cd</sub></div><div class="val"><span id="fcd"></span><span class="unit">MPa</span></div></div>
+        <div class="metric"><div class="lbl">f<sub>yd</sub></div><div class="val"><span id="fyd"></span><span class="unit">MPa</span></div></div>
+        <div class="metric"><div class="lbl">μ</div><div class="val"><span id="mu"></span></div></div>
+        <div class="metric"><div class="lbl">α</div><div class="val"><span id="alpha"></span></div></div>
+        <div class="metric"><div class="lbl">A<sub>s</sub> requis</div><div class="val"><span id="as"></span><span class="unit">cm²</span></div></div>
+      </div>
+      <div class="sub-lbl">Armatures proposées</div>
+      <div class="rebar-row" id="rebars"></div>
+    </div>
+
+    <!-- ELS -->
+    <div class="card">
+      <div class="stitle">État limite de service — ELS</div>
+      <div class="metrics">
+        <div class="metric"><div class="lbl">P<sub>els</sub></div><div class="val"><span id="pels"></span><span class="unit">kN/m</span></div></div>
+        <div class="metric"><div class="lbl">M<sub>els</sub></div><div class="val"><span id="mels"></span><span class="unit">kN·m</span></div></div>
+        <div class="metric"><div class="lbl">z₁</div><div class="val"><span id="z1"></span><span class="unit">mm</span></div></div>
+        <div class="metric"><div class="lbl">I fissurée</div><div class="val" style="font-size:0.9rem"><span id="ifi"></span><span class="unit">mm⁴</span></div></div>
+        <div class="metric"><div class="lbl">I non fissurée</div><div class="val" style="font-size:0.9rem"><span id="infi"></span><span class="unit">mm⁴</span></div></div>
+      </div>
+    </div>
+
+    <!-- VERIFS -->
+    <div class="card">
+      <div class="stitle">Vérifications</div>
+      <table class="check-table">
+        <tr>
+          <td><div class="check-lbl">Contrainte béton σ<sub>b</sub></div><div class="check-sub">Limite = 0.45 × f<sub>cd</sub> = <span id="lim-beton"></span> MPa</div></td>
+          <td class="check-right"><span class="check-val"><span id="sbeton"></span> MPa</span><span id="tag-beton"></span></td>
+        </tr>
+        <tr>
+          <td><div class="check-lbl">Contrainte acier σ<sub>s</sub></div><div class="check-sub">Limite = 0.8 × f<sub>yk</sub> = <span id="lim-acier"></span> MPa</div></td>
+          <td class="check-right"><span class="check-val"><span id="sacier"></span> MPa</span><span id="tag-acier"></span></td>
+        </tr>
+        <tr>
+          <td><div class="check-lbl">Flèche</div><div class="check-sub">L/250 = <span id="fl250"></span> mm &nbsp;·&nbsp; L/300 = <span id="fl300"></span> mm</div></td>
+          <td class="check-right"><span class="check-val"><span id="fleche-val"></span> mm</span><span id="fleche-tag"></span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="check-lbl">Cisaillement τ<sub>u</sub></div>
+            <div class="check-sub">V<sub>ed</sub> = <span id="ved-val"></span> kN &nbsp;·&nbsp; τ<sub>lim</sub> = <span id="tau-lim"></span> MPa</div>
+          </td>
+          <td class="check-right"><span class="check-val"><span id="tau-val"></span> MPa</span><span id="tau-tag"></span></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- ETRIERS -->
+    <div class="card">
+      <div class="stitle">Étriers</div>
+
+      <!-- Diamètre et section -->
+      <div class="sub-lbl" style="margin-top:0">Diamètre &amp; section</div>
+      <div class="metrics">
+        <div class="metric"><div class="lbl">h/35</div><div class="val"><span id="h35"></span><span class="unit">mm</span></div></div>
+        <div class="metric"><div class="lbl">6 mm (min régl.)</div><div class="val">6<span class="unit">mm</span></div></div>
+        <div class="metric"><div class="lbl">b/10</div><div class="val"><span id="b10"></span><span class="unit">mm</span></div></div>
+        <div class="metric accent"><div class="lbl">φ<sub>t</sub> = min(h/35, 6, b/10)</div><div class="val"><span id="phi-t"></span><span class="unit">mm</span></div></div>
+        <div class="metric accent"><div class="lbl">A<sub>t</sub> = 3 × π × φ<sub>t</sub>²/4</div><div class="val"><span id="at"></span><span class="unit">mm²</span></div></div>
+      </div>
+
+      <!-- Stmax -->
+      <div class="sub-lbl">Espacement maximal S<sub>t,max</sub></div>
+      <div class="metrics">
+        <div class="metric"><div class="lbl">0.9 × d</div><div class="val"><span id="st-09d"></span><span class="unit">mm</span></div></div>
+        <div class="metric"><div class="lbl">400 mm</div><div class="val">400<span class="unit">mm</span></div></div>
+        <div class="metric"><div class="lbl">(A<sub>t</sub>×f<sub>e</sub>)/(0.4×b)</div><div class="val"><span id="st-atfe"></span><span class="unit">mm</span></div></div>
+        <div class="metric gold-m"><div class="lbl">S<sub>t,max</sub> = min des 3</div><div class="val"><span id="stmax"></span><span class="unit">mm</span></div></div>
+      </div>
+
+      <!-- Vérification St avec τu -->
+      <div class="sub-lbl">Vérification de l'espacement retenu</div>
+      <div class="metrics">
+        <div class="metric"><div class="lbl">f<sub>t28</sub></div><div class="val"><span id="ftj"></span><span class="unit">MPa</span></div></div>
+        <div class="metric"><div class="lbl">k</div><div class="val"><span id="k-disp"></span></div></div>
+        <div class="metric"><div class="lbl">S<sub>t</sub> (formule τ)</div><div class="val" style="font-size:0.9rem"><span id="st-limite"></span><span class="unit">mm</span></div></div>
+        <div class="metric gold-m"><div class="lbl">S<sub>t</sub> retenu</div><div class="val"><span id="st-ret"></span><span class="unit">mm</span></div></div>
+        <div class="metric" id="st-verif-metric"><div class="lbl">Vérification S<sub>t</sub></div><div class="val" style="font-size:0.85rem" id="st-verif-val"></div></div>
+      </div>
+
+      <div class="formula-box" id="formula-detail"></div>
+      <div class="etrier-block" id="etrier-detail"></div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-left">ELU · ELS · Béton Armé<br>fyk 400 MPa · E 30 000 MPa · n 15</div>
+  <div class="footer-right"><span>Aymane Abidine</span></div>
+</footer>
+
+<script>
+function tagOk(ok){ return ok?'<span class="tag tag-ok">✓ OK</span>':'<span class="tag tag-bad">✗ Non conforme</span>'; }
+function set(id,val){ const el=document.getElementById(id); if(el) el.textContent=val; }
+
+function calc(){
+  const g       = parseFloat(document.getElementById('g').value);
+  const q       = parseFloat(document.getElementById('q').value);
+  const b_cm    = parseFloat(document.getElementById('b').value);
+  const h_cm    = parseFloat(document.getElementById('h').value);
+  const L_m     = parseFloat(document.getElementById('L').value);
+  const fck     = parseFloat(document.getElementById('fck').value);
+  const reprise = parseInt(document.getElementById('reprise').value); // 0=sans, 1=avec
+
+  const fyk=400, E=30000, n_mat=15;
+  const b_m=b_cm/100, h_m=h_cm/100, d_m=0.9*h_m;
+  const b_mm=b_m*1000, d_mm=d_m*1000, h_mm=h_m*1000;
+  const fcd=fck/1.5, fyd=fyk/1.15;
+
+  // ── ELU ──
+  const pelu  = 1.35*g + 1.5*q;
+  const melu  = pelu*Math.pow(L_m,2)/8*1e6;
+  const u     = melu/(b_mm*d_mm*d_mm*fcd);
+  const alpha = 1.25*(1-Math.sqrt(1-2*u));
+  const As_mm2= 0.8*alpha*d_mm*b_mm*fcd/fyd;
+  const As_cm2= As_mm2/100;
+
+  set('pelu',pelu.toFixed(2)); set('melu',(melu/1e6).toFixed(2));
+  set('fcd',fcd.toFixed(2));   set('fyd',fyd.toFixed(2));
+  set('mu',u.toFixed(4));      set('alpha',alpha.toFixed(4));
+  set('as',As_cm2.toFixed(2));
+
+  const diams=[5,6,8,10,12,14,16,20,25,32,40];
+  const sec=(d,n)=>n*(Math.PI*d*d)/400;
+  let opts=[];
+  for(let d of diams) for(let n=1;n<=20;n++){ const s=sec(d,n); if(s>=As_cm2) opts.push({d,n,s}); }
+  opts.sort((a,b)=>a.s-b.s);
+  const rb=document.getElementById('rebars'); rb.innerHTML='';
+  opts.slice(0,3).forEach(o=>{
+    const c=document.createElement('div'); c.className='rebar-chip';
+    c.textContent=`${o.n} × Ø${o.d} = ${o.s.toFixed(2)} cm²`; rb.appendChild(c);
+  });
+
+  // ── ELS ──
+  const pels  = g+q;
+  const mels  = pels*Math.pow(L_m,2)/8*1e6;
+  const z1    = -(15*As_mm2/b_mm)*(1-Math.sqrt(1+(2*b_mm*d_mm)/(15*As_mm2)));
+  const I_fiss    = 0.33*b_mm*Math.pow(z1,3) + n_mat*As_mm2*Math.pow(d_mm-z1,2);
+  const I_nonfiss = (b_mm*Math.pow(h_mm,3))/12;
+  const sigma_beton = mels*z1/I_fiss;
+  const sigma_acier = 15*mels*(d_mm-z1)/I_fiss;
+
+  set('pels',pels.toFixed(2)); set('mels',(mels/1e6).toFixed(2));
+  set('z1',z1.toFixed(1));
+  set('ifi',I_fiss.toExponential(3));
+  set('infi',I_nonfiss.toExponential(3));
+
+  const lim_b=0.45*fcd, lim_a=0.8*fyk;
+  set('lim-beton',lim_b.toFixed(2)); set('lim-acier',lim_a.toFixed(2));
+  set('sbeton',sigma_beton.toFixed(2)); set('sacier',sigma_acier.toFixed(2));
+  document.getElementById('tag-beton').innerHTML=tagOk(Math.abs(sigma_beton)<=lim_b);
+  document.getElementById('tag-acier').innerHTML=tagOk(Math.abs(sigma_acier)<=lim_a);
+
+  // Flèche
+  const fleche = (5*pels*Math.pow(L_m*1000,4))/(384*E*I_fiss);
+  const fl250=(L_m*1000)/250, fl300=(L_m*1000)/300;
+  set('fleche-val',fleche.toFixed(2));
+  set('fl250',fl250.toFixed(1)); set('fl300',fl300.toFixed(1));
+  let ftag;
+  if(fleche<=fl300)      ftag='<span class="tag tag-ok">✓ OK (L/300)</span>';
+  else if(fleche<=fl250) ftag='<span class="tag tag-warn">⚠ Acceptable (L/250)</span>';
+  else                   ftag='<span class="tag tag-bad">✗ Non conforme</span>';
+  document.getElementById('fleche-tag').innerHTML=ftag;
+
+  // ── Cisaillement (inchangé) ──
+  const Ved     = pelu*L_m/2;
+  const tau_u   = Ved/(b_m*d_m)/1000;
+  const tau_lim = Math.min(0.15*fck/1.15, 4.0);
+  set('ved-val',Ved.toFixed(2));
+  set('tau-val',tau_u.toFixed(3));
+  set('tau-lim',tau_lim.toFixed(3));
+  document.getElementById('tau-tag').innerHTML=tagOk(tau_u<=tau_lim);
+
+  // ── ÉTRIERS ──
+
+  // 1. Diamètre : φt = min(h/35 , 6 , b/10)  [mm]
+  const h35   = h_mm/35;
+  const b10   = b_mm/10;
+  const phi_t = Math.min(h35, 6, b10);
+
+  // 2. Section étrier : At = 3 × π × φt² / 4  [mm²]
+  const At = 3 * Math.PI * phi_t * phi_t / 4;
+
+  // 3. Résistance béton
+  const ft28 = 0.6 + 0.06*fck;
+
+  // 4. Coefficient reprise : k=1 sans reprise, k=0 avec reprise
+  const k = (reprise === 0) ? 1 : 0;
+
+  // 5. Stmax = min(0.9×d [mm] ; 400 mm ; (At×fe)/(0.4×b) [mm])
+  //    b en mm, fe=fyk en MPa → (At[mm²] × fyk[MPa]) / (0.4 × b[mm]) = mm
+  const stmax_09d  = 0.9*d_mm;
+  const stmax_400  = 400;
+  const stmax_atfe = (At * fyk) / (0.4 * b_mm);
+  const Stmax = Math.min(stmax_09d, stmax_400, stmax_atfe);
+
+  // 6. Limite St issue de la condition sur τu (inégalité de vérification)
+  //    St < (0.9×At×fe) / (1.15×b×(τu − 0.3×ft28×k))
+  const num_tau   = 0.9 * At * fyk;
+  const denom_tau = 1.15 * b_mm * (tau_u - 0.3*ft28*k);
+  const St_limite = (denom_tau > 0) ? num_tau/denom_tau : Infinity;
+
+  // St_limite EST le St calculé par la formule τu.
+  // On compare St au Stmax pour choisir le cas :
+  //   St < Stmax  → Cas 1 : St retenu = St  (valeur calculée, Caquot progressif)
+  //   St ≥ Stmax  → Cas 2 : St retenu = Stmax (espacement constant)
+  const St = isFinite(St_limite) ? St_limite : Stmax;
+  const St_ret = (St < Stmax) ? St : Stmax;
+  const verif_ok = true; // St retenu est toujours correct par construction
+
+  // Affichage
+  set('h35',   h35.toFixed(2));
+  set('b10',   b10.toFixed(2));
+  set('phi-t', phi_t.toFixed(1));
+  set('at',    At.toFixed(2));
+  set('st-09d',  stmax_09d.toFixed(1));
+  set('st-atfe', isFinite(stmax_atfe) ? stmax_atfe.toFixed(1) : '∞');
+  set('stmax',   Stmax.toFixed(1));
+  set('ftj',   ft28.toFixed(2));
+  set('k-disp', k.toFixed(0));
+  set('st-limite', isFinite(St) ? St.toFixed(1) : '∞');
+  set('st-ret', St_ret.toFixed(1));
+
+  const verifEl = document.getElementById('st-verif-val');
+  if(verifEl){
+    verifEl.innerHTML = (St < Stmax)
+      ? `<span style="color:var(--ok)">✓ St=${St.toFixed(1)} &lt; Stmax=${Stmax.toFixed(1)} → Cas 1</span>`
+      : `<span style="color:var(--warn)">St=${St.toFixed(1)} ≥ Stmax=${Stmax.toFixed(1)} → Cas 2</span>`;
+  }
+
+  // Formule box
+  const fbox = document.getElementById('formula-detail');
+  if(fbox){
+    fbox.innerHTML =
+      `<span class="gold">φ<sub>t</sub></span> = min(${h35.toFixed(2)} ; 6 ; ${b10.toFixed(2)}) = <span class="hi">${phi_t.toFixed(1)} mm</span><br>`+
+      `<span class="gold">A<sub>t</sub></span> = 3 × π × ${phi_t.toFixed(1)}² / 4 = <span class="hi">${At.toFixed(2)} mm²</span><br>`+
+      `<span class="gold">S<sub>t,max</sub></span> = min(0.9×d ; 400 ; A<sub>t</sub>×f<sub>e</sub>/0.4b) = min(${stmax_09d.toFixed(1)} ; 400 ; ${stmax_atfe.toFixed(1)}) = <span class="hi">${Stmax.toFixed(1)} mm</span><br>`+
+      `<span class="gold">f<sub>t28</sub></span> = 0.6 + 0.06×${fck} = ${ft28.toFixed(2)} MPa &nbsp;·&nbsp; <span class="gold">k</span> = ${k} (${k===1?'sans':'avec'} reprise)<br>`+
+      `<span class="gold">St</span> (formule τ) = (0.9×${At.toFixed(2)}×${fyk}) / (1.15×${b_mm}×(${tau_u.toFixed(4)}−0.3×${ft28.toFixed(2)}×${k})) = <span class="hi">${isFinite(St)?St.toFixed(1):'∞'} mm</span><br>`+
+      `<span class="gold">Comparaison</span> St=${isFinite(St)?St.toFixed(1):'∞'} mm `+
+      (St < Stmax
+        ? `<span class="ok">&lt; Stmax=${Stmax.toFixed(1)} mm → Cas 1 : St retenu = ${St_ret.toFixed(1)} mm ✓</span>`
+        : `<span class="warn">≥ Stmax=${Stmax.toFixed(1)} mm → Cas 2 : St retenu = ${St_ret.toFixed(1)} mm</span>`);
+  }
+
+  // ── Disposition Caquot / espacement constant ──
+  const R = (L_m*1000)/2;
+  let det='';
+  if(isFinite(St) && St < Stmax){
+    det += `<span class="tag tag-ok" style="margin-bottom:10px;display:inline-block">Cas 1 — Caquot progressif</span><br>`;
+    det += `S<sub>t</sub> retenu = ${St_ret.toFixed(1)} mm &nbsp;·&nbsp; S<sub>t</sub>/2 = ${(St_ret/2).toFixed(1)} mm &nbsp;·&nbsp; R = ${R.toFixed(0)} mm<br><br>`;
+    const caquot=[70,80,90,100,110,130,160,200,250,300,350,400];
+    let idx=0;
+    while(idx<caquot.length && caquot[idx]<St_ret) idx++;
+    if(idx===caquot.length) idx=caquot.length-1;
+    let x=St_ret/2, n=3;
+    while(idx<caquot.length){
+      const step=Math.min(caquot[idx],400);
+      if(x+n*step>=R) break;
+      x+=n*step;
+      det+=`${n} × ${step} &nbsp;→&nbsp; cumul = <strong>${x.toFixed(0)}</strong> mm<br>`;
+      idx++;
+    }
+    det+=`<br>Ajustement final : <strong>${(R-x).toFixed(0)} mm</strong>`;
+  } else {
+    det += `<span class="tag tag-warn" style="margin-bottom:10px;display:inline-block">Cas 2 — Espacement constant S<sub>t,max</sub></span><br>`;
+    det += `S<sub>t,max</sub> = ${Stmax.toFixed(1)} mm &nbsp;·&nbsp; R = ${R.toFixed(0)} mm<br><br>`;
+    let x=Stmax/2, nb=1;
+    while(x<R){ det+=`x = ${x.toFixed(0)} mm &nbsp;·&nbsp; pas = ${Stmax.toFixed(0)} mm<br>`; x+=Stmax; nb++; }
+    det+=`<br>Nombre d'étriers : <strong>${nb}</strong>`;
+  }
+  document.getElementById('etrier-detail').innerHTML=det;
+
+  const res=document.getElementById('results');
+  res.style.display='block';
+  setTimeout(()=>res.scrollIntoView({behavior:'smooth',block:'start'}),50);
+}
+</script>
+</body>
+  </html>
