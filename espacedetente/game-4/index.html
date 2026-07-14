@@ -1,1 +1,131 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Jeu Génie Civil - Poutre RDM</title>
+<style>
+    body {
+        font-family: Arial;
+        text-align: center;
+        background: #111;
+        color: white;
+    }
+    canvas {
+        background: #222;
+        border: 1px solid #555;
+        margin-top: 10px;
+    }
+    input, button {
+        padding: 10px;
+        margin: 5px;
+        font-size: 16px;
+    }
+</style>
+</head>
+<body>
+
+<h1>🏗️ Jeu Génie Civil - Poutre</h1>
+
+<p>Entre les valeurs puis teste la poutre</p>
+<a href="https://buy.stripe.com/7sY14g6fX9u09ph9EJ5Vu05"
+   target="_blank"
+   rel="noopener noreferrer"
+   style="
+      position: fixed;
+      bottom: 15px;
+      left: 15px;
+      z-index: 9999;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 14px;
+      background:linear-gradient(90deg, #ffb347, #ffcc33);
+      color:#fff3e0;      text-decoration: none;
+      font-weight: 600;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      border-radius: 22px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      white-space: nowrap;">
+   ☕ cadeau café
+</a>
+<input id="L" type="number" placeholder="Longueur L [m]">
+<input id="Q" type="number" placeholder="Charge Q [KN]">
+
+<br>
+
+<button onclick="build()">Dessiner + Calculer</button>
+
+<canvas id="game" width="600" height="300"></canvas>
+
+<h2 id="result"></h2>
+
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+function build(){
+    const L = parseFloat(document.getElementById("L").value);
+    const Q = parseFloat(document.getElementById("Q").value);
+
+    if(!L || !Q || L <= 0 || Q <= 0){
+        alert("Entrer des valeurs valides !");
+        return;
+    }
+
+    // calcul Mf
+    const Mf = (Q * L * L) / 8;
+
+    // affichage résultat
+    let msg = "";
+    
+    // critère simple (tu peux changer)
+    if(Mf < 500){
+        msg = "✅ Bravo ingénieur, structure correcte !";
+    } else {
+        msg = "❌ Non, structure trop sollicitée !";
+    }
+
+    document.getElementById("result").innerText =
+        "Mf = " + Mf.toFixed(2) + " [KN.m] → " + msg;
+
+    drawBeam(L);
+}
+
+function drawBeam(L){
+    ctx.clearRect(0,0,600,300);
+
+    // sol
+    ctx.strokeStyle = "white";
+    ctx.beginPath();
+    ctx.moveTo(50, 200);
+    ctx.lineTo(550, 200);
+    ctx.stroke();
+
+    // poutre proportionnelle à L
+    let scale = 10;
+    let lengthPx = Math.min(L * scale, 500);
+
+    ctx.strokeStyle = "cyan";
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(300 - lengthPx/2, 150);
+    ctx.lineTo(300 + lengthPx/2, 150);
+    ctx.stroke();
+
+    // appuis
+    ctx.fillStyle = "white";
+    ctx.fillRect(300 - lengthPx/2 - 5, 150, 10, 50);
+    ctx.fillRect(300 + lengthPx/2 - 5, 150, 10, 50);
+
+    // charge
+    ctx.fillStyle = "red";
+    ctx.beginPath();
+    ctx.arc(300, 120, 10, 0, Math.PI*2);
+    ctx.fill();
+}
+</script>
+
+</body>
+</html>
