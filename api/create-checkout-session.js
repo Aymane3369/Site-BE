@@ -1,46 +1,31 @@
 const Stripe = require('stripe');
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
-// Taux de conversion fixe (1 EUR = 10.5 MAD) – ajuste selon le marché
-const EUR_TO_MAD_RATE = 10.5;
-
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    const { items, total, clientEmail, promoCode, discount, orderId, country } = req.body;
-
-    // 🧠 Détection du pays : priorité au champ envoyé par le frontend
-    const userCountry = country || 'FR'; // FR par défaut si non renseigné
-
-    // 🔁 Détermination de la devise et du montant
-    let currency, unitAmount;
-    if (userCountry === 'MA') {
-      currency = 'mad';
-      unitAmount = Math.round(total * EUR_TO_MAD_RATE * 100); // total en EUR → MAD
-    } else {
-      currency = 'eur';
-      unitAmount = Math.round(total * 100);
-    }
+    const { items, total, clientEmail, promoCode, discount, orderId } = req.body;
 
     const baseUrl = process.env.VERCEL_URL 
       ? `https://${process.env.VERCEL_URL}`
       : 'https://boutiqueflechy.vercel.app';
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'], // Klarna retiré (non dispo au Maroc)
+      // === AJOUT DE KLARNA ICI ===
+      payment_method_types: ['card', 'klarna'],   // <- ligne modifiée
       mode: 'payment',
       line_items: [
         {
           price_data: {
-            currency: currency,     // ✅ 'eur' ou 'mad'
+            currency: 'eur',
             product_data: {
               name: 'Commande StyleShop',
               description: items.map(i => `${i.name} x${i.qty}`).join(', '),
             },
-            unit_amount: unitAmount,
+            unit_amount: Math.round(total * 100),
           },
           quantity: 1,
         }
@@ -68,8 +53,6 @@ module.exports = async (req, res) => {
           price: i.price,
           name: i.name
         }))),
-        country: userCountry, // pour traçabilité
-        currency_used: currency,
       },
     });
 
