@@ -34,7 +34,7 @@ module.exports = async (req, res) => {
       cancel_url: `${baseUrl}/?cancel=true`,
 
       shipping_address_collection: {
-        allowed_countries: ['FR', 'BE', 'CH', 'LU', 'DE', 'IT', 'ES', 'GB']
+        allowed_countries: ['FR', 'BE', 'CH', 'LU', 'DE', 'IT', 'ES', 'GB', 'MA']
       },
 
       phone_number_collection: {
