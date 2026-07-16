@@ -1101,18 +1101,23 @@
                 padding: 1rem;
             }
             .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                grid-template-columns: repeat(2, 1fr));
                 gap: 1rem;
             }
             .product-card {
-                padding: 1rem 0.8rem;
+                border-radius: 12px;
+               padding: 0 0 1rem 0;
+                
             }
             .product-icon {
-                width: 60px;
-                height: 60px;
+                border-radius: 12px 12px 0 0;
+        aspect-ratio: 1 / 1;
+        width: 100%;
+        height: auto;
+        margin-bottom: 0.6rem;
             }
             .product-icon span {
-                font-size: 2rem;
+                font-size: 2.5rem;
             }
             .product-title {
                 font-size: 0.75rem;
