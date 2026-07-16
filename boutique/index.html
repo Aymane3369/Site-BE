@@ -1784,8 +1784,26 @@
             const isVariant = product.type === 'variants';
             let selectedVariantId = selectedVariantCache[productId] || null;
             let selectedVariant = null;
-            let currentPrice = isVariant ? (product.base_price || 0) : (product.price || 0);
-            let currentStock = isVariant ? 0 : (product.stock || 0);
+        
+let priceHtml = `${currentPrice.toFixed(2)} €`;
+if (oldPrice && oldPrice > currentPrice) {
+    priceHtml += ` <span class="old-price">${oldPrice.toFixed(2)} €</span>`;
+}
+
+let stockHtml = '';
+let urgencyHtml = '';
+if (currentStock > 5) {
+    stockHtml = `<span class="dot in-stock"></span> En stock (${currentStock})`;
+} else if (currentStock > 0 && currentStock <= 5) {
+    stockHtml = `<span class="dot low-stock"></span> Plus que ${currentStock} en stock !`;
+    urgencyHtml = `<div class="urgency-badge" style="display:inline-block;margin-left:0.5rem;">🔥 Commandez vite !</div>`;
+} else {
+    stockHtml = `<span class="dot out-stock"></span> Rupture de stock`;
+}
+
+// 🔥 VARIABLES DYNAMIQUES POUR LA PREUVE SOCIALE
+const randomViewers = Math.floor(Math.random() * 12) + 3;  // 3 à 15
+const todaySales = Math.floor(Math.random() * 15) + 3;     // 3 à 18
             let canAdd = false;
             let oldPrice = null;
 
@@ -1889,10 +1907,39 @@
                             <h2>${product.name}</h2>
                             <p class="description">${product.description || 'Découvrez ce produit de qualité, conçu pour durer.'}</p>
                             <div class="price">${priceHtml}</div>
-                            <div class="stock-info">${stockHtml} ${urgencyHtml}</div>
-                            ${isVariant ? `
-                                <div class="variant-group">
-                                    <strong>Taille</strong>
+                             <div class="price">${priceHtml}</div>
+    <div class="stock-info">${stockHtml} ${urgencyHtml}</div>
+
+    <!-- 👁️ COMPTEUR DE VISUALISATION -->
+    <div style="color:#b45309;font-size:0.85rem;animation:pulse 1.5s infinite;margin:0.4rem 0 0.1rem;font-weight:500;display:flex;align-items:center;gap:0.4rem;">
+        <span>👁️</span> 
+        <span id="viewCounter">${randomViewers}</span> personnes consultent ce produit actuellement
+    </div>
+
+    <!-- ⚡ VENTES DU JOUR -->
+    <div style="font-size:0.75rem;color:var(--color-text-secondary);margin-bottom:0.6rem;">
+        ⚡ ${todaySales} personnes ont acheté ce produit aujourd'hui
+    </div>
+
+    ${isVariant ? `
+        <div class="variant-group">
+            <strong>Taille</strong>
+            <div class="variant-options" id="tailleContainer">
+                ${tailleOptions.map(t => `
+                    <div class="variant-btn ${currentTaille === t ? 'selected' : ''}" data-type="taille" data-value="${t}">${t}</div>
+                `).join('')}
+            </div>
+        </div>
+        <div class="variant-group">
+            <strong>Couleur</strong>
+            <div class="variant-options" id="couleurContainer">
+                ${couleurOptions.map(c => `
+                    <div class="variant-btn ${currentCouleur === c ? 'selected' : ''}" data-type="couleur" data-value="${c}">${c}</div>
+                `).join('')}
+            </div>
+        </div>
+    ` : ''}
+    
                                     <div class="variant-options" id="tailleContainer">
                                         ${tailleOptions.map(t => `
                                             <div class="variant-btn ${currentTaille === t ? 'selected' : ''}" data-type="taille" data-value="${t}">${t}</div>
