@@ -7,21 +7,21 @@
     <!-- ============================================================
     TITRE & META PRINCIPALES (OPTIMISÉES SEO)
     ============================================================ -->
-    <title>StyleShop — Boutique de vêtements & accessoires de qualité</title>
-    <meta name="description" content="StyleShop : vêtements, accessoires et équipements de qualité. Livraison rapide, paiement sécurisé. Profitez de -10% avec BIENVENUE." />
+    <title id="pageTitle">StyleShop — Boutique de vêtements & accessoires de qualité</title>
+    <meta name="description" id="pageDescription" content="StyleShop : vêtements, accessoires et équipements de qualité. Livraison rapide, paiement sécurisé. Profitez de -10% avec BIENVENUE." />
     <meta name="keywords" content="vêtements, mode, accessoires, boutique en ligne, style, shopping, qualité, vêtements tendance, acheter en ligne" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
     <meta name="googlebot" content="index, follow" />
     <meta name="author" content="StyleShop" />
-    <link rel="canonical" href="https://ingenierie-travaux.vercel.app/boutique" />
+    <link rel="canonical" id="canonicalLink" href="https://ingenierie-travaux.vercel.app/boutique" />
 
     <!-- ============================================================
     OPEN GRAPH (Facebook, LinkedIn, WhatsApp)
     ============================================================ -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="StyleShop — Boutique de vêtements & accessoires" />
-    <meta property="og:description" content="Découvrez notre collection de vêtements et accessoires tendance. Livraison rapide et paiement sécurisé." />
-    <meta property="og:url" content="https://ingenierie-travaux.vercel.app/boutique" />
+    <meta property="og:title" id="ogTitle" content="StyleShop — Boutique de vêtements & accessoires" />
+    <meta property="og:description" id="ogDescription" content="Découvrez notre collection de vêtements et accessoires tendance. Livraison rapide et paiement sécurisé." />
+    <meta property="og:url" id="ogUrl" content="https://ingenierie-travaux.vercel.app/boutique" />
     <meta property="og:site_name" content="StyleShop" />
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:image" content="https://ingenierie-travaux.vercel.app/og-image.jpg" />
@@ -33,12 +33,12 @@
     TWITTER CARD
     ============================================================ -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="StyleShop — Boutique de vêtements & accessoires" />
-    <meta name="twitter:description" content="Vêtements et accessoires de qualité. Livraison rapide." />
+    <meta name="twitter:title" id="twitterTitle" content="StyleShop — Boutique de vêtements & accessoires" />
+    <meta name="twitter:description" id="twitterDescription" content="Vêtements et accessoires de qualité. Livraison rapide." />
     <meta name="twitter:image" content="https://ingenierie-travaux.vercel.app/og-image.jpg" />
 
     <!-- ============================================================
-    JSON-LD : ORGANISATION
+    JSON-LD : ORGANISATION (statique)
     ============================================================ -->
     <script type="application/ld+json">
     {
@@ -65,7 +65,7 @@
     </script>
 
     <!-- ============================================================
-    JSON-LD : WEBSITE
+    JSON-LD : WEBSITE (statique)
     ============================================================ -->
     <script type="application/ld+json">
     {
@@ -79,30 +79,6 @@
         "target": "https://ingenierie-travaux.vercel.app/boutique?search={search_term_string}",
         "query-input": "required name=search_term_string"
       }
-    }
-    </script>
-
-    <!-- ============================================================
-    JSON-LD : BREADCRUMB
-    ============================================================ -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Accueil",
-          "item": "https://ingenierie-travaux.vercel.app/boutique"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Catalogue",
-          "item": "https://ingenierie-travaux.vercel.app/boutique/catalogue"
-        }
-      ]
     }
     </script>
 
@@ -124,7 +100,7 @@
     <script src="https://js.stripe.com/v3/" defer></script>
 
     <!-- ============================================================
-    GOOGLE ANALYTICS (GA4) - Remplacez G-VOTRE_ID
+    GOOGLE ANALYTICS (GA4)
     ============================================================ -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HXSZCHYD64"></script>
     <script>
@@ -139,7 +115,7 @@
     </script>
 
     <!-- ============================================================
-    GOOGLE SEARCH CONSOLE - Remplacez VOTRE_CODE
+    GOOGLE SEARCH CONSOLE
     ============================================================ -->
     <meta name="google-site-verification" content="VOTRE_CODE_VERIFICATION" />
 
@@ -425,6 +401,21 @@
 
         .products-grid.list-view .product-card .product-info {
             flex: 1;
+        }
+
+        /* ============================================================
+           PRODUCT CARD LINK (SEO)
+           ============================================================ */
+        .product-card-link {
+            text-decoration: none !important;
+            color: inherit !important;
+            display: block !important;
+        }
+
+        .product-card-link:hover .product-card {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+            border-color: #e0e0e0;
         }
 
         /* ============================================================
@@ -2172,7 +2163,7 @@
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhyb2NxaGF6cG1qY25xamR5eXRkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1NjEwOTMsImV4cCI6MjA5NzEzNzA5M30.he8Gqs2h57Sq-knzKCr_C7BmZGHg76knhm0e3Y5EvF0';
 
         // ================================================================
-        // 2. NEWSLETTER - ENVOI VIA WEBHOOK MAKE.COM
+        // 2. NEWSLETTER - ENVOI VIA WEBHOOK MAKE.COM (URL CORRIGÉE)
         // ================================================================
         const WEBHOOK_URL = 'https://hook.eu1.make.com/4knrto3mj8byh7llle9it224khgc826u';
 
@@ -2185,7 +2176,6 @@
                 return;
             }
 
-            // Désactiver le bouton pendant l'envoi
             const btn = input.nextElementSibling;
             btn.disabled = true;
             btn.textContent = '⏳ Envoi...';
@@ -2454,7 +2444,35 @@
         }
 
         // ================================================================
-        // 8. AJOUT / MODIFICATION PANIER
+        // 8. GÉNÉRATION D'URL UNIQUE POUR CHAQUE PRODUIT (SEO PERMALINK)
+        // ================================================================
+        function generateSlug(name) {
+            return name
+                .toLowerCase()
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+        }
+
+        function getProductUrl(product) {
+            const slug = generateSlug(product.name);
+            return `/boutique/produit/${slug}-${product.id}`;
+        }
+
+        // ================================================================
+        // 9. RÉCUPÉRER LE PRODUIT DEPUIS L'URL
+        // ================================================================
+        function getProductFromUrl() {
+            const path = window.location.pathname;
+            const match = path.match(/\/boutique\/produit\/.+-(.+)$/);
+            if (match && match[1]) {
+                return products.find(p => p.id === match[1]);
+            }
+            return null;
+        }
+
+        // ================================================================
+        // 10. AJOUT / MODIFICATION PANIER
         // ================================================================
         function addToCart(productId, variantId = null, quantity = 1) {
             const product = products.find(p => p.id === productId);
@@ -2548,7 +2566,7 @@
         }
 
         // ================================================================
-        // 9. CODES PROMO
+        // 11. CODES PROMO
         // ================================================================
         function getSubtotal() {
             return Array.isArray(cart) ? cart.reduce((s, i) => s + (i.price || 0) * (i.quantity || 0), 0) : 0;
@@ -2572,21 +2590,77 @@
         function getTotal() { return getSubtotal() - (appliedPromo?.discountAmount || 0); }
 
         // ================================================================
-        // 10. NAVIGATION
+        // 12. MISE À JOUR DES BALISES SEO (Titre, Meta, Open Graph)
+        // ================================================================
+        function updateSeoForProduct(product) {
+            if (!product) return;
+
+            const title = `${product.name} — StyleShop`;
+            const description = product.description || `Découvrez ${product.name} sur StyleShop. Qualité et style au meilleur prix.`;
+            const url = getProductUrl(product);
+            const image = (product.images && product.images.length > 0) ? product.images[0] : 'https://ingenierie-travaux.vercel.app/og-image.jpg';
+
+            // Titre
+            document.title = title;
+            document.getElementById('pageTitle').textContent = title;
+
+            // Meta description
+            document.getElementById('pageDescription').setAttribute('content', description);
+
+            // Canonical
+            document.getElementById('canonicalLink').setAttribute('href', url);
+
+            // Open Graph
+            document.getElementById('ogTitle').setAttribute('content', title);
+            document.getElementById('ogDescription').setAttribute('content', description);
+            document.getElementById('ogUrl').setAttribute('content', url);
+            document.querySelector('meta[property="og:image"]').setAttribute('content', image);
+
+            // Twitter
+            document.getElementById('twitterTitle').setAttribute('content', title);
+            document.getElementById('twitterDescription').setAttribute('content', description);
+            document.querySelector('meta[name="twitter:image"]').setAttribute('content', image);
+        }
+
+        function resetSeoForCatalogue() {
+            document.title = 'StyleShop — Boutique de vêtements & accessoires de qualité';
+            document.getElementById('pageTitle').textContent = document.title;
+            document.getElementById('pageDescription').setAttribute('content', 'StyleShop : vêtements, accessoires et équipements de qualité. Livraison rapide, paiement sécurisé. Profitez de -10% avec BIENVENUE.');
+            document.getElementById('canonicalLink').setAttribute('href', 'https://ingenierie-travaux.vercel.app/boutique');
+            document.getElementById('ogTitle').setAttribute('content', 'StyleShop — Boutique de vêtements & accessoires');
+            document.getElementById('ogDescription').setAttribute('content', 'Découvrez notre collection de vêtements et accessoires tendance. Livraison rapide et paiement sécurisé.');
+            document.getElementById('ogUrl').setAttribute('content', 'https://ingenierie-travaux.vercel.app/boutique');
+            document.querySelector('meta[property="og:image"]').setAttribute('content', 'https://ingenierie-travaux.vercel.app/og-image.jpg');
+            document.getElementById('twitterTitle').setAttribute('content', 'StyleShop — Boutique de vêtements & accessoires');
+            document.getElementById('twitterDescription').setAttribute('content', 'Vêtements et accessoires de qualité. Livraison rapide.');
+            document.querySelector('meta[name="twitter:image"]').setAttribute('content', 'https://ingenierie-travaux.vercel.app/og-image.jpg');
+        }
+
+        // ================================================================
+        // 13. NAVIGATION
         // ================================================================
         function navigateTo(page, productId = null) {
             if (page === 'product' && productId) {
-                currentPage = 'product';
-                selectedProductId = productId;
-                currentImageIndex = 0;
-                const prod = products.find(p => p.id === productId);
-                if (prod && prod.type === 'variants' && !selectedVariantCache[productId]) {
-                    const firstAvail = prod.variants?.find(v => v.stock > 0);
-                    selectedVariantCache[productId] = firstAvail ? firstAvail.id : null;
+                const product = products.find(p => p.id === productId);
+                if (product) {
+                    const url = getProductUrl(product);
+                    window.history.pushState({}, '', url);
+                    currentPage = 'product';
+                    selectedProductId = productId;
+                    currentImageIndex = 0;
+                    if (product.type === 'variants' && !selectedVariantCache[productId]) {
+                        const firstAvail = product.variants?.find(v => v.stock > 0);
+                        selectedVariantCache[productId] = firstAvail ? firstAvail.id : null;
+                    }
+                    renderCurrentPage();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    return;
                 }
             } else if (page === 'cart') {
+                window.history.pushState({}, '', '/boutique/panier');
                 currentPage = 'cart';
             } else {
+                window.history.pushState({}, '', '/boutique');
                 currentPage = 'catalogue';
                 selectedProductId = null;
             }
@@ -2595,7 +2669,7 @@
         }
 
         // ================================================================
-        // 11. MODAL DE SÉLECTION DE VARIANTES
+        // 14. MODAL DE SÉLECTION DE VARIANTES
         // ================================================================
         let modalProductId = null;
         let modalSelectedVariantId = null;
@@ -2706,7 +2780,7 @@
         });
 
         // ================================================================
-        // 12. EXIT POPUP
+        // 15. EXIT POPUP
         // ================================================================
         document.addEventListener('mouseleave', function(e) {
             if (e.clientY < 0 && cart.length > 0 && !exitPopupShown) {
@@ -2733,9 +2807,11 @@
         }
 
         // ================================================================
-        // 13. RENDU CATALOGUE
+        // 16. RENDU CATALOGUE
         // ================================================================
         function renderCatalogue() {
+            resetSeoForCatalogue();
+
             const app = document.getElementById('app');
             const filtered = getFilteredProducts();
 
@@ -2836,21 +2912,23 @@
                     `<button class="btn btn-sm" disabled>Rupture</button>`;
 
                 html += `
-                    <div class="product-card ${isPromo ? 'promotion' : ''}" data-productid="${p.id}">
-                        ${promoTag}
-                        ${urgencyHtml}
-                        <div class="product-icon">${getProductDisplayIcon(p)}</div>
-                        <div class="product-info">
-                            <div class="product-title">${p.name}</div>
-                            ${priceDisplay}
-                            <span class="stock-badge ${badgeClass}">${badgeText}</span>
-                            <div class="social-proof-mini">
-                                <span>👁️ ${viewers}</span>
-                                <span>⚡ ${sales} vendus aujourd'hui</span>
+                    <a href="${getProductUrl(p)}" class="product-card-link">
+                        <div class="product-card ${isPromo ? 'promotion' : ''}" data-productid="${p.id}">
+                            ${promoTag}
+                            ${urgencyHtml}
+                            <div class="product-icon">${getProductDisplayIcon(p)}</div>
+                            <div class="product-info">
+                                <div class="product-title">${p.name}</div>
+                                ${priceDisplay}
+                                <span class="stock-badge ${badgeClass}">${badgeText}</span>
+                                <div class="social-proof-mini">
+                                    <span>👁️ ${viewers}</span>
+                                    <span>⚡ ${sales} vendus aujourd'hui</span>
+                                </div>
+                                <div class="card-actions">${addBtnHtml}</div>
                             </div>
-                            <div class="card-actions">${addBtnHtml}</div>
                         </div>
-                    </div>
+                    </a>
                 `;
             });
             html += `</div>`;
@@ -2861,6 +2939,7 @@
             document.querySelectorAll('.add-btn:not([disabled])').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
+                    e.preventDefault();
                     const productId = this.dataset.productid;
                     const type = this.dataset.type;
                     if (type === 'simple') {
@@ -2871,17 +2950,15 @@
                 });
             });
 
-            document.querySelectorAll('.product-card').forEach(card => {
-                card.addEventListener('click', function(e) {
-                    if (e.target.closest('button')) return;
-                    const productId = this.dataset.productid;
-                    if (productId) navigateTo('product', productId);
+            document.querySelectorAll('.product-card-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (e.target.closest('.add-btn')) return;
                 });
             });
         }
 
         // ================================================================
-        // 14. FONCTION POUR LE TEXTE DE PRÉSENTATION
+        // 17. FONCTION POUR LE TEXTE DE PRÉSENTATION
         // ================================================================
         function getPresentationHtml() {
             return `
@@ -2921,16 +2998,17 @@
         }
 
         // ================================================================
-        // 15. RENDU FICHE PRODUIT
+        // 18. RENDU FICHE PRODUIT AVEC SEO DYNAMIQUE
         // ================================================================
         function renderProductDetail(productId) {
             const app = document.getElementById('app');
             const product = products.find(p => p.id === productId);
             if (!product) { renderCatalogue(); return; }
 
-            // ============================================================
-            // GÉNÉRATION DU SCHEMA JSON-LD POUR CE PRODUIT
-            // ============================================================
+            // Mettre à jour les balises SEO pour ce produit
+            updateSeoForProduct(product);
+
+            // Générer le schema JSON-LD
             generateProductSchema(product);
 
             let images = [];
@@ -3236,12 +3314,11 @@
         }
 
         // ================================================================
-        // 15. GÉNÉRATION JSON-LD POUR LES PRODUITS (DYNAMIQUE)
+        // 19. GÉNÉRATION JSON-LD POUR LES PRODUITS (DYNAMIQUE)
         // ================================================================
         function generateProductSchema(product) {
             if (!product) return;
             
-            // Supprimer l'ancien schema produit s'il existe
             const oldScript = document.querySelector('script[data-product-schema]');
             if (oldScript) oldScript.remove();
             
@@ -3284,7 +3361,7 @@
                     "price": price,
                     "priceCurrency": "EUR",
                     "availability": availability,
-                    "url": `https://ingenierie-travaux.vercel.app/boutique/product/${product.id}`,
+                    "url": getProductUrl(product),
                     "priceValidUntil": new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
                 }
             };
@@ -3304,7 +3381,7 @@
                     "priceCurrency": "EUR",
                     "availability": v.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
                     "itemCondition": "https://schema.org/NewCondition",
-                    "url": `https://ingenierie-travaux.vercel.app/boutique/product/${product.id}`,
+                    "url": getProductUrl(product),
                     "description": `${v.attributes?.taille || ''} ${v.attributes?.couleur || ''}`.trim()
                 }));
             }
@@ -3322,7 +3399,7 @@
         }
 
         // ================================================================
-        // 16. RECOMMANDATIONS
+        // 20. RECOMMANDATIONS
         // ================================================================
         function getRecommendations(productId) {
             const current = products.find(p => p.id === productId);
@@ -3338,9 +3415,10 @@
         }
 
         // ================================================================
-        // 17. RENDU PANIER
+        // 21. RENDU PANIER
         // ================================================================
         function renderCart() {
+            resetSeoForCatalogue();
             const app = document.getElementById('app');
             if (!Array.isArray(cart) || cart.length === 0) {
                 app.innerHTML = `
@@ -3458,7 +3536,7 @@
         }
 
         // ================================================================
-        // 18. PAIEMENT STRIPE
+        // 22. PAIEMENT STRIPE
         // ================================================================
         async function stripeCheckout() {
             if (!Array.isArray(cart) || cart.length === 0) {
@@ -3514,7 +3592,7 @@
         }
 
         // ================================================================
-        // 19. GESTION PROMO
+        // 23. GESTION PROMO
         // ================================================================
         function handlePromo() {
             const input = document.getElementById('promoInput');
@@ -3544,7 +3622,7 @@
         }
 
         // ================================================================
-        // 20. FILTRES ET TRI
+        // 24. FILTRES ET TRI
         // ================================================================
         function applyFilters() {
             const categoryFilter = document.getElementById('categoryFilter');
@@ -3560,9 +3638,18 @@
         }
 
         // ================================================================
-        // 21. PAGE COURANTE
+        // 25. PAGE COURANTE
         // ================================================================
         function renderCurrentPage() {
+            // Si on est sur une URL de produit, on l'affiche
+            const productFromUrl = getProductFromUrl();
+            if (productFromUrl && currentPage !== 'cart') {
+                currentPage = 'product';
+                selectedProductId = productFromUrl.id;
+                renderProductDetail(selectedProductId);
+                return;
+            }
+
             if (currentPage === 'catalogue') renderCatalogue();
             else if (currentPage === 'product' && selectedProductId) renderProductDetail(selectedProductId);
             else if (currentPage === 'cart') renderCart();
@@ -3570,7 +3657,7 @@
         }
 
         // ================================================================
-        // 22. SYNCHRONISATION INTER-ONGLETS
+        // 26. SYNCHRONISATION INTER-ONGLETS
         // ================================================================
         window.addEventListener('storage', function(e) {
             if (e.key === 'styleShopCart') {
@@ -3581,7 +3668,26 @@
         });
 
         // ================================================================
-        // 23. EXPOSER LES FONCTIONS
+        // 27. GESTION DE L'HISTORIQUE (navigation avant/arrière)
+        // ================================================================
+        window.addEventListener('popstate', function() {
+            const productFromUrl = getProductFromUrl();
+            if (productFromUrl) {
+                currentPage = 'product';
+                selectedProductId = productFromUrl.id;
+                renderProductDetail(selectedProductId);
+            } else if (window.location.pathname.includes('/panier')) {
+                currentPage = 'cart';
+                renderCart();
+            } else {
+                currentPage = 'catalogue';
+                selectedProductId = null;
+                renderCatalogue();
+            }
+        });
+
+        // ================================================================
+        // 28. EXPOSER LES FONCTIONS
         // ================================================================
         window.navigateTo = navigateTo;
         window.addToCart = addToCart;
@@ -3596,7 +3702,7 @@
         window.subscribeNewsletter = subscribeNewsletter;
 
         // ================================================================
-        // 24. INITIALISATION
+        // 29. INITIALISATION
         // ================================================================
         async function init() {
             await loadProducts();
@@ -3614,6 +3720,17 @@
             if (params.get('cancel')) {
                 showToast('❌ Paiement annulé', 'error');
                 window.history.replaceState({}, document.title, window.location.pathname);
+            }
+
+            // Gérer la navigation directe vers un produit
+            const productFromUrl = getProductFromUrl();
+            if (productFromUrl) {
+                currentPage = 'product';
+                selectedProductId = productFromUrl.id;
+            } else if (window.location.pathname.includes('/panier')) {
+                currentPage = 'cart';
+            } else {
+                currentPage = 'catalogue';
             }
 
             renderCurrentPage();
