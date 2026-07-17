@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -254,116 +253,116 @@
         /* ============================================================
            PRODUCT CARD
            ============================================================ */
-      .products-grid {
-    gap: 2rem;
-}
+        .products-grid {
+            gap: 2rem;
+        }
 
-.product-card {
-    text-align: left;
-    padding: 0 0 1.2rem 0;
-    background: #ffffff;
-    border-radius: 16px;
-    border: 1px solid #f0f0f0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
-    transition: box-shadow 0.25s ease, transform 0.2s ease;
-    cursor: pointer;
-}
-.product-card:hover {
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
-    transform: translateY(-4px);
-    border-color: #e0e0e0;
-}
+        .product-card {
+            text-align: left;
+            padding: 0 0 1.2rem 0;
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            transition: box-shadow 0.25s ease, transform 0.2s ease;
+            cursor: pointer;
+        }
+        .product-card:hover {
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+            transform: translateY(-4px);
+            border-color: #e0e0e0;
+        }
 
-.product-icon {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1 / 1;
-    background: #f7f8fa;
-    border-radius: 16px 16px 0 0;
-    margin-bottom: 0.8rem;
-    overflow: hidden;
-}
-.product-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-}
-.product-card:hover .product-icon img {
-    transform: scale(1.03);
-}
-.product-icon span {
-    font-size: 4rem;
-}
+        .product-icon {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            background: #f7f8fa;
+            border-radius: 16px 16px 0 0;
+            margin-bottom: 0.8rem;
+            overflow: hidden;
+        }
+        .product-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .product-card:hover .product-icon img {
+            transform: scale(1.03);
+        }
+        .product-icon span {
+            font-size: 4rem;
+        }
 
-.product-title {
-    font-size: 0.95rem;
-    font-weight: 500;
-    padding: 0 1rem;
-    margin-bottom: 0.1rem;
-    color: #111;
-}
+        .product-title {
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 0 1rem;
+            margin-bottom: 0.1rem;
+            color: #111;
+        }
 
-.product-price {
-    font-size: 1.1rem;
-    font-weight: 700;
-    padding: 0 1rem;
-    margin: 0.2rem 0 0.3rem 0;
-    color: #222;
-}
+        .product-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding: 0 1rem;
+            margin: 0.2rem 0 0.3rem 0;
+            color: #222;
+        }
 
-.stock-badge {
-    padding: 0 1rem;
-    background: transparent !important;
-    font-size: 0.75rem;
-    font-weight: 400;
-    color: #2e7d32 !important;
-}
-.stock-badge.stock-warning {
-    color: #b45309 !important;
-}
-.stock-badge.stock-out {
-    color: #b91c1c !important;
-}
+        .stock-badge {
+            padding: 0 1rem;
+            background: transparent !important;
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #2e7d32 !important;
+        }
+        .stock-badge.stock-warning {
+            color: #b45309 !important;
+        }
+        .stock-badge.stock-out {
+            color: #b91c1c !important;
+        }
 
-.urgency-badge {
-    display: inline-block;
-    margin-left: 0.3rem;
-    padding: 0;
-    background: transparent !important;
-    color: #b91c1c !important;
-    font-weight: 500;
-    font-size: 0.7rem;
-    animation: none;
-}
+        .urgency-badge {
+            display: inline-block;
+            margin-left: 0.3rem;
+            padding: 0;
+            background: transparent !important;
+            color: #b91c1c !important;
+            font-weight: 500;
+            font-size: 0.7rem;
+            animation: none;
+        }
 
-.card-actions {
-    padding: 0.6rem 1rem 0;
-}
-.card-actions .btn {
-    background: transparent;
-    color: var(--color-primary);
-    border: 1.5px solid #d1d5db;
-    border-radius: 40px;
-    font-weight: 600;
-    font-size: 0.8rem;
-    padding: 0.5rem 0;
-    width: 100%;
-    transition: all 0.2s ease;
-}
-.card-actions .btn:hover {
-    background: var(--color-primary);
-    color: white;
-    border-color: var(--color-primary);
-    transform: scale(1.01);
-    box-shadow: 0 4px 12px rgba(30, 58, 111, 0.2);
-}
-.card-actions .btn:disabled {
-    background: transparent;
-    border-color: #e5e7eb;
-    color: #9ca3af;
-    opacity: 0.6;
-}  
+        .card-actions {
+            padding: 0.6rem 1rem 0;
+        }
+        .card-actions .btn {
+            background: transparent;
+            color: var(--color-primary);
+            border: 1.5px solid #d1d5db;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            padding: 0.5rem 0;
+            width: 100%;
+            transition: all 0.2s ease;
+        }
+        .card-actions .btn:hover {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+            transform: scale(1.01);
+            box-shadow: 0 4px 12px rgba(30, 58, 111, 0.2);
+        }
+        .card-actions .btn:disabled {
+            background: transparent;
+            border-color: #e5e7eb;
+            color: #9ca3af;
+            opacity: 0.6;
+        }  
         .btn {
             display: inline-flex;
             align-items: center;
@@ -1091,7 +1090,7 @@
         }
 
         /* ============================================================
-           RESPONSIVE
+           RESPONSIVE - CORRIGÉ
            ============================================================ */
         @media (max-width: 700px) {
             .header {
@@ -1101,32 +1100,31 @@
                 padding: 1rem;
             }
             .products-grid {
-                grid-template-columns: repeat(2, 1fr));
+                grid-template-columns: repeat(2, 1fr);
                 gap: 1rem;
             }
             .product-card {
                 border-radius: 12px;
-               padding: 0 0 1rem 0;
-                
+                padding: 0 0 1rem 0;
             }
             .product-icon {
                 border-radius: 12px 12px 0 0;
-        aspect-ratio: 1 / 1;
-        width: 100%;
-        height: auto;
-        margin-bottom: 0.6rem;
+                aspect-ratio: 1 / 1;
+                width: 100%;
+                height: auto;
+                margin-bottom: 0.6rem;
             }
             .product-icon span {
                 font-size: 2.5rem;
             }
             .product-title {
                 font-size: 0.8rem;
-                padding :0 0 1rem 0;
+                padding: 0 0.6rem;
             }
             .product-price {
                 font-size: 0.9rem;
-        padding: 0 0.6rem;
-        margin: 0.1rem 0 0.15rem 0;
+                padding: 0 0.6rem;
+                margin: 0.1rem 0 0.15rem 0;
             }
             .modal-box {
                 padding: 1.5rem;
@@ -1168,14 +1166,14 @@
             }
             .product-card {
                 border-radius: 10px;
-        padding: 0 0 0.8rem 0;
+                padding: 0 0 0.8rem 0;
             }
             .product-icon {
                 border-radius: 10px 10px 0 0;
-        aspect-ratio: 1 / 1;
-        width: 100%;
-        height: auto;
-        margin-bottom: 0.4rem;
+                aspect-ratio: 1 / 1;
+                width: 100%;
+                height: auto;
+                margin-bottom: 0.4rem;
             }
             .product-icon span {
                 font-size: 2rem;
@@ -1731,22 +1729,22 @@
                     <div class="row">
                         <div class="col">
                             <p>
-                                <strong>Ingénierie-Travaux</strong>, c’est bien plus qu’un simple site de vente en ligne. C’est la rencontre entre une <strong>expertise technique reconnue</strong> et une <strong>passion pour la qualité</strong> au service des particuliers et des professionnels.<br/><br/>
+                                <strong>Ingénierie-Travaux</strong>, c'est bien plus qu'un simple site de vente en ligne. C'est la rencontre entre une <strong>expertise technique reconnue</strong> et une <strong>passion pour la qualité</strong> au service des particuliers et des professionnels.<br/><br/>
 
-                                D’abord spécialisée dans le <strong>domaine de l’ingénierie et des travaux</strong> — avec des services de <strong>maîtrise d’œuvre</strong>, <strong>conseil en construction</strong>, <strong>gestion de projets</strong> et <strong>audits techniques</strong> — notre activité s’est naturellement enrichie d’une <strong>boutique en ligne</strong> pour répondre aux besoins quotidiens de nos clients.<br/><br/>
+                                D'abord spécialisée dans le <strong>domaine de l'ingénierie et des travaux</strong> — avec des services de <strong>maîtrise d'œuvre</strong>, <strong>conseil en construction</strong>, <strong>gestion de projets</strong> et <strong>audits techniques</strong> — notre activité s'est naturellement enrichie d'une <strong>boutique en ligne</strong> pour répondre aux besoins quotidiens de nos clients.<br/><br/>
 
-                                Aujourd’hui, notre site e-commerce vous propose une <strong>sélection variée de produits</strong> soigneusement choisis : <strong>vêtements tendance</strong>, <strong>accessoires mode</strong>, <strong>équipement de la maison</strong>, <strong>high-tech</strong>, <strong>beauté</strong> et bien plus encore. Nous collaborons avec des marques de confiance pour vous offrir le meilleur des <strong>produits du quotidien</strong> comme des <strong>articles plus techniques</strong>.<br/><br/>
+                                Aujourd'hui, notre site e-commerce vous propose une <strong>sélection variée de produits</strong> soigneusement choisis : <strong>vêtements tendance</strong>, <strong>accessoires mode</strong>, <strong>équipement de la maison</strong>, <strong>high-tech</strong>, <strong>beauté</strong> et bien plus encore. Nous collaborons avec des marques de confiance pour vous offrir le meilleur des <strong>produits du quotidien</strong> comme des <strong>articles plus techniques</strong>.<br/><br/>
 
-                                Que vous soyez un <strong>particulier</strong> en quête de nouveaux produits ou un <strong>professionnel</strong> ayant besoin de matériel spécifique, notre <strong>équipe d’experts</strong> est là pour vous conseiller et vous accompagner dans vos choix.
+                                Que vous soyez un <strong>particulier</strong> en quête de nouveaux produits ou un <strong>professionnel</strong> ayant besoin de matériel spécifique, notre <strong>équipe d'experts</strong> est là pour vous conseiller et vous accompagner dans vos choix.
                             </p>
                         </div>
                         <div class="col">
                             <p>
-                                Notre force réside dans notre <strong>double compétence</strong> : la rigueur du <strong>secteur de l’ingénierie</strong> associée à la réactivité et la convivialité d’une <strong>boutique moderne</strong>. Nous savons ce que signifie la <strong>confiance</strong> dans une relation client — c’est pourquoi nous mettons un point d’honneur à vous proposer des <strong>produits de qualité</strong>, des <strong>prix compétitifs</strong> et un <strong>service après-vente réactif</strong>.<br/><br/>
+                                Notre force réside dans notre <strong>double compétence</strong> : la rigueur du <strong>secteur de l'ingénierie</strong> associée à la réactivité et la convivialité d'une <strong>boutique moderne</strong>. Nous savons ce que signifie la <strong>confiance</strong> dans une relation client — c'est pourquoi nous mettons un point d'honneur à vous proposer des <strong>produits de qualité</strong>, des <strong>prix compétitifs</strong> et un <strong>service après-vente réactif</strong>.<br/><br/>
 
                                 Pour nos clients professionnels, nous proposons également des <strong>solutions sur-mesure</strong> : <strong>devis personnalisés</strong>, <strong>livraison en quantité</strong>, <strong>accompagnement technique</strong> et <strong>formations</strong> sur certains équipements.<br/><br/>
 
-                                Nous croyons en une <strong>relation de proximité</strong> avec nos clients, qu’ils soient à l’autre bout de la France ou à l’étranger. Notre site est accessible depuis la <strong>France métropolitaine</strong>, l’<strong>Outre-Mer</strong>, mais aussi la <strong>Belgique</strong>, la <strong>Suisse</strong>, le <strong>Luxembourg</strong>, l’<strong>Allemagne</strong> et l’<strong>Italie</strong>.<br/><br/>
+                                Nous croyons en une <strong>relation de proximité</strong> avec nos clients, qu'ils soient à l'autre bout de la France ou à l'étranger. Notre site est accessible depuis la <strong>France métropolitaine</strong>, l'<strong>Outre-Mer</strong>, mais aussi la <strong>Belgique</strong>, la <strong>Suisse</strong>, le <strong>Luxembourg</strong>, l'<strong>Allemagne</strong> et l'<strong>Italie</strong>.<br/><br/>
 
                                 Rejoignez la communauté <strong>#ingenierietravaux</strong> ! Pour découvrir nos dernières offres, nos <strong>conseils et astuces</strong> et nos <strong>nouveautés produits</strong>, suivez-nous sur nos <strong>réseaux sociaux</strong> et abonnez-vous à notre <strong>newsletter</strong>. Ensemble, construisons un monde plus beau, plus fonctionnel et plus agréable à vivre. 🌟
                             </p>
@@ -1784,26 +1782,8 @@
             const isVariant = product.type === 'variants';
             let selectedVariantId = selectedVariantCache[productId] || null;
             let selectedVariant = null;
-        
-let priceHtml = `${currentPrice.toFixed(2)} €`;
-if (oldPrice && oldPrice > currentPrice) {
-    priceHtml += ` <span class="old-price">${oldPrice.toFixed(2)} €</span>`;
-}
-
-let stockHtml = '';
-let urgencyHtml = '';
-if (currentStock > 5) {
-    stockHtml = `<span class="dot in-stock"></span> En stock (${currentStock})`;
-} else if (currentStock > 0 && currentStock <= 5) {
-    stockHtml = `<span class="dot low-stock"></span> Plus que ${currentStock} en stock !`;
-    urgencyHtml = `<div class="urgency-badge" style="display:inline-block;margin-left:0.5rem;">🔥 Commandez vite !</div>`;
-} else {
-    stockHtml = `<span class="dot out-stock"></span> Rupture de stock`;
-}
-
-// 🔥 VARIABLES DYNAMIQUES POUR LA PREUVE SOCIALE
-const randomViewers = Math.floor(Math.random() * 12) + 3;  // 3 à 15
-const todaySales = Math.floor(Math.random() * 15) + 3;     // 3 à 18
+            let currentPrice = isVariant ? (product.base_price || 0) : (product.price || 0);
+            let currentStock = isVariant ? 0 : (product.stock || 0);
             let canAdd = false;
             let oldPrice = null;
 
@@ -1820,13 +1800,17 @@ const todaySales = Math.floor(Math.random() * 15) + 3;     // 3 à 18
                 if (product.compare_at_price) oldPrice = product.compare_at_price;
             }
 
+            // 🔥 VARIABLES DYNAMIQUES POUR LA PREUVE SOCIALE
+            const randomViewers = Math.floor(Math.random() * 12) + 3;
+            const todaySales = Math.floor(Math.random() * 15) + 3;
+
             let features = [];
             if (product.features && Array.isArray(product.features)) {
                 features = product.features;
             } else {
                 features = [
                     'Livraison offerte dès 50€',
-                    'Garantie ',
+                    'Garantie 2 ans',
                     'Fabriqué avec soin',
                     'Possibilité de paiement 3/4 Fois avec Klarna'
                 ];
@@ -1841,6 +1825,9 @@ const todaySales = Math.floor(Math.random() * 15) + 3;     // 3 à 18
             const currentTaille = selectedVariant?.attributes?.taille || (tailleOptions[0] || '');
             const currentCouleur = selectedVariant?.attributes?.couleur || (couleurOptions[0] || '');
 
+            // ============================================================
+            // GALLERIE
+            // ============================================================
             let galleryHtml = '';
             if (images.length > 0) {
                 const mainSrc = images[currentImageIndex];
@@ -1867,6 +1854,9 @@ const todaySales = Math.floor(Math.random() * 15) + 3;     // 3 à 18
                 galleryHtml = `<div class="product-gallery"><div class="main-image"><span>📦</span></div></div>`;
             }
 
+            // ============================================================
+            // STOCK
+            // ============================================================
             let stockHtml = '';
             let urgencyHtml = '';
             if (currentStock > 5) {
@@ -1878,11 +1868,17 @@ const todaySales = Math.floor(Math.random() * 15) + 3;     // 3 à 18
                 stockHtml = `<span class="dot out-stock"></span> Rupture de stock`;
             }
 
+            // ============================================================
+            // PRIX
+            // ============================================================
             let priceHtml = `${currentPrice.toFixed(2)} €`;
             if (oldPrice && oldPrice > currentPrice) {
                 priceHtml += ` <span class="old-price">${oldPrice.toFixed(2)} €</span>`;
             }
 
+            // ============================================================
+            // AVIS CLIENTS
+            // ============================================================
             const reviews = [
                 { name: 'Marie L.', stars: 5, text: 'Super produit, conforme à la description. Livraison rapide !' },
                 { name: 'Thomas R.', stars: 4, text: 'Très bonne qualité, je recommande.' }
@@ -1892,295 +1888,247 @@ const todaySales = Math.floor(Math.random() * 15) + 3;     // 3 à 18
                     <div class="avatar">${r.name.charAt(0)}</div>
                     <div class="content">
                         <div class="stars">${'★'.repeat(r.stars)}${'☆'.repeat(5 - r.stars)}</div>
+                        <div class="text">"${r.text}"</div>
+                        <div class="name">— ${r.name}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            // ============================================================
+            // HTML FINAL (PROPRE - UNE SEULE FOIS CHAQUE ÉLÉMENT)
+            // ============================================================
+            const html = `
+                <div class="back-link" onclick="navigateTo('catalogue')">← Retour au catalogue</div>
+                <div class="product-detail">
+                    <div class="detail-layout">
+                        <!-- COLONNE GAUCHE : GALLERIE -->
+                        <div>${galleryHtml}</div>
+
+                        <!-- COLONNE DROITE : INFOS -->
+                        <div class="detail-info">
+                            <h2>${product.name}</h2>
+                            <p class="description">${product.description || 'Découvrez ce produit de qualité, conçu pour durer.'}</p>
+
+                            <!-- PRIX -->
+                            <div class="price">${priceHtml}</div>
+
+                            <!-- STOCK -->
+                            <div class="stock-info">${stockHtml} ${urgencyHtml}</div>
+
+                            <!-- 👁️ COMPTEUR DE VISUALISATION -->
+                            <div style="color:#b45309;font-size:0.85rem;animation:pulse 1.5s infinite;margin:0.4rem 0 0.1rem;font-weight:500;display:flex;align-items:center;gap:0.4rem;">
+                                <span>👁️</span> 
+                                <span id="viewCounter">${randomViewers}</span> personnes consultent ce produit actuellement
+                            </div>
+
+                            <!-- ⚡ VENTES DU JOUR -->
+                            <div style="font-size:0.75rem;color:var(--color-text-secondary);margin-bottom:0.6rem;">
+                                ⚡ ${todaySales} personnes ont acheté ce produit aujourd'hui
+                            </div>
+
+                            <!-- VARIANTES (UNIQUEMENT SI LE PRODUIT A DES VARIANTES) -->
+                            ${isVariant ? `
+                                <div class="variant-group">
+                                    <strong>Taille</strong>
+                                    <div class="variant-options" id="tailleContainer">
+                                        ${tailleOptions.map(t => `
+                                            <div class="variant-btn ${currentTaille === t ? 'selected' : ''}" data-type="taille" data-value="${t}">${t}</div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                                <div class="variant-group">
+                                    <strong>Couleur</strong>
+                                    <div class="variant-options" id="couleurContainer">
+                                        ${couleurOptions.map(c => `
+                                            <div class="variant-btn ${currentCouleur === c ? 'selected' : ''}" data-type="couleur" data-value="${c}">${c}</div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+
+                            <!-- CARACTÉRISTIQUES -->
+                            <div class="features">
+                                <ul>
+                                    ${features.map(f => `<li>${f}</li>`).join('')}
+                                </ul>
+                            </div>
+
+                            <!-- AVIS CLIENTS -->
+                            <div class="reviews-section">
+                                <div style="font-weight:600;margin-bottom:0.5rem;">Avis clients</div>
+                                ${reviewsHtml}
+                            </div>
+
+                            <!-- BOUTON AJOUTER -->
+                            <div class="detail-actions">
+                                <button class="btn btn-accent" id="addToCartBtn" ${!canAdd ? 'disabled' : ''}>
+                                    ${canAdd ? 'Ajouter au panier' : 'Indisponible'}
+                                </button>
+                            </div>
+
+                            <!-- BADGES DE CONFIANCE -->
+                            <div class="trust-badges">
+                                <div class="badge"><span>🚚</span> Livraison rapide</div>
+                                <div class="badge"><span>🔒</span> Paiement sécurisé</div>
+                                <div class="badge highlight"><span>✅</span> Satisfait ou remboursé 30 jours</div>
+                                <div class="badge"><span>💬</span> Service client 7j/7</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            app.innerHTML = html;
+
+            // ============================================================
+            // ÉVÉNEMENTS : THUMBNAILS (CHANGEMENT D'IMAGE)
+            // ============================================================
+            document.querySelectorAll('.thumb').forEach(thumb => {
+                thumb.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.index);
+                    if (idx !== currentImageIndex) {
+                        currentImageIndex = idx;
+                        renderProductDetail(productId);
+                    }
+                });
+            });
+
+            // ============================================================
+            // ÉVÉNEMENTS : VARIANTES (TAILLE / COULEUR)
+            // ============================================================
+            if (isVariant) {
+                const tailleBtns = document.querySelectorAll('#tailleContainer .variant-btn');
+                const couleurBtns = document.querySelectorAll('#couleurContainer .variant-btn');
+
+                function updateDetailVariant() {
+                    const t = document.querySelector('#tailleContainer .variant-btn.selected')?.dataset.value;
+                    const c = document.querySelector('#couleurContainer .variant-btn.selected')?.dataset.value;
+                    if (t && c) {
+                        const found = product.variants?.find(v => v.attributes?.taille === t && v.attributes?.couleur === c);
+                        if (found) {
+                            selectedVariantCache[productId] = found.id;
+                            renderProductDetail(productId);
+                        } else {
+                            selectedVariantCache[productId] = null;
+                            renderProductDetail(productId);
+                        }
+                    }
+                }
+
+                tailleBtns.forEach(btn => {
+                    btn.onclick = () => {
+                        tailleBtns.forEach(b => b.classList.remove('selected'));
+                        btn.classList.add('selected');
+                        updateDetailVariant();
+                    };
+                });
+                couleurBtns.forEach(btn => {
+                    btn.onclick = () => {
+                        couleurBtns.forEach(b => b.classList.remove('selected'));
+                        btn.classList.add('selected');
+                        updateDetailVariant();
+                    };
+                });
+            }
+
+            // ============================================================
+            // ÉVÉNEMENT : BOUTON AJOUTER AU PANIER
+            // ============================================================
+            document.getElementById('addToCartBtn')?.addEventListener('click', () => {
+                if (isVariant) {
+                    const vid = selectedVariantCache[productId];
+                    if (!vid) {
+                        showToast('Choisissez une variante', 'error');
+                        return;
+                    }
+                    addToCart(productId, vid, 1);
+                } else {
+                    addToCart(productId, null, 1);
+                }
+            });
+        }
 
         // ================================================================
         // 13. RENDU PANIER
         // ================================================================
-        
-function renderProductDetail(productId) {
-    const app = document.getElementById('app');
-    const product = products.find(p => p.id === productId);
-    if (!product) { renderCatalogue(); return; }
-
-    let images = [];
-    if (product.images && product.images.length > 0) {
-        images = product.images;
-    } else if (product.image_url) {
-        images = [product.image_url];
-    }
-    if (images.length === 0 && product.icon) {
-        images = [product.icon];
-    }
-    if (currentImageIndex >= images.length) currentImageIndex = 0;
-
-    const isVariant = product.type === 'variants';
-    let selectedVariantId = selectedVariantCache[productId] || null;
-    let selectedVariant = null;
-    let currentPrice = isVariant ? (product.base_price || 0) : (product.price || 0);
-    let currentStock = isVariant ? 0 : (product.stock || 0);
-    let canAdd = false;
-    let oldPrice = null;
-
-    if (isVariant && selectedVariantId) {
-        selectedVariant = product.variants?.find(v => v.id === selectedVariantId);
-        if (selectedVariant) {
-            currentPrice = selectedVariant.price || 0;
-            currentStock = selectedVariant.stock || 0;
-            canAdd = currentStock > 0;
-            if (selectedVariant.compare_at_price) oldPrice = selectedVariant.compare_at_price;
-        }
-    } else if (!isVariant) {
-        canAdd = (product.stock || 0) > 0;
-        if (product.compare_at_price) oldPrice = product.compare_at_price;
-    }
-
-    // 🔥 VARIABLES DYNAMIQUES POUR LA PREUVE SOCIALE
-    const randomViewers = Math.floor(Math.random() * 12) + 3;
-    const todaySales = Math.floor(Math.random() * 15) + 3;
-
-    let features = [];
-    if (product.features && Array.isArray(product.features)) {
-        features = product.features;
-    } else {
-        features = [
-            'Livraison offerte dès 50€',
-            'Garantie ',
-            'Fabriqué avec soin',
-            'Possibilité de paiement 3/4 Fois avec Klarna'
-        ];
-    }
-
-    let tailleOptions = [],
-        couleurOptions = [];
-    if (isVariant && product.variants) {
-        tailleOptions = [...new Set(product.variants.map(v => v.attributes?.taille).filter(Boolean))];
-        couleurOptions = [...new Set(product.variants.map(v => v.attributes?.couleur).filter(Boolean))];
-    }
-    const currentTaille = selectedVariant?.attributes?.taille || (tailleOptions[0] || '');
-    const currentCouleur = selectedVariant?.attributes?.couleur || (couleurOptions[0] || '');
-
-    // ============================================================
-    // GALLERIE
-    // ============================================================
-    let galleryHtml = '';
-    if (images.length > 0) {
-        const mainSrc = images[currentImageIndex];
-        const isImage = typeof mainSrc === 'string' && (mainSrc.startsWith('http') || mainSrc.startsWith('data:image'));
-        galleryHtml = `
-            <div class="product-gallery">
-                <div class="main-image">
-                    ${isImage ? `<img src="${mainSrc}" alt="${product.name}">` : `<span>${mainSrc}</span>`}
-                </div>
-                <div class="thumbnails">
-                    ${images.map((src, idx) => {
-                        const isImg = typeof src === 'string' && (src.startsWith('http') || src.startsWith('data:image'));
-                        const activeClass = idx === currentImageIndex ? 'active' : '';
-                        return `
-                            <div class="thumb ${activeClass}" data-index="${idx}">
-                                ${isImg ? `<img src="${src}" alt="">` : `<span>${src}</span>`}
-                            </div>
-                        `;
-                    }).join('')}
-                </div>
-            </div>
-        `;
-    } else {
-        galleryHtml = `<div class="product-gallery"><div class="main-image"><span>📦</span></div></div>`;
-    }
-
-    // ============================================================
-    // STOCK
-    // ============================================================
-    let stockHtml = '';
-    let urgencyHtml = '';
-    if (currentStock > 5) {
-        stockHtml = `<span class="dot in-stock"></span> En stock (${currentStock})`;
-    } else if (currentStock > 0 && currentStock <= 5) {
-        stockHtml = `<span class="dot low-stock"></span> Plus que ${currentStock} en stock !`;
-        urgencyHtml = `<div class="urgency-badge" style="display:inline-block;margin-left:0.5rem;">🔥 Commandez vite !</div>`;
-    } else {
-        stockHtml = `<span class="dot out-stock"></span> Rupture de stock`;
-    }
-
-    // ============================================================
-    // PRIX
-    // ============================================================
-    let priceHtml = `${currentPrice.toFixed(2)} €`;
-    if (oldPrice && oldPrice > currentPrice) {
-        priceHtml += ` <span class="old-price">${oldPrice.toFixed(2)} €</span>`;
-    }
-
-    // ============================================================
-    // AVIS CLIENTS
-    // ============================================================
-    const reviews = [
-        { name: 'Marie L.', stars: 5, text: 'Super produit, conforme à la description. Livraison rapide !' },
-        { name: 'Thomas R.', stars: 4, text: 'Très bonne qualité, je recommande.' }
-    ];
-    const reviewsHtml = reviews.map(r => `
-        <div class="review">
-            <div class="avatar">${r.name.charAt(0)}</div>
-            <div class="content">
-                <div class="stars">${'★'.repeat(r.stars)}${'☆'.repeat(5 - r.stars)}</div>
-                <div class="text">"${r.text}"</div>
-                <div class="name">— ${r.name}</div>
-            </div>
-        </div>
-    `).join('');
-
-    // ============================================================
-    // HTML FINAL (PROPRE - UNE SEULE FOIS CHAQUE ÉLÉMENT)
-    // ============================================================
-    const html = `
-        <div class="back-link" onclick="navigateTo('catalogue')">← Retour au catalogue</div>
-        <div class="product-detail">
-            <div class="detail-layout">
-                <!-- COLONNE GAUCHE : GALLERIE -->
-                <div>${galleryHtml}</div>
-
-                <!-- COLONNE DROITE : INFOS -->
-                <div class="detail-info">
-                    <h2>${product.name}</h2>
-                    <p class="description">${product.description || 'Découvrez ce produit de qualité, conçu pour durer.'}</p>
-
-                    <!-- PRIX -->
-                    <div class="price">${priceHtml}</div>
-
-                    <!-- STOCK -->
-                    <div class="stock-info">${stockHtml} ${urgencyHtml}</div>
-
-                    <!-- 👁️ COMPTEUR DE VISUALISATION -->
-                    <div style="color:#b45309;font-size:0.85rem;animation:pulse 1.5s infinite;margin:0.4rem 0 0.1rem;font-weight:500;display:flex;align-items:center;gap:0.4rem;">
-                        <span>👁️</span> 
-                        <span id="viewCounter">${randomViewers}</span> personnes consultent ce produit actuellement
-                    </div>
-
-                    <!-- ⚡ VENTES DU JOUR -->
-                    <div style="font-size:0.75rem;color:var(--color-text-secondary);margin-bottom:0.6rem;">
-                        ⚡ ${todaySales} personnes ont acheté ce produit aujourd'hui
-                    </div>
-
-                    <!-- VARIANTES (UNIQUEMENT SI LE PRODUIT A DES VARIANTES) -->
-                    ${isVariant ? `
-                        <div class="variant-group">
-                            <strong>Taille</strong>
-                            <div class="variant-options" id="tailleContainer">
-                                ${tailleOptions.map(t => `
-                                    <div class="variant-btn ${currentTaille === t ? 'selected' : ''}" data-type="taille" data-value="${t}">${t}</div>
-                                `).join('')}
-                            </div>
+        function renderCart() {
+            const app = document.getElementById('app');
+            if (!Array.isArray(cart) || cart.length === 0) {
+                app.innerHTML = `
+                    <div class="cart-page">
+                        <div class="empty-state">
+                            <span class="emoji">🛒</span>
+                            <h3>Votre panier est vide</h3>
+                            <p style="margin-top:0.5rem;color:var(--color-text-secondary);">Explorez notre catalogue et ajoutez des produits.</p>
+                            <button class="btn btn-accent" style="width:auto;margin-top:1.2rem;" onclick="navigateTo('catalogue')">Voir les produits</button>
                         </div>
-                        <div class="variant-group">
-                            <strong>Couleur</strong>
-                            <div class="variant-options" id="couleurContainer">
-                                ${couleurOptions.map(c => `
-                                    <div class="variant-btn ${currentCouleur === c ? 'selected' : ''}" data-type="couleur" data-value="${c}">${c}</div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    ` : ''}
-
-                    <!-- CARACTÉRISTIQUES -->
-                    <div class="features">
-                        <ul>
-                            ${features.map(f => `<li>${f}</li>`).join('')}
-                        </ul>
                     </div>
-
-                    <!-- AVIS CLIENTS -->
-                    <div class="reviews-section">
-                        <div style="font-weight:600;margin-bottom:0.5rem;">Avis clients</div>
-                        ${reviewsHtml}
-                    </div>
-
-                    <!-- BOUTON AJOUTER -->
-                    <div class="detail-actions">
-                        <button class="btn btn-accent" id="addToCartBtn" ${!canAdd ? 'disabled' : ''}>
-                            ${canAdd ? 'Ajouter au panier' : 'Indisponible'}
-                        </button>
-                    </div>
-
-                    <!-- BADGES DE CONFIANCE -->
-                    <div class="trust-badges">
-                        <div class="badge"><span>🚚</span> Livraison rapide</div>
-                        <div class="badge"><span>🔒</span> Paiement sécurisé</div>
-                        <div class="badge highlight"><span>✅</span> Satisfait ou remboursé 30 jours</div>
-                        <div class="badge"><span>💬</span> Service client 7j/7</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-
-    app.innerHTML = html;
-
-    // ============================================================
-    // ÉVÉNEMENTS : THUMBNAILS (CHANGEMENT D'IMAGE)
-    // ============================================================
-    document.querySelectorAll('.thumb').forEach(thumb => {
-        thumb.addEventListener('click', function() {
-            const idx = parseInt(this.dataset.index);
-            if (idx !== currentImageIndex) {
-                currentImageIndex = idx;
-                renderProductDetail(productId);
-            }
-        });
-    });
-
-    // ============================================================
-    // ÉVÉNEMENTS : VARIANTES (TAILLE / COULEUR)
-    // ============================================================
-    if (isVariant) {
-        const tailleBtns = document.querySelectorAll('#tailleContainer .variant-btn');
-        const couleurBtns = document.querySelectorAll('#couleurContainer .variant-btn');
-
-        function updateDetailVariant() {
-            const t = document.querySelector('#tailleContainer .variant-btn.selected')?.dataset.value;
-            const c = document.querySelector('#couleurContainer .variant-btn.selected')?.dataset.value;
-            if (t && c) {
-                const found = product.variants?.find(v => v.attributes?.taille === t && v.attributes?.couleur === c);
-                if (found) {
-                    selectedVariantCache[productId] = found.id;
-                    renderProductDetail(productId);
-                } else {
-                    selectedVariantCache[productId] = null;
-                    renderProductDetail(productId);
-                }
-            }
-        }
-
-        tailleBtns.forEach(btn => {
-            btn.onclick = () => {
-                tailleBtns.forEach(b => b.classList.remove('selected'));
-                btn.classList.add('selected');
-                updateDetailVariant();
-            };
-        });
-        couleurBtns.forEach(btn => {
-            btn.onclick = () => {
-                couleurBtns.forEach(b => b.classList.remove('selected'));
-                btn.classList.add('selected');
-                updateDetailVariant();
-            };
-        });
-    }
-
-    // ============================================================
-    // ÉVÉNEMENT : BOUTON AJOUTER AU PANIER
-    // ============================================================
-    document.getElementById('addToCartBtn')?.addEventListener('click', () => {
-        if (isVariant) {
-            const vid = selectedVariantCache[productId];
-            if (!vid) {
-                showToast('Choisissez une variante', 'error');
+                `;
                 return;
             }
-            addToCart(productId, vid, 1);
-        } else {
-            addToCart(productId, null, 1);
+
+            let html = `
+                <div class="cart-page">
+                    <div class="cart-header">
+                        <h2>🛒 Votre panier</h2>
+                        <span>${cart.length} article(s)</span>
+                    </div>
+            `;
+
+            cart.forEach((item, index) => {
+                const stock = getStock(item.productId, item.variantId);
+                const isDisabled = stock <= 0;
+                const imageHtml = item.imageUrl ?
+                    `<img src="${item.imageUrl}" alt="${item.name}">` :
+                    `<span>${item.imageIcon || '📦'}</span>`;
+
+                const variantStr = item.attributes && Object.keys(item.attributes).length > 0 ?
+                    Object.entries(item.attributes).map(([k, v]) => `${k}: ${v}`).join(', ') :
+                    '';
+
+                html += `
+                    <div class="cart-item">
+                        <div class="cart-item-image">${imageHtml}</div>
+                        <div class="cart-item-info">
+                            <div class="name">${item.name}</div>
+                            ${variantStr ? `<div class="variant">${variantStr}</div>` : ''}
+                        </div>
+                        <div class="cart-item-price">${(item.price * item.quantity).toFixed(2)} €</div>
+                        <div class="cart-item-qty">
+                            <button class="qty-btn" onclick="updateCartItem(${index}, ${item.quantity - 1})" ${isDisabled ? 'disabled' : ''}>−</button>
+                            <span class="qty-value">${item.quantity}</span>
+                            <button class="qty-btn" onclick="updateCartItem(${index}, ${item.quantity + 1})" ${isDisabled ? 'disabled' : ''}>+</button>
+                            <button class="qty-btn remove" onclick="updateCartItem(${index}, 0)">✕</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            const subtotal = getSubtotal();
+            const total = getTotal();
+            const discountAmount = appliedPromo?.discountAmount || 0;
+            const promoCode = appliedPromo?.code || '';
+
+            html += `
+                    <div class="promo-box">
+                        <input type="text" id="promoInput" placeholder="Code promo" value="${promoCode}">
+                        <button class="btn btn-sm btn-outline" onclick="handlePromo()">${promoCode ? 'Retirer' : 'Appliquer'}</button>
+                        ${promoCode ? `<span class="promo-code-badge">${promoCode} -${discountAmount.toFixed(2)}€</span>` : ''}
+                    </div>
+                    <div class="cart-summary">
+                        <p>Sous-total : ${subtotal.toFixed(2)} €</p>
+                        ${discountAmount > 0 ? `<p class="discount">Réduction : -${discountAmount.toFixed(2)} €</p>` : ''}
+                        <p class="total">Total : ${total.toFixed(2)} €</p>
+                    </div>
+                    <div class="cart-actions">
+                        <button class="btn btn-outline" onclick="navigateTo('catalogue')">Continuer les achats</button>
+                        <button class="btn btn-accent" onclick="stripeCheckout()">💳 Payer</button>
+                    </div>
+                </div>
+            `;
+
+            app.innerHTML = html;
         }
-    });
-}
 
         // ================================================================
         // 14. PAIEMENT STRIPE
@@ -2239,7 +2187,37 @@ function renderProductDetail(productId) {
         }
 
         // ================================================================
-        // 15. RENDU PAGE COURANTE
+        // 15. GESTION PROMO
+        // ================================================================
+        function handlePromo() {
+            const input = document.getElementById('promoInput');
+            if (!input) return;
+            const code = input.value.trim().toUpperCase();
+
+            if (appliedPromo && appliedPromo.code === code) {
+                removePromo();
+                input.value = '';
+                showToast('Code promo retiré', 'info');
+                renderCart();
+                return;
+            }
+
+            if (!code) {
+                showToast('Veuillez entrer un code', 'error');
+                return;
+            }
+
+            const result = applyPromoCode(code);
+            if (result.success) {
+                showToast(result.message, 'success');
+            } else {
+                showToast(result.message, 'error');
+            }
+            renderCart();
+        }
+
+        // ================================================================
+        // 16. PAGE COURANTE
         // ================================================================
         function renderCurrentPage() {
             if (currentPage === 'catalogue') renderCatalogue();
@@ -2249,7 +2227,7 @@ function renderProductDetail(productId) {
         }
 
         // ================================================================
-        // 16. SYNCHRONISATION INTER-ONGLETS
+        // 17. SYNCHRONISATION INTER-ONGLETS
         // ================================================================
         window.addEventListener('storage', function(e) {
             if (e.key === 'styleShopCart') {
@@ -2260,15 +2238,16 @@ function renderProductDetail(productId) {
         });
 
         // ================================================================
-        // 17. EXPOSER LES FONCTIONS
+        // 18. EXPOSER LES FONCTIONS
         // ================================================================
         window.navigateTo = navigateTo;
         window.addToCart = addToCart;
         window.updateCartItem = updateCartItem;
         window.stripeCheckout = stripeCheckout;
+        window.handlePromo = handlePromo;
 
         // ================================================================
-        // 18. INITIALISATION
+        // 19. INITIALISATION
         // ================================================================
         async function init() {
             await loadProducts();
