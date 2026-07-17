@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+  
+  <!-- ============================================================
+  PAGE D'ACCUEIL PRINCIPALE (Présentation Génie Civil)
+  ============================================================ -->
+  <url>
+    <loc>https://ingenierie-travaux.vercel.app/</loc>
+    <lastmod>2026-07-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://ingenierie-travaux.vercel.app/" />
+  </url>
+
+  <!-- ============================================================
+  BOUTIQUE - ACCUEIL
+  ============================================================ -->
+  <url>
+    <loc>https://ingenierie-travaux.vercel.app/boutique/</loc>
+    <lastmod>2026-07-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://ingenierie-travaux.vercel.app/boutique/" />
+  </url>
+
+  <!-- ============================================================
+  BOUTIQUE - CATALOGUE
+  ============================================================ -->
+  <url>
+    <loc>https://ingenierie-travaux.vercel.app/boutique/catalogue</loc>
+    <lastmod>2026-07-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ============================================================
+  PAGES PRODUITS (EXEMPLES STATIQUES)
+  ============================================================ -->
+  <url>
+    <loc>https://ingenierie-travaux.vercel.app/boutique/product/demo-1</loc>
+    <lastmod>2026-07-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://picsum.photos/seed/tshirt/400/400</image:loc>
+      <image:title>T-shirt Premium StyleShop</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://ingenierie-travaux.vercel.app/boutique/product/demo-2</loc>
+    <lastmod>2026-07-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://picsum.photos/seed/jean/400/400</image:loc>
+      <image:title>Jean Slim StyleShop</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://ingenierie-travaux.vercel.app/boutique/product/demo-3</loc>
+    <lastmod>2026-07-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://picsum.photos/seed/casquette/400/400</image:loc>
+      <image:title>Casquette Urbaine StyleShop</image:title>
+    </image:image>
+  </url>
+
+  <!-- ============================================================
+  PAGES ADMIN & TECHNIQUES (Exclues du sitemap - optionnel)
+  ============================================================ -->
+  <!-- NE PAS INCLURE /admin/ ni /api/ -->
+
+</urlset>
