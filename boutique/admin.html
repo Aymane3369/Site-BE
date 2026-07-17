@@ -36,6 +36,7 @@
         .badge-success { background: #dcfce7; color: #15803d; }
         .badge-warning { background: #fef9c3; color: #854d0e; }
         .badge-danger { background: #fee2e2; color: #dc2626; }
+        .badge-promo { background: #fecaca; color: #b91c1c; }
         .product-img-list { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 28px; background: #f1f5f9; border-radius: 8px; overflow: hidden; }
         .product-img-list img { width: 40px; height: 40px; object-fit: cover; }
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
@@ -43,8 +44,11 @@
         .form-group { margin-bottom: 1.2rem; }
         label { font-weight: 500; display: block; margin-bottom: 0.4rem; }
         input, select, textarea { width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 0.95rem; }
-        .variant-row { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
+        .variant-row { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; flex-wrap: wrap; align-items: center; }
         .variant-row input { flex: 1; min-width: 80px; }
+        .variant-row .variant-price { max-width: 110px; }
+        .variant-row .variant-stock { max-width: 70px; }
+        .variant-row .variant-compare { max-width: 110px; }
         .flex-between { display: flex; justify-content: space-between; align-items: center; }
         .emoji-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(50px, 60px)); gap: 8px; margin: 10px 0; }
         .emoji-option { font-size: 32px; background: #f1f5f9; border: 2px solid #e2e8f0; border-radius: 16px; padding: 5px; text-align: center; cursor: pointer; transition: 0.1s; }
@@ -57,8 +61,8 @@
         .upload-area input[type="file"] { width: auto; padding: 0.4rem; }
         .upload-btn { background: #22c55e; color: white; border: none; padding: 0.4rem 1rem; border-radius: 30px; cursor: pointer; }
         .upload-btn:hover { background: #16a34a; }
-        .error-message { background: #fee2e2; color: #dc2626; padding: 1rem; border-radius: 12px; margin: 1rem 0; border: 1px solid #fecaca; }
         .stock-input { width:70px; padding:0.3rem; border:1px solid #cbd5e1; border-radius:8px; text-align:center; }
+        .promo-indicator { font-size: 0.75rem; color: #b91c1c; font-weight: 600; background: #fecaca; padding: 0.15rem 0.6rem; border-radius: 30px; display: inline-block; margin-left: 0.4rem; }
         @media (max-width: 700px) {
             .sidebar { width: 80px; padding: 1rem 0.5rem; }
             .sidebar .logo h2 { font-size: 1rem; }
@@ -168,6 +172,16 @@
                 if (p.image_url && !p.images.includes(p.image_url)) {
                     p.images.unshift(p.image_url);
                 }
+                // S'assurer que compare_at_price existe
+                if (p.type === 'simple' && p.compare_at_price === undefined) {
+                    p.compare_at_price = null;
+                }
+                // Pour les variantes
+                if (p.variants) {
+                    p.variants.forEach(v => {
+                        if (v.compare_at_price === undefined) v.compare_at_price = null;
+                    });
+                }
             });
             return products;
         }
@@ -229,6 +243,25 @@
             } else {
                 return `<span style="font-size:28px;">📦</span>`;
             }
+        }
+
+        function calculateDiscount(price, comparePrice) {
+            if (comparePrice && comparePrice > price) {
+                return Math.round((1 - price / comparePrice) * 100);
+            }
+            return 0;
+        }
+
+        function formatPrice(price) {
+            return (price || 0).toFixed(2) + ' €';
+        }
+
+        function getPromoBadge(price, comparePrice) {
+            const discount = calculateDiscount(price, comparePrice);
+            if (discount > 0) {
+                return `<span class="badge badge-promo">-${discount}%</span>`;
+            }
+            return '';
         }
 
         // ============================================
@@ -300,23 +333,51 @@
                 <div class="page-header"><h1>👕 Produits</h1><button class="btn" id="addProductBtn">+ Ajouter</button></div>
                 <div class="table-container">
                     <table>
-                        <thead><tr><th>Icône</th><th>Nom</th><th>Type</th><th>Prix</th><th>Stock</th><th>Actif</th><th>Actions</th></tr></thead>
+                        <thead><tr><th>Icône</th><th>Nom</th><th>Type</th><th>Prix</th><th>Prix barré</th><th>Promo</th><th>Stock</th><th>Actif</th><th>Actions</th></tr></thead>
                         <tbody>
-                            ${products.map(p => `
-                                <tr>
-                                    <td><div class="product-img-list">${getDisplayIcon(p)}</div></td>
-                                    <td><strong>${p.name}</strong></td>
-                                    <td>${p.type === 'simple' ? 'Simple' : 'Variantes'}</td>
-                                    <td>${p.type === 'simple' ? (p.price || 0) + ' €' : 'à partir de ' + (p.base_price || 0) + ' €'}</td>
-                                    <td>${p.type === 'simple' ? (p.stock || 0) : (p.variants?.reduce((s,v) => s + (v.stock || 0), 0) || 0)}</td>
-                                    <td>${p.active !== false ? '✅' : '❌'}</td>
-                                    <td>
-                                        <button class="btn-small btn-outline" onclick="editProduct('${p.id}')">Modifier</button>
-                                        <button class="btn-small btn-danger" onclick="deleteProduct('${p.id}')">Supprimer</button>
-                                    </td>
-                                </tr>
-                            `).join('')}
-                            ${products.length === 0 ? '<tr><td colspan="7" style="text-align:center;color:#94a3b8;">Aucun produit</td></tr>' : ''}
+                            ${products.map(p => {
+                                let priceDisplay = '', compareDisplay = '', promoDisplay = '', stockDisplay = '';
+                                if (p.type === 'simple') {
+                                    const price = p.price || 0;
+                                    const compare = p.compare_at_price || null;
+                                    priceDisplay = formatPrice(price);
+                                    compareDisplay = compare ? formatPrice(compare) : '—';
+                                    const discount = calculateDiscount(price, compare);
+                                    promoDisplay = discount > 0 ? `<span class="badge badge-promo">-${discount}%</span>` : '—';
+                                    stockDisplay = p.stock || 0;
+                                } else if (p.variants && p.variants.length > 0) {
+                                    const firstVar = p.variants[0];
+                                    const price = firstVar.price || p.base_price || 0;
+                                    const compare = firstVar.compare_at_price || null;
+                                    priceDisplay = formatPrice(price) + ' (base)';
+                                    compareDisplay = compare ? formatPrice(compare) : '—';
+                                    const discount = calculateDiscount(price, compare);
+                                    promoDisplay = discount > 0 ? `<span class="badge badge-promo">-${discount}%</span>` : '—';
+                                    stockDisplay = p.variants.reduce((s, v) => s + (v.stock || 0), 0);
+                                } else {
+                                    priceDisplay = '—';
+                                    compareDisplay = '—';
+                                    promoDisplay = '—';
+                                    stockDisplay = '—';
+                                }
+                                return `
+                                    <tr>
+                                        <td><div class="product-img-list">${getDisplayIcon(p)}</div></td>
+                                        <td><strong>${p.name}</strong></td>
+                                        <td>${p.type === 'simple' ? 'Simple' : 'Variantes'}</td>
+                                        <td>${priceDisplay}</td>
+                                        <td>${compareDisplay}</td>
+                                        <td>${promoDisplay}</td>
+                                        <td>${stockDisplay}</td>
+                                        <td>${p.active !== false ? '✅' : '❌'}</td>
+                                        <td>
+                                            <button class="btn-small btn-outline" onclick="editProduct('${p.id}')">Modifier</button>
+                                            <button class="btn-small btn-danger" onclick="deleteProduct('${p.id}')">Supprimer</button>
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                            ${products.length === 0 ? '<tr><td colspan="9" style="text-align:center;color:#94a3b8;">Aucun produit</td></tr>' : ''}
                         </tbody>
                     </table>
                 </div>
@@ -327,16 +388,17 @@
         }
 
         // ============================================
-        // 10. MODALE PRODUIT
+        // 10. MODALE PRODUIT (avec gestion des prix barrés)
         // ============================================
         const emojiList = ['👕','👖','👟','🧥','🧢','🧦','👗','👚','🎒','👔','🧣','👑','🧤','🕶️','👠'];
 
         function showProductModal(product = null) {
             const isEdit = !!product;
-            let variantsArray = product?.variants ? [...product.variants] : [];
+            let variantsArray = product?.variants ? JSON.parse(JSON.stringify(product.variants)) : [];
             let selectedEmoji = product?.icon || '📦';
             let imagesArray = product?.images ? [...product.images] : [];
             let uploadedImages = [];
+            let simpleCompare = product?.compare_at_price || '';
 
             const modalDiv = document.createElement('div');
             modalDiv.className = 'modal';
@@ -353,6 +415,7 @@
                     </div>
                     <div id="simpleFields" style="${product?.type === 'variants' ? 'display:none' : 'block'}">
                         <div class="form-group"><label>Prix (€)</label><input id="simplePrice" type="number" step="0.01" value="${product?.price || ''}"></div>
+                        <div class="form-group"><label>Prix barré (€) <small style="color:#64748b;">(laisser vide si pas de promo)</small></label><input id="simpleCompare" type="number" step="0.01" value="${simpleCompare || ''}"></div>
                         <div class="form-group"><label>Stock</label><input id="simpleStock" type="number" value="${product?.stock || 0}"></div>
                     </div>
                     <div id="variantsFields" style="${product?.type === 'variants' ? 'block' : 'display:none'}">
@@ -478,7 +541,7 @@
 
             imagesInput.addEventListener('input', updatePreview);
 
-            // Variantes
+            // Variantes avec prix barré
             const variantsContainer = modalDiv.querySelector('#variantsContainer');
             function renderVariants() {
                 variantsContainer.innerHTML = '';
@@ -486,9 +549,11 @@
                     const div = document.createElement('div');
                     div.className = 'variant-row';
                     div.innerHTML = `
-                        <input type="text" placeholder="Taille/Couleur" value="${v.attributes?.taille || ''}/${v.attributes?.couleur || ''}">
-                        <input type="number" placeholder="Stock" value="${v.stock || 0}" style="width:80px;">
-                        <input type="number" placeholder="Prix €" step="0.01" value="${v.price || 0}" style="width:100px;">
+                        <input type="text" placeholder="Taille" value="${v.attributes?.taille || ''}" style="min-width:70px; max-width:100px;">
+                        <input type="text" placeholder="Couleur" value="${v.attributes?.couleur || ''}" style="min-width:70px; max-width:100px;">
+                        <input type="number" placeholder="Prix €" step="0.01" value="${v.price || 0}" class="variant-price">
+                        <input type="number" placeholder="Prix barré €" step="0.01" value="${v.compare_at_price || ''}" class="variant-compare">
+                        <input type="number" placeholder="Stock" value="${v.stock || 0}" class="variant-stock">
                         <button class="btn-small btn-danger" data-idx="${idx}">✖</button>
                     `;
                     variantsContainer.appendChild(div);
@@ -503,7 +568,7 @@
             }
             if (product?.type === 'variants') renderVariants();
             modalDiv.querySelector('#addVariantBtn')?.addEventListener('click', () => {
-                variantsArray.push({ attributes: { taille: '', couleur: '' }, stock: 0, price: 0 });
+                variantsArray.push({ attributes: { taille: '', couleur: '' }, stock: 0, price: 0, compare_at_price: null });
                 renderVariants();
             });
 
@@ -529,12 +594,14 @@
 
                 if (typeSelect.value === 'simple') {
                     const price = parseFloat(modalDiv.querySelector('#simplePrice').value);
+                    const compare = parseFloat(modalDiv.querySelector('#simpleCompare').value) || null;
                     const stock = parseInt(modalDiv.querySelector('#simpleStock').value);
                     if (isNaN(price)) return alert('Prix invalide');
                     const newProd = {
                         id: isEdit ? product.id : Date.now().toString(),
                         name, description, type: 'simple',
                         price, stock,
+                        compare_at_price: compare,
                         icon: radioEmoji.checked ? selectedEmoji : null,
                         images: allImages,
                         active
@@ -550,15 +617,17 @@
                     const rows = variantsContainer.querySelectorAll('.variant-row');
                     rows.forEach(row => {
                         const inputs = row.querySelectorAll('input');
-                        const attrsStr = inputs[0]?.value || '';
-                        const [taille, couleur] = attrsStr.split('/');
-                        const stock = parseInt(inputs[1]?.value || 0);
+                        const taille = inputs[0]?.value || '';
+                        const couleur = inputs[1]?.value || '';
                         const price = parseFloat(inputs[2]?.value || 0) || basePrice;
+                        const compare = parseFloat(inputs[3]?.value) || null;
+                        const stock = parseInt(inputs[4]?.value || 0);
                         if (taille.trim()) {
                             finalVariants.push({
                                 id: Date.now() + Math.random().toString(36).substring(2,6),
                                 attributes: { taille: taille.trim(), couleur: couleur.trim() || '' },
-                                stock, price
+                                stock, price,
+                                compare_at_price: compare
                             });
                         }
                     });
@@ -624,7 +693,7 @@
         };
 
         // ============================================
-        // 12. GESTION STOCK (CORRIGÉE AVEC CHAMP DE SAISIE)
+        // 12. GESTION STOCK
         // ============================================
         async function renderStock() {
             await loadProducts();
@@ -639,7 +708,9 @@
                         variantId: null, 
                         isVariant: false, 
                         images: p.images || [],
-                        icon: p.icon 
+                        icon: p.icon,
+                        price: p.price || 0,
+                        compare: p.compare_at_price || null
                     });
                 } else if (p.variants) {
                     p.variants.forEach(v => {
@@ -651,7 +722,9 @@
                             variantId: v.id, 
                             isVariant: true, 
                             images: p.images || [],
-                            icon: p.icon 
+                            icon: p.icon,
+                            price: v.price || p.base_price || 0,
+                            compare: v.compare_at_price || null
                         });
                     });
                 }
@@ -661,7 +734,7 @@
                 <div class="page-header"><h1>📦 Gestion du stock</h1></div>
                 <div class="table-container">
                     <table>
-                        <thead><tr><th>Icône</th><th>Produit</th><th>Variante</th><th>Stock</th><th>Ajuster</th></tr></thead>
+                        <thead><tr><th>Icône</th><th>Produit</th><th>Variante</th><th>Prix</th><th>Promo</th><th>Stock</th><th>Ajuster</th></tr></thead>
                         <tbody id="stockTableBody">
                             ${rows.map((r, index) => {
                                 let iconHtml = '📦';
@@ -670,11 +743,16 @@
                                 } else if (r.icon) {
                                     iconHtml = `<span style="font-size:28px;">${r.icon}</span>`;
                                 }
+                                const discount = calculateDiscount(r.price, r.compare);
+                                const promoBadge = discount > 0 ? `<span class="badge badge-promo">-${discount}%</span>` : '';
+                                const priceDisplay = r.compare ? `${formatPrice(r.compare)} → ${formatPrice(r.price)}` : formatPrice(r.price);
                                 return `
                                     <tr data-index="${index}">
                                         <td><div class="product-img-list">${iconHtml}</div></td>
                                         <td><strong>${r.name}</strong></td>
                                         <td>${r.variant}</td>
+                                        <td>${priceDisplay}</td>
+                                        <td>${promoBadge || '—'}</td>
                                         <td>
                                             <span class="stock-display" id="stockDisplay-${index}">
                                                 ${r.stock === 0 ? '<span class="badge badge-danger">Rupture</span>' :
@@ -693,20 +771,16 @@
                                     </tr>
                                 `;
                             }).join('')}
-                            ${rows.length === 0 ? '<tr><td colspan="5" style="text-align:center;color:#94a3b8;">Aucun produit</td></tr>' : ''}
+                            ${rows.length === 0 ? '<tr><td colspan="7" style="text-align:center;color:#94a3b8;">Aucun produit</td></tr>' : ''}
                         </tbody>
                     </table>
                 </div>
             `;
             document.getElementById('mainContent').innerHTML = html;
 
-            // ============================================
-            // GESTION DES ÉVÉNEMENTS (DÉLÉGATION)
-            // ============================================
             const tableBody = document.getElementById('stockTableBody');
             if (!tableBody) return;
 
-            // Fonction pour mettre à jour l'affichage d'une ligne
             function updateRowDisplay(index, newStock) {
                 const displaySpan = document.getElementById(`stockDisplay-${index}`);
                 if (!displaySpan) return;
@@ -717,12 +791,10 @@
                 } else {
                     displaySpan.innerHTML = `<span class="badge badge-success">${newStock}</span>`;
                 }
-                // Mettre à jour la valeur dans l'input
                 const input = document.querySelector(`.stock-input[data-index="${index}"]`);
                 if (input) input.value = newStock;
             }
 
-            // Gestion des clics sur les boutons +/- et "Appliquer"
             tableBody.addEventListener('click', async function(e) {
                 const target = e.target.closest('.stock-btn, .stock-set-btn');
                 if (!target) return;
@@ -730,11 +802,9 @@
                 const index = parseInt(target.dataset.index);
                 if (isNaN(index)) return;
 
-                // Récupérer la ligne correspondante
                 const row = document.querySelector(`tr[data-index="${index}"]`);
                 if (!row) return;
 
-                // Récupérer l'input de cette ligne
                 const input = row.querySelector('.stock-input');
                 if (!input) return;
 
@@ -753,10 +823,8 @@
                     if (newStock < 0) newStock = 0;
                 }
 
-                // Mettre à jour l'affichage immédiatement
                 updateRowDisplay(index, newStock);
 
-                // Mettre à jour dans la base de données
                 const pid = target.dataset.pid;
                 const vid = target.dataset.vid;
                 const isVar = target.dataset.isvar === 'true';
@@ -786,13 +854,11 @@
                     showToast('✅ Stock mis à jour');
                 } catch (e) {
                     showToast('❌ Erreur: ' + e.message);
-                    // Recharger la page pour restaurer l'ancienne valeur
                     await loadProducts();
                     await renderStock();
                 }
             });
 
-            // Appuyer sur Entrée dans l'input déclenche automatiquement "Appliquer"
             tableBody.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     const input = e.target.closest('.stock-input');
@@ -1034,4 +1100,4 @@
         init();
     </script>
 </body>
-  </html>
+</html>
