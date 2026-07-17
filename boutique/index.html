@@ -2331,22 +2331,33 @@
         // ================================================================
         // 9. RÉCUPÉRER LE PRODUIT DEPUIS L'URL (VERSION CORRIGÉE)
         // ================================================================
-        function getProductFromUrl() {
-            const path = window.location.pathname;
-            console.log('🔍 URL:', path);
-            
-            // Extraire l'ID (n'importe quel caractère après le dernier tiret)
-            const match = path.match(/\/boutique\/produit\/.+?-([^\/]+)$/);
-            if (match && match[1]) {
-                const id = match[1];
-                console.log('🎯 ID extrait:', id);
-                // Chercher le produit en comparant les IDs comme des chaînes
-                const product = products.find(p => String(p.id) === String(id));
-                console.log('📦 Produit trouvé:', product ? product.name : '❌ Non trouvé');
-                return product;
-            }
-            return null;
-        }
+ function getProductFromUrl() {
+    const path = window.location.pathname;
+    console.log('🔍 URL:', path);
+    
+    // Extraire l'ID (tout ce qui suit le dernier tiret)
+    const match = path.match(/\/boutique\/produit\/.+?-([^\/]+)$/);
+    if (match && match[1]) {
+        const id = match[1];
+        console.log('🎯 ID extrait:', id);
+        console.log('🔎 Type de ID extrait:', typeof id);
+        
+        // Chercher le produit en comparant les IDs comme des chaînes
+        // ET en gérant le cas où l'ID est un nombre
+        const product = products.find(p => {
+            // Convertir les deux en chaîne pour comparer
+            const pId = String(p.id);
+            const searchId = String(id);
+            console.log(`  Comparaison: "${pId}" === "${searchId}" -> ${pId === searchId}`);
+            return pId === searchId;
+        });
+        
+        console.log('📦 Produit trouvé:', product ? product.name : '❌ Non trouvé');
+        return product;
+    }
+    console.log('❌ Aucun ID trouvé dans l\'URL');
+    return null;
+}
 
         // ================================================================
         // 10. AJOUT / MODIFICATION PANIER
@@ -2507,41 +2518,45 @@
         // ================================================================
         // 13. NAVIGATION (VERSION CORRIGÉE)
         // ================================================================
-        function navigateTo(page, productId = null) {
-            console.log('🚀 Navigation:', page, productId);
-            
-            if (page === 'product' && productId) {
-                const product = products.find(p => String(p.id) === String(productId));
-                if (product) {
-                    const url = getProductUrl(product);
-                    console.log('📍 URL:', url);
-                    window.history.pushState({ page: 'product', id: productId }, '', url);
-                    currentPage = 'product';
-                    selectedProductId = productId;
-                    currentImageIndex = 0;
-                    if (product.type === 'variants' && !selectedVariantCache[productId]) {
-                        const firstAvail = product.variants?.find(v => v.stock > 0);
-                        selectedVariantCache[productId] = firstAvail ? firstAvail.id : null;
-                    }
-                    renderCurrentPage();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                    return;
-                } else {
-                    console.error('❌ Produit non trouvé:', productId);
-                }
-            } else if (page === 'cart') {
-                window.history.pushState({ page: 'cart' }, '', '/boutique/panier');
-                currentPage = 'cart';
-                selectedProductId = null;
-            } else {
-                window.history.pushState({ page: 'catalogue' }, '', '/boutique');
-                currentPage = 'catalogue';
-                selectedProductId = null;
+   function navigateTo(page, productId = null) {
+    console.log('🚀 Navigation:', page, productId);
+    console.log('🔎 Type de productId:', typeof productId);
+    
+    if (page === 'product' && productId) {
+        // Convertir l'ID en chaîne pour la recherche
+        const searchId = String(productId);
+        const product = products.find(p => String(p.id) === searchId);
+        
+        if (product) {
+            const url = getProductUrl(product);
+            console.log('📍 URL générée:', url);
+            window.history.pushState({ page: 'product', id: productId }, '', url);
+            currentPage = 'product';
+            selectedProductId = productId;
+            currentImageIndex = 0;
+            if (product.type === 'variants' && !selectedVariantCache[productId]) {
+                const firstAvail = product.variants?.find(v => v.stock > 0);
+                selectedVariantCache[productId] = firstAvail ? firstAvail.id : null;
             }
             renderCurrentPage();
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        } else {
+            console.error('❌ Produit non trouvé pour ID:', productId);
+            showToast('Produit non trouvé', 'error');
         }
-
+    } else if (page === 'cart') {
+        window.history.pushState({ page: 'cart' }, '', '/boutique/panier');
+        currentPage = 'cart';
+        selectedProductId = null;
+    } else {
+        window.history.pushState({ page: 'catalogue' }, '', '/boutique');
+        currentPage = 'catalogue';
+        selectedProductId = null;
+    }
+    renderCurrentPage();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
         // ================================================================
         // 14. MODAL DE SÉLECTION DE VARIANTES
         // ================================================================
@@ -2856,15 +2871,19 @@
         // ================================================================
         // 18. RENDU FICHE PRODUIT AVEC SEO DYNAMIQUE
         // ================================================================
-        function renderProductDetail(productId) {
-            const app = document.getElementById('app');
-            const product = products.find(p => String(p.id) === String(productId));
-            if (!product) { 
-                console.error('❌ Produit non trouvé:', productId);
-                renderCatalogue(); 
-                return; 
-            }
-
+  function renderProductDetail(productId) {
+    console.log('📄 Rendu produit ID:', productId);
+    console.log('🔎 Type de productId:', typeof productId);
+    
+    // Convertir en chaîne pour la recherche
+    const searchId = String(productId);
+    const product = products.find(p => String(p.id) === searchId);
+    
+    if (!product) { 
+        console.error('❌ Produit non trouvé:', productId);
+        renderCatalogue(); 
+        return; 
+    }
             console.log('📄 Rendu du produit:', product.name);
 
             updateSeoForProduct(product);
