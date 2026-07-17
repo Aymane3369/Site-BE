@@ -3,17 +3,151 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>StyleShop — Ingénierie · Travaux · Boutique</title>
-    <meta name="description" content="StyleShop : boutique en ligne de vêtements et accessoires de qualité. Livraison rapide, paiement sécurisé et satisfaction garantie." />
-    <meta property="og:title" content="StyleShop — Boutique en ligne" />
-    <meta property="og:description" content="Découvrez notre sélection de produits tendance. Livraison offerte dès 50€." />
+
+    <!-- ============================================================
+    TITRE & META PRINCIPALES (OPTIMISÉES SEO)
+    ============================================================ -->
+    <title>StyleShop — Boutique de vêtements & accessoires de qualité</title>
+    <meta name="description" content="StyleShop : vêtements, accessoires et équipements de qualité. Livraison rapide, paiement sécurisé. Profitez de -10% avec BIENVENUE." />
+    <meta name="keywords" content="vêtements, mode, accessoires, boutique en ligne, style, shopping, qualité, vêtements tendance, acheter en ligne" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="author" content="StyleShop" />
+    <link rel="canonical" href="https://ingenierie-travaux.vercel.app/boutique" />
+
+    <!-- ============================================================
+    OPEN GRAPH (Facebook, LinkedIn, WhatsApp)
+    ============================================================ -->
     <meta property="og:type" content="website" />
+    <meta property="og:title" content="StyleShop — Boutique de vêtements & accessoires" />
+    <meta property="og:description" content="Découvrez notre collection de vêtements et accessoires tendance. Livraison rapide et paiement sécurisé." />
+    <meta property="og:url" content="https://ingenierie-travaux.vercel.app/boutique" />
+    <meta property="og:site_name" content="StyleShop" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:image" content="https://ingenierie-travaux.vercel.app/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="StyleShop — Boutique en ligne" />
+
+    <!-- ============================================================
+    TWITTER CARD
+    ============================================================ -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="StyleShop — Boutique de vêtements & accessoires" />
+    <meta name="twitter:description" content="Vêtements et accessoires de qualité. Livraison rapide." />
+    <meta name="twitter:image" content="https://ingenierie-travaux.vercel.app/og-image.jpg" />
+
+    <!-- ============================================================
+    JSON-LD : ORGANISATION
+    ============================================================ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "StyleShop",
+      "url": "https://ingenierie-travaux.vercel.app/boutique",
+      "logo": "https://ingenierie-travaux.vercel.app/logo.png",
+      "description": "Boutique en ligne de vêtements et accessoires de qualité.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "FR"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "availableLanguage": "French"
+      },
+      "sameAs": [
+        "https://instagram.com/styleshop",
+        "https://facebook.com/styleshop"
+      ]
+    }
+    </script>
+
+    <!-- ============================================================
+    JSON-LD : WEBSITE
+    ============================================================ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "StyleShop",
+      "url": "https://ingenierie-travaux.vercel.app/boutique",
+      "description": "Boutique en ligne de vêtements et accessoires de qualité.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://ingenierie-travaux.vercel.app/boutique?search={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- ============================================================
+    JSON-LD : BREADCRUMB
+    ============================================================ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Accueil",
+          "item": "https://ingenierie-travaux.vercel.app/boutique"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Catalogue",
+          "item": "https://ingenierie-travaux.vercel.app/boutique/catalogue"
+        }
+      ]
+    }
+    </script>
+
+    <!-- ============================================================
+    ICÔNES & FAVICON
+    ============================================================ -->
+    <link rel="icon" type="image/png" sizes="32x32" href="https://ingenierie-travaux.vercel.app/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="https://ingenierie-travaux.vercel.app/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="https://ingenierie-travaux.vercel.app/apple-touch-icon.png" />
+    <link rel="manifest" href="https://ingenierie-travaux.vercel.app/site.webmanifest" />
+    <meta name="theme-color" content="#1e3a6f" />
+
+    <!-- ============================================================
+    POLICES & SCRIPTS
+    ============================================================ -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
-    <script src="https://js.stripe.com/v3/">
+    <script src="https://js.stripe.com/v3/" defer></script>
+
+    <!-- ============================================================
+    GOOGLE ANALYTICS (GA4) - Remplacez G-VOTRE_ID
+    ============================================================ -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VOTRE_ID_GA4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-VOTRE_ID_GA4', {
+            'send_page_view': true,
+            'page_title': document.title,
+            'page_location': window.location.href
+        });
     </script>
+
+    <!-- ============================================================
+    GOOGLE SEARCH CONSOLE - Remplacez VOTRE_CODE
+    ============================================================ -->
+    <meta name="google-site-verification" content="VOTRE_CODE_VERIFICATION" />
+
     <style>
+        /* ============================================================
+           TOUT VOTRE CSS EXISTANT ICI
+           ============================================================ */
+        /* Copiez-collez TOUT votre CSS actuel entre ces balises */
         /* ============================================================
            RESET & BASE
            ============================================================ */
@@ -2798,6 +2932,11 @@ const WEBHOOK_URL = 'https://hook.eu1.make.com/4knrto3mj8byh7llle9it224khgc826u 
             const product = products.find(p => p.id === productId);
             if (!product) { renderCatalogue(); return; }
 
+            // ============================================================
+            // GÉNÉRATION DU SCHEMA JSON-LD POUR CE PRODUIT
+            // ============================================================
+            generateProductSchema(product);
+
             let images = [];
             if (product.images && product.images.length > 0) {
                 images = product.images;
@@ -3098,6 +3237,92 @@ const WEBHOOK_URL = 'https://hook.eu1.make.com/4knrto3mj8byh7llle9it224khgc826u 
                     addToCart(productId, null, 1);
                 }
             });
+        }
+
+        // ================================================================
+        // 15. GÉNÉRATION JSON-LD POUR LES PRODUITS (DYNAMIQUE)
+        // ================================================================
+        function generateProductSchema(product) {
+            if (!product) return;
+            
+            // Supprimer l'ancien schema produit s'il existe
+            const oldScript = document.querySelector('script[data-product-schema]');
+            if (oldScript) oldScript.remove();
+            
+            const script = document.createElement('script');
+            script.type = 'application/ld+json';
+            script.setAttribute('data-product-schema', 'true');
+            
+            const imageUrl = (product.images && product.images.length > 0) 
+                ? product.images[0] 
+                : (product.image_url || '');
+            
+            let availability = 'https://schema.org/InStock';
+            let stockQty = 0;
+            
+            if (product.type === 'simple') {
+                stockQty = product.stock || 0;
+                availability = stockQty > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
+            } else if (product.variants) {
+                stockQty = product.variants.reduce((s, v) => s + (v.stock || 0), 0);
+                availability = stockQty > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
+            }
+            
+            const price = product.type === 'simple' 
+                ? product.price || 0 
+                : (product.variants?.[0]?.price || product.base_price || 0);
+            
+            const schema = {
+                "@context": "https://schema.org",
+                "@type": "Product",
+                "name": product.name,
+                "description": product.description || product.name,
+                "image": imageUrl,
+                "sku": product.id,
+                "brand": {
+                    "@type": "Brand",
+                    "name": "StyleShop"
+                },
+                "offers": {
+                    "@type": "Offer",
+                    "price": price,
+                    "priceCurrency": "EUR",
+                    "availability": availability,
+                    "url": `https://ingenierie-travaux.vercel.app/boutique/product/${product.id}`,
+                    "priceValidUntil": new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+                }
+            };
+            
+            if (product.compare_at_price && product.compare_at_price > price) {
+                schema.offers.priceSpecification = {
+                    "@type": "PriceSpecification",
+                    "price": product.compare_at_price,
+                    "priceCurrency": "EUR"
+                };
+            }
+            
+            if (product.variants && product.variants.length > 0) {
+                schema.offers = product.variants.filter(v => v.stock > 0).map(v => ({
+                    "@type": "Offer",
+                    "price": v.price || product.base_price || 0,
+                    "priceCurrency": "EUR",
+                    "availability": v.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+                    "itemCondition": "https://schema.org/NewCondition",
+                    "url": `https://ingenierie-travaux.vercel.app/boutique/product/${product.id}`,
+                    "description": `${v.attributes?.taille || ''} ${v.attributes?.couleur || ''}`.trim()
+                }));
+            }
+            
+            if (product.rating) {
+                schema.aggregateRating = {
+                    "@type": "AggregateRating",
+                    "ratingValue": product.rating || 4.8,
+                    "reviewCount": product.reviewCount || 127
+                };
+            }
+            
+            script.innerHTML = JSON.stringify(schema);
+            document.head.appendChild(script);
         }
 
         // ================================================================
