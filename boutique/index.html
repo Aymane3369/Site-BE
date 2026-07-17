@@ -2462,14 +2462,16 @@
         // ================================================================
         // 9. RÉCUPÉRER LE PRODUIT DEPUIS L'URL
         // ================================================================
-        function getProductFromUrl() {
-            const path = window.location.pathname;
-            const match = path.match(/\/boutique\/produit\/.+-(.+)$/);
-            if (match && match[1]) {
-                return products.find(p => p.id === match[1]);
-            }
-            return null;
-        }
+   function getProductFromUrl() {
+    const path = window.location.pathname;
+    // Regex plus robuste pour extraire l'ID du produit
+    const match = path.match(/\/boutique\/produit\/.+?-([a-zA-Z0-9_-]+)$/);
+    if (match && match[1]) {
+        // Chercher le produit par son ID
+        return products.find(p => p.id === match[1]);
+    }
+    return null;
+}
 
         // ================================================================
         // 10. AJOUT / MODIFICATION PANIER
@@ -2639,34 +2641,35 @@
         // ================================================================
         // 13. NAVIGATION
         // ================================================================
-        function navigateTo(page, productId = null) {
-            if (page === 'product' && productId) {
-                const product = products.find(p => p.id === productId);
-                if (product) {
-                    const url = getProductUrl(product);
-                    window.history.pushState({}, '', url);
-                    currentPage = 'product';
-                    selectedProductId = productId;
-                    currentImageIndex = 0;
-                    if (product.type === 'variants' && !selectedVariantCache[productId]) {
-                        const firstAvail = product.variants?.find(v => v.stock > 0);
-                        selectedVariantCache[productId] = firstAvail ? firstAvail.id : null;
-                    }
-                    renderCurrentPage();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                    return;
-                }
-            } else if (page === 'cart') {
-                window.history.pushState({}, '', '/boutique/panier');
-                currentPage = 'cart';
-            } else {
-                window.history.pushState({}, '', '/boutique');
-                currentPage = 'catalogue';
-                selectedProductId = null;
+function navigateTo(page, productId = null) {
+    if (page === 'product' && productId) {
+        const product = products.find(p => p.id === productId);
+        if (product) {
+            const url = getProductUrl(product);
+            // Utiliser replaceState pour éviter les doublons dans l'historique
+            window.history.pushState({ page: 'product', id: productId }, '', url);
+            currentPage = 'product';
+            selectedProductId = productId;
+            currentImageIndex = 0;
+            if (product.type === 'variants' && !selectedVariantCache[productId]) {
+                const firstAvail = product.variants?.find(v => v.stock > 0);
+                selectedVariantCache[productId] = firstAvail ? firstAvail.id : null;
             }
             renderCurrentPage();
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
         }
+    } else if (page === 'cart') {
+        window.history.pushState({ page: 'cart' }, '', '/boutique/panier');
+        currentPage = 'cart';
+    } else {
+        window.history.pushState({ page: 'catalogue' }, '', '/boutique');
+        currentPage = 'catalogue';
+        selectedProductId = null;
+    }
+    renderCurrentPage();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
         // ================================================================
         // 14. MODAL DE SÉLECTION DE VARIANTES
@@ -3640,21 +3643,45 @@
         // ================================================================
         // 25. PAGE COURANTE
         // ================================================================
-        function renderCurrentPage() {
-            // Si on est sur une URL de produit, on l'affiche
-            const productFromUrl = getProductFromUrl();
-            if (productFromUrl && currentPage !== 'cart') {
-                currentPage = 'product';
-                selectedProductId = productFromUrl.id;
-                renderProductDetail(selectedProductId);
-                return;
+function renderCurrentPage() {
+    // Vérifier d'abord si on est sur une URL de produit
+    const productFromUrl = getProductFromUrl();
+    
+    if (productFromUrl && currentPage !== 'cart') {
+        currentPage = 'product';
+        selectedProductId = productFromUrl.id;
+        renderProductDetail(selectedProductId);
+        return;
+    }
+    
+    // Si on a un selectedProductId, afficher ce produit
+    if (currentPage === 'product' && selectedProductId) {
+        const product = products.find(p => p.id === selectedProductId);
+        if (product) {
+            // Si l'URL n'est pas à jour, la mettre à jour
+            const currentPath = window.location.pathname;
+            const expectedPath = getProductUrl(product);
+            if (currentPath !== expectedPath) {
+                window.history.replaceState({ page: 'product', id: selectedProductId }, '', expectedPath);
             }
-
-            if (currentPage === 'catalogue') renderCatalogue();
-            else if (currentPage === 'product' && selectedProductId) renderProductDetail(selectedProductId);
-            else if (currentPage === 'cart') renderCart();
-            else renderCatalogue();
+            renderProductDetail(selectedProductId);
+            return;
+        } else {
+            // Si le produit n'existe plus, retourner au catalogue
+            currentPage = 'catalogue';
+            selectedProductId = null;
         }
+    }
+    
+    if (currentPage === 'catalogue') {
+        renderCatalogue();
+    } else if (currentPage === 'cart') {
+        renderCart();
+    } else {
+        renderCatalogue();
+    }
+}
+
 
         // ================================================================
         // 26. SYNCHRONISATION INTER-ONGLETS
