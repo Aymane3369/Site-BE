@@ -1,0 +1,20 @@
+# robots.txt - StyleShop
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /checkout/
+Disallow: /cart/
+
+# Sitemap
+Sitemap: https://ingenierie-travaux.vercel.app/sitemap.xml
+
+# Crawl-delay pour ne pas surcharger le serveur
+Crawl-delay: 1
+
+# Désactiver la recherche automatique
+User-agent: Googlebot
+Noindex: /search/
+
+User-agent: Bingbot
+Crawl-delay: 2
