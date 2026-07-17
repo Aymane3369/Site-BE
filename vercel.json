@@ -1,0 +1,21 @@
+{
+  "rewrites": [
+    {
+      "source": "/boutique/produit/:slug-:id",
+      "destination": "/boutique"
+    },
+    {
+      "source": "/boutique/panier",
+      "destination": "/boutique"
+    },
+    {
+      "source": "/boutique",
+      "destination": "/boutique"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/boutique"
+    }
+  ],
+  "cleanUrls": true
+}
