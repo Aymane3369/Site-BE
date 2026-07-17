@@ -2042,9 +2042,9 @@
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhyb2NxaGF6cG1qY25xamR5eXRkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1NjEwOTMsImV4cCI6MjA5NzEzNzA5M30.he8Gqs2h57Sq-knzKCr_C7BmZGHg76knhm0e3Y5EvF0';
 
         // ================================================================
-        // 2. NEWSLETTER - ENVOI PAR EMAIL
+        // 2. NEWSLETTER - ENVOI VIA WEBHOOK MAKE.COM
         // ================================================================
-        const NEWSLETTER_EMAIL = 'aymaneabidine@gmail.com';
+        const WEBHOOK_URL = 'https://hook.eu1.make.com/2tyy14gv495ihbeucv54dzmr4a4ciuaj';
 
         async function subscribeNewsletter() {
             const input = document.getElementById('newsletterInput');
@@ -2055,30 +2055,20 @@
                 return;
             }
 
-            try {
-                // Envoyer l'email via un service de messagerie
-                // Utilisation d'un service comme EmailJS ou Formspree
-                // Solution simple : redirection vers un lien mailto avec sujet pré-rempli
-                // Mais pour une solution plus professionnelle, on va utiliser une requête vers un service externe
-                
-                // Option 1: Utiliser EmailJS (gratuit jusqu'à 200 emails/mois)
-                // Option 2: Utiliser un service comme Getform.io ou Formspree
-                
-                // Pour une solution sans service externe, on peut utiliser mailto:
-                // window.location.href = `mailto:${NEWSLETTER_EMAIL}?subject=Nouvel abonné newsletter&body=Email: ${email}`;
-                // showToast('✅ Merci pour votre inscription !', 'success');
-                // input.value = '';
+            // Désactiver le bouton pendant l'envoi
+            const btn = input.nextElementSibling;
+            btn.disabled = true;
+            btn.textContent = '⏳ Envoi...';
 
-                // Solution avec un service de relais (ici on simule avec une requête POST vers un endpoint)
-                // Vous pouvez remplacer l'URL ci-dessous par votre propre endpoint webhook
-                const response = await fetch('https://hook.eu1.make.com/votre-webhook-url', {
+            try {
+                const response = await fetch(WEBHOOK_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         email: email,
                         source: 'StyleShop_newsletter',
-                        date: new Date().toISOString(),
-                        message: `Nouvel abonné à la newsletter StyleShop : ${email}`
+                        date: new Date().toLocaleString('fr-FR'),
+                        timestamp: new Date().toISOString()
                     })
                 });
 
@@ -2086,18 +2076,14 @@
                     showToast('✅ Merci pour votre inscription !', 'success');
                     input.value = '';
                 } else {
-                    // Fallback: ouvrir un mailto
-                    window.open(`mailto:${NEWSLETTER_EMAIL}?subject=Nouvel abonné newsletter&body=Email: ${email}`, '_blank');
-                    showToast('✅ Merci pour votre inscription !', 'success');
-                    input.value = '';
+                    showToast('❌ Une erreur est survenue, réessayez', 'error');
                 }
-
             } catch (error) {
                 console.error('Erreur:', error);
-                // Fallback: ouvrir un mailto
-                window.open(`mailto:${NEWSLETTER_EMAIL}?subject=Nouvel abonné newsletter&body=Email: ${email}`, '_blank');
-                showToast('✅ Merci pour votre inscription !', 'success');
-                input.value = '';
+                showToast('❌ Une erreur est survenue, réessayez', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "S'inscrire";
             }
         }
 
