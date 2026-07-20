@@ -55,10 +55,7 @@
   ],
   "redirects": [
     {
-      "source": "/",
-      "destination": "/boutique",
-      "permanent": true
-    },
+      
     {
       "source": "/shop",
       "destination": "/boutique",
