@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eurocode 5 — Cours complet de Structures Bois</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f5f0e8;
+            color: #1a2634;
+            padding: 2rem 1rem;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* --- HEADER --- */
+        .header {
+            background: linear-gradient(135deg, #2d1b0e, #6b3f1a);
+            color: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header h1 span {
+            color: #f0c27a;
+        }
+
+        .header .subtitle {
+            margin-top: 0.6rem;
+            font-size: 1.05rem;
+            opacity: 0.9;
+            max-width: 750px;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.12);
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 0.8rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .stats .item {
+            font-size: 0.85rem;
+            opacity: 0.85;
+        }
+
+        .stats .item strong {
+            opacity: 1;
+            font-weight: 700;
+        }
+
+        /* --- TOCC --- */
+        .toc {
+            background: #fff;
+            border-radius: 14px;
+            padding: 1.5rem 1.8rem;
+            border: 1px solid #e2d8cc;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .toc h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d1b0e;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.3rem;
+        }
+
+        .toc-grid a {
+            display: block;
+            padding: 0.3rem 0.6rem;
+            color: #6b3f1a;
+            text-decoration: none;
+            font-size: 0.8rem;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .toc-grid a:hover {
+            background: #f5ede4;
+        }
+
+        .toc-grid .tome {
+            font-weight: 600;
+            color: #2d1b0e;
+        }
+
+        /* --- CARD --- */
+        .card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 1.8rem 2rem;
+            border: 1px solid #e2d8cc;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            transition: border-color 0.2s;
+        }
+
+        .card:hover {
+            border-color: #c4b4a0;
+        }
+
+        .card .tome-id {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #8a7a6a;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.3rem;
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2d1b0e;
+            margin-bottom: 0.4rem;
+        }
+
+        .card .desc {
+            color: #5a4a3a;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .card .formulas {
+            background: #f5ede4;
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            margin: 0.8rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 2.2;
+            overflow-x: auto;
+            border-left: 4px solid #6b3f1a;
+        }
+
+        .card .formulas .label {
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #8a7a6a;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .card .formulas .hi {
+            color: #6b3f1a;
+            font-weight: 600;
+        }
+
+        .card .formulas .gold {
+            color: #b8882f;
+            font-weight: 600;
+        }
+
+        .card .exemple {
+            background: #f5ede4;
+            border-radius: 10px;
+            padding: 0.8rem 1.2rem;
+            border-left: 4px solid #b8882f;
+            margin: 0.8rem 0;
+            font-size: 0.92rem;
+        }
+
+        .card .exemple strong {
+            color: #2d1b0e;
+        }
+
+        .card .domaine {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.6rem;
+        }
+
+        .card .domaine span {
+            background: #f5ede4;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: #5a4a3a;
+            font-weight: 500;
+        }
+
+        .btn-exercice {
+            display: inline-block;
+            margin-top: 0.8rem;
+            padding: 0.4rem 1.2rem;
+            background: #6b3f1a;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-exercice:hover {
+            opacity: 0.85;
+        }
+
+        .exercice-box {
+            display: none;
+            margin-top: 1rem;
+            background: #f8f4f0;
+            border: 1px solid #e2d8cc;
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            font-size: 0.92rem;
+        }
+
+        .exercice-box .corrige {
+            margin-top: 0.8rem;
+            padding-top: 0.8rem;
+            border-top: 1px dashed #e2d8cc;
+            color: #2d5a2d;
+        }
+
+        .exercice-box .corrige strong {
+            color: #2d1b0e;
+        }
+
+        /* --- TABLEAUX --- */
+        .table-box {
+            background: #f8f4f0;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            border: 1px solid #e2d8cc;
+            margin: 0.8rem 0;
+            overflow-x: auto;
+        }
+
+        .table-box table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .table-box th {
+            background: #6b3f1a;
+            color: #fff;
+            padding: 0.5rem 0.8rem;
+            text-align: left;
+        }
+
+        .table-box td {
+            padding: 0.4rem 0.8rem;
+            border-bottom: 1px solid #e2d8cc;
+        }
+
+        .table-box tr:nth-child(even) {
+            background: #f5ede4;
+        }
+
+        /* --- FOOTER --- */
+        .footer {
+            margin-top: 2.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #8a7a6a;
+            border-top: 1px solid #e2d8cc;
+            padding-top: 1.5rem;
+        }
+
+        .footer span {
+            color: #6b3f1a;
+            font-weight: 600;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 640px) {
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            .card {
+                padding: 1.2rem;
+            }
+            .toc-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .stats {
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ============================================================ -->
+        <!-- HEADER -->
+        <!-- ============================================================ -->
+        <div class="header">
+            <h1>🪵 <span>Eurocode 5</span> — Structures Bois</h1>
+            <div class="subtitle">Cours complet d'ingénieur — NF EN 1995-1-1<br>Dimensionnement des structures en bois</div>
+            <div class="badge">Bois massif · Lamellé-collé · CLT · LVL · OSB</div>
+            <div class="stats">
+                <div class="item"><strong>18</strong> Tomes</div>
+                <div class="item"><strong>80+</strong> Chapitres</div>
+                <div class="item"><strong>250+</strong> Formules</div>
+                <div class="item"><strong>9</strong> Exemples complets</div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- SOMMAIRE -->
+        <!-- ============================================================ -->
+        <div class="toc">
+            <h2>📚 Sommaire du cours</h2>
+            <div class="toc-grid">
+                <a href="#tome1"><span class="tome">Tome 1</span> — Introduction</a>
+                <a href="#tome2"><span class="tome">Tome 2</span> — Essences et produits</a>
+                <a href="#tome3"><span class="tome">Tome 3</span> — Classes de service</a>
+                <a href="#tome4"><span class="tome">Tome 4</span> — Classes d'emploi</a>
+                <a href="#tome5"><span class="tome">Tome 5</span> — Actions</a>
+                <a href="#tome6"><span class="tome">Tome 6</span> — Combinaisons</a>
+                <a href="#tome7"><span class="tome">Tome 7</span> — Coefficients</a>
+                <a href="#tome8"><span class="tome">Tome 8</span> — Caractéristiques mécaniques</a>
+                <a href="#tome9"><span class="tome">Tome 9</span> — Éléments structuraux</a>
+                <a href="#tome10"><span class="tome">Tome 10</span> — Vérifications ELU</a>
+                <a href="#tome11"><span class="tome">Tome 11</span> — Vérifications ELS</a>
+                <a href="#tome12"><span class="tome">Tome 12</span> — Assemblages</a>
+                <a href="#tome13"><span class="tome">Tome 13</span> — Charpentes</a>
+                <a href="#tome14"><span class="tome">Tome 14</span> — Ossature bois</a>
+                <a href="#tome15"><span class="tome">Tome 15</span> — CLT</a>
+                <a href="#tome16"><span class="tome">Tome 16</span> — Stabilité</a>
+                <a href="#tome17"><span class="tome">Tome 17</span> — Résistance au feu</a>
+                <a href="#tome18"><span class="tome">Tome 18</span> — Dimensionnement complet</a>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 1 — INTRODUCTION -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome1">
+            <div class="tome-id">Tome 1</div>
+            <h2>🌲 Introduction aux structures bois</h2>
+            <div class="desc">Histoire, domaines d'application, avantages et limites du bois. Comportement mécanique, anisotropie, hygroscopicité, durabilité naturelle.</div>
+
+            <div class="formulas">
+                <div class="label">Concepts fondamentaux</div>
+                <strong>Anisotropie :</strong> Le bois a des propriétés différentes selon les directions (longitudinale, radiale, tangentielle).<br>
+                <strong>Hygroscopicité :</strong> Le bois absorbe et libère de l'eau avec les variations d'humidité.<br>
+                <strong>Durabilité naturelle :</strong> Variable selon les essences (durable : chêne, robinier ; non durable : épicéa, pin).<br>
+                <span class="gold">Points clés :</span> Le bois est un matériau renouvelable, léger, avec un excellent rapport résistance/poids.
+            </div>
+
+            <div class="domaine">
+                <span>Domaine : Toutes les structures bois</span>
+                <span>Anisotropie : 3 directions</span>
+                <span>Hygroscopicité : humidité d'équilibre</span>
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Une poutre en bois lamellé-collé de 12 m de portée peut supporter des charges importantes avec une section réduite (ex: 200×600 mm) grâce au rapport résistance/poids élevé du bois.
+            </div>
+
+            <button class="btn-exercice" onclick="toggleExercice('ex1')">📝 Voir l'exercice</button>
+            <div class="exercice-box" id="ex1">
+                <strong>Exercice 1.1 :</strong> Calculer la masse d'une poutre en bois lamellé-collé GL28 de section 200×600 mm et de longueur 12 m. Masse volumique ρ = 450 kg/m³.<br>
+                <div class="corrige">
+                    <strong>Corrigé :</strong><br>
+                    Volume = 0,2 × 0,6 × 12 = <strong>1,44 m³</strong><br>
+                    Masse = 1,44 × 450 = <strong>648 kg</strong><br>
+                    Comparaison avec du béton (2500 kg/m³) : masse béton équivalente = 1,44 × 2500 = <strong>3 600 kg</strong> → le bois est 5,5 fois plus léger.
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 2 — ESSENCES ET PRODUITS -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome2">
+            <div class="tome-id">Tome 2</div>
+            <h2>🪵 Les essences et produits bois</h2>
+            <div class="desc">Bois massifs (résineux, feuillus), bois d'ingénierie : lamellé-collé (GL24, GL28, GL32), CLT, LVL, OSB, contreplaqué.</div>
+
+            <div class="table-box">
+                <table>
+                    <tr><th>Produit</th><th>Sigle</th><th>Applications</th><th>Résistance typique</th></tr>
+                    <tr><td>Bois massif</td><td>—</td><td>Charpente, ossature</td><td>C18 à C35</td></tr>
+                    <tr><td>Lamellé-collé</td><td>GL</td><td>Poutres, portiques</td><td>GL24 à GL32</td></tr>
+                    <tr><td>Lamellé-croisé</td><td>CLT</td><td>Murs, planchers</td><td>CLT 3 à 7 couches</td></tr>
+                    <tr><td>LVL</td><td>LVL</td><td>Poutres, fermes</td><td>LVL 40 à 80</td></tr>
+                    <tr><td>Panneau OSB</td><td>OSB</td><td>Voiles, revêtements</td><td>OSB/3, OSB/4</td></tr>
+                </table>
+            </div>
+
+            <div class="formulas">
+                <div class="label">Classes de résistance pour le lamellé-collé</div>
+                GL24 : f<sub>m,k</sub> = 24 MPa &nbsp;·&nbsp; GL28 : f<sub>m,k</sub> = 28 MPa &nbsp;·&nbsp; GL32 : f<sub>m,k</sub> = 32 MPa<br>
+                <span class="gold">Remarque :</span> Les classes supérieures (GL32) permettent des sections plus réduites.
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Une poutre GL28 de 200×600 mm a une résistance en flexion de 28 MPa (valeur caractéristique), supérieure à une poutre en bois massif C24 (f<sub>m,k</sub> = 24 MPa).
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 3 — CLASSES DE SERVICE -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome3">
+            <div class="tome-id">Tome 3</div>
+            <h2>💧 Classes de service</h2>
+            <div class="desc">Influence de l'humidité sur les résistances et les déformations. Classes de service 1, 2 et 3 selon EN 1995-1-1.</div>
+
+            <div class="table-box">
+                <table>
+                    <tr><th>Classe</th><th>Humidité</th><th>Exemples</th><th>k<sub>mod</sub> (bois massif)</th></tr>
+                    <tr><td><strong>1</strong></td><td>≤ 12%</td><td>Intérieur chauffé</td><td>0,80 (permanente)</td></tr>
+                    <tr><td><strong>2</strong></td><td>≤ 20%</td><td>Intérieur non chauffé, abri</td><td>0,70</td></tr>
+                    <tr><td><strong>3</strong></td><td>≤ 20% (avec eau)</td><td>Extérieur, ponts couverts</td><td>0,50</td></tr>
+                </table>
+            </div>
+
+            <div class="formulas">
+                <div class="label">Influence sur les coefficients</div>
+                <span class="gold">k<sub>mod</sub></span> : coefficient de modification pour la durée de charge et l'humidité<br>
+                <span class="gold">k<sub>def</sub></span> : coefficient de fluage pour les déformations différées<br>
+                f<sub>d</sub> = k<sub>mod</sub> · f<sub>k</sub> / γ<sub>M</sub> &nbsp;→&nbsp; résistance de calcul
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Une poutre en intérieur chauffé (classe 1) avec une charge permanente a k<sub>mod</sub> = 0,80. La même poutre en extérieur (classe 3) aurait k<sub>mod</sub> = 0,50 → résistance de calcul réduite de 37%.
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 4 — CLASSES D'EMPLOI -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome4">
+            <div class="tome-id">Tome 4</div>
+            <h2>🛡️ Classes d'emploi (EN 335)</h2>
+            <div class="desc">Durabilité et traitements du bois selon l'exposition aux agents biologiques.</div>
+
+            <div class="table-box">
+                <table>
+                    <tr><th>Classe</th><th>Description</th><th>Exemples</th></tr>
+                    <tr><td><strong>1</strong></td><td>Intérieur sec (risque nul)</td><td>Charpente intérieure</td></tr>
+                    <tr><td><strong>2</strong></td><td>Intérieur humide (risque faible)</td><td>Cuisine, salle de bain</td></tr>
+                    <tr><td><strong>3</strong></td><td>Extérieur non enterré (risque modéré)</td><td>Bardage, terrasse</td></tr>
+                    <tr><td><strong>4</strong></td><td>Contact avec le sol ou eau douce (risque élevé)</td><td>Pieux, poteaux</td></tr>
+                    <tr><td><strong>5</strong></td><td>Contact permanent avec eau salée (risque très élevé)</td><td>Ouvrages maritimes</td></tr>
+                </table>
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Un poteau en bois enterré (classe 4) doit être traité avec un produit de classe 4 (autoclave) pour une durée de vie de 50 ans.
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 5 — ACTIONS -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome5">
+            <div class="tome-id">Tome 5</div>
+            <h2>⚖️ Actions sur les structures</h2>
+            <div class="desc">Selon les Eurocodes EN 1990 et EN 1991 : charges permanentes G, charges d'exploitation Q, neige, vent, séisme, température.</div>
+
+            <div class="formulas">
+                <div class="label">Actions courantes sur les structures bois</div>
+                <strong>G</strong> : poids propre de la structure (bois, couverture, isolation)<br>
+                <strong>Q</strong> : charges d'exploitation (entretien, stockage)<br>
+                <strong>S</strong> : charges de neige (EN 1991-1-3)<br>
+                <strong>W</strong> : charges de vent (EN 1991-1-4)<br>
+                <strong>E</strong> : charges sismiques (EN 1998)<br>
+                <strong>T</strong> : actions thermiques
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Pour une charpente de maison individuelle (zone 1), charges typiques :<br>
+                G<sub>k</sub> = 0,5 kN/m² (couverture + isolation), Q<sub>k</sub> = 0,5 kN/m² (entretien), S<sub>k</sub> = 0,45 kN/m² (neige), W<sub>k</sub> = 0,6 kN/m² (vent).
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 6 — COMBINAISONS -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome6">
+            <div class="tome-id">Tome 6</div>
+            <h2>🔗 Combinaisons d'actions</h2>
+            <div class="desc">ELU (fondamentales, accidentelles, sismiques) et ELS (rares, fréquentes, quasi permanentes).</div>
+
+            <div class="formulas">
+                <div class="label">Combinaisons ELU (EN 1990)</div>
+                <strong>Fondamentale :</strong> Σ γ<sub>G</sub>·G<sub>k</sub> + γ<sub>Q</sub>·Q<sub>k</sub> + Σ γ<sub>Q</sub>·ψ<sub>0</sub>·Q<sub>k</sub><br>
+                <strong>Accidentelle :</strong> Σ G<sub>k</sub> + ψ<sub>1</sub>·Q<sub>k</sub> + A<sub>d</sub><br>
+                <strong>Sismique :</strong> Σ G<sub>k</sub> + ψ<sub>2</sub>·Q<sub>k</sub> + E<sub>d</sub><br>
+                <span class="gold">Coefficients :</span> γ<sub>G</sub> = 1,35 (défavorable), γ<sub>Q</sub> = 1,50
+            </div>
+
+            <div class="table-box">
+                <table>
+                    <tr><th>ELS</th><th>Combinaison</th><th>Application</th></tr>
+                    <tr><td>Rare</td><td>Σ G<sub>k</sub> + Q<sub>k</sub></td><td>Contraintes maximales</td></tr>
+                    <tr><td>Fréquente</td><td>Σ G<sub>k</sub> + ψ<sub>1</sub>·Q<sub>k</sub></td><td>Flèches fréquentes</td></tr>
+                    <tr><td>Quasi permanente</td><td>Σ G<sub>k</sub> + ψ<sub>2</sub>·Q<sub>k</sub></td><td>Flèches différées</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 7 — COEFFICIENTS -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome7">
+            <div class="tome-id">Tome 7</div>
+            <h2>📐 Coefficients de calcul</h2>
+            <div class="desc">γ<sub>M</sub>, k<sub>mod</sub>, k<sub>def</sub>, k<sub>h</sub>, k<sub>sys</sub>, k<sub>m</sub>.</div>
+
+            <div class="formulas">
+                <div class="label">Coefficients principaux (Eurocode 5)</div>
+                <strong>γ<sub>M</sub></strong> = 1,3 (bois massif, lamellé-collé) &nbsp;·&nbsp; = 1,2 (panneaux)<br>
+                <strong>k<sub>mod</sub></strong> = coefficient de modification (0,5 à 0,9 selon la classe de service et la durée de charge)<br>
+                <strong>k<sub>def</sub></strong> = coefficient de fluage (0,6 à 2,0 selon la classe de service)<br>
+                <strong>k<sub>h</sub></strong> = coefficient de hauteur (pour les poutres en bois massif)<br>
+                <strong>k<sub>sys</sub></strong> = coefficient de système (pour les éléments répartis)<br>
+                <strong>k<sub>m</sub></strong> = coefficient de redistribution des contraintes (flexion déviée)
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Pour une poutre en GL28, classe de service 2, charge de courte durée :<br>
+                k<sub>mod</sub> = 0,80, γ<sub>M</sub> = 1,25<br>
+                f<sub>m,d</sub> = 0,80 × 28 / 1,25 = <strong>17,92 MPa</strong>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 8 — CARACTÉRISTIQUES MÉCANIQUES -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome8">
+            <div class="tome-id">Tome 8</div>
+            <h2>📊 Caractéristiques mécaniques</h2>
+            <div class="desc">Détermination de f<sub>m,d</sub>, f<sub>t,d</sub>, f<sub>c,d</sub>, f<sub>v,d</sub>, E<sub>0,mean</sub>, E<sub>0,05</sub>, G.</div>
+
+            <div class="formulas">
+                <div class="label">Résistances de calcul (Eurocode 5)</div>
+                <strong>Flexion :</strong> f<sub>m,d</sub> = k<sub>mod</sub> · f<sub>m,k</sub> / γ<sub>M</sub><br>
+                <strong>Traction :</strong> f<sub>t,0,d</sub> = k<sub>mod</sub> · f<sub>t,0,k</sub> / γ<sub>M</sub><br>
+                <strong>Compression :</strong> f<sub>c,0,d</sub> = k<sub>mod</sub> · f<sub>c,0,k</sub> / γ<sub>M</sub><br>
+                <strong>Cisaillement :</strong> f<sub>v,d</sub> = k<sub>mod</sub> · f<sub>v,k</sub> / γ<sub>M</sub><br>
+                <strong>Module d'élasticité :</strong> E<sub>0,mean</sub> et E<sub>0,05</sub> (pour le flambement)<br>
+                <strong>Module de cisaillement :</strong> G = E / 16 (environ)
+            </div>
+
+            <div class="table-box">
+                <table>
+                    <tr><th>Classe</th><th>f<sub>m,k</sub> (MPa)</th><th>f<sub>c,0,k</sub> (MPa)</th><th>E<sub>0,mean</sub> (MPa)</th></tr>
+                    <tr><td>C24</td><td>24</td><td>21</td><td>11 000</td></tr>
+                    <tr><td>GL24</td><td>24</td><td>24</td><td>11 600</td></tr>
+                    <tr><td>GL28</td><td>28</td><td>28</td><td>12 600</td></tr>
+                    <tr><td>GL32</td><td>32</td><td>32</td><td>13 600</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 9 — ÉLÉMENTS STRUCTURAUX -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome9">
+            <div class="tome-id">Tome 9</div>
+            <h2>🏗️ Éléments structuraux</h2>
+            <div class="desc">Solives, poutres, pannes, arbalétriers, entraits, poteaux, montants, chevrons, fermes, portiques, panneaux CLT.</div>
+
+            <div class="domaine">
+                <span>Solives</span>
+                <span>Pannes</span>
+                <span>Arbalétriers</span>
+                <span>Entraits</span>
+                <span>Poteaux</span>
+                <span>Chevrons</span>
+                <span>Fermes</span>
+                <span>Portiques</span>
+                <span>CLT</span>
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Une panne de toiture en GL24, portée 5 m, espacement 2 m, supporte la couverture + neige.<br>
+                Charge totale p = 2,5 kN/m → M<sub>Ed</sub> = p·L²/8 = 2,5×5²/8 = <strong>7,8 kN·m</strong>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 10 — VÉRIFICATIONS ELU -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome10">
+            <div class="tome-id">Tome 10</div>
+            <h2>⚡ Vérifications ELU</h2>
+            <div class="desc">Flexion simple, flexion déviée, traction, compression, cisaillement, flambement, déversement, instabilité latérale.</div>
+
+            <div class="formulas">
+                <div class="label">Formules ELU (Eurocode 5)</div>
+                <strong>Flexion simple :</strong> σ<sub>m,d</sub> = M<sub>Ed</sub> / W ≤ f<sub>m,d</sub><br>
+                <strong>Flexion déviée :</strong> (σ<sub>m,y,d</sub> / f<sub>m,y,d</sub>) + (σ<sub>m,z,d</sub> / f<sub>m,z,d</sub>) ≤ 1<br>
+                <strong>Traction :</strong> σ<sub>t,0,d</sub> = N<sub>Ed</sub> / A ≤ f<sub>t,0,d</sub><br>
+                <strong>Compression :</strong> σ<sub>c,0,d</sub> = N<sub>Ed</sub> / A ≤ f<sub>c,0,d</sub><br>
+                <strong>Cisaillement :</strong> τ<sub>d</sub> = (1,5·V<sub>Ed</sub>) / A ≤ f<sub>v,d</sub><br>
+                <strong>Flambement :</strong> σ<sub>c,0,d</sub> ≤ k<sub>c</sub>·f<sub>c,0,d</sub> (k<sub>c</sub> = facteur de flambement)<br>
+                <strong>Déversement :</strong> σ<sub>m,d</sub> ≤ k<sub>crit</sub>·f<sub>m,d</sub> (k<sub>crit</sub> = facteur de déversement)
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Poutre GL24, section 200×400 mm, M<sub>Ed</sub> = 50 kN·m<br>
+                W = 200×400²/6 = 5,33×10⁶ mm³<br>
+                σ<sub>m,d</sub> = 50×10⁶ / 5,33×10⁶ = <strong>9,38 MPa</strong><br>
+                f<sub>m,d</sub> = 0,8×24/1,25 = <strong>15,36 MPa</strong> → 9,38 ≤ 15,36 → <strong>✅ OK</strong>
+            </div>
+
+            <button class="btn-exercice" onclick="toggleExercice('ex10')">📝 Voir l'exercice</button>
+            <div class="exercice-box" id="ex10">
+                <strong>Exercice 10.1 :</strong> Vérifier en flexion une poutre GL28 de section 180×360 mm soumise à M<sub>Ed</sub> = 45 kN·m. Classe de service 2, courte durée, γ<sub>M</sub> = 1,25.<br>
+                <div class="corrige">
+                    <strong>Corrigé :</strong><br>
+                    W = 180×360²/6 = <strong>3,89×10⁶ mm³</strong><br>
+                    σ<sub>m,d</sub> = 45×10⁶ / 3,89×10⁶ = <strong>11,57 MPa</strong><br>
+                    f<sub>m,d</sub> = k<sub>mod</sub>·f<sub>m,k</sub>/γ<sub>M</sub> = 0,8×28/1,25 = <strong>17,92 MPa</strong><br>
+                    11,57 ≤ 17,92 → <strong>✅ OK</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 11 — VÉRIFICATIONS ELS -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome11">
+            <div class="tome-id">Tome 11</div>
+            <h2>📏 Vérifications ELS</h2>
+            <div class="desc">Flèche instantanée, flèche finale, vibrations, fluage, ouverture des assemblages.</div>
+
+            <div class="formulas">
+                <div class="label">Formules ELS (Eurocode 5)</div>
+                <strong>Flèche instantanée :</strong> u<sub>inst</sub> = (5·p·L⁴) / (384·E·I)<br>
+                <strong>Flèche finale :</strong> u<sub>fin</sub> = u<sub>inst</sub> · (1 + k<sub>def</sub>)<br>
+                <strong>Flèche nette :</strong> u<sub>net</sub> = u<sub>fin</sub> − u<sub>re</sub> (contre-flèche)<br>
+                <strong>Limites :</strong> u<sub>inst</sub> ≤ L/300, u<sub>fin</sub> ≤ L/200, u<sub>net</sub> ≤ L/250<br>
+                <strong>Vibrations :</strong> f ≥ 8 Hz (planchers) et flèche sous charge de 1 kN ≤ 2 mm
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Poutre GL24, section 200×400 mm, L = 6 m, p<sub>ELS</sub> = 5 kN/m<br>
+                I = 200×400³/12 = 1,07×10⁹ mm⁴<br>
+                u<sub>inst</sub> = 5×5×6000⁴ / (384×11600×1,07×10⁹) = <strong>6,8 mm</strong><br>
+                k<sub>def</sub> = 0,8 (classe 2) → u<sub>fin</sub> = 6,8×1,8 = <strong>12,2 mm</strong><br>
+                L/300 = 20 mm, L/200 = 30 mm → <strong>✅ OK</strong>
+            </div>
+
+            <button class="btn-exercice" onclick="toggleExercice('ex11')">📝 Voir l'exercice</button>
+            <div class="exercice-box" id="ex11">
+                <strong>Exercice 11.1 :</strong> Vérifier la flèche d'une solive en C24 de section 75×200 mm, portée 4 m, p<sub>ELS</sub> = 2 kN/m. E<sub>0,mean</sub> = 11 000 MPa, k<sub>def</sub> = 0,6.<br>
+                <div class="corrige">
+                    <strong>Corrigé :</strong><br>
+                    I = 75×200³/12 = <strong>50×10⁶ mm⁴</strong><br>
+                    u<sub>inst</sub> = 5×2×4000⁴ / (384×11000×50×10⁶) = <strong>4,8 mm</strong><br>
+                    u<sub>fin</sub> = 4,8 × (1+0,6) = <strong>7,7 mm</strong><br>
+                    L/300 = 13,3 mm → <strong>✅ OK</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 12 — ASSEMBLAGES -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome12">
+            <div class="tome-id">Tome 12</div>
+            <h2>🔩 Assemblages</h2>
+            <div class="desc">Pointes, vis, boulons, broches, goujons, tiges filetées, platines, connecteurs. Cisaillement, arrachement, écrasement, effet de levier, modes de rupture (Johansen).</div>
+
+            <div class="formulas">
+                <div class="label">Théorie de Johansen (Eurocode 5)</div>
+                <strong>Résistance au cisaillement :</strong> F<sub>v,Rd</sub> = min(F<sub>1</sub>, F<sub>2</sub>, F<sub>3</sub>, ...) selon les modes de rupture<br>
+                <strong>Mode 1 :</strong> F<sub>1</sub> = f<sub>h</sub> · t<sub>1</sub> · d<br>
+                <strong>Mode 2 :</strong> F<sub>2</sub> = f<sub>h</sub> · t<sub>2</sub> · d<br>
+                <strong>Mode 3 :</strong> F<sub>3</sub> = (f<sub>h</sub> · t<sub>1</sub> · d) / (2 + (4·M<sub>y,Rd</sub>) / (f<sub>h</sub> · d · t<sub>1</sub>²))<br>
+                <strong>Effet de levier :</strong> M<sub>y,Rd</sub> = 0,8 · f<sub>y,k</sub> · W<br>
+                <strong>Arrachement :</strong> F<sub>ax,Rd</sub> = f<sub>ax,k</sub> · d · t · k<sub>mod</sub> / γ<sub>M</sub>
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Assemblage boulonné (d = 12 mm) dans du GL24, épaisseur t = 40 mm, f<sub>h</sub> = 18 MPa<br>
+                F<sub>v,Rd</sub> = 18 × 40 × 12 = <strong>8 640 N</strong> (mode 1, sans effet de levier)
+            </div>
+
+            <button class="btn-exercice" onclick="toggleExercice('ex12')">📝 Voir l'exercice</button>
+            <div class="exercice-box" id="ex12">
+                <strong>Exercice 12.1 :</strong> Calculer la résistance d'un assemblage boulonné (d=16 mm) dans du GL28, épaisseur 50 mm, f<sub>h</sub> = 20 MPa. Vérifier le mode 1.<br>
+                <div class="corrige">
+                    <strong>Corrigé :</strong><br>
+                    F<sub>v,Rd</sub> = f<sub>h</sub> × t × d = 20 × 50 × 16 = <strong>16 000 N = 16 kN</strong><br>
+                    Vérification de l'effet de levier (négligé pour ce cas).
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 13 — CHARPENTES -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome13">
+            <div class="tome-id">Tome 13</div>
+            <h2>🏠 Charpentes</h2>
+            <div class="desc">Toitures traditionnelles : chevrons, pannes, arbalétriers, entraits, poinçons, contrefiches. Calcul complet sous charges de couverture, neige et vent.</div>
+
+            <div class="formulas">
+                <div class="label">Calcul des chevrons (Eurocode 5)</div>
+                <strong>Charge totale :</strong> p = (G + Q) · espacement + S · espacement<br>
+                <strong>Moment :</strong> M<sub>Ed</sub> = p · L² / 8<br>
+                <strong>Vérification :</strong> σ<sub>m,d</sub> = M<sub>Ed</sub> / W ≤ f<sub>m,d</sub><br>
+                <strong>Flèche :</strong> u = 5·p·L⁴ / (384·E·I) ≤ L/300<br>
+                <strong>Pannes :</strong> vérifier en flexion et cisaillement sous neige<br>
+                <strong>Arbalétriers :</strong> compression + flexion (élément incliné)
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Chevron en C24, section 63×175 mm, espacement 50 cm, portée 3 m, charges G=1,2 kN/m², Q=0,5 kN/m², S=0,45 kN/m²<br>
+                p = (1,2+0,5+0,45)×0,5 = <strong>1,08 kN/m</strong><br>
+                M<sub>Ed</sub> = 1,08×3²/8 = <strong>1,22 kN·m</strong> → OK
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 14 — OSSATURE BOIS -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome14">
+            <div class="tome-id">Tome 14</div>
+            <h2>🧱 Ossature bois</h2>
+            <div class="desc">Montants, traverses, lisses, voiles travaillants, contreventement. Calcul des montants en compression + flexion composée.</div>
+
+            <div class="formulas">
+                <div class="label">Calcul des montants d'ossature</div>
+                <strong>Compression :</strong> σ<sub>c,0,d</sub> = N<sub>Ed</sub> / A ≤ f<sub>c,0,d</sub><br>
+                <strong>Flambement :</strong> σ<sub>c,0,d</sub> ≤ k<sub>c</sub> · f<sub>c,0,d</sub><br>
+                <strong>Flexion composée :</strong> (σ<sub>c,0,d</sub> / f<sub>c,0,d</sub>) + (σ<sub>m,d</sub> / f<sub>m,d</sub>) ≤ 1<br>
+                <strong>Voiles travaillants :</strong> vérification du contreventement sous vent
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Montant C24 75×150 mm, N<sub>Ed</sub> = 15 kN, M<sub>Ed</sub> = 2 kN·m<br>
+                A = 75×150 = 11 250 mm², W = 75×150²/6 = 281 250 mm³<br>
+                σ<sub>c,0,d</sub> = 15×10³/11250 = <strong>1,33 MPa</strong><br>
+                σ<sub>m,d</sub> = 2×10⁶/281250 = <strong>7,11 MPa</strong><br>
+                Vérification : 1,33/10 + 7,11/12 = <strong>0,13 + 0,59 = 0,72 ≤ 1</strong> → OK
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 15 — CLT -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome15">
+            <div class="tome-id">Tome 15</div>
+            <h2>🪵 CLT (Cross Laminated Timber)</h2>
+            <div class="desc">Calcul des panneaux en flexion, cisaillement, déformations, assemblages. Panneaux à 3, 5 ou 7 couches.</div>
+
+            <div class="formulas">
+                <div class="label">Calcul des panneaux CLT</div>
+                <strong>Flexion :</strong> σ<sub>m,d</sub> = M<sub>Ed</sub> / W<sub>eff</sub> ≤ f<sub>m,d</sub><br>
+                <strong>Cisaillement :</strong> τ<sub>d</sub> = V<sub>Ed</sub> · S / (I<sub>eff</sub> · b) ≤ f<sub>v,d</sub><br>
+                <strong>Flèche :</strong> u = (5·p·L⁴) / (384·E<sub>eff</sub>·I<sub>eff</sub>)<br>
+                <strong>Rigidité effective :</strong> E<sub>eff</sub>·I<sub>eff</sub> = Σ (E<sub>i</sub>·I<sub>i</sub>) + Σ (E<sub>i</sub>·A<sub>i</sub>·a<sub>i</sub>²)
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Panneau CLT 5 couches (20+20+20+20+20 = 100 mm), portée 4 m, p = 5 kN/m²<br>
+                E<sub>eff</sub>·I<sub>eff</sub> ≈ 1,2×10¹² N·mm²<br>
+                u = 5×5×4000⁴ / (384×1,2×10¹²) = <strong>5,8 mm</strong> ≤ L/300 = 13,3 mm → OK
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 16 — STABILITÉ -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome16">
+            <div class="tome-id">Tome 16</div>
+            <h2>📐 Stabilité</h2>
+            <div class="desc">Flambement des poteaux, déversement des poutres, instabilités globales, vérifications des portiques.</div>
+
+            <div class="formulas">
+                <div class="label">Formules de stabilité (Eurocode 5)</div>
+                <strong>Flambement (poteaux) :</strong> σ<sub>c,0,d</sub> ≤ k<sub>c</sub> · f<sub>c,0,d</sub><br>
+                <strong>k<sub>c</sub> :</strong> facteur de flambement (1 / (k + √(k² − λ<sub>rel</sub>²)))<br>
+                <strong>λ<sub>rel</sub> :</strong> élancement relatif = (λ / π) · √(f<sub>c,0,k</sub> / E<sub>0,05</sub>)<br>
+                <strong>Déversement :</strong> σ<sub>m,d</sub> ≤ k<sub>crit</sub> · f<sub>m,d</sub><br>
+                <strong>k<sub>crit</sub> :</strong> facteur de déversement (1,0 si λ<sub>rel,m</sub> ≤ 0,75)
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Poteau GL24 200×200 mm, L = 4 m, N<sub>Ed</sub> = 200 kN<br>
+                i = 0,289×200 = 57,8 mm, λ = 4000/57,8 = <strong>69</strong><br>
+                λ<sub>rel</sub> = (69/π) × √(24/7400) = <strong>1,0</strong><br>
+                k<sub>c</sub> ≈ <strong>0,60</strong><br>
+                σ<sub>c,0,d</sub> = 200×10³ / 40000 = <strong>5,0 MPa</strong><br>
+                f<sub>c,0,d</sub> = 0,8×24/1,25 = <strong>15,36 MPa</strong><br>
+                5,0 ≤ 0,60×15,36 = <strong>9,22 MPa</strong> → OK
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 17 — RÉSISTANCE AU FEU -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome17">
+            <div class="tome-id">Tome 17</div>
+            <h2>🔥 Résistance au feu</h2>
+            <div class="desc">Selon l'Eurocode 5 : vitesse de carbonisation, section résiduelle, vérification R30, R60, R90 et R120.</div>
+
+            <div class="formulas">
+                <div class="label">Formules de résistance au feu</div>
+                <strong>Vitesse de carbonisation :</strong> β = 0,65 mm/min (bois massif), β = 0,45 mm/min (lamellé-collé)<br>
+                <strong>Section résiduelle :</strong> d<sub>char</sub> = β · t<sub>feu</sub><br>
+                <strong>Section effective :</strong> b<sub>eff</sub> = b − 2·d<sub>char</sub> &nbsp;·&nbsp; h<sub>eff</sub> = h − d<sub>char</sub><br>
+                <strong>Vérification :</strong> M<sub>Ed,feu</sub> ≤ M<sub>Rd,feu</sub><br>
+                <strong>Classes :</strong> R30 (30 min), R60 (60 min), R90 (90 min), R120 (120 min)
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Poutre GL28 200×600 mm, R60 (60 min)<br>
+                d<sub>char</sub> = 0,45 × 60 = <strong>27 mm</strong><br>
+                b<sub>eff</sub> = 200 − 2×27 = <strong>146 mm</strong><br>
+                h<sub>eff</sub> = 600 − 27 = <strong>573 mm</strong><br>
+                Section résiduelle = 146×573 mm (87% de la section initiale)
+            </div>
+
+            <button class="btn-exercice" onclick="toggleExercice('ex17')">📝 Voir l'exercice</button>
+            <div class="exercice-box" id="ex17">
+                <strong>Exercice 17.1 :</strong> Calculer la section résiduelle d'une poutre en bois massif C24 de section 100×200 mm pour une résistance R30 (30 min). β = 0,65 mm/min.<br>
+                <div class="corrige">
+                    <strong>Corrigé :</strong><br>
+                    d<sub>char</sub> = 0,65 × 30 = <strong>19,5 mm</strong><br>
+                    b<sub>eff</sub> = 100 − 2×19,5 = <strong>61 mm</strong><br>
+                    h<sub>eff</sub> = 200 − 19,5 = <strong>180,5 mm</strong><br>
+                    Section résiduelle = <strong>61 × 180,5 mm</strong> (55% de la section initiale)
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 18 — DIMENSIONNEMENT COMPLET -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome18">
+            <div class="tome-id">Tome 18</div>
+            <h2>📋 Dimensionnement complet</h2>
+            <div class="desc">Méthodologie complète pour chaque élément : descente de charges, combinaisons ELU/ELS, calcul des sollicitations, vérifications, assemblages, détails d'exécution.</div>
+
+            <div class="formulas">
+                <div class="label">Méthodologie complète</div>
+                <strong>1. Descente de charges</strong> : G<sub>k</sub> + Q<sub>k</sub> + S<sub>k</sub> + W<sub>k</sub><br>
+                <strong>2. Combinaisons</strong> : ELU et ELS selon EN 1990<br>
+                <strong>3. Sollicitations</strong> : M<sub>Ed</sub>, V<sub>Ed</sub>, N<sub>Ed</sub><br>
+                <strong>4. ELU</strong> : flexion, cisaillement, compression, flambement, déversement<br>
+                <strong>5. ELS</strong> : flèche instantanée, flèche finale, vibrations<br>
+                <strong>6. Assemblages</strong> : boulons, pointes, connecteurs<br>
+                <strong>7. Détails</strong> : ancrages, résistance au feu, durabilité
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple complet : Poutre en lamellé-collé de 12 m</strong><br>
+                Données : GL28, section 200×600 mm, portée 12 m, charges G=5 kN/m, Q=3 kN/m, S=2 kN/m (neige)<br>
+                ELU : M<sub>Ed</sub> = 1,35×5 + 1,5×3 + 1,5×0,5×2 = <strong>13,05 kN/m</strong><br>
+                M<sub>Ed</sub> = 13,05×12²/8 = <strong>234,9 kN·m</strong><br>
+                W = 200×600²/6 = 12×10⁶ mm³ → σ = 234,9×10⁶/12×10⁶ = <strong>19,58 MPa</strong><br>
+                f<sub>m,d</sub> = 0,8×28/1,25 = <strong>17,92 MPa</strong> → <strong>⚠ Non conforme</strong> → section insuffisante<br>
+                Solution : utiliser GL32 ou augmenter la section (ex: 240×650 mm)
+            </div>
+
+            <div class="domaine">
+                <span>📌 Exemples concrets</span>
+                <span>Panne de toiture sous neige/vent</span>
+                <span>Arbalétrier de ferme traditionnelle</span>
+                <span>Chevron en flexion</span>
+                <span>Poteau d'ossature bois</span>
+                <span>Poutre lamellé-collé 12 m</span>
+                <span>Plancher bois (solives)</span>
+                <span>Assemblage boulonné</span>
+                <span>Ferme complète</span>
+                <span>Ossature bois sous séisme</span>
+                <span>Résistance au feu GL</span>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- FOOTER -->
+        <!-- ============================================================ -->
+        <div class="footer">
+            <p>🪵 Cours complet — <span>Eurocode 5</span> (NF EN 1995-1-1)<br>
+            Structures bois — Niveau ingénieur / bureau d'études</p>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleExercice(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+            }
+        }
+    </script>
+
+</body>
+</html>
