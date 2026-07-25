@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Génie Civil - Matériaux &amp; Structures</title>
+    <title>Langages de Programmation - Histoire &amp; Créateurs</title>
     <style>
         /* --- RESET & BASE --- */
         * {
@@ -14,8 +14,8 @@
 
         body {
             font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-            background: #f4f7fa;
-            color: #1e2a3a;
+            background: #f0f4f8;
+            color: #1a2634;
             padding: 2rem 1rem;
             line-height: 1.6;
         }
@@ -27,7 +27,7 @@
 
         /* --- HEADER --- */
         .header {
-            background: linear-gradient(135deg, #0b2a4a, #1b4a7a);
+            background: linear-gradient(135deg, #0d1b2a, #1b3a5c);
             color: #fff;
             padding: 2.5rem 2rem;
             border-radius: 20px;
@@ -63,14 +63,28 @@
             backdrop-filter: blur(4px);
         }
 
-        /* --- GRILLE DES CATÉGORIES --- */
+        .back-link {
+            display: inline-block;
+            color: #7fc8ff;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        /* --- GRILLE --- */
         .section-title {
             font-size: 1.6rem;
             font-weight: 600;
             margin: 2rem 0 1.2rem 0;
             padding-left: 0.5rem;
-            border-left: 6px solid #1b4a7a;
-            color: #0b2a4a;
+            border-left: 6px solid #1b3a5c;
+            color: #0d1b2a;
         }
 
         .section-title .emoji {
@@ -79,18 +93,18 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 1rem;
         }
 
-        /* --- CARTE SUJET (cliquable) --- */
+        /* --- CARTE --- */
         .card {
             background: #ffffff;
             border-radius: 14px;
             padding: 1rem 1.2rem;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
             transition: all 0.2s ease;
-            border: 1px solid #e9edf2;
+            border: 1px solid #e2e8f0;
             display: flex;
             align-items: flex-start;
             gap: 0.8rem;
@@ -99,13 +113,13 @@
 
         .card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 20, 40, 0.12);
-            border-color: #1b4a7a;
+            box-shadow: 0 10px 25px rgba(0, 20, 40, 0.10);
+            border-color: #1b3a5c;
         }
 
         .card .num {
             font-weight: 700;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #7a8fa3;
             background: #eef3f8;
             border-radius: 30px;
@@ -117,128 +131,134 @@
 
         .card .text {
             font-size: 0.95rem;
-            color: #1e2a3a;
+            color: #1a2634;
             font-weight: 500;
         }
 
         .card .text small {
             display: block;
             font-weight: 400;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: #5d7388;
-            margin-top: 0.15rem;
+            margin-top: 0.1rem;
         }
 
-        /* --- CATÉGORIES (couleurs) --- */
-        .cat-materiaux .card { border-left: 4px solid #3a86c4; }
-        .cat-structures .card { border-left: 4px solid #d97706; }
-        .cat-durabilite .card { border-left: 4px solid #0f7b3a; }
-        .cat-procedes .card { border-left: 4px solid #7c3a9e; }
-        .cat-gestion .card { border-left: 4px solid #b91c5c; }
-        .cat-specifiques .card { border-left: 4px solid #a6572e; }
+        /* --- COULEURS PAR CATÉGORIE --- */
+        .cat-system .card { border-left: 4px solid #d97706; }
+        .cat-web .card { border-left: 4px solid #2563eb; }
+        .cat-data .card { border-left: 4px solid #0f7b3a; }
+        .cat-mobile .card { border-left: 4px solid #7c3a9e; }
+        .cat-fonctionnel .card { border-left: 4px solid #b91c5c; }
+        .cat-autres .card { border-left: 4px solid #a6572e; }
 
-        /* --- MODAL --- */
-        .modal-overlay {
+        /* --- PAGE ARTICLE --- */
+        #articlePage {
             display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.55);
-            backdrop-filter: blur(4px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 1.5rem;
         }
 
-        .modal-overlay.active {
-            display: flex;
+        #articlePage.active {
+            display: block;
         }
 
-        .modal {
+        #homePage.hidden {
+            display: none;
+        }
+
+        .article-container {
             background: #fff;
-            max-width: 720px;
-            width: 100%;
-            max-height: 85vh;
-            border-radius: 24px;
-            padding: 2rem 2.2rem;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
-            overflow-y: auto;
-            position: relative;
-            animation: fadeIn 0.25s ease;
+            border-radius: 20px;
+            padding: 2.5rem 2.8rem;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.07);
+            margin-top: 0.5rem;
+            max-width: 820px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.96) translateY(20px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        .modal .close-btn {
-            position: sticky;
-            top: 0;
-            float: right;
-            background: #f0f2f5;
-            border: none;
-            font-size: 1.8rem;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #2c3e50;
-            transition: 0.2s;
-            margin-bottom: 0.5rem;
-        }
-
-        .modal .close-btn:hover {
-            background: #e2e6ea;
-            transform: rotate(90deg);
-        }
-
-        .modal .modal-num {
+        .article-container .article-num {
             font-size: 0.8rem;
             color: #7a8fa3;
             background: #eef3f8;
             display: inline-block;
-            padding: 0.2rem 1rem;
+            padding: 0.2rem 1.2rem;
             border-radius: 30px;
             font-weight: 600;
         }
 
-        .modal h2 {
-            font-size: 1.8rem;
-            margin: 0.5rem 0 1rem 0;
-            color: #0b2a4a;
+        .article-container h2 {
+            font-size: 2rem;
+            margin: 0.3rem 0 0.3rem 0;
+            color: #0d1b2a;
         }
 
-        .modal .modal-content {
+        .article-container .article-creator {
             font-size: 1rem;
-            color: #1e2a3a;
-            line-height: 1.8;
-        }
-
-        .modal .modal-content p {
-            margin-bottom: 0.8rem;
-        }
-
-        .modal .modal-content ul {
-            padding-left: 1.5rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .modal .modal-content li {
+            color: #4a6a8a;
             margin-bottom: 0.3rem;
         }
 
-        .modal .modal-tag {
+        .article-container .article-creator strong {
+            color: #0d1b2a;
+        }
+
+        .article-container .article-date {
             display: inline-block;
             background: #eef3f8;
-            padding: 0.2rem 0.9rem;
+            padding: 0.2rem 1rem;
             border-radius: 30px;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: #3a6a8a;
-            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .article-container .article-tag {
+            display: inline-block;
+            background: #eef3f8;
+            padding: 0.25rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #3a6a8a;
+            margin-left: 0.5rem;
+        }
+
+        .article-container .article-content {
+            font-size: 1.05rem;
+            line-height: 1.9;
+            color: #1a2634;
+        }
+
+        .article-container .article-content p {
+            margin-bottom: 0.9rem;
+        }
+
+        .article-container .article-content ul {
+            padding-left: 1.8rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .article-container .article-content li {
+            margin-bottom: 0.4rem;
+        }
+
+        .article-container .article-content strong {
+            color: #0d1b2a;
+        }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 1.8rem;
+            color: #1b3a5c;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1.2rem;
+            border: 2px solid #1b3a5c;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+
+        .back-home:hover {
+            background: #1b3a5c;
+            color: #fff;
         }
 
         /* --- RESPONSIVE --- */
@@ -248,8 +268,8 @@
             .header h1 { font-size: 1.5rem; }
             .grid { grid-template-columns: 1fr; }
             .section-title { font-size: 1.2rem; }
-            .modal { padding: 1.5rem; }
-            .modal h2 { font-size: 1.4rem; }
+            .article-container { padding: 1.5rem; }
+            .article-container h2 { font-size: 1.5rem; }
         }
 
         /* --- FOOTER --- */
@@ -266,805 +286,888 @@
 <body>
     <div class="container">
 
-        <!-- HEADER -->
-        <div class="header">
-            <h1>🏗️ Génie Civil · <span>Matériaux &amp; Structures</span></h1>
-            <p>60 sujets incontournables. Cliquez sur un thème pour découvrir son contenu détaillé.</p>
-            <div class="badge-count">📚 60 thèmes · Cliquez pour explorer</div>
-        </div>
-
-        <!-- ===== 1. MATÉRIAUX ===== -->
-        <h2 class="section-title"><span class="emoji">🧱</span> Matériaux</h2>
-        <div class="grid cat-materiaux" id="grid-materiaux"></div>
-
-        <!-- ===== 2. STRUCTURES & CONCEPTION ===== -->
-        <h2 class="section-title"><span class="emoji">🏗️</span> Structures &amp; Conception</h2>
-        <div class="grid cat-structures" id="grid-structures"></div>
-
-        <!-- ===== 3. DURABILITÉ & RÉHABILITATION ===== -->
-        <h2 class="section-title"><span class="emoji">🌍</span> Durabilité &amp; Réhabilitation</h2>
-        <div class="grid cat-durabilite" id="grid-durabilite"></div>
-
-        <!-- ===== 4. PROCÉDÉS CONSTRUCTIFS & INNOVATIONS ===== -->
-        <h2 class="section-title"><span class="emoji">⚙️</span> Procédés &amp; Innovations</h2>
-        <div class="grid cat-procedes" id="grid-procedes"></div>
-
-        <!-- ===== 5. GESTION DE PROJET & NORMALISATION ===== -->
-        <h2 class="section-title"><span class="emoji">📐</span> Gestion de projet &amp; Normalisation</h2>
-        <div class="grid cat-gestion" id="grid-gestion"></div>
-
-        <!-- ===== 6. SUJETS SPÉCIFIQUES & TRANSVERSAUX ===== -->
-        <h2 class="section-title"><span class="emoji">🔥</span> Spécifiques &amp; Transversaux</h2>
-        <div class="grid cat-specifiques" id="grid-specifiques"></div>
-
-        <!-- FOOTER -->
-        <div class="footer">
-            <p>📌 60 sujets — Génie Civil · Matériaux &amp; Structures</p>
-        </div>
-
-    </div>
-
-    <!-- ===== MODAL ===== -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal" id="modal">
-            <button class="close-btn" id="closeModal">✕</button>
-            <div class="modal-num" id="modalNum">01</div>
-            <h2 id="modalTitle">Titre</h2>
-            <div class="modal-content" id="modalContent">
-                <p>Contenu détaillé...</p>
+        <!-- ============================================================ -->
+        <!-- PAGE D'ACCUEIL -->
+        <!-- ============================================================ -->
+        <div id="homePage">
+            <div class="header">
+                <h1>💻 Langages de Programmation · <span>Histoire &amp; Créateurs</span></h1>
+                <p>50 langages incontournables. Cliquez sur un langage pour découvrir son créateur, sa date de création et son histoire.</p>
+                <div class="badge-count">📚 50 langages · Chaque langage a sa propre URL</div>
             </div>
-            <div class="modal-tag" id="modalTag">Matériaux</div>
+
+            <h2 class="section-title"><span class="emoji">⚙️</span> Langages Système &amp; Généralistes</h2>
+            <div class="grid cat-system" id="grid-system"></div>
+
+            <h2 class="section-title"><span class="emoji">🌐</span> Langages Web</h2>
+            <div class="grid cat-web" id="grid-web"></div>
+
+            <h2 class="section-title"><span class="emoji">📊</span> Data &amp; IA</h2>
+            <div class="grid cat-data" id="grid-data"></div>
+
+            <h2 class="section-title"><span class="emoji">📱</span> Mobile &amp; Embarqué</h2>
+            <div class="grid cat-mobile" id="grid-mobile"></div>
+
+            <h2 class="section-title"><span class="emoji">🧮</span> Fonctionnels &amp; Académiques</h2>
+            <div class="grid cat-fonctionnel" id="grid-fonctionnel"></div>
+
+            <h2 class="section-title"><span class="emoji">🧩</span> Autres Langages &amp; DSL</h2>
+            <div class="grid cat-autres" id="grid-autres"></div>
+
+            <div class="footer">
+                <p>📌 50 langages — Histoire, créateurs, caractéristiques</p>
+            </div>
         </div>
+
+        <!-- ============================================================ -->
+        <!-- PAGE ARTICLE -->
+        <!-- ============================================================ -->
+        <div id="articlePage">
+            <div class="header" style="margin-bottom: 1.5rem;">
+                <h1>💻 <span>Langages de Programmation</span></h1>
+                <a class="back-link" href="#" id="backToHomeLink">← Retour à la liste</a>
+            </div>
+            <div class="article-container" id="articleContainer">
+                <div class="article-num" id="articleNum">01</div>
+                <h2 id="articleTitle">Langage</h2>
+                <div class="article-creator" id="articleCreator">👤 <strong>Créateur :</strong> Nom</div>
+                <div>
+                    <span class="article-date" id="articleDate">📅 1970</span>
+                    <span class="article-tag" id="articleTag">🏷️ Système</span>
+                </div>
+                <div class="article-content" id="articleContent">
+                    <p>Histoire et caractéristiques...</p>
+                </div>
+                <a href="#" class="back-home" id="backHomeBtn">← Tous les langages</a>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        // ============================================================
-        //  DONNÉES : 60 SUJETS AVEC CONTENU DÉTAILLÉ
-        // ============================================================
+        // ================================================================
+        //  DONNÉES : 50 LANGAGES AVEC HISTORIQUE
+        // ================================================================
         const data = {
-            // ---------- MATÉRIAUX (01 à 20) ----------
+            // ---------- SYSTÈME & GÉNÉRALISTES (1-12) ----------
             1: {
-                title: "Bétons bas carbone",
-                tag: "Matériaux",
+                title: "C",
+                creator: "Dennis Ritchie",
+                date: "1972",
+                tag: "Système",
                 content: `
-                    <p>Les bétons bas carbone visent à réduire les émissions de CO₂ liées à la fabrication du ciment, qui représente environ 8 % des émissions mondiales. Plusieurs leviers sont explorés :</p>
+                    <p>Créé aux Bell Labs par <strong>Dennis Ritchie</strong> entre 1969 et 1972, le langage C est l'un des plus influents de l'histoire de l'informatique.</p>
+                    <p>Il a été conçu pour écrire le système d'exploitation UNIX, remplaçant le langage B. Sa philosophie : donner au programmeur un contrôle total sur la mémoire et le matériel, tout en restant portable.</p>
                     <ul>
-                        <li><strong>Substitution du clinker :</strong> remplacement partiel par des matériaux alternatifs comme le laitier de haut-fourneau, les cendres volantes, ou l'argile calcinée.</li>
-                        <li><strong>Ciments belitiques :</strong> formulations nécessitant moins d'énergie de cuisson.</li>
-                        <li><strong>Captation de CO₂ :</strong> procédés de carbonatation accélérée qui stockent du CO₂ dans le béton.</li>
+                        <li><strong>Héritage :</strong> C a influencé presque tous les langages modernes : C++, Java, C#, Go, Rust, et bien d'autres.</li>
+                        <li><strong>Caractéristiques :</strong> compilé, bas niveau, pointeurs, gestion manuelle de la mémoire, préprocesseur.</li>
+                        <li><strong>Utilisations :</strong> systèmes d'exploitation, embarqué, bases de données, compilateurs.</li>
                     </ul>
-                    <p>Ces solutions permettent de réduire l'empreinte carbone de 30 à 50 % sans sacrifier les performances mécaniques.</p>
+                    <p>En 1978, Kernighan et Ritchie publient <em>"The C Programming Language"</em>, le célèbre "K&R", qui restera la référence pendant des décennies.</p>
                 `
             },
             2: {
-                title: "Bétons fibrés",
-                tag: "Matériaux",
+                title: "C++",
+                creator: "Bjarne Stroustrup",
+                date: "1985",
+                tag: "Système",
                 content: `
-                    <p>L'ajout de fibres améliore la résistance à la traction et limite la fissuration du béton. On distingue :</p>
+                    <p>Créé par <strong>Bjarne Stroustrup</strong> aux Bell Labs au début des années 1980, C++ est une extension du langage C qui ajoute la programmation orientée objet.</p>
+                    <p>Stroustrup voulait un langage qui combine la performance de C avec des abstractions de plus haut niveau. Le nom "C++" est un jeu de mots : l'opérateur ++ en C signifie "incrémenter".</p>
                     <ul>
-                        <li><strong>Micro-fibres :</strong> synthétiques (polypropylène) ou métalliques, elles contrôlent la microfissuration.</li>
-                        <li><strong>Macro-fibres :</strong> plus longues, elles apportent une ductilité et peuvent remplacer une partie des armatures passives.</li>
-                        <li><strong>Fibres végétales :</strong> chanvre, lin, bambou – pour une approche biosourcée.</li>
+                        <li><strong>Évolution :</strong> normes ISO en 1998 (C++98), 2011 (C++11), 2017, 2020, etc.</li>
+                        <li><strong>Paradigmes :</strong> procédural, orienté objet, générique, fonctionnel.</li>
+                        <li><strong>Utilisations :</strong> jeux vidéo, systèmes embarqués, moteurs 3D, trading haute fréquence.</li>
                     </ul>
-                    <p>Applications : dallages, voirie, structures préfabriquées, et ouvrages maritimes.</p>
+                    <p>C++ reste incontournable pour les applications nécessitant une performance maximale.</p>
                 `
             },
             3: {
-                title: "Bétons autoplaçants (BAP)",
-                tag: "Matériaux",
+                title: "Rust",
+                creator: "Graydon Hoare",
+                date: "2010",
+                tag: "Système",
                 content: `
-                    <p>Le BAP se met en place sans vibration mécanique, grâce à une grande fluidité et une stabilité assurée par des adjuvants superplastifiants et des viscosants.</p>
+                    <p>Développé par <strong>Graydon Hoare</strong> chez Mozilla, Rust est apparu en 2010 et a atteint sa version 1.0 en 2015. Il a été conçu pour être un langage système sûr et performant.</p>
+                    <p>L'idée centrale : garantir la sécurité mémoire <strong>sans garbage collector</strong>, grâce à un système de propriété et d'emprunt (borrowing) vérifié à la compilation.</p>
                     <ul>
-                        <li><strong>Avantages :</strong> réduction du bruit sur chantier, gain de temps, remplissage optimal des zones fortement armées.</li>
-                        <li><strong>Applications :</strong> éléments préfabriqués, voiles minces, ouvrages d'art.</li>
-                        <li><strong>Contrôle :</strong> essais d'étalement, de boîte en L et de stabilité.</li>
+                        <li><strong>Philosophie :</strong> performance comme C++, sécurité comme Java.</li>
+                        <li><strong>Caractéristiques :</strong> mémoire sécurisée, concurrence sans data races, zéro-cost abstractions.</li>
+                        <li><strong>Utilisations :</strong> moteurs de navigateurs (Servo), outils système (ripgrep, exa), blockchain (Solana).</li>
                     </ul>
+                    <p>Rust est régulièrement élu "langage le plus aimé" dans les enquêtes Stack Overflow.</p>
                 `
             },
             4: {
-                title: "Bétons autoréparants",
-                tag: "Matériaux",
+                title: "Go (Golang)",
+                creator: "Robert Griesemer, Rob Pike, Ken Thompson",
+                date: "2009",
+                tag: "Système",
                 content: `
-                    <p>Inspirée de la biologie, cette innovation permet au béton de refermer ses microfissures de façon autonome :</p>
+                    <p>Créé chez Google par <strong>Robert Griesemer, Rob Pike et Ken Thompson</strong> (ce dernier est aussi un des pères d'UNIX). Go est sorti en 2009.</p>
+                    <p>Il a été conçu pour répondre aux besoins de Google : des programmes qui compilent vite, qui s'exécutent efficacement sur des serveurs massivement parallèles, et qui sont faciles à maintenir.</p>
                     <ul>
-                        <li><strong>Bactéries :</strong> des micro-organismes encapsulés produisent du calcaire en présence d'eau.</li>
-                        <li><strong>Capsules polymères :</strong> libèrent un agent de réparation lorsque la fissure se propage.</li>
-                        <li><strong>Ciments expansifs :</strong> gonflent pour obturer les fissures.</li>
+                        <li><strong>Philosophie :</strong> simplicité, lisibilité, rapidité de compilation.</li>
+                        <li><strong>Caractéristiques :</strong> garbage collector, goroutines (concurrence légère), channels, pas d'héritage.</li>
+                        <li><strong>Utilisations :</strong> services cloud (Docker, Kubernetes), outils réseau, microservices.</li>
                     </ul>
-                    <p>Réduction des coûts de maintenance et prolongation de la durée de vie des ouvrages.</p>
+                    <p>Go est devenu un standard pour l'infrastructure cloud-native.</p>
                 `
             },
             5: {
-                title: "Bétons haute performance (BHP) et UHPC",
-                tag: "Matériaux",
+                title: "Zig",
+                creator: "Andrew Kelley",
+                date: "2016",
+                tag: "Système",
                 content: `
-                    <p>Les bétons haute performance (BHP) dépassent 80 MPa de résistance en compression. L'UHPC (Ultra-High Performance Concrete) atteint 150 à 250 MPa.</p>
+                    <p>Créé par <strong>Andrew Kelley</strong> en 2016, Zig se veut un successeur moderne de C, avec une philosophie "pas de magie, pas de cachette".</p>
+                    <p>Il propose une gestion explicite de la mémoire, une compilation croisée native, et une intégration transparente avec le code C existant.</p>
                     <ul>
-                        <li><strong>Composition :</strong> rapport eau/ciment très bas, superplastifiants, fumée de silice, fibres métalliques.</li>
-                        <li><strong>Avantages :</strong> sections réduites, portées plus longues, durabilité exceptionnelle.</li>
-                        <li><strong>Applications :</strong> ponts, façades architecturales, éléments précontraints.</li>
+                        <li><strong>Philosophie :</strong> simplicité, pas de macros, pas de préprocesseur.</li>
+                        <li><strong>Caractéristiques :</strong> comptage de références optionnel, allocateurs explicites, const eval.</li>
+                        <li><strong>Utilisations :</strong> systèmes embarqués, compilateurs, jeux.</li>
                     </ul>
+                    <p>Zig gagne en popularité comme alternative moderne à C.</p>
                 `
             },
             6: {
-                title: "Bétons allégés et isolants",
-                tag: "Matériaux",
+                title: "Python",
+                creator: "Guido van Rossum",
+                date: "1991",
+                tag: "Généraliste",
                 content: `
-                    <p>Ces bétons combinent légèreté et propriétés thermiques :</p>
+                    <p>Créé par le néerlandais <strong>Guido van Rossum</strong> en 1991, Python a été conçu pour être un langage facile à lire et à écrire. Son nom vient des <em>Monty Python's Flying Circus</em>.</p>
+                    <p>La philosophie de Python est résumée dans le "Zen of Python" : <em>"Beautiful is better than ugly. Explicit is better than implicit."</em></p>
                     <ul>
-                        <li><strong>Béton cellulaire :</strong> obtenu par bullage ou ajout d'aluminium, masses volumiques de 300 à 800 kg/m³.</li>
-                        <li><strong>Béton de bois :</strong> mélange de copeaux de bois et de ciment, isolant et respirant.</li>
-                        <li><strong>Bétons allégés aux granulats légers :</strong> argile expansée, pouzzolane, polystyrène.</li>
+                        <li><strong>Caractéristiques :</strong> interprété, typage dynamique, garbage collector, batterie incluse.</li>
+                        <li><strong>Écosystème :</strong> numpy, pandas, Django, Flask, TensorFlow, PyTorch.</li>
+                        <li><strong>Utilisations :</strong> data science, IA, web, automation, scripting.</li>
                     </ul>
-                    <p>Idéal pour les murs de remplissage, chapes, et toitures-terrasses.</p>
+                    <p>Python est aujourd'hui le langage le plus populaire dans le monde de la data et de l'IA.</p>
                 `
             },
             7: {
-                title: "Bétons imprimés en 3D",
-                tag: "Matériaux",
+                title: "Java",
+                creator: "James Gosling",
+                date: "1995",
+                tag: "Généraliste",
                 content: `
-                    <p>L'impression 3D béton révolutionne la construction par dépôt successif de couches de mortier.</p>
+                    <p>Créé par <strong>James Gosling</strong> chez Sun Microsystems au début des années 1990, Java a été officiellement lancé en 1995. Son slogan : <em>"Write Once, Run Anywhere"</em>.</p>
+                    <p>Java a révolutionné le développement d'entreprise grâce à sa machine virtuelle (JVM) et sa gestion automatique de la mémoire.</p>
                     <ul>
-                        <li><strong>Procédés :</strong> extrusion (type imprimante), robotique sur chantier, impression en usine.</li>
-                        <li><strong>Enjeux :</strong> formulation adaptée (thixotropie, temps de prise), intégration des armatures, géométries complexes.</li>
-                        <li><strong>Bénéfices :</strong> réduction des déchets, liberté architecturale, économie de matière.</li>
+                        <li><strong>Caractéristiques :</strong> orienté objet, compilé vers bytecode, JVM, garbage collector.</li>
+                        <li><strong>Écosystème :</strong> Spring, Hibernate, Maven, Android (historiquement).</li>
+                        <li><strong>Utilisations :</strong> applications d'entreprise, Android (avant Kotlin), serveurs, big data (Hadoop).</li>
                     </ul>
+                    <p>Java reste un pilier des grandes entreprises et des systèmes critiques.</p>
                 `
             },
             8: {
-                title: "Bétons drainants et perméables",
-                tag: "Matériaux",
+                title: "C#",
+                creator: "Anders Hejlsberg",
+                date: "2000",
+                tag: "Généraliste",
                 content: `
-                    <p>Conçus pour laisser passer l'eau à travers leur structure poreuse :</p>
+                    <p>Développé par <strong>Anders Hejlsberg</strong> chez Microsoft, C# est apparu en 2000 avec la plateforme .NET. Hejlsberg avait déjà créé Turbo Pascal et Delphi.</p>
+                    <p>C# a été conçu comme une alternative moderne à Java, avec une intégration native avec Windows et l'écosystème Microsoft.</p>
                     <ul>
-                        <li><strong>Composition :</strong> absence de sable fin, granulats concassés de granulométrie continue.</li>
-                        <li><strong>Applications :</strong> parkings, trottoirs, voies piétonnes, zones de rétention des eaux pluviales.</li>
-                        <li><strong>Avantages :</strong> recharge des nappes, réduction des inondations, limitation des îlots de chaleur.</li>
+                        <li><strong>Caractéristiques :</strong> orienté objet, gestionnaire de mémoire (GC), LINQ, async/await.</li>
+                        <li><strong>Écosystème :</strong> .NET Core, ASP.NET, Unity (jeux vidéo), Xamarin.</li>
+                        <li><strong>Utilisations :</strong> applications Windows, jeux (Unity), services web, backend.</li>
                     </ul>
+                    <p>Avec .NET Core, C# est devenu multiplateforme et open-source.</p>
                 `
             },
             9: {
-                title: "Bétons translucides / photoluminescents",
-                tag: "Matériaux",
+                title: "Swift",
+                creator: "Chris Lattner",
+                date: "2014",
+                tag: "Généraliste",
                 content: `
-                    <p>Ces bétaux à vocation architecturale intègrent des fibres optiques ou des pigments luminescents.</p>
+                    <p>Développé par <strong>Chris Lattner</strong> chez Apple, Swift a été présenté en 2014 comme le successeur d'Objective-C pour le développement iOS/macOS.</p>
+                    <p>Swift est moderne, rapide, sécurisé, et bénéficie de l'écosystème LLVM (Lattner est aussi le créateur de LLVM).</p>
                     <ul>
-                        <li><strong>Translucide :</strong> des fibres de verre ou polymères laissent passer la lumière.</li>
-                        <li><strong>Photoluminescent :</strong> des pigments absorbent la lumière le jour et la restituent la nuit.</li>
-                        <li><strong>Applications :</strong> façades design, murs intérieurs, signalétique nocturne.</li>
+                        <li><strong>Caractéristiques :</strong> inférence de type, optionnels, protocoles, extensions.</li>
+                        <li><strong>Paradigmes :</strong> orienté objet, fonctionnel, protocol-oriented.</li>
+                        <li><strong>Utilisations :</strong> applications iOS/macOS/watchOS/tvOS, serveur (Vapor).</li>
                     </ul>
+                    <p>Swift est maintenant open-source et s'étend au serveur.</p>
                 `
             },
             10: {
-                title: "Bétons géopolymères",
-                tag: "Matériaux",
+                title: "Kotlin",
+                creator: "JetBrains (Andrey Breslav)",
+                date: "2011",
+                tag: "Généraliste",
                 content: `
-                    <p>Alternative au ciment Portland, les géopolymères utilisent des liants alcalins à base d'argile (métakaolin) ou de laitier.</p>
+                    <p>Créé par l'équipe de <strong>JetBrains</strong> (Andrey Breslav étant le lead designer) en 2011, Kotlin a été officiellement lancé en 2016.</p>
+                    <p>Il a été conçu pour être <strong>100 % interopérable avec Java</strong> tout en corrigeant ses défauts (null safety, concision, fonctionnalités modernes).</p>
                     <ul>
-                        <li><strong>Avantages :</strong> réduction de 80 % des émissions de CO₂, résistance chimique élevée, faible retrait.</li>
-                        <li><strong>Applications :</strong> ouvrages maritimes, stockage de déchets, réhabilitation.</li>
-                        <li><strong>Défis :</strong> normalisation, maîtrise du temps de prise, coût des activants.</li>
+                        <li><strong>Caractéristiques :</strong> null safety, coroutines, fonctions d'extension, data classes.</li>
+                        <li><strong>Adoption :</strong> Google a fait de Kotlin un langage officiel pour Android en 2017.</li>
+                        <li><strong>Utilisations :</strong> Android, backend (Spring Boot), multiplateforme.</li>
                     </ul>
+                    <p>Kotlin est aujourd'hui le langage de référence pour le développement Android.</p>
                 `
             },
             11: {
-                title: "Aciers haute résistance et ductilité",
-                tag: "Matériaux",
+                title: "Dart",
+                creator: "Lars Bak & Kasper Lund (Google)",
+                date: "2011",
+                tag: "Généraliste",
                 content: `
-                    <p>Les aciers modernes allient résistance mécanique et ductilité pour des structures plus légères et plus sûres.</p>
+                    <p>Développé par <strong>Lars Bak et Kasper Lund</strong> chez Google, Dart a été présenté en 2011. Il a été conçu pour le développement web, puis a trouvé sa vocation avec Flutter.</p>
+                    <p>Dart est compilé soit en JavaScript (pour le web), soit en code natif (via AOT) pour les applications mobiles.</p>
                     <ul>
-                        <li><strong>Grades :</strong> S460, S690, voire S960 en construction métallique.</li>
-                        <li><strong>Ductilité :</strong> allongement à rupture élevé et capacité d'absorption d'énergie.</li>
-                        <li><strong>Applications :</strong> charpentes, ponts, zones sismiques, structures à grande portée.</li>
+                        <li><strong>Caractéristiques :</strong> orienté objet, typage optionnel, isolateurs (concurrence).</li>
+                        <li><strong>Écosystème :</strong> Flutter (UI multiplateforme), AngularDart, Aqueduct.</li>
+                        <li><strong>Utilisations :</strong> applications mobiles (Flutter), web, desktop.</li>
                     </ul>
+                    <p>Dart a connu un regain de popularité grâce à Flutter.</p>
                 `
             },
             12: {
-                title: "Armatures composites (FRP)",
-                tag: "Matériaux",
+                title: "Julia",
+                creator: "Jeff Bezanson, Alan Edelman, Stefan Karpinski, Viral B. Shah",
+                date: "2012",
+                tag: "Data",
                 content: `
-                    <p>Les armatures en polymères renforcés de fibres (FRP) remplacent les aciers dans les environnements corrosifs.</p>
+                    <p>Créé en 2012 par <strong>Jeff Bezanson, Alan Edelman, Stefan Karpinski et Viral B. Shah</strong>, Julia a été conçu pour allier <strong>la performance de C avec la facilité de Python</strong>.</p>
+                    <p>Son atout majeur : la compilation à la volée (JIT) via LLVM, permettant des calculs numériques extrêmement rapides.</p>
                     <ul>
-                        <li><strong>Fibres :</strong> verre (GFRP), carbone (CFRP), ou aramide (AFRP).</li>
-                        <li><strong>Avantages :</strong> légèreté, insensibilité à la corrosion, isolation électrique et thermique.</li>
-                        <li><strong>Applications :</strong> ponts, ouvrages marins, bâtiments sensibles aux champs électromagnétiques.</li>
+                        <li><strong>Caractéristiques :</strong> typage dynamique mais avec inférence de type, dispatch multiple, macros.</li>
+                        <li><strong>Écosystème :</strong> differential equations, machine learning, dataframes.</li>
+                        <li><strong>Utilisations :</strong> calcul scientifique, machine learning, modélisation financière.</li>
                     </ul>
+                    <p>Julia est utilisé dans des domaines exigeants comme la simulation aéronautique ou la biologie computationnelle.</p>
                 `
             },
+            // ---------- WEB (13-24) ----------
             13: {
-                title: "Corrosion et protections des armatures",
-                tag: "Matériaux",
+                title: "JavaScript",
+                creator: "Brendan Eich",
+                date: "1995",
+                tag: "Web",
                 content: `
-                    <p>La corrosion des armatures est la première cause de dégradation des ouvrages en béton armé.</p>
+                    <p>Créé par <strong>Brendan Eich</strong> en seulement 10 jours en 1995, alors qu'il travaillait chez Netscape. Le langage s'appelait d'abord Mocha, puis LiveScript, avant de devenir JavaScript.</p>
+                    <p>Il a été conçu pour rendre les pages web interactives. Malgré une création rapide, il est devenu le langage le plus utilisé au monde.</p>
                     <ul>
-                        <li><strong>Protection passive :</strong> enrobage suffisant, qualité du béton (faible porosité).</li>
-                        <li><strong>Protection active :</strong> galvanisation, revêtement époxy, inhibiteurs de corrosion.</li>
-                        <li><strong>Protection cathodique :</strong> courant imposé ou anodes sacrificielles pour les structures existantes.</li>
+                        <li><strong>Évolution :</strong> ES6 (2015) a apporté classes, modules, let/const, arrow functions.</li>
+                        <li><strong>Écosystème :</strong> Node.js (serveur), React, Vue, Angular, Express.</li>
+                        <li><strong>Utilisations :</strong> front-end, back-end (Node.js), applications mobiles (React Native).</li>
                     </ul>
+                    <p>JavaScript est partout, du navigateur au serveur, en passant par les objets connectés.</p>
                 `
             },
             14: {
-                title: "Aciers à mémoire de forme",
-                tag: "Matériaux",
+                title: "TypeScript",
+                creator: "Anders Hejlsberg (Microsoft)",
+                date: "2012",
+                tag: "Web",
                 content: `
-                    <p>Ces alliages (Nitinol, cuivre-aluminium-nickel) retrouvent leur forme initiale après déformation.</p>
+                    <p>Créé par <strong>Anders Hejlsberg</strong> (le même que C#) chez Microsoft, TypeScript a été présenté en 2012 comme un <strong>sur-ensemble typé de JavaScript</strong>.</p>
+                    <p>TypeScript apporte un typage statique optionnel, des classes, des interfaces et des décorateurs, tout en se compilant vers du JavaScript standard.</p>
                     <ul>
-                        <li><strong>Applications :</strong> dispositifs de dissipation sismique, vérins autocontraints, réparation de structures.</li>
-                        <li><strong>Avantages :</strong> récupération de forme, amortissement des vibrations, absence de corrosion.</li>
-                        <li><strong>Limites :</strong> coût élevé, mise en œuvre spécifique.</li>
+                        <li><strong>Philosophie :</strong> "JavaScript qui scale".</li>
+                        <li><strong>Écosystème :</strong> Angular, React (avec TS), Node.js, Deno.</li>
+                        <li><strong>Utilisations :</strong> applications web complexes, bibliothèques, back-end.</li>
                     </ul>
+                    <p>TypeScript est devenu un standard incontournable dans le développement web moderne.</p>
                 `
             },
             15: {
-                title: "Béton de chanvre, terre crue, pisé",
-                tag: "Matériaux",
+                title: "PHP",
+                creator: "Rasmus Lerdorf",
+                date: "1995",
+                tag: "Web",
                 content: `
-                    <p>Ces matériaux biosourcés et géosourcés connaissent un regain d'intérêt pour leur faible impact environnemental :</p>
+                    <p>Créé par <strong>Rasmus Lerdorf</strong> en 1995, PHP (Personal Home Page) était à l'origine un ensemble de scripts CGI pour suivre les visiteurs de son CV.</p>
+                    <p>Il a évolué pour devenir un langage de script côté serveur, avec une syntaxe inspirée du C et du Perl.</p>
                     <ul>
-                        <li><strong>Béton de chanvre :</strong> chènevotte + chaux, isolant et régulateur hygrométrique.</li>
-                        <li><strong>Terre crue :</strong> pisé, bauge, adobe – stocke l'humidité et offre une inertie thermique.</li>
-                        <li><strong>Applications :</strong> murs porteurs, isolants, finitions intérieures.</li>
+                        <li><strong>Évolution :</strong> PHP 5 (2004) a introduit la POO, PHP 7 (2015) a doublé les performances, PHP 8 (2020) a apporté JIT.</li>
+                        <li><strong>Écosystème :</strong> Laravel, Symfony, WordPress, Drupal.</li>
+                        <li><strong>Utilisations :</strong> sites web dynamiques, CMS (WordPress), e-commerce (Magento).</li>
                     </ul>
+                    <p>PHP alimente encore près de 80 % des sites web (dont WordPress).</p>
                 `
             },
             16: {
-                title: "Bois lamellé-croisé (CLT) et structure bois",
-                tag: "Matériaux",
+                title: "Ruby",
+                creator: "Yukihiro Matsumoto (Matz)",
+                date: "1995",
+                tag: "Web",
                 content: `
-                    <p>Le CLT est un panneau massif en bois composé de couches croisées, offrant une grande rigidité.</p>
+                    <p>Créé par <strong>Yukihiro Matsumoto</strong> ("Matz") au Japon en 1995, Ruby a été conçu pour être un langage <strong>orienté objet et agréable à utiliser</strong>, en s'inspirant de Perl, Smalltalk et Lisp.</p>
+                    <p>Sa philosophie : <em>"Le langage doit être au service du programmeur, pas l'inverse."</em></p>
                     <ul>
-                        <li><strong>Avantages :</strong> légèreté, rapidité de mise en œuvre, excellent comportement sismique, stockage de carbone.</li>
-                        <li><strong>Applications :</strong> bâtiments de grande hauteur (ex : 18 étages), ponts, structures mixtes.</li>
-                        <li><strong>Enjeux :</strong> protection incendie, durabilité en extérieur.</li>
+                        <li><strong>Caractéristiques :</strong> tout est objet, métaprogrammation, duck typing.</li>
+                        <li><strong>Écosystème :</strong> Ruby on Rails (framework web), Sinatra, RSpec.</li>
+                        <li><strong>Utilisations :</strong> applications web (Rails), automation, DevOps (Chef, Puppet).</li>
                     </ul>
+                    <p>Ruby on Rails a popularisé le développement web rapide (agile, DRY, convention over configuration).</p>
                 `
             },
             17: {
-                title: "Granulats recyclés et économie circulaire",
-                tag: "Matériaux",
+                title: "Elixir",
+                creator: "José Valim",
+                date: "2011",
+                tag: "Web",
                 content: `
-                    <p>Les granulats issus du recyclage du béton ou des déchets de construction réduisent la pression sur les carrières.</p>
+                    <p>Créé par <strong>José Valim</strong> (ex-core team Ruby on Rails) en 2011, Elixir est un langage fonctionnel qui tourne sur la <strong>machine virtuelle Erlang (BEAM)</strong>.</p>
+                    <p>Il a été conçu pour la concurrence massive et la tolérance aux pannes, héritées d'Erlang, mais avec une syntaxe plus moderne et accessible.</p>
                     <ul>
-                        <li><strong>Origines :</strong> démolition, retraitement des bétons concassés.</li>
-                        <li><strong>Enjeux :</strong> qualité variable, absorption d'eau plus élevée, normalisation.</li>
-                        <li><strong>Applications :</strong> sous-couches de voirie, bétons de structure (avec contrôle qualité).</li>
+                        <li><strong>Caractéristiques :</strong> fonctionnel, immuable, pattern matching, pipelines (|>).</li>
+                        <li><strong>Écosystème :</strong> Phoenix (framework web), Ecto (ORM), Nerves (embarqué).</li>
+                        <li><strong>Utilisations :</strong> applications temps réel, IoT, systèmes distribués.</li>
                     </ul>
+                    <p>Elixir est apprécié pour sa robustesse et sa faible latence.</p>
                 `
             },
             18: {
-                title: "Liants alternatifs",
-                tag: "Matériaux",
+                title: "HTML / CSS",
+                creator: "Tim Berners-Lee / Håkon Wium Lie",
+                date: "1991 / 1996",
+                tag: "Web",
                 content: `
-                    <p>Pour réduire l'empreinte carbone du ciment, de nombreux liants alternatifs émergent :</p>
+                    <p><strong>HTML</strong> a été créé par <strong>Tim Berners-Lee</strong> en 1991 au CERN, comme langage de balisage pour le World Wide Web. La première version était très simple.</p>
+                    <p><strong>CSS</strong> a été proposé par <strong>Håkon Wium Lie</strong> en 1994 et standardisé en 1996, pour séparer le contenu de la présentation.</p>
                     <ul>
-                        <li><strong>Argile calcinée (LC3) :</strong> mélange de clinker, argile et calcaire – réduction de 40 % des émissions.</li>
-                        <li><strong>Laitier de haut-fourneau :</strong> sous-produit sidérurgique, activé par des bases.</li>
-                        <li><strong>Cendres volantes :</strong> issues des centrales à charbon.</li>
+                        <li><strong>HTML :</strong> structure sémantique, balises, formulaires, multimédia.</li>
+                        <li><strong>CSS :</strong> Flexbox, Grid, animations, media queries.</li>
+                        <li><strong>Ensemble :</strong> la base de tout site web, avec JavaScript.</li>
                     </ul>
+                    <p>HTML5 et CSS3 ont apporté de nombreuses fonctionnalités modernes (canvas, webGL, etc.).</p>
                 `
             },
             19: {
-                title: "Composites carbone/polymères",
-                tag: "Matériaux",
+                title: "WebAssembly (WASM)",
+                creator: "W3C / Mozilla, Google, Microsoft, Apple",
+                date: "2017",
+                tag: "Web",
                 content: `
-                    <p>Les matériaux composites (fibres de carbone + résine) offrent un rapport résistance/poids exceptionnel.</p>
+                    <p>WebAssembly a été développé par les grands navigateurs (Mozilla, Google, Microsoft, Apple) et standardisé par le W3C en 2017.</p>
+                    <p>Il permet d'exécuter du code compilé (C, C++, Rust, etc.) dans le navigateur à <strong>vitesse quasi-native</strong>.</p>
                     <ul>
-                        <li><strong>Renforcement structurel :</strong> collage de feuilles de carbone (CFRP) sur des structures existantes.</li>
-                        <li><strong>Applications :</strong> réhabilitation de ponts, renforcement de dalles, structures légères.</li>
-                        <li><strong>Avantages :</strong> insensibilité à la corrosion, mise en œuvre rapide.</li>
+                        <li><strong>Format :</strong> binaire (.wasm), exécuté dans une sandbox.</li>
+                        <li><strong>Utilisations :</strong> jeux, applications de montage vidéo, calcul scientifique.</li>
+                        <li><strong>Langages :</strong> Rust, C++, Go, Python (via compilateurs).</li>
                     </ul>
+                    <p>WASM ouvre la voie à des applications web de type "desktop" dans le navigateur.</p>
                 `
             },
             20: {
-                title: "Structures mixtes acier-béton-bois",
-                tag: "Matériaux",
+                title: "Django (Python - Framework)",
+                creator: "Adrian Holovaty & Simon Willison",
+                date: "2005",
+                tag: "Web",
                 content: `
-                    <p>Les structures mixtes combinent les avantages de chaque matériau :</p>
+                    <p>Django est un framework web Python créé en 2005 par <strong>Adrian Holovaty et Simon Willison</strong> pour le journal en ligne Lawrence Journal-World.</p>
+                    <p>Sa philosophie : <em>"Batteries included"</em> — tout est intégré (ORM, admin, authenticiation, routing).</p>
                     <ul>
-                        <li><strong>Acier + béton :</strong> poutres mixtes, poteaux enrobés, dalles collaborantes.</li>
-                        <li><strong>Bois + béton :</strong> planchers mixtes pour allier légèreté et inertie.</li>
-                        <li><strong>Acier + bois :</strong> charpentes hybrides pour une architecture durable.</li>
+                        <li><strong>Caractéristiques :</strong> MTV (Model-Template-View), ORM, admin auto-généré.</li>
+                        <li><strong>Utilisations :</strong> sites d'actualités, applications d'entreprise, API (DRF).</li>
+                        <li><strong>Exemples :</strong> Instagram, Pinterest, The Washington Post.</li>
                     </ul>
+                    <p>Django est l'un des frameworks web les plus populaires et robustes.</p>
                 `
             },
-            // ---------- STRUCTURES (21 à 35) ----------
             21: {
-                title: "Ponts à haubans, suspendus, en arc",
-                tag: "Structures",
+                title: "React (Bibliothèque JS)",
+                creator: "Jordan Walke (Meta)",
+                date: "2013",
+                tag: "Web",
                 content: `
-                    <p>Les grands ponts mettent en œuvre des principes structurels variés :</p>
+                    <p>React a été créé en 2013 par <strong>Jordan Walke</strong>, un ingénieur chez Meta (Facebook). Il a été conçu pour résoudre les problèmes de performance et de maintenance des interfaces utilisateur complexes.</p>
+                    <p>React introduit le concept de <strong>Virtual DOM</strong> et une approche déclarative basée sur des composants.</p>
                     <ul>
-                        <li><strong>Ponts à haubans :</strong> câbles inclinés reliant le tablier à un pylône. Portées de 300 à 1100 m.</li>
-                        <li><strong>Ponts suspendus :</strong> câbles principaux portés par des tours. Portées record (Akashi-Kaikyō, 1991 m).</li>
-                        <li><strong>Ponts en arc :</strong> reprise des efforts par compression dans l'arc (ex : Viaduc de Millau).</li>
+                        <li><strong>Philosophie :</strong> "Learn once, write anywhere".</li>
+                        <li><strong>Écosystème :</strong> React Native (mobile), Next.js (server-side), Redux (state).</li>
+                        <li><strong>Utilisations :</strong> interfaces web dynamiques, applications SPA.</li>
                     </ul>
+                    <p>React est la bibliothèque front-end la plus utilisée au monde.</p>
                 `
             },
             22: {
-                title: "Tours et gratte-ciel",
-                tag: "Structures",
+                title: "Vue.js",
+                creator: "Evan You",
+                date: "2014",
+                tag: "Web",
                 content: `
-                    <p>Les gratte-ciel repoussent les limites de l'ingénierie face aux charges de vent, aux séismes et aux tassements.</p>
+                    <p>Vue.js a été créé par <strong>Evan You</strong>, un ancien ingénieur de Google, en 2014. Il a conçu Vue comme un framework <strong>progressif</strong> : on peut l'utiliser pour une petite partie d'une page ou pour une application entière.</p>
+                    <p>Il s'inspire d'Angular et de React mais avec une approche plus simple et plus accessible.</p>
                     <ul>
-                        <li><strong>Systèmes structuraux :</strong> tubes, cœurs rigides, contreventements en X, ou super-tubes.</li>
-                        <li><strong>Amortissement :</strong> pendules de masse (ex : Taipei 101) pour réduire les oscillations.</li>
-                        <li><strong>Matériaux :</strong> béton haute résistance, acier, composites.</li>
+                        <li><strong>Caractéristiques :</strong> réactivité, composants, directives, Pinia (state).</li>
+                        <li><strong>Écosystème :</strong> Vue Router, Vuex/Pinia, Vite, Nuxt.js.</li>
+                        <li><strong>Utilisations :</strong> applications web, interfaces dynamiques.</li>
                     </ul>
+                    <p>Vue.js est très populaire dans les communautés francophone et asiatique.</p>
                 `
             },
             23: {
-                title: "Bâtiments à grande portée",
-                tag: "Structures",
+                title: "Svelte",
+                creator: "Rich Harris",
+                date: "2016",
+                tag: "Web",
                 content: `
-                    <p>Stades, halls d'exposition, aéroports : ces bâtiments nécessitent de franchir de grandes distances sans appuis intermédiaires.</p>
+                    <p>Créé par <strong>Rich Harris</strong> en 2016, Svelte est un <strong>compilateur</strong> plutôt qu'un framework. Il transforme les composants en code JavaScript pur, sans Virtual DOM.</p>
+                    <p>L'idée : déplacer le travail de la navigation vers la compilation, pour des performances maximales et une taille de bundle réduite.</p>
                     <ul>
-                        <li><strong>Structures :</strong> fermes spatiales, câbles tendus, membranes, coques.</li>
-                        <li><strong>Matériaux :</strong> acier haute résistance, composites, bois lamellé.</li>
-                        <li><strong>Défis :</strong> flèche, stabilité au vent, acoustique.</li>
+                        <li><strong>Philosophie :</strong> "Write less code, compile away".</li>
+                        <li><strong>Caractéristiques :</strong> réactivité native, transitions, stores.</li>
+                        <li><strong>Utilisations :</strong> applications web modernes, sites rapides.</li>
                     </ul>
+                    <p>Svelte gagne en popularité grâce à sa simplicité et ses performances.</p>
                 `
             },
             24: {
-                title: "Tunnels et ouvrages souterrains",
-                tag: "Structures",
+                title: "Astro",
+                creator: "Fred K. Schott (Snowpack)",
+                date: "2021",
+                tag: "Web",
                 content: `
-                    <p>Les tunnels répondent à des contraintes géologiques, hydrauliques et sismiques.</p>
+                    <p>Astro a été créé par <strong>Fred K. Schott</strong> en 2021, initialement sous le nom de Snowpack. C'est un framework orienté <strong>site statique</strong> avec une architecture "islands".</p>
+                    <p>Il livre par défaut du HTML statique, puis hydrate seulement les composants interactifs (les "îles").</p>
                     <ul>
-                        <li><strong>Méthodes :</strong> tunnelier (bouclier), méthode traditionnelle (NATM), coupe-remblai.</li>
-                        <li><strong>Revêtement :</strong> voussoirs en béton préfabriqué, béton projeté, blindages métalliques.</li>
-                        <li><strong>Applications :</strong> transports, hydroélectricité, stockage souterrain.</li>
+                        <li><strong>Philosophie :</strong> moins de JavaScript = plus de performance.</li>
+                        <li><strong>Caractéristiques :</strong> support multi-frameworks (React, Vue, Svelte).</li>
+                        <li><strong>Utilisations :</strong> blogs, sites vitrines, documentation.</li>
                     </ul>
+                    <p>Astro est le framework web avec les meilleures performances en 2024-2025.</p>
                 `
             },
+            // ---------- DATA & IA (25-32) ----------
             25: {
-                title: "Barrages et enceintes hydrauliques",
-                tag: "Structures",
+                title: "R",
+                creator: "Ross Ihaka & Robert Gentleman",
+                date: "1995",
+                tag: "Data",
                 content: `
-                    <p>Les barrages retiennent des millions de m³ d'eau et doivent garantir une sécurité absolue.</p>
+                    <p>Créé en 1995 par <strong>Ross Ihaka et Robert Gentleman</strong> à l'Université d'Auckland en Nouvelle-Zélande, R est un langage dédié à l'<strong>analyse statistique</strong> et à la <strong>visualisation de données</strong>.</p>
+                    <p>Il est l'héritier du langage S (Bell Labs) et a été conçu pour les statisticiens.</p>
                     <ul>
-                        <li><strong>Types :</strong> poids (béton), voûte, remblai (terre/rocher), à contreforts.</li>
-                        <li><strong>Contraintes :</strong> pression hydrostatique, séisme, affouillement, filtration.</li>
-                        <li><strong>Instrumentation :</strong> surveillance des déformations, des fuites, des pressions interstitielles.</li>
+                        <li><strong>Caractéristiques :</strong> interprété, typage dynamique, vectorisation.</li>
+                        <li><strong>Écosystème :</strong> ggplot2 (visualisation), dplyr (manipulation), Shiny (applications web).</li>
+                        <li><strong>Utilisations :</strong> biostatistiques, finance, épidémiologie, recherche académique.</li>
                     </ul>
+                    <p>R reste le langage de référence dans le monde universitaire et scientifique.</p>
                 `
             },
             26: {
-                title: "Fondations profondes",
-                tag: "Structures",
+                title: "SQL",
+                creator: "Donald D. Chamberlin & Raymond F. Boyce",
+                date: "1974",
+                tag: "Data",
                 content: `
-                    <p>Les fondations profondes transmettent les charges aux couches de sol résistantes :</p>
+                    <p>SQL (Structured Query Language) a été développé en 1974 par <strong>Donald Chamberlin et Raymond Boyce</strong> chez IBM, pour le système de gestion de base de données System R.</p>
+                    <p>Il est devenu le standard pour interroger et manipuler des bases de données relationnelles.</p>
                     <ul>
-                        <li><strong>Pieux :</strong> battus, forés, vissés – en béton, acier ou bois.</li>
-                        <li><strong>Micropieux :</strong> diamètre réduit, utilisés en reprise en sous-œuvre.</li>
-                        <li><strong>Radiers :</strong> semelles générales pour sols de faible portance.</li>
+                        <li><strong>Standard :</strong> SQL-92, SQL:1999, SQL:2003, etc.</li>
+                        <li><strong>Dialectes :</strong> PostgreSQL, MySQL, SQLite, Oracle, SQL Server.</li>
+                        <li><strong>Utilisations :</strong> bases de données, data warehousing, analyse.</li>
                     </ul>
+                    <p>SQL est un langage déclaratif : on dit quoi, pas comment.</p>
                 `
             },
             27: {
-                title: "Murs de soutènement et terre armée",
-                tag: "Structures",
+                title: "Pandas (Python - Bibliothèque)",
+                creator: "Wes McKinney",
+                date: "2008",
+                tag: "Data",
                 content: `
-                    <p>Ces ouvrages stabilisent les talus et les déblais :</p>
+                    <p>Pandas a été créé par <strong>Wes McKinney</strong> en 2008, alors qu'il travaillait chez AQR Capital Management. Il avait besoin d'outils pour manipuler des données financières.</p>
+                    <p>Pandas est devenu la bibliothèque de référence pour l'analyse de données en Python, avec ses DataFrames.</p>
                     <ul>
-                        <li><strong>Murs poids :</strong> en béton ou maçonnerie, dimensionnés par leur propre poids.</li>
-                        <li><strong>Murs cantilever :</strong> en béton armé, avec une semelle.</li>
-                        <li><strong>Terre armée :</strong> nappes de géotextile ou armatures métalliques noyées dans le remblai.</li>
+                        <li><strong>Caractéristiques :</strong> DataFrame, Series, groupby, pivot, time series.</li>
+                        <li><strong>Écosystème :</strong> NumPy, Matplotlib, Scikit-learn.</li>
+                        <li><strong>Utilisations :</strong> data science, finance, recherche.</li>
                     </ul>
+                    <p>Pandas est utilisé par des millions de data scientists dans le monde.</p>
                 `
             },
             28: {
-                title: "Coques et structures minces",
-                tag: "Structures",
+                title: "TensorFlow (Python - Bibliothèque)",
+                creator: "Équipe Google Brain (Jeff Dean, etc.)",
+                date: "2015",
+                tag: "Data",
                 content: `
-                    <p>Les structures en coque (voûtes, dômes, réservoirs) exploitent la forme pour résister aux efforts.</p>
+                    <p>TensorFlow a été créé par l'équipe <strong>Google Brain</strong> et rendu open-source en 2015. Il a été conçu pour le <strong>machine learning</strong> et les réseaux de neurones.</p>
+                    <p>Son nom vient des "tensors" (tableaux multi-dimensionnels) qu'il manipule.</p>
                     <ul>
-                        <li><strong>Principe :</strong> travail en compression membranaire, faible flexion.</li>
-                        <li><strong>Matériaux :</strong> béton armé, métal, composites.</li>
-                        <li><strong>Applications :</strong> toits de stades, silos, réservoirs, ouvrages d'art.</li>
+                        <li><strong>Caractéristiques :</strong> calcul différenciable, GPU/TPU, Keras (API haut niveau).</li>
+                        <li><strong>Écosystème :</strong> TensorFlow Lite (mobile), TensorFlow.js (web).</li>
+                        <li><strong>Utilisations :</strong> vision par ordinateur, NLP, IA générative.</li>
                     </ul>
+                    <p>TensorFlow est l'un des deux frameworks d'IA les plus utilisés (avec PyTorch).</p>
                 `
             },
             29: {
-                title: "Optimisation topologique des structures",
-                tag: "Structures",
+                title: "PyTorch (Python - Bibliothèque)",
+                creator: "Meta (anciennement Facebook)",
+                date: "2016",
+                tag: "Data",
                 content: `
-                    <p>L'optimisation topologique utilise des algorithmes pour distribuer la matière là où elle est nécessaire.</p>
+                    <p>PyTorch a été créé par l'équipe <strong>Meta AI Research</strong> et rendu open-source en 2016. Il est le concurrent direct de TensorFlow.</p>
+                    <p>Il est basé sur la bibliothèque Torch (Lua) et se distingue par son <strong>calcul dynamique</strong> (exécution eager) qui le rend plus intuitif pour la recherche.</p>
                     <ul>
-                        <li><strong>Méthodes :</strong> SIMP, évolutionnaire, niveau de densité.</li>
-                        <li><strong>Résultat :</strong> structures organiques, allégées de 30 à 50 %.</li>
-                        <li><strong>Fabrication :</strong> impression 3D, découpe numérique.</li>
+                        <li><strong>Caractéristiques :</strong> autograd, GPU, dynamic computation graphs.</li>
+                        <li><strong>Écosystème :</strong> Hugging Face, PyTorch Lightning, TorchVision.</li>
+                        <li><strong>Utilisations :</strong> recherche en IA, NLP, vision, LLM.</li>
                     </ul>
+                    <p>PyTorch est devenu le favori des chercheurs et de la communauté académique.</p>
                 `
             },
             30: {
-                title: "Calcul aux états limites (ELS, ELU)",
-                tag: "Structures",
+                title: "NumPy (Python - Bibliothèque)",
+                creator: "Travis Oliphant",
+                date: "2006",
+                tag: "Data",
                 content: `
-                    <p>Les Eurocodes structurent le calcul des structures selon deux états :</p>
+                    <p>NumPy a été créé par <strong>Travis Oliphant</strong> en 2006, à partir du projet Numeric (1995). Il est la base de tout le calcul scientifique en Python.</p>
+                    <p>NumPy fournit des tableaux multidimensionnels (ndarray) et des opérations vectorisées optimisées en C.</p>
                     <ul>
-                        <li><strong>ELU (État Limite Ultime) :</strong> résistance, stabilité, rupture.</li>
-                        <li><strong>ELS (État Limite de Service) :</strong> déformations, fissuration, vibrations.</li>
-                        <li><strong>Combinaisons :</strong> charges permanentes, variables, accidentelles, sismiques.</li>
+                        <li><strong>Caractéristiques :</strong> tableaux homogènes, broadcasting, algèbre linéaire.</li>
+                        <li><strong>Écosystème :</strong> Pandas, SciPy, Matplotlib, Scikit-learn.</li>
+                        <li><strong>Utilisations :</strong> calcul scientifique, data science, ingénierie.</li>
                     </ul>
+                    <p>NumPy est la fondation de toute la stack data science Python.</p>
                 `
             },
             31: {
-                title: "Modélisation BIM et jumeau numérique",
-                tag: "Structures",
+                title: "MATLAB",
+                creator: "Cleve Moler",
+                date: "1984",
+                tag: "Data",
                 content: `
-                    <p>Le BIM (Building Information Modeling) centralise toutes les données d'un ouvrage.</p>
+                    <p>MATLAB (Matrix Laboratory) a été créé par <strong>Cleve Moler</strong> en 1984. Il est conçu pour le <strong>calcul matriciel</strong> et la <strong>modélisation numérique</strong>.</p>
+                    <p>Il est largement utilisé dans l'industrie et l'enseignement supérieur pour le traitement du signal, le contrôle, et la simulation.</p>
                     <ul>
-                        <li><strong>Conception :</strong> modélisation 3D paramétrique, détection des conflits.</li>
-                        <li><strong>Jumeau numérique :</strong> réplique virtuelle enrichie des données de monitoring.</li>
-                        <li><strong>Avantages :</strong> maintenance prédictive, gestion du cycle de vie.</li>
+                        <li><strong>Caractéristiques :</strong> langage matriciel, toolbox (Simulink), visualisation.</li>
+                        <li><strong>Utilisations :</strong> ingénierie, physique, finance, contrôle automatique.</li>
+                        <li><strong>Alternatives :</strong> Python (NumPy/SciPy), Julia, Octave (open-source).</li>
                     </ul>
+                    <p>MATLAB reste un standard dans l'industrie aéronautique et automobile.</p>
                 `
             },
             32: {
-                title: "Comportement dynamique des structures",
-                tag: "Structures",
+                title: "SAS",
+                creator: "Anthony James Barr, James Goodnight, John Sall",
+                date: "1976",
+                tag: "Data",
                 content: `
-                    <p>Les structures sont soumises à des sollicitations dynamiques (vent, séisme, vibrations).</p>
+                    <p>SAS a été créé en 1976 par <strong>Anthony James Barr, James Goodnight et John Sall</strong> à l'Université de Caroline du Nord. Il est devenu un standard dans l'<strong>analyse statistique</strong> en entreprise.</p>
+                    <p>SAS est utilisé dans les secteurs réglementés (banque, assurance, santé, pharmacie).</p>
                     <ul>
-                        <li><strong>Analyse modale :</strong> fréquences propres, modes de vibration.</li>
-                        <li><strong>Amortissement :</strong> dissipation d'énergie par frottement, hystérésis.</li>
-                        <li><strong>Dispositifs :</strong> amortisseurs, pendules, vérins hydrauliques.</li>
+                        <li><strong>Caractéristiques :</strong> langage propriétaire, procédures statistiques, data management.</li>
+                        <li><strong>Utilisations :</strong> analyse clinique, scoring, risk management.</li>
+                        <li><strong>Concurrents :</strong> R, Python, SPSS.</li>
                     </ul>
+                    <p>SAS est en perte de vitesse face aux solutions open-source comme R et Python.</p>
                 `
             },
+            // ---------- MOBILE & EMBARQUÉ (33-38) ----------
             33: {
-                title: "Stabilité et flambement des structures élancées",
-                tag: "Structures",
+                title: "Objective-C",
+                creator: "Brad Cox & Tom Love",
+                date: "1984",
+                tag: "Mobile",
                 content: `
-                    <p>Les structures élancées (pylônes, poteaux, arches) sont sensibles au flambement et au déversement.</p>
+                    <p>Créé par <strong>Brad Cox et Tom Love</strong> en 1984, Objective-C est un langage orienté objet qui ajoute des extensions Smalltalk au langage C.</p>
+                    <p>Il a été popularisé par Apple pour le développement sous macOS et iOS, avant d'être remplacé par Swift.</p>
                     <ul>
-                        <li><strong>Flambement d'Euler :</strong> charge critique fonction de la longueur, de la rigidité et des conditions d'appui.</li>
-                        <li><strong>Instabilités :</strong> déversement, voilement de plaques, flambement local.</li>
-                        <li><strong>Solutions :</strong> raidisseurs, augmentation des sections, contreventements.</li>
+                        <li><strong>Caractéristiques :</strong> syntaxe C + objets Smalltalk.</li>
+                        <li><strong>Utilisations :</strong> macOS, iOS (historiquement).</li>
+                        <li><strong>Héritage :</strong> toujours utilisé dans certaines bases de code existantes.</li>
                     </ul>
+                    <p>Objective-C a dominé le développement Apple pendant près de 20 ans.</p>
                 `
             },
             34: {
-                title: "Précontrainte (post-tension, pré-tension)",
-                tag: "Structures",
+                title: "Swift (Apple)",
+                creator: "Chris Lattner",
+                date: "2014",
+                tag: "Mobile",
                 content: `
-                    <p>La précontrainte compense la faiblesse du béton en traction :</p>
+                    <p>Swift a été créé par <strong>Chris Lattner</strong> chez Apple et présenté en 2014. Il est conçu pour être <strong>moderne, rapide et sécurisé</strong>.</p>
+                    <p>Il est le successeur officiel d'Objective-C pour le développement iOS, macOS, watchOS et tvOS.</p>
                     <ul>
-                        <li><strong>Pré-tension :</strong> câbles tendus avant coulage, puis relâchés après durcissement.</li>
-                        <li><strong>Post-tension :</strong> câbles tendus après durcissement du béton, ancrés en extrémités.</li>
-                        <li><strong>Applications :</strong> ponts, dalles, réservoirs, bâtiments industriels.</li>
+                        <li><strong>Caractéristiques :</strong> inférence de type, optionnels, closures, protocoles.</li>
+                        <li><strong>Écosystème :</strong> SwiftUI (UI déclarative), Vapor (serveur).</li>
+                        <li><strong>Utilisations :</strong> applications mobiles, desktop, serveur.</li>
                     </ul>
+                    <p>Swift est open-source et s'étend à d'autres plateformes.</p>
                 `
             },
             35: {
-                title: "Conception parasismique",
-                tag: "Structures",
+                title: "Kotlin (Mobile)",
+                creator: "JetBrains",
+                date: "2011",
+                tag: "Mobile",
                 content: `
-                    <p>Les structures en zones sismiques sont conçues pour dissiper l'énergie du séisme :</p>
+                    <p>Kotlin a été créé par <strong>JetBrains</strong> en 2011 et est devenu le langage officiel pour Android en 2017, en remplacement de Java.</p>
+                    <p>Il est 100 % interopérable avec Java et apporte des fonctionnalités modernes comme la null safety et les coroutines.</p>
                     <ul>
-                        <li><strong>Isolation sismique :</strong> découplage du sol par des appuis élastomères ou pendules.</li>
-                        <li><strong>Dissipation :</strong> amortisseurs hydrauliques, barres ductiles, alliages à mémoire de forme.</li>
-                        <li><strong>Contreventements :</strong> systèmes en X, V, ou cadres auto-centrants.</li>
+                        <li><strong>Caractéristiques :</strong> null safety, coroutines, data classes, extensions.</li>
+                        <li><strong>Écosystème :</strong> Android SDK, Ktor (serveur), Compose (UI).</li>
+                        <li><strong>Utilisations :</strong> applications Android, backend, multiplateforme.</li>
                     </ul>
+                    <p>Kotlin est aujourd'hui le langage de référence pour le développement Android.</p>
                 `
             },
-            // ---------- DURABILITÉ (36 à 42) ----------
             36: {
-                title: "Réhabilitation d'ouvrages anciens",
-                tag: "Durabilité",
+                title: "Dart / Flutter",
+                creator: "Google",
+                date: "2011 / 2017",
+                tag: "Mobile",
                 content: `
-                    <p>Réhabiliter les ouvrages existants réduit l'impact carbone par rapport à une reconstruction.</p>
+                    <p>Dart (2011) et Flutter (2017) sont des créations de <strong>Google</strong>. Flutter est un framework de développement multiplateforme qui utilise Dart.</p>
+                    <p>Flutter permet de créer des applications mobiles (iOS/Android), web et desktop à partir d'une seule base de code.</p>
                     <ul>
-                        <li><strong>Diagnostic :</strong> auscultation, carottage, modélisation.</li>
-                        <li><strong>Renforcement :</strong> CFRP, béton projeté, injections de résine.</li>
-                        <li><strong>Adaptation :</strong> mise aux normes sismiques et énergétiques.</li>
+                        <li><strong>Caractéristiques :</strong> Hot reload, widgets natifs, performance native.</li>
+                        <li><strong>Écosystème :</strong> packages pub.dev, Firebase, Rive.</li>
+                        <li><strong>Utilisations :</strong> applications mobiles, web, desktop.</li>
                     </ul>
+                    <p>Flutter est devenu un acteur majeur du développement multiplateforme.</p>
                 `
             },
             37: {
-                title: "Diagnostic non destructif",
-                tag: "Durabilité",
+                title: "C (Embarqué)",
+                creator: "Dennis Ritchie",
+                date: "1972",
+                tag: "Mobile",
                 content: `
-                    <p>Les méthodes non destructives permettent d'évaluer l'état d'un ouvrage sans l'endommager :</p>
+                    <p>Le langage C est le roi de l'<strong>embarqué</strong>. Créé en 1972 par <strong>Dennis Ritchie</strong>, il permet un contrôle total du matériel.</p>
+                    <p>Il est utilisé dans les microcontrôleurs, les systèmes autonomes, l'automobile, l'aéronautique et les IoT.</p>
                     <ul>
-                        <li><strong>Radar géoradar :</strong> détection des armatures, défauts, épaisseurs.</li>
-                        <li><strong>Sonar :</strong> inspection sous-marine des piles de ponts.</li>
-                        <li><strong>Thermographie :</strong> détection des anomalies thermiques et des dégradations.</li>
+                        <li><strong>Caractéristiques :</strong> compilé, bas niveau, pointeurs, accès direct à la mémoire.</li>
+                        <li><strong>Utilisations :</strong> Arduino, STM32, ESP, systèmes critiques.</li>
+                        <li><strong>Norme :</strong> ISO C99, C11, C17, C23.</li>
                     </ul>
+                    <p>Le C reste incontournable dans les systèmes avec des ressources limitées.</p>
                 `
             },
             38: {
-                title: "Monitoring des structures (SHM)",
-                tag: "Durabilité",
+                title: "Rust (Embarqué)",
+                creator: "Graydon Hoare",
+                date: "2015",
+                tag: "Mobile",
                 content: `
-                    <p>Le Structural Health Monitoring (SHM) suit en temps réel l'état de santé des ouvrages :</p>
+                    <p>Rust est de plus en plus utilisé dans l'embarqué grâce à sa <strong>sécurité mémoire</strong> et ses performances sans garbage collector.</p>
+                    <p>Il a été créé par <strong>Graydon Hoare</strong> en 2010 et a atteint sa version 1.0 en 2015.</p>
                     <ul>
-                        <li><strong>Capteurs :</strong> fibre optique, jauges, accéléromètres, inclinomètres.</li>
-                        <li><strong>Analyses :</strong> détection des déformations, fissurations, fatigue.</li>
-                        <li><strong>Maintenance prédictive :</strong> intervention avant défaillance.</li>
+                        <li><strong>Caractéristiques :</strong> mémoire sécurisée, zero-cost abstractions.</li>
+                        <li><strong>Écosystème :</strong> Embassy (async), Tock (OS), esp-rs (ESP32).</li>
+                        <li><strong>Utilisations :</strong> IoT, systèmes critiques, dispositifs médicaux.</li>
                     </ul>
+                    <p>Rust est adopté dans les systèmes où la sécurité est critique.</p>
                 `
             },
+            // ---------- FONCTIONNELS (39-43) ----------
             39: {
-                title: "Analyse du cycle de vie (ACV)",
-                tag: "Durabilité",
+                title: "Lisp",
+                creator: "John McCarthy",
+                date: "1958",
+                tag: "Fonctionnel",
                 content: `
-                    <p>L'ACV évalue les impacts environnementaux sur l'ensemble du cycle de vie : extraction, fabrication, mise en œuvre, usage, fin de vie.</p>
+                    <p><strong>John McCarthy</strong> a créé Lisp en 1958, ce qui en fait le deuxième plus vieux langage de haut niveau après Fortran.</p>
+                    <p>Lisp est le langage des <strong>symboles</strong> et des <strong>listes</strong>. Il a introduit des concepts majeurs : garbage collection, fonctions de première classe, REPL, macros.</p>
                     <ul>
-                        <li><strong>Indicateurs :</strong> carbone, énergie, eau, déchets.</li>
-                        <li><strong>Applications :</strong> choix des matériaux, comparaison de variantes.</li>
-                        <li><strong>Bases :</strong> normes ISO 14040, base de données INIES.</li>
+                        <li><strong>Dialectes :</strong> Common Lisp, Scheme, Clojure, Racket.</li>
+                        <li><strong>Caractéristiques :</strong> s-expressions, métaprogrammation, homoiconicité.</li>
+                        <li><strong>Utilisations :</strong> IA historique, logiciels académiques, éducation.</li>
                     </ul>
+                    <p>Lisp a inspiré de nombreux langages modernes (Python, Ruby, JavaScript).</p>
                 `
             },
             40: {
-                title: "Déconstruction et réemploi",
-                tag: "Durabilité",
+                title: "Haskell",
+                creator: "Comité (P. Hudak, S. Peyton Jones, etc.)",
+                date: "1990",
+                tag: "Fonctionnel",
                 content: `
-                    <p>La déconstruction sélective permet de récupérer des matériaux et éléments pour un réemploi :</p>
+                    <p>Haskell a été conçu par un comité de chercheurs en 1990, avec <strong>Paul Hudak, Simon Peyton Jones, Philip Wadler</strong> parmi les figures clés.</p>
+                    <p>C'est un langage <strong>pur, paresseux et typé statiquement</strong>. Il est le standard de la programmation fonctionnelle.</p>
                     <ul>
-                        <li><strong>Méthodes :</strong> désassemblage plutôt que démolition.</li>
-                        <li><strong>Filières :</strong> revente de matériaux, réutilisation sur site.</li>
-                        <li><strong>Enjeux :</strong> traçabilité, certification, économie circulaire.</li>
+                        <li><strong>Caractéristiques :</strong> immutabilité, évaluation paresseuse, monades, type classes.</li>
+                        <li><strong>Écosystème :</strong> GHC (compilateur), Cabal/Stack, Yesod (web).</li>
+                        <li><strong>Utilisations :</strong> recherche, compilateurs, finance, cryptographie.</li>
                     </ul>
+                    <p>Haskell est utilisé en finance quantique et dans les systèmes critiques.</p>
                 `
             },
             41: {
-                title: "Rénovation énergétique des bâtiments",
-                tag: "Durabilité",
+                title: "Erlang",
+                creator: "Joe Armstrong, Robert Virding, Mike Williams",
+                date: "1986",
+                tag: "Fonctionnel",
                 content: `
-                    <p>La rénovation énergétique réduit la consommation des bâtiments existants :</p>
+                    <p>Erlang a été créé par <strong>Joe Armstrong, Robert Virding et Mike Williams</strong> chez Ericsson en 1986, pour les <strong>systèmes téléphoniques</strong>.</p>
+                    <p>Il est conçu pour la <strong>concurrence massive</strong>, la tolérance aux pannes et les systèmes distribués.</p>
                     <ul>
-                        <li><strong>Enveloppe :</strong> isolation par l'extérieur (ITE), remplacement des menuiseries.</li>
-                        <li><strong>Ponts thermiques :</strong> traitement des liaisons structures.</li>
-                        <li><strong>Ventilation :</strong> double flux, récupération de chaleur.</li>
+                        <li><strong>Caractéristiques :</strong> acteurs, fail-fast, hot code swapping.</li>
+                        <li><strong>VM :</strong> BEAM (Erlang VM).</li>
+                        <li><strong>Utilisations :</strong> télécommunications, messaging (WhatsApp), IoT.</li>
                     </ul>
+                    <p>Erlang a inspiré Elixir, qui utilise la même VM BEAM.</p>
                 `
             },
             42: {
-                title: "Résilience face au changement climatique",
-                tag: "Durabilité",
+                title: "Scala",
+                creator: "Martin Odersky",
+                date: "2004",
+                tag: "Fonctionnel",
                 content: `
-                    <p>Les infrastructures doivent s'adapter aux événements extrêmes (inondations, sécheresses, tempêtes).</p>
+                    <p>Scala a été créé par <strong>Martin Odersky</strong> en 2004. Il fusionne la <strong>programmation orientée objet et fonctionnelle</strong> sur la JVM.</p>
+                    <p>Scala est utilisé dans les systèmes big data (Apache Spark est écrit en Scala).</p>
                     <ul>
-                        <li><strong>Élévation du niveau de la mer :</strong> protection des ouvrages côtiers.</li>
-                        <li><strong>Canicules :</strong> dilatations, fissuration, gestion des eaux de ruissellement.</li>
-                        <li><strong>Conception :</strong> marges de sécurité, matériaux résilients.</li>
+                        <li><strong>Caractéristiques :</strong> inférence de type, pattern matching, case classes, futures.</li>
+                        <li><strong>Écosystème :</strong> Akka (acteurs), Play (web), Spark (big data).</li>
+                        <li><strong>Utilisations :</strong> data engineering, systèmes distribués, fintech.</li>
                     </ul>
+                    <p>Scala est le langage de Spark, le moteur de big data le plus utilisé.</p>
                 `
             },
-            // ---------- PROCÉDÉS (43 à 48) ----------
             43: {
-                title: "Impression 3D béton",
-                tag: "Procédés",
+                title: "Clojure",
+                creator: "Rich Hickey",
+                date: "2007",
+                tag: "Fonctionnel",
                 content: `
-                    <p>L'impression 3D béton permet de réaliser des formes complexes avec peu de déchets.</p>
+                    <p>Clojure a été créé par <strong>Rich Hickey</strong> en 2007. C'est un <strong>Lisp moderne</strong> qui tourne sur la JVM, .NET ou JavaScript.</p>
+                    <p>Il est conçu pour la <strong>programmation fonctionnelle</strong> et la <strong>concurrence</strong>, avec des structures de données immutables.</p>
                     <ul>
-                        <li><strong>Procédés :</strong> extrusion, dépôt de mortier, robotique à 6 axes.</li>
-                        <li><strong>Matériaux :</strong> mortiers thixotropes, à prise rapide.</li>
-                        <li><strong>Armatures :</strong> intégration par couches, câbles précontraints.</li>
+                        <li><strong>Caractéristiques :</strong> immutabilité par défaut, atoms, refs, STM.</li>
+                        <li><strong>Écosystème :</strong> leiningen, ClojureScript (JS), Datomic (base de données).</li>
+                        <li><strong>Utilisations :</strong> systèmes distribués, fintech, API.</li>
                     </ul>
+                    <p>Clojure est apprécié pour sa simplicité et sa robustesse.</p>
                 `
             },
+            // ---------- AUTRES (44-50) ----------
             44: {
-                title: "Fabrication numérique et robotique",
-                tag: "Procédés",
+                title: "Fortran",
+                creator: "John Backus (IBM)",
+                date: "1957",
+                tag: "Autres",
                 content: `
-                    <p>La robotique s'invite sur les chantiers pour des tâches répétitives ou complexes :</p>
+                    <p>Fortran a été créé par <strong>John Backus</strong> et son équipe chez IBM en 1957. C'est le <strong>plus vieux langage de haut niveau</strong> encore utilisé.</p>
+                    <p>Il est conçu pour le calcul scientifique et les applications numériques intensives.</p>
                     <ul>
-                        <li><strong>Assemblage :</strong> pose d'éléments préfabriqués.</li>
-                        <li><strong>Fabrication additive :</strong> impression 3D, découpe.</li>
-                        <li><strong>Suivi :</strong> drones pour l'inspection et la topographie.</li>
+                        <li><strong>Évolution :</strong> Fortran 77, Fortran 90 (modernisation), Fortran 2018.</li>
+                        <li><strong>Caractéristiques :</strong> tableaux, calcul parallèle, haute performance.</li>
+                        <li><strong>Utilisations :</strong> météo, physique, aéronautique, modélisation climatique.</li>
                     </ul>
+                    <p>Fortran reste incontournable dans le calcul haute performance (HPC).</p>
                 `
             },
             45: {
-                title: "Préfabrication lourde",
-                tag: "Procédés",
+                title: "Ada",
+                creator: "Jean Ichbiah (CII Honeywell Bull)",
+                date: "1980",
+                tag: "Autres",
                 content: `
-                    <p>La préfabrication en usine améliore la qualité et réduit les délais sur chantier :</p>
+                    <p>Ada a été conçu par l'équipe de <strong>Jean Ichbiah</strong> chez CII Honeywell Bull en 1980, pour le <strong>ministère de la Défense des États-Unis</strong>.</p>
+                    <p>C'est un langage très structuré, sécurisé, avec un typage fort et un support de la concurrence.</p>
                     <ul>
-                        <li><strong>Éléments :</strong> poutres, poteaux, dalles, voiles, voussoirs.</li>
-                        <li><strong>Avantages :</strong> contrôle qualité, réduction du temps de séchage, sécurité.</li>
-                        <li><strong>Applications :</strong> bâtiments modulaires, ponts, ouvrages d'art.</li>
+                        <li><strong>Caractéristiques :</strong> typage fort, packages, tâches, génériques.</li>
+                        <li><strong>Utilisations :</strong> aéronautique, défense, systèmes critiques.</li>
+                        <li><strong>Norme :</strong> Ada 2012, Ada 2022.</li>
                     </ul>
+                    <p>Ada est utilisé dans les avions, les missiles et les systèmes ferroviaires.</p>
                 `
             },
             46: {
-                title: "Béton projeté",
-                tag: "Procédés",
+                title: "Cobol",
+                creator: "Grace Hopper (et comité)",
+                date: "1959",
+                tag: "Autres",
                 content: `
-                    <p>Le béton projeté est appliqué par projection pneumatique :</p>
+                    <p>COBOL (Common Business-Oriented Language) a été créé en 1959 sous l'impulsion de <strong>Grace Hopper</strong>, avec un comité d'experts.</p>
+                    <p>Il est conçu pour les <strong>applications de gestion</strong> et le traitement de données massives.</p>
                     <ul>
-                        <li><strong>Procédés :</strong> voie sèche (mélange en buse) ou voie humide (mélange en usine).</li>
-                        <li><strong>Applications :</strong> tunnels, voûtes, réhabilitation de structures.</li>
-                        <li><strong>Avantages :</strong> rapidité, adhérence sur les surfaces.</li>
+                        <li><strong>Caractéristiques :</strong> syntaxe proche de l'anglais, structures de données.</li>
+                        <li><strong>Utilisations :</strong> banque, assurance, administration, mainframe.</li>
+                        <li><strong>Héritage :</strong> des milliards de lignes de code encore en production.</li>
                     </ul>
+                    <p>COBOL alimente encore une grande partie des systèmes bancaires mondiaux.</p>
                 `
             },
             47: {
-                title: "Coffrages innovants",
-                tag: "Procédés",
+                title: "Pascal",
+                creator: "Niklaus Wirth",
+                date: "1970",
+                tag: "Autres",
                 content: `
-                    <p>Les coffrages modernes améliorent la productivité et la qualité de finition :</p>
+                    <p>Pascal a été créé par <strong>Niklaus Wirth</strong> en 1970, nommé en l'honneur du mathématicien Blaise Pascal.</p>
+                    <p>Il a été conçu pour l'<strong>enseignement</strong> de la programmation structurée. Il a eu une grande influence sur la génération des années 1980.</p>
                     <ul>
-                        <li><strong>Coffrages perdus :</strong> intégrés à la structure finale.</li>
-                        <li><strong>Coffrages glissants :</strong> pour les structures verticales (piles, tours).</li>
-                        <li><strong>Coffrages modulaires :</strong> ajustables, réutilisables.</li>
+                        <li><strong>Caractéristiques :</strong> typage fort, structuré, pas de pointeurs.</li>
+                        <li><strong>Dialectes :</strong> Turbo Pascal (Borland), Object Pascal (Delphi).</li>
+                        <li><strong>Utilisations :</strong> enseignement, Delphi (applications Windows).</li>
                     </ul>
+                    <p>Pascal a formé des générations d'informaticiens.</p>
                 `
             },
             48: {
-                title: "Levage et manutention",
-                tag: "Procédés",
+                title: "Perl",
+                creator: "Larry Wall",
+                date: "1987",
+                tag: "Autres",
                 content: `
-                    <p>La manutention des grands éléments nécessite des moyens adaptés :</p>
+                    <p>Perl a été créé par <strong>Larry Wall</strong> en 1987. Il est conçu pour l'<strong>extraction de données</strong> et le <strong>scripting</strong>.</p>
+                    <p>Perl est connu pour sa flexibilité extrême, sa puissance en expressions régulières, et son acronyme : "Practical Extraction and Report Language".</p>
                     <ul>
-                        <li><strong>Grutage :</strong> grues à tour, automotrices, à câble.</li>
-                        <li><strong>Élingage :</strong> sangles, élingues, palonniers.</li>
-                        <li><strong>Sécurité :</strong> études de levage, vérification des charges.</li>
+                        <li><strong>Version :</strong> Perl 5 (1994) est la référence, Perl 6 (rebaptisé Raku).</li>
+                        <li><strong>Utilisations :</strong> sysadmin, bioinformatique, text mining.</li>
+                        <li><strong>Philosophie :</strong> TIMTOWTDI (There Is More Than One Way To Do It).</li>
                     </ul>
+                    <p>Perl a été le langage de choix des administrateurs systèmes avant Python.</p>
                 `
             },
-            // ---------- GESTION (49 à 54) ----------
             49: {
-                title: "Gestion de projet en ingénierie civile",
-                tag: "Gestion",
+                title: "Lua",
+                creator: "Roberto Ierusalimschy, Luiz Henrique de Figueiredo, Waldemar Celes",
+                date: "1993",
+                tag: "Autres",
                 content: `
-                    <p>Un projet de génie civil mobilise des compétences multiples :</p>
+                    <p>Lua a été créé en 1993 par <strong>Roberto Ierusalimschy, Luiz Henrique de Figueiredo et Waldemar Celes</strong> au Brésil.</p>
+                    <p>Il est conçu pour l'<strong>intégration</strong> avec des langages systèmes (C, C++). Il est très léger et rapide.</p>
                     <ul>
-                        <li><strong>Phasage :</strong> études, conception, réalisation, réception.</li>
-                        <li><strong>Équipes :</strong> ingénieurs, techniciens, bureaux d'études, entreprises.</li>
-                        <li><strong>Outils :</strong> planning (Gantt, PERT), gestion des risques, contrôle budgétaire.</li>
+                        <li><strong>Caractéristiques :</strong> tables (universelles), métatables, garbage collection.</li>
+                        <li><strong>Utilisations :</strong> jeux vidéo (WoW, Roblox), embarqué, scripts.</li>
+                        <li><strong>Philosophie :</strong> minimaliste, extensible.</li>
                     </ul>
+                    <p>Lua est le langage de script le plus utilisé dans les jeux vidéo.</p>
                 `
             },
             50: {
-                title: "Conception et pilotage BIM",
-                tag: "Gestion",
+                title: "VBA (Visual Basic for Applications)",
+                creator: "Microsoft (Alan Cooper pour le design original)",
+                date: "1993",
+                tag: "Autres",
                 content: `
-                    <p>Le BIM est devenu un standard pour la conception et la gestion des ouvrages :</p>
+                    <p>VBA a été introduit par <strong>Microsoft</strong> en 1993 pour l'automatisation des applications Office (Excel, Word, Access).</p>
+                    <p>Il est basé sur Visual Basic 6 et permet de créer des macros et des scripts automatisés.</p>
                     <ul>
-                        <li><strong>Maquette numérique :</strong> 3D enrichie de données (matériaux, coûts, délais).</li>
-                        <li><strong>Pilotage :</strong> suivi d'avancement, détection des conflits, gestion de la maintenance.</li>
-                        <li><strong>Niveaux :</strong> BIM 1D à 7D (de la conception à la déconstruction).</li>
+                        <li><strong>Caractéristiques :</strong> événementiel, COM, accès aux objets Office.</li>
+                        <li><strong>Utilisations :</strong> automatisation Excel, reporting, modèles financiers.</li>
+                        <li><strong>Évolution :</strong> remplacé par Office Scripts (JavaScript) dans les versions récentes.</li>
                     </ul>
-                `
-            },
-            51: {
-                title: "Maîtrise d'œuvre et coordination des acteurs",
-                tag: "Gestion",
-                content: `
-                    <p>La maîtrise d'œuvre assure la coordination technique et administrative :</p>
-                    <ul>
-                        <li><strong>Rôles :</strong> études, plans d'exécution, suivi des travaux.</li>
-                        <li><strong>Interfaces :</strong> coordination entre maîtrise d'ouvrage, entreprises, bureaux de contrôle.</li>
-                        <li><strong>Enjeux :</strong> qualité, délais, coûts, sécurité.</li>
-                    </ul>
-                `
-            },
-            52: {
-                title: "Nouveaux Eurocodes",
-                tag: "Gestion",
-                content: `
-                    <p>Les Eurocodes 2ème génération (2026) intègrent les retours d'expérience et les nouveaux matériaux.</p>
-                    <ul>
-                        <li><strong>Nouveautés :</strong> bétons à fibres, réhabilitation, structures mixtes.</li>
-                        <li><strong>Harmonisation :</strong> règles communes pour les États membres.</li>
-                        <li><strong>Formation :</strong> adaptation des bureaux d'études.</li>
-                    </ul>
-                `
-            },
-            53: {
-                title: "Labels environnementaux",
-                tag: "Gestion",
-                content: `
-                    <p>Les labels certifient la performance environnementale des bâtiments :</p>
-                    <ul>
-                        <li><strong>E+C- :</strong> énergie positive et carbone négatif (référentiel français).</li>
-                        <li><strong>HQE :</strong> Haute Qualité Environnementale (norme NF).</li>
-                        <li><strong>BREEAM / LEED :</strong> standards internationaux.</li>
-                    </ul>
-                `
-            },
-            54: {
-                title: "Retours d'expérience chantiers",
-                tag: "Gestion",
-                content: `
-                    <p>Les retours d'expérience (REX) capitalisent les savoir-faire :</p>
-                    <ul>
-                        <li><strong>Objectifs :</strong> améliorer les pratiques, éviter les erreurs, innover.</li>
-                        <li><strong>Moyens :</strong> retours terrain, analyses des aléas, bilans techniques.</li>
-                        <li><strong>Valorisation :</strong> articles techniques, bases de données, formations.</li>
-                    </ul>
-                `
-            },
-            // ---------- SPÉCIFIQUES (55 à 60) ----------
-            55: {
-                title: "Résistance au feu et protection incendie",
-                tag: "Spécifiques",
-                content: `
-                    <p>La résistance au feu des structures est une exigence de sécurité fondamentale :</p>
-                    <ul>
-                        <li><strong>Classes :</strong> R30, R60, R90, R120 (durée en minutes).</li>
-                        <li><strong>Solutions :</strong> enrobage béton, peintures intumescentes, flocage.</li>
-                        <li><strong>Essais :</strong> courbes ISO 834, modélisation thermique.</li>
-                    </ul>
-                `
-            },
-            56: {
-                title: "Durabilité en milieu agressif",
-                tag: "Spécifiques",
-                content: `
-                    <p>Les milieux agressifs (marin, industriel, désertique) imposent des formulations spécifiques :</p>
-                    <ul>
-                        <li><strong>Milieu marin :</strong> chlorures, cycles de gel/dégel, attaques sulfatiques.</li>
-                        <li><strong>Milieu industriel :</strong> acides, températures élevées.</li>
-                        <li><strong>Milieu désertique :</strong> températures extrêmes, abrasion éolienne.</li>
-                    </ul>
-                `
-            },
-            57: {
-                title: "Géotechnique",
-                tag: "Spécifiques",
-                content: `
-                    <p>La géotechnique étudie le comportement des sols et des roches :</p>
-                    <ul>
-                        <li><strong>Portance :</strong> capacité des sols à supporter les charges.</li>
-                        <li><strong>Tassement :</strong> déformation sous charge dans le temps.</li>
-                        <li><strong>Glissement :</strong> stabilité des talus, pentes, barrages.</li>
-                    </ul>
-                `
-            },
-            58: {
-                title: "Hydrologie urbaine et eaux pluviales",
-                tag: "Spécifiques",
-                content: `
-                    <p>La gestion des eaux pluviales en milieu urbain est un enjeu majeur :</p>
-                    <ul>
-                        <li><strong>Rétention :</strong> bassins, noues, toitures végétalisées.</li>
-                        <li><strong>Infiltration :</strong> chaussées drainantes, tranchées d'infiltration.</li>
-                        <li><strong>Réutilisation :</strong> arrosage, nettoyage, usages non potables.</li>
-                    </ul>
-                `
-            },
-            59: {
-                title: "Acoustique et confort vibratoire",
-                tag: "Spécifiques",
-                content: `
-                    <p>Le confort acoustique et vibratoire est une exigence croissante :</p>
-                    <ul>
-                        <li><strong>Isolation acoustique :</strong> masses, ressorts, matériaux absorbants.</li>
-                        <li><strong>Vibrations :</strong> sources (trafic, machines), transmission, isolation.</li>
-                        <li><strong>Normes :</strong> réglementation acoustique, limite de confort.</li>
-                    </ul>
-                `
-            },
-            60: {
-                title: "Passerelles piétonnes et mobilité douce",
-                tag: "Spécifiques",
-                content: `
-                    <p>Les passerelles pour modes doux (piétons, vélos) privilégient la légèreté et l'esthétique :</p>
-                    <ul>
-                        <li><strong>Matériaux :</strong> bois, acier, aluminium, composites.</li>
-                        <li><strong>Formes :</strong> arcs, haubans, poutres courbes.</li>
-                        <li><strong>Intégration :</strong> paysagère, urbaine, environnementale.</li>
-                    </ul>
+                    <p>VBA est encore massivement utilisé dans la finance et l'administration.</p>
                 `
             }
         };
 
-        // ============================================================
+        // ================================================================
         //  CONSTRUCTION DES GRILLES
-        // ============================================================
+        // ================================================================
 
         const categories = {
-            materiaux: { ids: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], gridId: 'grid-materiaux' },
-            structures: { ids: [21,22,23,24,25,26,27,28,29,30,31,32,33,34,35], gridId: 'grid-structures' },
-            durabilite: { ids: [36,37,38,39,40,41,42], gridId: 'grid-durabilite' },
-            procedes: { ids: [43,44,45,46,47,48], gridId: 'grid-procedes' },
-            gestion: { ids: [49,50,51,52,53,54], gridId: 'grid-gestion' },
-            specifiques: { ids: [55,56,57,58,59,60], gridId: 'grid-specifiques' }
+            system: { ids: [1,2,3,4,5,6,7,8,9,10,11,12], gridId: 'grid-system' },
+            web: { ids: [13,14,15,16,17,18,19,20,21,22,23,24], gridId: 'grid-web' },
+            data: { ids: [25,26,27,28,29,30,31,32], gridId: 'grid-data' },
+            mobile: { ids: [33,34,35,36,37,38], gridId: 'grid-mobile' },
+            fonctionnel: { ids: [39,40,41,42,43], gridId: 'grid-fonctionnel' },
+            autres: { ids: [44,45,46,47,48,49,50], gridId: 'grid-autres' }
         };
 
         for (const [cat, obj] of Object.entries(categories)) {
@@ -1076,49 +1179,77 @@
                 card.setAttribute('data-id', id);
                 card.innerHTML = `
                     <span class="num">${String(id).padStart(2, '0')}</span>
-                    <span class="text">${item.title}<small>${item.tag}</small></span>
+                    <span class="text">${item.title}<small>${item.creator} · ${item.date}</small></span>
                 `;
-                card.addEventListener('click', () => openModal(id));
+                card.addEventListener('click', () => navigateToArticle(id));
                 grid.appendChild(card);
             }
         }
 
-        // ============================================================
-        //  MODAL
-        // ============================================================
+        // ================================================================
+        //  ROUTING (Hash-based)
+        // ================================================================
 
-        const overlay = document.getElementById('modalOverlay');
-        const modal = document.getElementById('modal');
-        const closeBtn = document.getElementById('closeModal');
-        const modalNum = document.getElementById('modalNum');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalContent = document.getElementById('modalContent');
-        const modalTag = document.getElementById('modalTag');
+        const homePage = document.getElementById('homePage');
+        const articlePage = document.getElementById('articlePage');
 
-        function openModal(id) {
+        function showHome() {
+            homePage.classList.remove('hidden');
+            articlePage.classList.remove('active');
+            window.location.hash = '';
+            document.title = 'Langages de Programmation - Histoire & Créateurs';
+        }
+
+        function showArticle(id) {
+            homePage.classList.add('hidden');
+            articlePage.classList.add('active');
+            window.location.hash = `article-${id}`;
+            renderArticle(id);
+        }
+
+        function renderArticle(id) {
             const item = data[id];
-            if (!item) return;
-            modalNum.textContent = String(id).padStart(2, '0');
-            modalTitle.textContent = item.title;
-            modalContent.innerHTML = item.content;
-            modalTag.textContent = `🏷️ ${item.tag}`;
-            overlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
+            if (!item) {
+                showHome();
+                return;
+            }
+            document.getElementById('articleNum').textContent = String(id).padStart(2, '0');
+            document.getElementById('articleTitle').textContent = item.title;
+            document.getElementById('articleCreator').innerHTML = `👤 <strong>Créateur :</strong> ${item.creator}`;
+            document.getElementById('articleDate').textContent = `📅 ${item.date}`;
+            document.getElementById('articleTag').textContent = `🏷️ ${item.tag}`;
+            document.getElementById('articleContent').innerHTML = item.content;
+            document.title = `${item.title} - Langages de Programmation`;
         }
 
-        function closeModal() {
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
+        function navigateToArticle(id) {
+            showArticle(id);
         }
 
-        closeBtn.addEventListener('click', closeModal);
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) closeModal();
+        function handleHash() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#article-')) {
+                const id = parseInt(hash.replace('#article-', ''), 10);
+                if (data[id]) {
+                    showArticle(id);
+                    return;
+                }
+            }
+            showHome();
+        }
+
+        document.getElementById('backToHomeLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+        document.getElementById('backHomeBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
         });
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModal();
-        });
+        window.addEventListener('hashchange', handleHash);
+        window.addEventListener('load', handleHash);
+        window.addEventListener('popstate', handleHash);
     </script>
 </body>
 </html>
