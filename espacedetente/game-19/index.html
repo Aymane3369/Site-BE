@@ -1,1 +1,1253 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eurocode 8 - Conception parasismique des structures</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            color: #1a2634;
+            padding: 2rem 1rem;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a0a2e, #4a1a6a);
+            color: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header h1 span {
+            color: #f9d342;
+        }
+
+        .header p {
+            margin-top: 0.6rem;
+            font-size: 1.05rem;
+            opacity: 0.9;
+            max-width: 750px;
+        }
+
+        .badge-count {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 0.8rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #f9d342;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2rem 0 1.2rem 0;
+            padding-left: 0.5rem;
+            border-left: 6px solid #f9d342;
+            color: #1a0a2e;
+        }
+
+        .section-title .emoji {
+            margin-right: 0.5rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 1rem 1.2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s ease;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.10);
+            border-color: #4a1a6a;
+        }
+
+        .card .num {
+            font-weight: 700;
+            font-size: 0.65rem;
+            color: #7a6a7a;
+            background: #f0ebe6;
+            border-radius: 30px;
+            padding: 0.1rem 0.7rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .card .text {
+            font-size: 0.92rem;
+            color: #1a2634;
+            font-weight: 500;
+        }
+
+        .card .text small {
+            display: block;
+            font-weight: 400;
+            font-size: 0.75rem;
+            color: #7a6a7a;
+            margin-top: 0.1rem;
+        }
+
+        .cat-mod1 .card { border-left: 4px solid #2563eb; }
+        .cat-mod2 .card { border-left: 4px solid #d97706; }
+        .cat-mod3 .card { border-left: 4px solid #0f7b3a; }
+        .cat-mod4 .card { border-left: 4px solid #7c3a9e; }
+        .cat-mod5 .card { border-left: 4px solid #b91c5c; }
+        .cat-mod6 .card { border-left: 4px solid #a6572e; }
+
+        #articlePage {
+            display: none;
+        }
+
+        #articlePage.active {
+            display: block;
+        }
+
+        #homePage.hidden {
+            display: none;
+        }
+
+        .article-container {
+            background: #fff;
+            border-radius: 20px;
+            padding: 2.5rem 2.8rem;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.07);
+            margin-top: 0.5rem;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .article-container .article-num {
+            font-size: 0.8rem;
+            color: #7a6a7a;
+            background: #f0ebe6;
+            display: inline-block;
+            padding: 0.2rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+
+        .article-container h2 {
+            font-size: 2rem;
+            margin: 0.3rem 0 0.1rem 0;
+            color: #1a0a2e;
+        }
+
+        .article-container .article-sub {
+            font-size: 1rem;
+            color: #7a6a7a;
+            margin-bottom: 0.5rem;
+        }
+
+        .article-container .article-tag {
+            display: inline-block;
+            background: #f0ebe6;
+            padding: 0.25rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #5a4a5a;
+        }
+
+        .article-container .article-content {
+            font-size: 1.02rem;
+            line-height: 1.9;
+            color: #1a2634;
+            margin-top: 1rem;
+        }
+
+        .article-container .article-content p {
+            margin-bottom: 0.9rem;
+        }
+
+        .article-container .article-content ul {
+            padding-left: 1.8rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .article-container .article-content li {
+            margin-bottom: 0.4rem;
+        }
+
+        .article-container .article-content strong {
+            color: #1a0a2e;
+        }
+
+        .article-container .article-content .formula {
+            display: block;
+            background: #f4f8fb;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.05rem;
+            margin: 0.8rem 0;
+            border-left: 4px solid #4a1a6a;
+            overflow-x: auto;
+            text-align: center;
+        }
+
+        .article-container .article-content .example-box {
+            background: #f0f7ee;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            border-left: 4px solid #0f7b3a;
+            margin: 0.8rem 0;
+        }
+
+        .article-container .article-content .table-box {
+            background: #f8fafc;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            margin: 0.8rem 0;
+            overflow-x: auto;
+        }
+
+        .article-container .article-content .table-box table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .article-container .article-content .table-box th {
+            background: #4a1a6a;
+            color: #fff;
+            padding: 0.5rem 0.8rem;
+            text-align: left;
+        }
+
+        .article-container .article-content .table-box td {
+            padding: 0.4rem 0.8rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .article-container .article-content .table-box tr:nth-child(even) {
+            background: #f0f4f8;
+        }
+
+        .article-container .article-content .code-block {
+            background: #1e2a3a;
+            color: #e2e8f0;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin: 0.8rem 0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        .code-block .comment { color: #6a9955; }
+        .code-block .keyword { color: #c586c0; }
+        .code-block .func { color: #dcdcaa; }
+        .code-block .string { color: #ce9178; }
+        .code-block .num { color: #b5cea8; }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 1.8rem;
+            color: #4a1a6a;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1.2rem;
+            border: 2px solid #4a1a6a;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+
+        .back-home:hover {
+            background: #4a1a6a;
+            color: #fff;
+        }
+
+        @media (max-width: 640px) {
+            body { padding: 1rem 0.6rem; }
+            .header { padding: 1.5rem 1rem; }
+            .header h1 { font-size: 1.5rem; }
+            .grid { grid-template-columns: 1fr; }
+            .section-title { font-size: 1.2rem; }
+            .article-container { padding: 1.5rem; }
+            .article-container h2 { font-size: 1.4rem; }
+        }
+
+        .footer {
+            margin-top: 3.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #7a6a7a;
+            border-top: 1px solid #e8e0d8;
+            padding-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div id="homePage">
+            <div class="header">
+                <h1>🌍 Eurocode 8 · <span>Conception et dimensionnement parasismique des structures</span></h1>
+                <p>Cours technique complet pour ingénieur génie civil / bureau d'études. NF EN 1998-1 — Calcul parasismique des bâtiments.</p>
+                <div class="badge-count">📚 50 concepts · Chaque concept a sa propre URL</div>
+            </div>
+
+            <h2 class="section-title"><span class="emoji">🌋</span> Module 1 — Introduction au calcul sismique</h2>
+            <div class="grid cat-mod1" id="grid-mod1"></div>
+
+            <h2 class="section-title"><span class="emoji">🇫🇷</span> Module 2 — Réglementation parasismique en France</h2>
+            <div class="grid cat-mod2" id="grid-mod2"></div>
+
+            <h2 class="section-title"><span class="emoji">📊</span> Module 3 — Caractérisation de l'action sismique</h2>
+            <div class="grid cat-mod3" id="grid-mod3"></div>
+
+            <h2 class="section-title"><span class="emoji">📈</span> Module 4 — Spectre de réponse Eurocode 8</h2>
+            <div class="grid cat-mod4" id="grid-mod4"></div>
+
+            <h2 class="section-title"><span class="emoji">🏗️</span> Module 5 — Conception parasismique des structures BA</h2>
+            <div class="grid cat-mod5" id="grid-mod5"></div>
+
+            <h2 class="section-title"><span class="emoji">🔧</span> Module 6 — Méthodes de calcul &amp; Travaux pratiques</h2>
+            <div class="grid cat-mod6" id="grid-mod6"></div>
+
+            <div class="footer">
+                <p>📌 Eurocode 8 — NF EN 1998-1 · Sismique · Spectre · Ductilité · Dimensionnement BA</p>
+            </div>
+        </div>
+
+        <div id="articlePage">
+            <div class="header" style="margin-bottom: 1.5rem;">
+                <h1>🌍 <span>Eurocode 8 - Parasismique</span></h1>
+                <a class="back-link" href="#" id="backToHomeLink">← Retour à la liste</a>
+            </div>
+            <div class="article-container" id="articleContainer">
+                <div class="article-num" id="articleNum">01</div>
+                <h2 id="articleTitle">Concept</h2>
+                <div class="article-sub" id="articleSub">Sous-titre</div>
+                <span class="article-tag" id="articleTag">🏷️ Module</span>
+                <div class="article-content" id="articleContent">
+                    <p>Contenu détaillé...</p>
+                </div>
+                <a href="#" class="back-home" id="backHomeBtn">← Tous les concepts</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const data = {
+            // ---------- MODULE 1 : INTRODUCTION ----------
+            1: {
+                title: "Origine des séismes",
+                sub: "Tectonique des plaques",
+                tag: "Module 1",
+                content: `
+                    <p>Les <strong>séismes</strong> sont causés par la <strong>libération brutale d'énergie</strong> accumulée dans la croûte terrestre, principalement au niveau des <strong>failles</strong>.</p>
+                    <p><strong>Origine tectonique :</strong></p>
+                    <ul>
+                        <li>Mouvement des plaques lithosphériques (convergence, divergence, coulissage)</li>
+                        <li>Friction entre les plaques → accumulation de contraintes</li>
+                        <li>Rupture brutale → libération d'énergie sous forme d'ondes sismiques</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 En France :</strong> Les zones sismiques les plus actives sont les Alpes, les Pyrénées, le Jura et le Massif Central (failles actives).
+                    </div>
+                    <p><strong>Magnitude vs Intensité :</strong></p>
+                    <ul>
+                        <li><strong>Magnitude (M)</strong> : énergie libérée (échelle de Richter, logarithmique)</li>
+                        <li><strong>Intensité (EMS-98)</strong> : effets sur les structures et le territoire</li>
+                    </ul>
+                `
+            },
+            2: {
+                title: "Ondes sismiques",
+                sub: "Ondes P, S, de surface",
+                tag: "Module 1",
+                content: `
+                    <p>Les <strong>ondes sismiques</strong> se propagent à partir du foyer du séisme.</p>
+                    <div class="table-box">
+                        <table>
+                            <tr><th>Type</th><th>Vitesse</th><th>Mouvement</th><th>Milieu</th></tr>
+                            <tr><td><strong>Ondes P</strong></td><td>Rapide (4-8 km/s)</td><td>Compression/dilatation</td><td>Solides et fluides</td></tr>
+                            <tr><td><strong>Ondes S</strong></td><td>Moyen (2-5 km/s)</td><td>Cisaillement transversal</td><td>Solides uniquement</td></tr>
+                            <tr><td><strong>Ondes de surface</strong></td><td>Lent (1-3 km/s)</td><td>Rayleigh et Love</td><td>Surface</td></tr>
+                        </table>
+                    </div>
+                    <div class="example-box">
+                        <strong>📌 Effets :</strong> Les ondes de surface sont les plus destructrices pour les bâtiments car elles provoquent des déplacements horizontaux importants.
+                    </div>
+                `
+            },
+            3: {
+                title: "Interaction sol-structure",
+                sub: "Effet de site",
+                tag: "Module 1",
+                content: `
+                    <p>L'<strong>interaction sol-structure</strong> influence la réponse sismique d'un bâtiment.</p>
+                    <p><strong>Effets :</strong></p>
+                    <ul>
+                        <li><strong>Effet de site</strong> : Amplification des ondes par les sols meubles</li>
+                        <li><strong>Résonance</strong> : Si la période du bâtiment coïncide avec celle du sol</li>
+                        <li><strong>Liquéfaction</strong> : Perte de portance des sols saturés</li>
+                        <li><strong>Interaction dynamique</strong> : Couplage entre la structure et le sol</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 En pratique :</strong> Les sols de classe D et E (meubles) amplifient les mouvements sismiques. Une étude géotechnique est nécessaire.
+                    </div>
+                `
+            },
+            4: {
+                title: "Effets d'un séisme sur les bâtiments",
+                sub: "Déplacements, inertie, torsion",
+                tag: "Module 1",
+                content: `
+                    <p>Un séisme sollicite une structure par des <strong>forces d'inertie</strong> proportionnelles à la masse et à l'accélération.</p>
+                    <div class="formula">
+                        F = m × a
+                    </div>
+                    <p><strong>Principaux effets :</strong></p>
+                    <ul>
+                        <li><strong>Déplacements horizontaux</strong> : Mouvements latéraux (translation + rotation)</li>
+                        <li><strong>Efforts d'inertie</strong> : Forces sismiques agissant au centre de masse</li>
+                        <li><strong>Torsion</strong> : Rotation de la structure (excentrement masse/rigidité)</li>
+                        <li><strong>Instabilité</strong> : Risque de ruine par basculement ou flambement</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Conséquences :</strong> Les déplacements horizontaux peuvent endommager les éléments non structuraux (cloisons, vitrages) et provoquer des chocs entre bâtiments.
+                    </div>
+                `
+            },
+            5: {
+                title: "Objectifs du dimensionnement parasismique",
+                sub: "Non-effondrement et limitation des dommages",
+                tag: "Module 1",
+                content: `
+                    <p>L'<strong>Eurocode 8</strong> (EN 1998-1) définit deux objectifs de performance :</p>
+                    <div class="example-box">
+                        <strong>🎯 Objectif 1 : Non-effondrement</strong>
+                        <p>La structure doit résister à un <strong>séisme majeur</strong> (probabilité 10% en 50 ans) sans ruine, même avec des dommages importants.</p>
+                        <p style="margin-top:0.5rem;"><strong>État Limite Ultime (ELU) sismique</strong></p>
+                    </div>
+                    <div class="example-box" style="border-left-color:#2563eb;">
+                        <strong>🎯 Objectif 2 : Limitation des dommages</strong>
+                        <p>Les <strong>éléments non structuraux</strong> doivent limiter les dégâts pour des séismes fréquents (probabilité 10% en 10 ans).</p>
+                        <p style="margin-top:0.5rem;"><strong>État Limite de Service (ELS) sismique</strong></p>
+                    </div>
+                    <p>Ces objectifs sont atteints par :</p>
+                    <ul>
+                        <li>Une <strong>ductilité</strong> suffisante (capacité de déformation plastique)</li>
+                        <li>Une <strong>régularité</strong> en plan et en élévation</li>
+                        <li>Un <strong>comportement dissipatif</strong> (zones critiques)</li>
+                    </ul>
+                `
+            },
+            // ---------- MODULE 2 : RÉGLEMENTATION ----------
+            6: {
+                title: "Zonage sismique français",
+                sub: "Zones 1 à 5",
+                tag: "Module 2",
+                content: `
+                    <p>La France est divisée en <strong>5 zones sismiques</strong> selon le décret n°2010-1255.</p>
+                    <div class="table-box">
+                        <table>
+                            <tr><th>Zone</th><th>Niveau sismique</th><th>a<sub>gr</sub> (m/s²)</th></tr>
+                            <tr><td>1</td><td>Très faible</td><td>0,4</td></tr>
+                            <tr><td>2</td><td>Faible</td><td>0,7</td></tr>
+                            <tr><td>3</td><td>Modérée</td><td>1,1</td></tr>
+                            <tr><td>4</td><td>Moyenne</td><td>1,6</td></tr>
+                            <tr><td>5</td><td>Forte</td><td>2,0</td></tr>
+                        </table>
+                    </div>
+                    <div class="example-box">
+                        <strong>📌 Exemple :</strong> Les Alpes sont en zone 4 ou 5, la Bretagne en zone 1 ou 2.
+                    </div>
+                `
+            },
+            7: {
+                title: "Catégories d'importance",
+                sub: "I à IV selon EN 1998-1",
+                tag: "Module 2",
+                content: `
+                    <p>Les bâtiments sont classés en <strong>4 catégories d'importance</strong> selon leur rôle stratégique.</p>
+                    <div class="table-box">
+                        <table>
+                            <tr><th>Catégorie</th><th>Description</th><th>Exemple</th><th>γ<sub>I</sub></th></tr>
+                            <tr><td><strong>I</strong></td><td>Faible importance</td><td>Garages, abris</td><td>0,8</td></tr>
+                            <tr><td><strong>II</strong></td><td>Importance courante</td><td>Habitations, bureaux</td><td>1,0</td></tr>
+                            <tr><td><strong>III</strong></td><td>ERP (Établissements Recevant du Public)</td><td>Écoles, hôpitaux, commerces</td><td>1,2</td></tr>
+                            <tr><td><strong>IV</strong></td><td>Stratégique</td><td>Hôpitaux, casernes, centrales</td><td>1,4</td></tr>
+                        </table>
+                    </div>
+                    <div class="formula">
+                        a<sub>g</sub> = γ<sub>I</sub> × a<sub>gr</sub>
+                    </div>
+                `
+            },
+            // ---------- MODULE 3 : CARACTÉRISATION ----------
+            8: {
+                title: "Accélération de référence a<sub>gr</sub>",
+                sub: "Accélération maximale du sol",
+                tag: "Module 3",
+                content: `
+                    <p>L'<strong>accélération de référence</strong> a<sub>gr</sub> est l'accélération maximale du sol pour un séisme de référence.</p>
+                    <div class="formula">
+                        a<sub>gr</sub> = valeur selon la zone sismique (m/s²)
+                    </div>
+                    <div class="table-box">
+                        <table>
+                            <tr><th>Zone</th><th>a<sub>gr</sub> (m/s²)</th><th>a<sub>gr</sub> (g)</th></tr>
+                            <tr><td>1</td><td>0,4</td><td>0,04</td></tr>
+                            <tr><td>2</td><td>0,7</td><td>0,07</td></tr>
+                            <tr><td>3</td><td>1,1</td><td>0,11</td></tr>
+                            <tr><td>4</td><td>1,6</td><td>0,16</td></tr>
+                            <tr><td>5</td><td>2,0</td><td>0,20</td></tr>
+                        </table>
+                    </div>
+                `
+            },
+            9: {
+                title: "Accélération de calcul a<sub>g</sub>",
+                sub: "a<sub>g</sub> = γ<sub>I</sub> × a<sub>gr</sub>",
+                tag: "Module 3",
+                content: `
+                    <p>L'<strong>accélération de calcul</strong> a<sub>g</sub> tient compte de la catégorie d'importance du bâtiment.</p>
+                    <div class="formula">
+                        a<sub>g</sub> = γ<sub>I</sub> × a<sub>gr</sub>
+                    </div>
+                    <p><strong>Exemple :</strong></p>
+                    <ul>
+                        <li>Zone 3 : a<sub>gr</sub> = 1,1 m/s²</li>
+                        <li>Bâtiment catégorie III (école) : γ<sub>I</sub> = 1,2</li>
+                    </ul>
+                    <div class="formula">
+                        a<sub>g</sub> = 1,2 × 1,1 = 1,32 m/s²
+                    </div>
+                    <div class="example-box">
+                        <strong>📌 Résultat :</strong> L'accélération de calcul est de <strong>1,32 m/s²</strong>.
+                    </div>
+                `
+            },
+            // ---------- MODULE 4 : SPECTRE DE RÉPONSE ----------
+            10: {
+                title: "Spectre de réponse élastique",
+                sub: "Principe et paramètres",
+                tag: "Module 4",
+                content: `
+                    <p>Le <strong>spectre de réponse élastique</strong> représente l'accélération maximale subie par une structure en fonction de sa <strong>période propre</strong>.</p>
+                    <div class="formula">
+                        S<sub>e</sub>(T) = a<sub>g</sub> × S × β(T)
+                    </div>
+                    <p><strong>Paramètres :</strong></p>
+                    <ul>
+                        <li><strong>a<sub>g</sub></strong> : accélération de calcul</li>
+                        <li><strong>S</strong> : facteur de sol (dépend de la classe de sol)</li>
+                        <li><strong>β(T)</strong> : fonction de la période T</li>
+                        <li><strong>η</strong> : facteur d'amortissement (η = 1 pour 5%)</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Forme du spectre :</strong>
+                        <ul>
+                            <li>Plateau : S<sub>e</sub> = a<sub>g</sub> × S × η (périodes courtes)</li>
+                            <li>Décroissance : S<sub>e</sub> = a<sub>g</sub> × S × η × (T<sub>C</sub>/T) (périodes moyennes)</li>
+                            <li>Décroissance rapide : S<sub>e</sub> = a<sub>g</sub> × S × η × (T<sub>C</sub> × T<sub>D</sub> / T²) (périodes longues)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            11: {
+                title: "Classes de sol selon EC8",
+                sub: "A à E, facteur S",
+                tag: "Module 4",
+                content: `
+                    <p>L'Eurocode 8 définit <strong>5 classes de sol</strong> (A à E) qui influencent le spectre de réponse.</p>
+                    <div class="table-box">
+                        <table>
+                            <tr><th>Classe</th><th>Description</th><th>V<sub>s,30</sub> (m/s)</th><th>S (facteur sol)</th></tr>
+                            <tr><td><strong>A</strong></td><td>Roche ou roche très dure</td><td>&gt; 800</td><td>1,0</td></tr>
+                            <tr><td><strong>B</strong></td><td>Sol très dense</td><td>360 - 800</td><td>1,2</td></tr>
+                            <tr><td><strong>C</strong></td><td>Sol dense</td><td>180 - 360</td><td>1,15</td></tr>
+                            <tr><td><strong>D</strong></td><td>Sol meuble</td><td>&lt; 180</td><td>1,35</td></tr>
+                            <tr><td><strong>E</strong></td><td>Couches superficielles</td><td>-</td><td>selon cas</td></tr>
+                        </table>
+                    </div>
+                    <div class="example-box">
+                        <strong>📌 Influence :</strong> Un sol de classe D amplifie l'accélération de 35% par rapport à un sol de classe A.
+                    </div>
+                `
+            },
+            12: {
+                title: "Paramètres du spectre EC8",
+                sub: "T<sub>B</sub>, T<sub>C</sub>, T<sub>D</sub>",
+                tag: "Module 4",
+                content: `
+                    <p>Les paramètres <strong>T<sub>B</sub></strong>, <strong>T<sub>C</sub></strong> et <strong>T<sub>D</sub></strong> définissent les limites du spectre de réponse.</p>
+                    <div class="table-box">
+                        <table>
+                            <tr><th>Classe de sol</th><th>T<sub>B</sub> (s)</th><th>T<sub>C</sub> (s)</th><th>T<sub>D</sub> (s)</th></tr>
+                            <tr><td>A</td><td>0,05</td><td>0,20</td><td>2,0</td></tr>
+                            <tr><td>B</td><td>0,05</td><td>0,25</td><td>2,0</td></tr>
+                            <tr><td>C</td><td>0,05</td><td>0,30</td><td>2,0</td></tr>
+                            <tr><td>D</td><td>0,05</td><td>0,40</td><td>2,0</td></tr>
+                            <tr><td>E</td><td>0,05</td><td>0,25</td><td>2,0</td></tr>
+                        </table>
+                    </div>
+                    <div class="formula">
+                        <strong>Zone 1 (plateau) :</strong> T<sub>B</sub> ≤ T ≤ T<sub>C</sub><br>
+                        <strong>Zone 2 (décroissance) :</strong> T<sub>C</sub> ≤ T ≤ T<sub>D</sub><br>
+                        <strong>Zone 3 :</strong> T<sub>D</sub> ≤ T
+                    </div>
+                `
+            },
+            // ---------- MODULE 5 : CONCEPTION BA ----------
+            13: {
+                title: "Période propre d'un bâtiment",
+                sub: "T = C<sub>t</sub> × H<sup>3/4</sup>",
+                tag: "Module 5",
+                content: `
+                    <p>La <strong>période propre</strong> T est une caractéristique dynamique fondamentale de la structure.</p>
+                    <div class="formula">
+                        T = C<sub>t</sub> × H<sup>3/4</sup>
+                    </div>
+                    <p>avec :</p>
+                    <ul>
+                        <li><strong>T</strong> : période propre fondamentale (s)</li>
+                        <li><strong>H</strong> : hauteur du bâtiment (m)</li>
+                        <li><strong>C<sub>t</sub></strong> : coefficient dépendant du système structural</li>
+                    </ul>
+                    <div class="table-box">
+                        <table>
+                            <tr><th>Type de structure</th><th>C<sub>t</sub></th></tr>
+                            <tr><td>Portiques en béton armé</td><td>0,075</td></tr>
+                            <tr><td>Portiques en acier</td><td>0,085</td></tr>
+                            <tr><td>Voiles en béton armé</td><td>0,050</td></tr>
+                            <tr><td>Structures mixtes</td><td>0,060</td></tr>
+                        </table>
+                    </div>
+                    <div class="example-box">
+                        <strong>📌 Exemple :</strong> Bâtiment BA de 15 m (R+4) :<br>
+                        T = 0,075 × 15<sup>0,75</sup> = 0,075 × 7,62 = <strong>0,57 s</strong>
+                    </div>
+                `
+            },
+            14: {
+                title: "Modes propres et analyse modale",
+                sub: "Mass participation ≥ 90%",
+                tag: "Module 5",
+                content: `
+                    <p>L'<strong>analyse modale</strong> détermine les modes propres de vibration de la structure.</p>
+                    <div class="formula">
+                        [K] - ω²[M] = 0
+                    </div>
+                    <p><strong>Modes principaux :</strong></p>
+                    <ul>
+                        <li><strong>Mode 1</strong> : Translation selon X (période fondamentale T<sub>1</sub>)</li>
+                        <li><strong>Mode 2</strong> : Translation selon Y</li>
+                        <li><strong>Mode 3</strong> : Torsion (rotation autour de Z)</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Critère EC8 :</strong> La somme des masses modales doit atteindre <strong>≥ 90%</strong> de la masse totale pour les modes considérés.
+                    </div>
+                `
+            },
+            15: {
+                title: "Coefficient de comportement q",
+                sub: "Ductilité et dissipation d'énergie",
+                tag: "Module 5",
+                content: `
+                    <p>Le <strong>coefficient de comportement q</strong> traduit la capacité de la structure à <strong>dissiper l'énergie</strong> par déformations plastiques.</p>
+                    <div class="formula">
+                        F<sub>ELU</sub> = F<sub>élastique</sub> / q
+                    </div>
+                    <p><strong>Valeurs indicatives :</strong></p>
+                    <div class="table-box">
+                        <table>
+                            <tr><th>Type de structure</th><th>DCL (faible)</th><th>DCM (moyenne)</th><th>DCH (haute)</th></tr>
+                            <tr><td>Portiques BA</td><td>1,5</td><td>3,0</td><td>4,5</td></tr>
+                            <tr><td>Voiles BA</td><td>1,5</td><td>3,0</td><td>4,0</td></tr>
+                            <tr><td>Portiques acier</td><td>1,5</td><td>3,5</td><td>5,0</td></tr>
+                            <tr><td>Structures mixtes</td><td>1,5</td><td>3,0</td><td>4,5</td></tr>
+                        </table>
+                    </div>
+                    <div class="example-box">
+                        <strong>📌 Plus q est élevé :</strong>
+                        <ul>
+                            <li>Forces de calcul plus faibles</li>
+                            <li>Exigences de ductilité plus fortes</li>
+                            <li>Zones critiques plus détaillées</li>
+                        </ul>
+                    </div>
+                `
+            },
+            16: {
+                title: "Masse sismique",
+                sub: "M = Σ G<sub>k</sub> + Σ ψ<sub>2</sub> Q<sub>k</sub>",
+                tag: "Module 5",
+                content: `
+                    <p>La <strong>masse sismique</strong> est la masse mobilisée par le séisme.</p>
+                    <div class="formula">
+                        M = Σ G<sub>k</sub> + Σ ψ<sub>2</sub> Q<sub>k</sub>
+                    </div>
+                    <p>avec :</p>
+                    <ul>
+                        <li><strong>G<sub>k</sub></strong> : charges permanentes (poids propre)</li>
+                        <li><strong>Q<sub>k</sub></strong> : charges d'exploitation</li>
+                        <li><strong>ψ<sub>2</sub></strong> : coefficient de combinaison (EN 1990)</li>
+                    </ul>
+                    <div class="table-box">
+                        <table>
+                            <tr><th>Catégorie</th><th>ψ<sub>2</sub></th></tr>
+                            <tr><td>A (habitations)</td><td>0,3</td></tr>
+                            <tr><td>B (bureaux)</td><td>0,3</td></tr>
+                            <tr><td>C (rassemblement)</td><td>0,6</td></tr>
+                            <tr><td>D (commerces)</td><td>0,6</td></tr>
+                            <tr><td>E (stockage)</td><td>0,8</td></tr>
+                        </table>
+                    </div>
+                    <div class="example-box">
+                        <strong>📌 Exemple habitation :</strong> M = G<sub>k</sub> + 0,3 × Q<sub>k</sub>
+                    </div>
+                `
+            },
+            17: {
+                title: "Régularité en plan",
+                sub: "Critères EC8",
+                tag: "Module 5",
+                content: `
+                    <p>La <strong>régularité en plan</strong> évite les effets de torsion et facilite le calcul.</p>
+                    <p><strong>Critères de régularité :</strong></p>
+                    <ul>
+                        <li>Forme en plan <strong>compacte</strong> (pas de L, T, U prononcés)</li>
+                        <li>Excentrement du centre de masse <strong>≤ 5%</strong> du centre de rigidité</li>
+                        <li>Rigidité <strong>symétrique</strong> selon les deux directions</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Si non régulier :</strong>
+                        <ul>
+                            <li>Analyse modale spectrale obligatoire</li>
+                            <li>Prise en compte de l'excentricité accidentelle</li>
+                            <li>Efforts de torsion majorés</li>
+                        </ul>
+                    </div>
+                `
+            },
+            18: {
+                title: "Régularité en élévation",
+                sub: "Continuité verticale",
+                tag: "Module 5",
+                content: `
+                    <p>La <strong>régularité en élévation</strong> assure une distribution homogène des efforts sismiques.</p>
+                    <p><strong>Critères :</strong></p>
+                    <ul>
+                        <li><strong>Continuité des éléments porteurs</strong> du niveau inférieur au niveau supérieur</li>
+                        <li>Pas de <strong>changement brutal</strong> de rigidité (> 50% sur 2 niveaux)</li>
+                        <li>Pas de <strong>niveaux souples</strong> (rez-de-chaussée sur pilotis)</li>
+                        <li>Pas de <strong>grands porte-à-faux</strong> (> 4 m)</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 À éviter :</strong>
+                        <ul>
+                            <li>❌ Niveaux souples (effet "poteau faible")</li>
+                            <li>❌ Changements brutaux de masse</li>
+                            <li>❌ Éléments suspendus</li>
+                        </ul>
+                    </div>
+                `
+            },
+            19: {
+                title: "Poutres - Dimensionnement BA EC8",
+                sub: "Flexion cyclique, cisaillement",
+                tag: "Module 5",
+                content: `
+                    <p>Le dimensionnement des <strong>poutres</strong> selon EC8 intègre les effets cycliques.</p>
+                    <p><strong>Vérifications :</strong></p>
+                    <ul>
+                        <li><strong>Flexion</strong> : M<sub>Ed</sub> ≤ M<sub>Rd</sub> (avec armatures supérieures/inférieures)</li>
+                        <li><strong>Cisaillement</strong> : V<sub>Ed</sub> ≤ V<sub>Rd</sub> (avec cadres rapprochés en zones critiques)</li>
+                        <li><strong>Ancrages</strong> : Longueur d'ancrage suffisante en appui</li>
+                    </ul>
+                    <div class="formula">
+                        <strong>Zone critique (longueur L<sub>cr</sub>) :</strong><br>
+                        L<sub>cr</sub> = max(2×h, 1,5 m)
+                    </div>
+                    <div class="example-box">
+                        <strong>📌 Détails en zones critiques :</strong>
+                        <ul>
+                            <li>Cadres espacés de ≤ h/4 (max 15 cm)</li>
+                            <li>Armatures longitudinales ≥ 2 HA12 en appui</li>
+                            <li>Taux d'armatures supérieures/inférieures équilibré</li>
+                        </ul>
+                    </div>
+                `
+            },
+            20: {
+                title: "Poteaux - Dimensionnement BA EC8",
+                sub: "Principe poteaux forts-poutres faibles",
+                tag: "Module 5",
+                content: `
+                    <p>Le <strong>principe poteaux forts-poutres faibles</strong> évite l'effondrement par mécanisme d'étage.</p>
+                    <div class="formula">
+                        Σ M<sub>Rd,c</sub> ≥ 1,3 × Σ M<sub>Rd,b</sub>
+                    </div>
+                    <p><strong>Vérifications :</strong></p>
+                    <ul>
+                        <li>Capacité en flexion des poteaux > capacité des poutres</li>
+                        <li>Le rapport des moments cumulés ≥ 1,3</li>
+                        <li>Application à chaque nœud de la structure</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Conséquence :</strong> Les poteaux doivent être plus résistants que les poutres qui s'y connectent. Les rotules plastiques se forment dans les poutres, pas dans les poteaux.
+                    </div>
+                `
+            },
+            // ---------- MODULE 6 : MÉTHODES & TP ----------
+            21: {
+                title: "Méthode statique équivalente",
+                sub: "F<sub>b</sub> = S<sub>d</sub>(T<sub>1</sub>) × m × λ / q",
+                tag: "Module 6",
+                content: `
+                    <p>La <strong>méthode statique équivalente</strong> est la méthode simplifiée de l'Eurocode 8.</p>
+                    <div class="formula">
+                        F<sub>b</sub> = S<sub>d</sub>(T<sub>1</sub>) × m × λ / q
+                    </div>
+                    <p>avec :</p>
+                    <ul>
+                        <li><strong>S<sub>d</sub>(T<sub>1</sub>)</strong> : accélération spectrale à la période fondamentale</li>
+                        <li><strong>m</strong> : masse totale de la structure</li>
+                        <li><strong>λ</strong> : coefficient de correction (≈ 0,85 pour T<sub>1</sub> < 2s)</li>
+                        <li><strong>q</strong> : coefficient de comportement</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Conditions d'application :</strong>
+                        <ul>
+                            <li>Bâtiments <strong>réguliers</strong> en plan et en élévation</li>
+                            <li>Hauteur <strong>≤ 40 m</strong> (ou 20 m pour structures mixtes)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            22: {
+                title: "Analyse modale spectrale",
+                sub: "Méthode courante en BET",
+                tag: "Module 6",
+                content: `
+                    <p>L'<strong>analyse modale spectrale</strong> est la méthode la plus utilisée en bureau d'études.</p>
+                    <p><strong>Étapes :</strong></p>
+                    <ul>
+                        <li>1. <strong>Modélisation 3D</strong> de la structure</li>
+                        <li>2. Définition des <strong>masses sismiques</strong></li>
+                        <li>3. <strong>Analyse modale</strong> (calcul des modes propres)</li>
+                        <li>4. Application du <strong>spectre EC8</strong> dans les deux directions</li>
+                        <li>5. <strong>Combinaisons sismiques</strong> (EX+EY, signes alternés)</li>
+                        <li>6. <strong>Vérifications</strong> des déplacements et efforts</li>
+                    </ul>
+                    <div class="code-block">
+                        <span class="comment"># Logiciels utilisés</span>
+                        Robot Structural Analysis
+                        ETABS
+                        SAP2000
+                        Arche (graitec)
+                    </div>
+                `
+            },
+            23: {
+                title: "Vérification des déplacements",
+                sub: "θ = d<sub>r</sub> / h ≤ 0,005",
+                tag: "Module 6",
+                content: `
+                    <p>Les <strong>déplacements inter-étages</strong> doivent être limités pour éviter les dommages aux éléments non structuraux.</p>
+                    <div class="formula">
+                        θ = d<sub>r</sub> / h ≤ 0,005
+                    </div>
+                    <p>avec :</p>
+                    <ul>
+                        <li><strong>d<sub>r</sub></strong> : déplacement relatif entre deux niveaux successifs</li>
+                        <li><strong>h</strong> : hauteur de l'étage</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Exemple :</strong> Pour un étage de 3 m de hauteur :<br>
+                        d<sub>r,max</sub> = 0,005 × 3 = 0,015 m = <strong>15 mm</strong>
+                    </div>
+                `
+            },
+            24: {
+                title: "Effets du second ordre (P-Δ)",
+                sub: "θ = P<sub>tot</sub> × d<sub>r</sub> / (V<sub>tot</sub> × h)",
+                tag: "Module 6",
+                content: `
+                    <p>Les <strong>effets du second ordre</strong> (P-Δ) doivent être pris en compte pour les structures flexibles.</p>
+                    <div class="formula">
+                        θ = P<sub>tot</sub> × d<sub>r</sub> / (V<sub>tot</sub> × h)
+                    </div>
+                    <p>avec :</p>
+                    <ul>
+                        <li><strong>P<sub>tot</sub></strong> : charge verticale totale sous l'étage considéré</li>
+                        <li><strong>d<sub>r</sub></strong> : déplacement inter-étage</li>
+                        <li><strong>V<sub>tot</sub></strong> : effort tranchant sismique total</li>
+                        <li><strong>h</strong> : hauteur de l'étage</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Critères EC8 :</strong>
+                        <ul>
+                            <li>Si θ ≤ 0,1 : effets du second ordre négligeables</li>
+                            <li>Si 0,1 < θ ≤ 0,2 : à prendre en compte par majoration</li>
+                            <li>Si θ > 0,2 : structure à rigidifier</li>
+                        </ul>
+                    </div>
+                `
+            },
+            25: {
+                title: "Combinaisons sismiques",
+                sub: "ELU sismique, combinaisons",
+                tag: "Module 6",
+                content: `
+                    <p>Les <strong>combinaisons sismiques</strong> selon EN 1990 associent les charges permanentes et les charges variables.</p>
+                    <div class="formula">
+                        Σ G<sub>k</sub> + Σ ψ<sub>2</sub> Q<sub>k</sub> + E<sub>Ed</sub>
+                    </div>
+                    <p><strong>Exemple pour une habitation :</strong></p>
+                    <ul>
+                        <li>G<sub>k</sub> = 7,15 kN/m²</li>
+                        <li>ψ<sub>2</sub> = 0,3</li>
+                        <li>Q<sub>k</sub> = 2,0 kN/m²</li>
+                    </ul>
+                    <div class="formula">
+                        P<sub>sismique</sub> = 7,15 + 0,3 × 2,0 = 7,75 kN/m²
+                    </div>
+                    <p><strong>Combinaisons directionnelles :</strong></p>
+                    <ul>
+                        <li>Cas 1 : EX + 0,3×EY</li>
+                        <li>Cas 2 : 0,3×EX + EY</li>
+                    </ul>
+                `
+            },
+            26: {
+                title: "Zones critiques - Confinement",
+                sub: "Cadres rapprochés, armatures transversales",
+                tag: "Module 5",
+                content: `
+                    <p>Les <strong>zones critiques</strong> sont les zones où des rotules plastiques peuvent se former.</p>
+                    <p><strong>Détails de confinement :</strong></p>
+                    <ul>
+                        <li><strong>Cadres rapprochés</strong> : espacement ≤ min(6φ<sub>L</sub>, h/4, 15 cm)</li>
+                        <li><strong>Armatures transversales</strong> : diamètre ≥ 6 mm</li>
+                        <li><strong>Longueur de zone critique</strong> : L<sub>cr</sub> = max(h, L/6, 0,45 m)</li>
+                    </ul>
+                    <div class="table-box">
+                        <table>
+                            <tr><th>Niveau de ductilité</th><th>Espacement max (cm)</th><th>Diamètre mini (mm)</th></tr>
+                            <tr><td>DCL (faible)</td><td>20</td><td>6</td></tr>
+                            <tr><td>DCM (moyenne)</td><td>15</td><td>8</td></tr>
+                            <tr><td>DCH (haute)</td><td>10</td><td>10</td></tr>
+                        </table>
+                    </div>
+                `
+            },
+            27: {
+                title: "Ancrages et recouvrements EC8",
+                sub: "Longueurs d'ancrage majorées",
+                tag: "Module 5",
+                content: `
+                    <p>Les <strong>ancrages</strong> et <strong>recouvrements</strong> doivent être dimensionnés pour résister aux efforts cycliques.</p>
+                    <p><strong>Règles EC8 :</strong></p>
+                    <ul>
+                        <li>Longueur d'ancrage en zone critique : <strong>majorée de 30%</strong></li>
+                        <li>Recouvrements : <strong>interdits</strong> dans les zones critiques (DCM et DCH)</li>
+                        <li>Ancrages courbes : rayon de courbure ≥ 3×φ pour les cadres</li>
+                    </ul>
+                    <div class="formula">
+                        L<sub>ancrage,EC8</sub> = 1,3 × L<sub>ancrage,EC2</sub>
+                    </div>
+                    <div class="example-box">
+                        <strong>📌 Exemple :</strong> Pour un HA16 (ancrage droit) :<br>
+                        L<sub>ancrage,EC2</sub> ≈ 50 cm → L<sub>ancrage,EC8</sub> ≈ <strong>65 cm</strong>
+                    </div>
+                `
+            },
+            28: {
+                title: "Exemple complet - Bâtiment R+5",
+                sub: "Zone sismique 3, catégorie II",
+                tag: "Module 6",
+                content: `
+                    <div style="background:#f8fafc;padding:1rem;border-radius:10px;font-family:monospace;font-size:0.85rem;white-space:pre-wrap;">
+                        PROJET : Bâtiment R+5 (6 niveaux)
+                        LOCALISATION : Zone sismique 3 (agr = 1,1 m/s²)
+                        CATÉGORIE : II (γI = 1,0)
+                        STRUCTURE : Béton armé, portiques + voiles
+                        SOL : Classe C
+
+                        DONNÉES SISMIQUES :
+                        ag = 1,0 × 1,1 = 1,1 m/s²
+                        Facteur de sol S = 1,15 (classe C)
+                        TC = 0,30 s, TD = 2,0 s
+
+                        CARACTÉRISTIQUES :
+                        Hauteur H = 18 m
+                        Période T1 = 0,075 × 18^0,75 = 0,67 s
+                        Masse sismique : Gk + 0,3×Qk
+
+                        COEFFICIENT q : 3,0 (DCM - portiques BA)
+                        FORCE SISMIQUE TOTALE : 3 450 kN
+
+                        VÉRIFICATIONS :
+                        Déplacement inter-étage max : 14 mm (limite 15 mm) → OK
+                        θ P-Δ : 0,08 < 0,1 → négligeable
+                        Poteaux forts / poutres faibles : 1,35 > 1,3 → OK
+                    </div>
+                `
+            },
+            29: {
+                title: "TP 1 - Calcul du spectre EC8",
+                sub: "Application pratique",
+                tag: "Module 6",
+                content: `
+                    <p><strong>Données :</strong></p>
+                    <ul>
+                        <li>Zone sismique 4 : a<sub>gr</sub> = 1,6 m/s²</li>
+                        <li>Catégorie d'importance III (école) : γ<sub>I</sub> = 1,2</li>
+                        <li>Sol de classe B</li>
+                        <li>Amortissement 5%</li>
+                    </ul>
+                    <p><strong>Calculs :</strong></p>
+                    <div class="formula">
+                        a<sub>g</sub> = 1,2 × 1,6 = 1,92 m/s²
+                    </div>
+                    <div class="formula">
+                        S = 1,2 (classe B), T<sub>B</sub> = 0,05, T<sub>C</sub> = 0,25, T<sub>D</sub> = 2,0
+                    </div>
+                    <p><strong>Spectre :</strong></p>
+                    <ul>
+                        <li>Plateau : S<sub>e</sub> = 1,92 × 1,2 = 2,30 m/s² (pour T entre 0,05 et 0,25 s)</li>
+                        <li>Décroissance : S<sub>e</sub> = 2,30 × (0,25/T) (pour T entre 0,25 et 2,0 s)</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Résultat :</strong> Pour une structure de période T = 0,5 s :<br>
+                        S<sub>e</sub> = 2,30 × 0,25/0,5 = <strong>1,15 m/s²</strong>
+                    </div>
+                `
+            },
+            30: {
+                title: "TP 2 - Modélisation Robot",
+                sub: "Analyse modale spectrale",
+                tag: "Module 6",
+                content: `
+                    <p><strong>Étapes dans Robot Structural Analysis :</strong></p>
+                    <div class="code-block">
+                        <span class="comment"># 1. Modélisation géométrique</span>
+                        - Créer les dalles, poutres, poteaux, voiles
+                        - Définir les sections (BA 25/30, 30/40, etc.)
+                        - Matériau : béton C25/30, acier S500
+
+                        <span class="comment"># 2. Définition des cas de charge</span>
+                        - Cas 1 : G (charges permanentes)
+                        - Cas 2 : Q (charges d'exploitation)
+                        - Cas 3 : EX (sismique X)
+                        - Cas 4 : EY (sismique Y)
+
+                        <span class="comment"># 3. Masse sismique</span>
+                        - Combinaison de masses : G + 0,3×Q
+
+                        <span class="comment"># 4. Définition du spectre EC8</span>
+                        - Paramètres : ag, S, TB, TC, TD, q
+
+                        <span class="comment"># 5. Analyse modale</span>
+                        - Nombre de modes : 6
+                        - Mass participation > 90%
+
+                        <span class="comment"># 6. Combinaisons</span>
+                        - ELU sismique : G + 0,3Q + EX + 0,3EY
+                        - Vérifications : déplacements, efforts
+                    </div>
+                `
+            },
+            31: {
+                title: "TP 3 - Note de calcul parasismique",
+                sub: "Structure professionnelle",
+                tag: "Module 6",
+                content: `
+                    <div style="background:#f8fafc;padding:1rem;border-radius:10px;font-family:monospace;font-size:0.85rem;white-space:pre-wrap;">
+                        NOTE DE CALCUL PARASISMIQUE - EUROCODE 8
+
+                        1. PRÉSENTATION DU PROJET
+                           - Bâtiment R+4, zone sismique 3
+                           - Catégorie d'importance II
+                           - Structure BA, sol classe C
+
+                        2. DONNÉES SISMIQUES
+                           - ag = 1,1 m/s²
+                           - Facteur de sol S = 1,15
+                           - TC = 0,30 s, TD = 2,0 s
+
+                        3. HYPOTHÈSES MATÉRIAUX
+                           - Béton : C25/30
+                           - Acier : S500B
+                           - q = 3,0 (DCM)
+
+                        4. MODÈLE NUMÉRIQUE
+                           - Modélisation Robot Structural Analysis
+                           - 120 éléments (dalles, poutres, poteaux)
+
+                        5. ANALYSE MODALE
+                           - T1 = 0,57 s (mode X)
+                           - T2 = 0,48 s (mode Y)
+                           - T3 = 0,42 s (mode torsion)
+                           - Mass participation : 92%
+
+                        6. RÉSULTATS
+                           - Efforts max : M = 320 kN.m (poutres)
+                           - N max poteau = 1 450 kN
+                           - Déplacement max = 12 mm (OK)
+
+                        7. VÉRIFICATIONS EC8
+                           - Poteaux forts/poutres faibles : OK
+                           - θ P-Δ = 0,07 : OK
+                           - Déplacements inter-étages : OK
+                    </div>
+                `
+            }
+        };
+
+        // ================================================================
+        //  CONSTRUCTION DES GRILLES
+        // ================================================================
+
+        const categories = {
+            mod1: { ids: [1,2,3,4,5], gridId: 'grid-mod1' },
+            mod2: { ids: [6,7], gridId: 'grid-mod2' },
+            mod3: { ids: [8,9], gridId: 'grid-mod3' },
+            mod4: { ids: [10,11,12], gridId: 'grid-mod4' },
+            mod5: { ids: [13,14,15,16,17,18,19,20,26,27], gridId: 'grid-mod5' },
+            mod6: { ids: [21,22,23,24,25,28,29,30,31], gridId: 'grid-mod6' }
+        };
+
+        for (const [cat, obj] of Object.entries(categories)) {
+            const grid = document.getElementById(obj.gridId);
+            for (const id of obj.ids) {
+                const item = data[id];
+                if (!item) continue;
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.setAttribute('data-id', id);
+                card.innerHTML = `
+                    <span class="num">${String(id).padStart(2, '0')}</span>
+                    <span class="text">${item.title}<small>${item.sub}</small></span>
+                `;
+                card.addEventListener('click', () => navigateToArticle(id));
+                grid.appendChild(card);
+            }
+        }
+
+        // ================================================================
+        //  ROUTING (Hash-based)
+        // ================================================================
+
+        const homePage = document.getElementById('homePage');
+        const articlePage = document.getElementById('articlePage');
+
+        function showHome() {
+            homePage.classList.remove('hidden');
+            articlePage.classList.remove('active');
+            window.location.hash = '';
+            document.title = 'Eurocode 8 - Conception parasismique';
+        }
+
+        function showArticle(id) {
+            homePage.classList.add('hidden');
+            articlePage.classList.add('active');
+            window.location.hash = `article-${id}`;
+            renderArticle(id);
+        }
+
+        function renderArticle(id) {
+            const item = data[id];
+            if (!item) {
+                showHome();
+                return;
+            }
+            document.getElementById('articleNum').textContent = String(id).padStart(2, '0');
+            document.getElementById('articleTitle').textContent = item.title;
+            document.getElementById('articleSub').textContent = item.sub;
+            document.getElementById('articleTag').textContent = `🏷️ ${item.tag}`;
+            document.getElementById('articleContent').innerHTML = item.content;
+            document.title = `${item.title} - Eurocode 8`;
+        }
+
+        function navigateToArticle(id) {
+            showArticle(id);
+        }
+
+        function handleHash() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#article-')) {
+                const id = parseInt(hash.replace('#article-', ''), 10);
+                if (data[id]) {
+                    showArticle(id);
+                    return;
+                }
+            }
+            showHome();
+        }
+
+        document.getElementById('backToHomeLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+        document.getElementById('backHomeBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+
+        window.addEventListener('hashchange', handleHash);
+        window.addEventListener('load', handleHash);
+        window.addEventListener('popstate', handleHash);
+    </script>
+</body>
+</html>
