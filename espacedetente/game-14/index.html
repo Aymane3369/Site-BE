@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mécanique des Fluides - Concepts &amp; Mathématiques</title>
+    <style>
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f6fc;
+            color: #1a2634;
+            padding: 2rem 1rem;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* --- HEADER --- */
+        .header {
+            background: linear-gradient(135deg, #0a2a4a, #1a5a8a);
+            color: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header h1 span {
+            color: #7fc8ff;
+        }
+
+        .header p {
+            margin-top: 0.6rem;
+            font-size: 1.05rem;
+            opacity: 0.9;
+            max-width: 750px;
+        }
+
+        .badge-count {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 0.8rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #7fc8ff;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        /* --- GRILLE --- */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2rem 0 1.2rem 0;
+            padding-left: 0.5rem;
+            border-left: 6px solid #1a5a8a;
+            color: #0a2a4a;
+        }
+
+        .section-title .emoji {
+            margin-right: 0.5rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        /* --- CARTE --- */
+        .card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 1rem 1.2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s ease;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 20, 40, 0.10);
+            border-color: #1a5a8a;
+        }
+
+        .card .num {
+            font-weight: 700;
+            font-size: 0.65rem;
+            color: #7a8fa3;
+            background: #eef3f8;
+            border-radius: 30px;
+            padding: 0.1rem 0.7rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .card .text {
+            font-size: 0.92rem;
+            color: #1a2634;
+            font-weight: 500;
+        }
+
+        .card .text small {
+            display: block;
+            font-weight: 400;
+            font-size: 0.75rem;
+            color: #5d7388;
+            margin-top: 0.1rem;
+        }
+
+        /* --- COULEURS PAR CATÉGORIE --- */
+        .cat-general .card { border-left: 4px solid #1a5a8a; }
+        .cat-ecoulements .card { border-left: 4px solid #d97706; }
+        .cat-equations .card { border-left: 4px solid #0f7b3a; }
+        .cat-applications .card { border-left: 4px solid #7c3a9e; }
+        .cat-maths .card { border-left: 4px solid #b91c5c; }
+
+        /* --- PAGE ARTICLE --- */
+        #articlePage {
+            display: none;
+        }
+
+        #articlePage.active {
+            display: block;
+        }
+
+        #homePage.hidden {
+            display: none;
+        }
+
+        .article-container {
+            background: #fff;
+            border-radius: 20px;
+            padding: 2.5rem 2.8rem;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.07);
+            margin-top: 0.5rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .article-container .article-num {
+            font-size: 0.8rem;
+            color: #7a8fa3;
+            background: #eef3f8;
+            display: inline-block;
+            padding: 0.2rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+
+        .article-container h2 {
+            font-size: 2rem;
+            margin: 0.3rem 0 0.1rem 0;
+            color: #0a2a4a;
+        }
+
+        .article-container .article-sub {
+            font-size: 1rem;
+            color: #4a6a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .article-container .article-tag {
+            display: inline-block;
+            background: #eef3f8;
+            padding: 0.25rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #3a6a8a;
+        }
+
+        .article-container .article-content {
+            font-size: 1.02rem;
+            line-height: 1.9;
+            color: #1a2634;
+            margin-top: 1rem;
+        }
+
+        .article-container .article-content p {
+            margin-bottom: 0.9rem;
+        }
+
+        .article-container .article-content ul {
+            padding-left: 1.8rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .article-container .article-content li {
+            margin-bottom: 0.4rem;
+        }
+
+        .article-container .article-content strong {
+            color: #0a2a4a;
+        }
+
+        .article-container .article-content .formula {
+            display: block;
+            background: #f4f8fb;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            margin: 0.8rem 0;
+            border-left: 4px solid #1a5a8a;
+            overflow-x: auto;
+        }
+
+        .article-container .article-content .example {
+            background: #f0f7ee;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            border-left: 4px solid #0f7b3a;
+            margin: 0.8rem 0;
+        }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 1.8rem;
+            color: #1a5a8a;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1.2rem;
+            border: 2px solid #1a5a8a;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+
+        .back-home:hover {
+            background: #1a5a8a;
+            color: #fff;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 640px) {
+            body { padding: 1rem 0.6rem; }
+            .header { padding: 1.5rem 1rem; }
+            .header h1 { font-size: 1.5rem; }
+            .grid { grid-template-columns: 1fr; }
+            .section-title { font-size: 1.2rem; }
+            .article-container { padding: 1.5rem; }
+            .article-container h2 { font-size: 1.4rem; }
+        }
+
+        .footer {
+            margin-top: 3.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #6a7f94;
+            border-top: 1px solid #dce4ec;
+            padding-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ============================================================ -->
+        <!-- PAGE D'ACCUEIL -->
+        <!-- ============================================================ -->
+        <div id="homePage">
+            <div class="header">
+                <h1>🌊 Mécanique des Fluides · <span>Concepts &amp; Mathématiques</span></h1>
+                <p>50 concepts fondamentaux de la mécanique des fluides : champs, écoulements, équations, opérateurs vectoriels (div, rot, grad), coordonnées cartésiennes, cylindriques et sphériques.</p>
+                <div class="badge-count">📚 50 concepts · Chaque concept a sa propre URL</div>
+            </div>
+
+            <h2 class="section-title"><span class="emoji">📐</span> Mathématiques &amp; Opérateurs</h2>
+            <div class="grid cat-maths" id="grid-maths"></div>
+
+            <h2 class="section-title"><span class="emoji">🌊</span> Concepts Généraux</h2>
+            <div class="grid cat-general" id="grid-general"></div>
+
+            <h2 class="section-title"><span class="emoji">🌀</span> Écoulements &amp; Lignes de Courant</h2>
+            <div class="grid cat-ecoulements" id="grid-ecoulements"></div>
+
+            <h2 class="section-title"><span class="emoji">⚗️</span> Équations Fondamentales</h2>
+            <div class="grid cat-equations" id="grid-equations"></div>
+
+            <h2 class="section-title"><span class="emoji">🏗️</span> Applications &amp; Exemples</h2>
+            <div class="grid cat-applications" id="grid-applications"></div>
+
+            <div class="footer">
+                <p>📌 50 concepts — Mécanique des Fluides · Mathématiques · Applications</p>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PAGE ARTICLE -->
+        <!-- ============================================================ -->
+        <div id="articlePage">
+            <div class="header" style="margin-bottom: 1.5rem;">
+                <h1>🌊 <span>Mécanique des Fluides</span></h1>
+                <a class="back-link" href="#" id="backToHomeLink">← Retour à la liste</a>
+            </div>
+            <div class="article-container" id="articleContainer">
+                <div class="article-num" id="articleNum">01</div>
+                <h2 id="articleTitle">Concept</h2>
+                <div class="article-sub" id="articleSub">Sous-titre</div>
+                <span class="article-tag" id="articleTag">🏷️ Catégorie</span>
+                <div class="article-content" id="articleContent">
+                    <p>Contenu détaillé...</p>
+                </div>
+                <a href="#" class="back-home" id="backHomeBtn">← Tous les concepts</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ================================================================
+        //  DONNÉES : 50 CONCEPTS DE MÉCANIQUE DES FLUIDES
+        // ================================================================
+        const data = {
+            // ---------- MATHÉMATIQUES & OPÉRATEURS (1-12) ----------
+            1: {
+                title: "Fonction scalaire",
+                sub: "Définition et exemples",
+                tag: "Mathématiques",
+                content: `
+                    <p>Une <strong>fonction scalaire</strong> est une fonction qui associe à chaque point de l'espace (ou du temps) une <strong>valeur numérique</strong> (un scalaire).</p>
+                    <p>En mécanique des fluides, les fonctions scalaires représentent des <strong>grandeurs physiques</strong> qui n'ont pas de direction :</p>
+                    <ul>
+                        <li><strong>Pression</strong> : p(x,y,z,t)</li>
+                        <li><strong>Température</strong> : T(x,y,z,t)</li>
+                        <li><strong>Masse volumique</strong> : ρ(x,y,z,t)</li>
+                        <li><strong>Énergie interne</strong> : e(x,y,z,t)</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Exemple :</strong> Champ de pression dans une conduite : <br>
+                        p(x,y,z) = p₀ + ρ·g·(h - z)  (pression hydrostatique)
+                    </div>
+                    <p>Les fonctions scalaires sont <strong>dérivables</strong> et <strong>intégrables</strong>, et leurs gradients donnent naissance à des champs vectoriels.</p>
+                `
+            },
+            2: {
+                title: "Fonction vectorielle",
+                sub: "Définition et exemples",
+                tag: "Mathématiques",
+                content: `
+                    <p>Une <strong>fonction vectorielle</strong> (ou champ vectoriel) associe à chaque point de l'espace un <strong>vecteur</strong> (direction + intensité).</p>
+                    <p>En mécanique des fluides, les champs vectoriels sont omniprésents :</p>
+                    <ul>
+                        <li><strong>Champ de vitesse</strong> : <strong>V</strong>(x,y,z,t) = (u,v,w)</li>
+                        <li><strong>Champ de forces</strong> : <strong>F</strong>(x,y,z,t) = (Fₓ,Fᵧ,F_z)</li>
+                        <li><strong>Vorticité</strong> : <strong>ω</strong> = rot(<strong>V</strong>)</li>
+                        <li><strong>Quantité de mouvement</strong> : ρ·<strong>V</strong></li>
+                    </ul>
+                    <div class="example">
+                        <strong>Exemple :</strong> Écoulement uniforme selon x : <br>
+                        <strong>V</strong>(x,y,z) = (U₀, 0, 0)
+                    </div>
+                    <p>Les opérateurs <strong>divergence</strong> et <strong>rotationnel</strong> s'appliquent aux champs vectoriels.</p>
+                `
+            },
+            3: {
+                title: "Dérivée partielle",
+                sub: "∂/∂x, ∂/∂y, ∂/∂z",
+                tag: "Mathématiques",
+                content: `
+                    <p>La <strong>dérivée partielle</strong> mesure la variation d'une fonction par rapport à une variable, les autres étant fixées.</p>
+                    <p>En mécanique des fluides, on utilise souvent :</p>
+                    <ul>
+                        <li><strong>∂p/∂x</strong> : gradient de pression selon x</li>
+                        <li><strong>∂u/∂t</strong> : accélération locale</li>
+                        <li><strong>∂ρ/∂z</strong> : variation de masse volumique avec l'altitude</li>
+                    </ul>
+                    <div class="formula">
+                        ∂f/∂x = lim<sub>Δx→0</sub> [f(x+Δx, y, z) - f(x,y,z)] / Δx
+                    </div>
+                    <p>Les dérivées partielles sont essentielles pour écrire les équations de Navier-Stokes.</p>
+                `
+            },
+            4: {
+                title: "Dérivée totale (matérielle)",
+                sub: "D/Dt = ∂/∂t + V·∇",
+                tag: "Mathématiques",
+                content: `
+                    <p>La <strong>dérivée matérielle</strong> (ou dérivée totale) suit une particule fluide dans son mouvement.</p>
+                    <p>Elle combine la variation locale et le terme d'advection :</p>
+                    <div class="formula">
+                        D/Dt = ∂/∂t + <strong>V</strong> · ∇
+                    </div>
+                    <p>Soit pour une fonction scalaire f :</p>
+                    <div class="formula">
+                        Df/Dt = ∂f/∂t + u·∂f/∂x + v·∂f/∂y + w·∂f/∂z
+                    </div>
+                    <p>Pour un champ vectoriel <strong>V</strong> :</p>
+                    <div class="formula">
+                        D<strong>V</strong>/Dt = ∂<strong>V</strong>/∂t + (<strong>V</strong>·∇)<strong>V</strong>
+                    </div>
+                    <p>Cette dérivée apparaît dans l'<strong>équation de Navier-Stokes</strong> pour l'accélération d'une particule fluide.</p>
+                `
+            },
+            5: {
+                title: "Intégrale de volume",
+                sub: "∭ f dV",
+                tag: "Mathématiques",
+                content: `
+                    <p>L'<strong>intégrale de volume</strong> permet de calculer une grandeur sur un domaine tridimensionnel.</p>
+                    <p>En mécanique des fluides, on l'utilise pour :</p>
+                    <ul>
+                        <li><strong>Masse totale</strong> : m = ∭ ρ dV</li>
+                        <li><strong>Quantité de mouvement</strong> : <strong>P</strong> = ∭ ρ <strong>V</strong> dV</li>
+                        <li><strong>Énergie cinétique</strong> : E<sub>c</sub> = ∭ ½ ρ V² dV</li>
+                        <li><strong>Débit massique</strong> : q<sub>m</sub> = ∭ ρ dV / Δt</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Exemple :</strong> Masse d'eau dans un réservoir cylindrique de rayon R et hauteur H :<br>
+                        m = ρ × π R² H
+                    </div>
+                    <p>Les intégrales de volume sont fondamentales pour les bilans macroscopiques.</p>
+                `
+            },
+            6: {
+                title: "Intégrale de surface",
+                sub: "∬ f dS",
+                tag: "Mathématiques",
+                content: `
+                    <p>L'<strong>intégrale de surface</strong> calcule une grandeur sur une surface (réelle ou fictive).</p>
+                    <p>En mécanique des fluides, on l'utilise pour :</p>
+                    <ul>
+                        <li><strong>Débit volumique</strong> : Q = ∬ <strong>V</strong> · <strong>n</strong> dS</li>
+                        <li><strong>Force de pression</strong> : <strong>F</strong> = ∬ p · <strong>n</strong> dS</li>
+                        <li><strong>Flux de chaleur</strong> : Φ = ∬ <strong>q</strong> · <strong>n</strong> dS</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Exemple :</strong> Débit à travers une section S d'une conduite :<br>
+                        Q = ∬<sub>S</sub> u(y,z) dS  (vitesse moyenne)
+                    </div>
+                    <p>Les intégrales de surface sont utilisées dans les théorèmes de Gauss et de Stokes.</p>
+                `
+            },
+            7: {
+                title: "Opérateur gradient (∇)",
+                sub: "grad f = ∇f",
+                tag: "Mathématiques",
+                content: `
+                    <p>Le <strong>gradient</strong> d'une fonction scalaire f est un vecteur qui indique la <strong>direction de plus forte variation</strong> de f.</p>
+                    <div class="formula">
+                        <strong>En coordonnées cartésiennes</strong> :<br>
+                        ∇f = (∂f/∂x, ∂f/∂y, ∂f/∂z)
+                    </div>
+                    <div class="formula">
+                        <strong>En coordonnées cylindriques (r,θ,z)</strong> :<br>
+                        ∇f = (∂f/∂r, (1/r)·∂f/∂θ, ∂f/∂z)
+                    </div>
+                    <div class="formula">
+                        <strong>En coordonnées sphériques (r,θ,φ)</strong> :<br>
+                        ∇f = (∂f/∂r, (1/r)·∂f/∂θ, (1/(r·sinθ))·∂f/∂φ)
+                    </div>
+                    <p>En mécanique des fluides, le gradient de pression ∇p est la force motrice des écoulements.</p>
+                `
+            },
+            8: {
+                title: "Opérateur divergence (div)",
+                sub: "div V = ∇·V",
+                tag: "Mathématiques",
+                content: `
+                    <p>La <strong>divergence</strong> d'un champ vectoriel <strong>V</strong> = (u,v,w) mesure la <strong>tendance à diverger</strong> ou converger du champ.</p>
+                    <div class="formula">
+                        <strong>En coordonnées cartésiennes</strong> :<br>
+                        ∇·<strong>V</strong> = ∂u/∂x + ∂v/∂y + ∂w/∂z
+                    </div>
+                    <div class="formula">
+                        <strong>En coordonnées cylindriques (r,θ,z)</strong> :<br>
+                        ∇·<strong>V</strong> = (1/r)·∂(r·v<sub>r</sub>)/∂r + (1/r)·∂v<sub>θ</sub>/∂θ + ∂v<sub>z</sub>/∂z
+                    </div>
+                    <div class="formula">
+                        <strong>En coordonnées sphériques (r,θ,φ)</strong> :<br>
+                        ∇·<strong>V</strong> = (1/r²)·∂(r²·v<sub>r</sub>)/∂r + (1/(r·sinθ))·∂(sinθ·v<sub>θ</sub>)/∂θ + (1/(r·sinθ))·∂v<sub>φ</sub>/∂φ
+                    </div>
+                    <p>Un fluide <strong>incompressible</strong> vérifie ∇·<strong>V</strong> = 0.</p>
+                `
+            },
+            9: {
+                title: "Opérateur rotationnel (rot)",
+                sub: "rot V = ∇×V",
+                tag: "Mathématiques",
+                content: `
+                    <p>Le <strong>rotationnel</strong> d'un champ vectoriel <strong>V</strong> = (u,v,w) mesure la <strong>rotation</strong> ou la <strong>vorticité</strong> du champ.</p>
+                    <div class="formula">
+                        <strong>En coordonnées cartésiennes</strong> :<br>
+                        ∇×<strong>V</strong> = (∂w/∂y - ∂v/∂z, ∂u/∂z - ∂w/∂x, ∂v/∂x - ∂u/∂y)
+                    </div>
+                    <div class="formula">
+                        <strong>En coordonnées cylindriques (r,θ,z)</strong> :<br>
+                        ∇×<strong>V</strong> = ( (1/r)·∂v<sub>z</sub>/∂θ - ∂v<sub>θ</sub>/∂z, ∂v<sub>r</sub>/∂z - ∂v<sub>z</sub>/∂r, (1/r)·∂(r·v<sub>θ</sub>)/∂r - (1/r)·∂v<sub>r</sub>/∂θ )
+                    </div>
+                    <div class="formula">
+                        <strong>En coordonnées sphériques</strong> :<br>
+                        ∇×<strong>V</strong> = ( ... formule plus complexe ... )
+                    </div>
+                    <p>Si ∇×<strong>V</strong> = 0, l'écoulement est <strong>irrotationnel</strong> (écoulement potentiel).</p>
+                `
+            },
+            10: {
+                title: "Laplacien (Δ)",
+                sub: "Δf = ∇·(∇f)",
+                tag: "Mathématiques",
+                content: `
+                    <p>Le <strong>laplacien</strong> est la divergence du gradient. Il mesure la <strong>diffusion</strong> d'une grandeur.</p>
+                    <div class="formula">
+                        <strong>En coordonnées cartésiennes</strong> :<br>
+                        Δf = ∂²f/∂x² + ∂²f/∂y² + ∂²f/∂z²
+                    </div>
+                    <div class="formula">
+                        <strong>En coordonnées cylindriques</strong> :<br>
+                        Δf = (1/r)·∂/∂r(r·∂f/∂r) + (1/r²)·∂²f/∂θ² + ∂²f/∂z²
+                    </div>
+                    <div class="formula">
+                        <strong>En coordonnées sphériques</strong> :<br>
+                        Δf = (1/r²)·∂/∂r(r²·∂f/∂r) + (1/(r²·sinθ))·∂/∂θ(sinθ·∂f/∂θ) + (1/(r²·sin²θ))·∂²f/∂φ²
+                    </div>
+                    <p>Le laplacien apparaît dans l'<strong>équation de diffusion</strong> et les <strong>équations de Navier-Stokes</strong>.</p>
+                `
+            },
+            11: {
+                title: "Coordonnées cartésiennes",
+                sub: "(x, y, z)",
+                tag: "Mathématiques",
+                content: `
+                    <p>Les <strong>coordonnées cartésiennes</strong> sont le système de coordonnées le plus simple : trois axes orthogonaux (x, y, z).</p>
+                    <p><strong>Opérateurs :</strong></p>
+                    <ul>
+                        <li>∇f = (∂f/∂x, ∂f/∂y, ∂f/∂z)</li>
+                        <li>∇·<strong>V</strong> = ∂u/∂x + ∂v/∂y + ∂w/∂z</li>
+                        <li>∇×<strong>V</strong> = (∂w/∂y - ∂v/∂z, ∂u/∂z - ∂w/∂x, ∂v/∂x - ∂u/∂y)</li>
+                        <li>Δf = ∂²f/∂x² + ∂²f/∂y² + ∂²f/∂z²</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Exemple :</strong> Écoulement de Poiseuille plan :<br>
+                        u(y) = (1/(2μ))·(-dp/dx)·(h² - y²)<br>
+                        v = 0, w = 0
+                    </div>
+                    <p>Ce système est idéal pour les géométries rectangulaires.</p>
+                `
+            },
+            12: {
+                title: "Coordonnées cylindriques",
+                sub: "(r, θ, z)",
+                tag: "Mathématiques",
+                content: `
+                    <p>Les <strong>coordonnées cylindriques</strong> (r, θ, z) sont adaptées aux géométries <strong>axisymétriques</strong> (tuyaux, réservoirs, cyclones).</p>
+                    <p><strong>Opérateurs :</strong></p>
+                    <ul>
+                        <li>∇f = (∂f/∂r, (1/r)·∂f/∂θ, ∂f/∂z)</li>
+                        <li>∇·<strong>V</strong> = (1/r)·∂(r·v<sub>r</sub>)/∂r + (1/r)·∂v<sub>θ</sub>/∂θ + ∂v<sub>z</sub>/∂z</li>
+                        <li>Δf = (1/r)·∂/∂r(r·∂f/∂r) + (1/r²)·∂²f/∂θ² + ∂²f/∂z²</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Exemple :</strong> Écoulement de Poiseuille dans un tuyau cylindrique :<br>
+                        v<sub>z</sub>(r) = (1/(4μ))·(-dp/dz)·(R² - r²)<br>
+                        v<sub>r</sub> = 0, v<sub>θ</sub> = 0
+                    </div>
+                    <p>Les coordonnées cylindriques simplifient les écoulements dans les conduites circulaires.</p>
+                `
+            },
+            // ---------- CONCEPTS GÉNÉRAUX (13-20) ----------
+            13: {
+                title: "Fluide",
+                sub: "Définition et propriétés",
+                tag: "Général",
+                content: `
+                    <p>Un <strong>fluide</strong> est un milieu qui se <strong>déforme continûment</strong> sous l'action d'une contrainte de cisaillement (même très faible).</p>
+                    <p><strong>Propriétés fondamentales :</strong></p>
+                    <ul>
+                        <li><strong>Masse volumique</strong> ρ (kg/m³)</li>
+                        <li><strong>Viscosité dynamique</strong> μ (Pa·s) — résistance à l'écoulement</li>
+                        <li><strong>Viscosité cinématique</strong> ν = μ/ρ (m²/s)</li>
+                        <li><strong>Compressibilité</strong> — variation de volume sous pression</li>
+                        <li><strong>Tension superficielle</strong> — interface liquide-gaz</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Exemples :</strong><br>
+                        - Eau : ρ = 1000 kg/m³, μ = 1,0×10⁻³ Pa·s<br>
+                        - Air : ρ = 1,2 kg/m³, μ = 1,8×10⁻⁵ Pa·s<br>
+                        - Huile : ρ = 900 kg/m³, μ = 0,1 Pa·s
+                    </div>
+                    <p>Les fluides peuvent être <strong>liquides</strong> (faible compressibilité) ou <strong>gazeux</strong> (forte compressibilité).</p>
+                `
+            },
+            14: {
+                title: "Fluide incompressible",
+                sub: "ρ = constante, ∇·V = 0",
+                tag: "Général",
+                content: `
+                    <p>Un <strong>fluide incompressible</strong> est un fluide dont la <strong>masse volumique</strong> ρ est <strong>constante</strong> (ne varie ni dans l'espace ni dans le temps).</p>
+                    <p><strong>Conséquences :</strong></p>
+                    <ul>
+                        <li><strong>Équation de continuité</strong> : ∇·<strong>V</strong> = 0 (divergence nulle)</li>
+                        <li>Le débit volumique est conservé : Q = ∬ <strong>V</strong>·<strong>n</strong> dS = constant</li>
+                        <li>La vitesse ne dépend pas de la pression (sauf via les équations de quantité de mouvement)</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Exemple :</strong> Écoulement dans une conduite :<br>
+                        Q = V₁·A₁ = V₂·A₂ (conservation du débit)
+                    </div>
+                    <p>L'approximation d'incompressibilité est valable pour les <strong>liquides</strong> et les <strong>gaz à basse vitesse</strong> (M &lt; 0,3).</p>
+                `
+            },
+            15: {
+                title: "Fluide parfait",
+                sub: "μ = 0, pas de frottement",
+                tag: "Général",
+                content: `
+                    <p>Un <strong>fluide parfait</strong> (ou idéal) est un fluide <strong>non visqueux</strong> (μ = 0) et <strong>incompressible</strong>.</p>
+                    <p><strong>Propriétés :</strong></p>
+                    <ul>
+                        <li><strong>Pas de dissipation d'énergie</strong> par frottement</li>
+                        <li><strong>Équation d'Euler</strong> : ρ·D<strong>V</strong>/Dt = -∇p + ρ·<strong>g</strong></li>
+                        <li><strong>Conservation de l'énergie mécanique</strong> (Bernoulli)</li>
+                        <li><strong>Écoulement potentiel</strong> : <strong>V</strong> = ∇φ (si irrotationnel)</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Exemple :</strong> Écoulement autour d'un profil d'aile (théorie de l'écoulement potentiel).<br>
+                        <strong>Limitation :</strong> La traînée est nulle (paradoxe de d'Alembert).
+                    </div>
+                    <p>Le modèle de fluide parfait est utile pour les <strong>écoulements à grand nombre de Reynolds</strong>.</p>
+                `
+            },
+            16: {
+                title: "Fluide newtonien",
+                sub: "τ = μ · du/dy",
+                tag: "Général",
+                content: `
+                    <p>Un <strong>fluide newtonien</strong> est un fluide dont la <strong>contrainte de cisaillement</strong> τ est <strong>linéairement proportionnelle</strong> au gradient de vitesse.</p>
+                    <div class="formula">
+                        τ = μ · du/dy
+                    </div>
+                    <p>où μ est la <strong>viscosité dynamique</strong> (constante).</p>
+                    <p><strong>Exemples de fluides newtoniens :</strong></p>
+                    <ul>
+                        <li>Eau</li>
+                        <li>Air</li>
+                        <li>Huile moteur</li>
+                        <li>Glycérine</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Contre-exemple (non-newtoniens) :</strong><br>
+                        - Fluides rhéofluidifiants (ketchup, sang)<br>
+                        - Fluides rhéoépaississants (solution de maïzena)<br>
+                        - Fluides de Bingham (dentifrice, mayonnaise)
+                    </div>
+                    <p>La plupart des fluides industriels sont newtoniens.</p>
+                `
+            },
+            17: {
+                title: "Viscosité dynamique μ",
+                sub: "Mesure de la résistance à l'écoulement",
+                tag: "Général",
+                content: `
+                    <p>La <strong>viscosité dynamique</strong> μ (Pa·s) quantifie la <strong>résistance d'un fluide à l'écoulement</strong>.</p>
+                    <p><strong>Interprétation :</strong></p>
+                    <ul>
+                        <li>μ élevé → fluide "épais" (miel, huile)</li>
+                        <li>μ faible → fluide "fluide" (eau, air)</li>
+                    </ul>
+                    <div class="formula">
+                        Loi de Newton : τ = μ · (du/dy)
+                    </div>
+                    <p><strong>Valeurs typiques :</strong></p>
+                    <ul>
+                        <li>Eau (20°C) : μ = 1,0×10⁻³ Pa·s</li>
+                        <li>Air (20°C) : μ = 1,8×10⁻⁵ Pa·s</li>
+                        <li>Huile moteur (20°C) : μ ≈ 0,1 Pa·s</li>
+                        <li>Miel : μ ≈ 10 Pa·s</li>
+                    </ul>
+                    <p>La viscosité dépend de la <strong>température</strong> (diminue avec T pour les liquides, augmente avec T pour les gaz).</p>
+                `
+            },
+            18: {
+                title: "Viscosité cinématique ν",
+                sub: "ν = μ/ρ",
+                tag: "Général",
+                content: `
+                    <p>La <strong>viscosité cinématique</strong> ν (m²/s) est le rapport de la viscosité dynamique sur la masse volumique.</p>
+                    <div class="formula">
+                        ν = μ / ρ
+                    </div>
+                    <p>Elle représente la <strong>diffusivité de la quantité de mouvement</strong>.</p>
+                    <p><strong>Valeurs typiques :</strong></p>
+                    <ul>
+                        <li>Eau (20°C) : ν = 1,0×10⁻⁶ m²/s</li>
+                        <li>Air (20°C) : ν = 1,5×10⁻⁵ m²/s</li>
+                        <li>Huile moteur : ν ≈ 10⁻⁴ m²/s</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Nombre de Reynolds :</strong><br>
+                        Re = (U·L)/ν<br>
+                        Compare les forces d'inertie et les forces visqueuses.
+                    </div>
+                    <p>La viscosité cinématique est utilisée dans le <strong>nombre de Reynolds</strong> et la <strong>diffusion de vorticité</strong>.</p>
+                `
+            },
+            19: {
+                title: "Champ de vitesse",
+                sub: "V(x,y,z,t) = (u,v,w)",
+                tag: "Général",
+                content: `
+                    <p>Le <strong>champ de vitesse</strong> est la représentation de la <strong>vitesse de chaque particule fluide</strong> en tout point et à tout instant.</p>
+                    <div class="formula">
+                        <strong>V</strong>(x,y,z,t) = u(x,y,z,t) · <strong>i</strong> + v(x,y,z,t) · <strong>j</strong> + w(x,y,z,t) · <strong>k</strong>
+                    </div>
+                    <p><strong>Interprétation :</strong></p>
+                    <ul>
+                        <li><strong>Stationnaire</strong> : ∂<strong>V</strong>/∂t = 0 (indépendant du temps)</li>
+                        <li><strong>Uniforme</strong> : <strong>V</strong> constant dans l'espace</li>
+                        <li><strong>1D, 2D, 3D</strong> : selon le nombre de composantes non nulles</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Exemples :</strong><br>
+                        - Écoulement de Couette : V = (u(y), 0, 0)<br>
+                        - Écoulement de Poiseuille : V = (u(y,z), 0, 0)<br>
+                        - Écoulement autour d'une sphère : champ 3D
+                    </div>
+                    <p>Le champ de vitesse est la <strong>grandeur fondamentale</strong> de la mécanique des fluides.</p>
+                `
+            },
+            20: {
+                title: "Pression en mécanique des fluides",
+                sub: "p = F/S (force par unité de surface)",
+                tag: "Général",
+                content: `
+                    <p>La <strong>pression</strong> est une force <strong>normale</strong> (perpendiculaire) exercée par un fluide sur une surface, divisée par l'aire de cette surface.</p>
+                    <div class="formula">
+                        p = F/S  (en Pa = N/m²)
+                    </div>
+                    <p><strong>Types de pression :</strong></p>
+                    <ul>
+                        <li><strong>Pression statique</strong> : due au poids du fluide (hydrostatique)</li>
+                        <li><strong>Pression dynamique</strong> : ½ρV² (liée à la vitesse)</li>
+                        <li><strong>Pression totale</strong> : p + ½ρV² (Bernoulli)</li>
+                        <li><strong>Pression absolue</strong> : référence au vide</li>
+                        <li><strong>Pression relative</strong> : référence à la pression atmosphérique</li>
+                    </ul>
+                    <div class="formula">
+                        <strong>Équation hydrostatique :</strong><br>
+                        dp/dz = -ρ·g  →  p(z) = p₀ + ρ·g·(h - z)
+                    </div>
+                    <p>La pression est une <strong>fonction scalaire</strong> qui joue un rôle central dans les équations de la mécanique des fluides.</p>
+                `
+            },
+            // ---------- ÉCOULEMENTS & LIGNES DE COURANT (21-30) ----------
+            21: {
+                title: "Ligne de courant",
+                sub: "Tangente au champ de vitesse",
+                tag: "Écoulements",
+                content: `
+                    <p>Une <strong>ligne de courant</strong> est une courbe qui est en tout point <strong>tangente au champ de vitesse</strong> à un instant donné.</p>
+                    <p>Mathématiquement, si <strong>V</strong>(x,y,z) = (u,v,w), la ligne de courant satisfait :</p>
+                    <div class="formula">
+                        dx/u = dy/v = dz/w = ds
+                    </div>
+                    <p><strong>Propriétés :</strong></p>
+                    <ul>
+                        <li>Les lignes de courant ne se croisent pas (sauf en points d'arrêt).</li>
+                        <li>Un fluide ne traverse pas une ligne de courant (c'est une paroi pour l'écoulement).</li>
+                        <li>En régime stationnaire, les lignes de courant coïncident avec les trajectoires.</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Exemple :</strong> Écoulement uniforme : les lignes de courant sont des droites parallèles.<br>
+                        <strong>Exemple :</strong> Écoulement autour d'un cylindre : les lignes de courant contournent l'obstacle.
+                    </div>
+                    <p>Les lignes de courant sont très utiles pour <strong>visualiser</strong> un écoulement.</p>
+                `
+            },
+            22: {
+                title: "Trajectoire",
+                sub: "Chemin suivi par une particule fluide",
+                tag: "Écoulements",
+                content: `
+                    <p>La <strong>trajectoire</strong> (ou ligne de trace) est le <strong>chemin réel</strong> suivi par une particule fluide au cours du temps.</p>
+                    <p>Elle est définie par :</p>
+                    <div class="formula">
+                        d<strong>r</strong>/dt = <strong>V</strong>(<strong>r</strong>, t)  avec  <strong>r</strong>(t₀) = <strong>r</strong>₀
+                    </div>
+                    <p><strong>Différence avec la ligne de courant :</strong></p>
+                    <ul>
+                        <li><strong>Ligne de courant</strong> : instantanée, tangente au champ de vitesse en un instant donné.</li>
+                        <li><strong>Trajectoire</strong> : suit la particule au fil du temps.</li>
+                    </ul>
+                    <p>En régime stationnaire, les trajectoires et les lignes de courant sont <strong>confondues</strong>.</p>
+                    <div class="example">
+                        <strong>Exemple :</strong> En régime instationnaire (ex : écoulement oscillant), les lignes de courant changent dans le temps, tandis que les trajectoires sont les chemins réels des particules.
+                    </div>
+                `
+            },
+            23: {
+                title: "Ligne d'émission",
+                sub: "Trace des particules passées par un point",
+                tag: "Écoulements",
+                content: `
+                    <p>Une <strong>ligne d'émission</strong> (ou ligne de trace) est l'ensemble des positions occupées à un instant donné par toutes les particules qui sont passées par un point donné.</p>
+                    <p>Elle est souvent visualisée avec des <strong>colorants</strong> ou des <strong>traceurs</strong>.</p>
+                    <p><strong>Comparaison :</strong></p>
+                    <ul>
+                        <li><strong>Ligne de courant</strong> : instantanée, tangente au champ de vitesse.</li>
+                        <li><strong>Trajectoire</strong> : chemin d'une particule dans le temps.</li>
+                        <li><strong>Ligne d'émission</strong> : trace des particules passées par un point.</li>
+                    </ul>
+                    <p>En régime stationnaire, les trois sont <strong>confondues</strong>.</p>
+                    <div class="example">
+                        <strong>Exemple :</strong> La fumée d'une cigarette (en régime stationnaire) forme une ligne d'émission qui est aussi une ligne de courant.
+                    </div>
+                `
+            },
+            24: {
+                title: "Tube de courant",
+                sub: "Surface formée par des lignes de courant",
+                tag: "Écoulements",
+                content: `
+                    <p>Un <strong>tube de courant</strong> est la surface <strong>fictive</strong> formée par l'ensemble des lignes de courant qui s'appuient sur un contour fermé.</p>
+                    <p><strong>Propriétés :</strong></p>
+                    <ul>
+                        <li>Le fluide ne traverse pas la surface du tube de courant (par définition).</li>
+                        <li>Le <strong>débit volumique</strong> est conservé à travers toute section du tube (pour un fluide incompressible).</li>
+                        <li>Le tube de courant est une <strong>frontière</strong> pour l'écoulement.</li>
+                    </ul>
+                    <div class="formula">
+                        Q = ∬<sub>S</sub> <strong>V</strong>·<strong>n</strong> dS = constant (le long du tube)
+                    </div>
+                    <div class="example">
+                        <strong>Exemple :</strong> Un tuyau de section variable est un tube de courant dont les parois sont fixes. La conservation du débit donne : V₁·A₁ = V₂·A₂.
+                    </div>
+                    <p>Le tube de courant est un outil fondamental pour l'<strong>analyse intégrale</strong> des écoulements.</p>
+                `
+            },
+            25: {
+                title: "Écoulement stationnaire",
+                sub: "∂V/∂t = 0",
+                tag: "Écoulements",
+                content: `
+                    <p>Un écoulement est <strong>stationnaire</strong> (ou permanent) lorsque les grandeurs physiques en un point fixe de l'espace ne varient pas dans le temps.</p>
+                    <div class="formula">
+                        ∂<strong>V</strong>/∂t = 0,  ∂p/∂t = 0,  ∂ρ/∂t = 0
+                    </div>
+                    <p><strong>Conséquences :</strong></p>
+                    <ul>
+                        <li>Les lignes de courant, trajectoires et lignes d'émission sont confondues.</li>
+                        <li>Les équations se simplifient (pas de terme d'accélération locale).</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Exemple :</strong> Écoulement dans une conduite cylindrique à débit constant.<br>
+                        <strong>Contre-exemple :</strong> Écoulement dans une conduite pendant l'ouverture d'une vanne (régime transitoire).
+                    </div>
+                    <p>La plupart des problèmes d'ingénierie sont traités en régime stationnaire.</p>
+                `
+            },
+            26: {
+                title: "Écoulement rotationnel",
+                sub: "rot V ≠ 0",
+                tag: "Écoulements",
+                content: `
+                    <p>Un écoulement est <strong>rotationnel</strong> lorsque le champ de vitesse possède un <strong>rotationnel non nul</strong>.</p>
+                    <div class="formula">
+                        <strong>ω</strong> = ∇×<strong>V</strong> ≠ 0
+                    </div>
+                    <p><strong>Interprétation :</strong></p>
+                    <ul>
+                        <li>Les particules fluides tournent sur elles-mêmes.</li>
+                        <li>La <strong>vorticité</strong> ω est non nulle.</li>
+                        <li>La couche limite, les tourbillons, les sillage sont des écoulements rotationnels.</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Exemple :</strong> Tourbillon de bathtub, sillage derrière un obstacle, écoulement de Couette.
+                    </div>
+                    <p>L'écoulement rotationnel est la <strong>situation générale</strong> en mécanique des fluides réelle.</p>
+                `
+            },
+            27: {
+                title: "Écoulement irrotationnel (potentiel)",
+                sub: "rot V = 0 ⇒ V = ∇φ",
+                tag: "Écoulements",
+                content: `
+                    <p>Un écoulement est <strong>irrotationnel</strong> (ou potentiel) lorsque le rotationnel du champ de vitesse est <strong>nul</strong>.</p>
+                    <div class="formula">
+                        ∇×<strong>V</strong> = 0
+                    </div>
+                    <p>Dans ce cas, il existe une <strong>fonction potentiel</strong> φ telle que :</p>
+                    <div class="formula">
+                        <strong>V</strong> = ∇φ
+                    </div>
+                    <p><strong>Propriétés :</strong></p>
+                    <ul>
+                        <li>Les lignes de courant sont orthogonales aux surfaces équipotentielles (φ = constant).</li>
+                        <li>Pour un fluide incompressible : Δφ = 0 (équation de Laplace).</li>
+                        <li>La pression est donnée par l'équation de Bernoulli.</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Exemples :</strong> Écoulement uniforme, écoulement autour d'une sphère (potentiel), sources et puits.
+                    </div>
+                    <p>L'écoulement irrotationnel est une <strong>approximation</strong> valable loin des parois et des zones de forte vorticité.</p>
+                `
+            },
+            28: {
+                title: "Vorticié (ω)",
+                sub: "ω = rot V",
+                tag: "Écoulements",
+                content: `
+                    <p>La <strong>vorticité</strong> <strong>ω</strong> est le rotationnel du champ de vitesse. Elle mesure la <strong>rotation locale</strong> des particules fluides.</p>
+                    <div class="formula">
+                        <strong>ω</strong> = ∇×<strong>V</strong>
+                    </div>
+                    <p><strong>Interprétation :</strong></p>
+                    <ul>
+                        <li><strong>ω</strong> = 0 → écoulement irrotationnel</li>
+                        <li><strong>ω</strong> ≠ 0 → écoulement rotationnel (tourbillons)</li>
+                    </ul>
+                    <p><strong>Équation de transport de la vorticité :</strong></p>
+                    <div class="formula">
+                        D<strong>ω</strong>/Dt = (<strong>ω</strong>·∇)<strong>V</strong> + ν·Δ<strong>ω</strong>
+                    </div>
+                    <p>Pour un fluide parfait (ν = 0) : D<strong>ω</strong>/Dt = 0 (conservation de la vorticité).</p>
+                    <div class="example">
+                        <strong>Exemple :</strong> Tourbillon de bathtub, tornade, sillage d'une aile d'avion.
+                    </div>
+                `
+            },
+            29: {
+                title: "Circulation Γ",
+                sub: "Γ = ∮ V·dl",
+                tag: "Écoulements",
+                content: `
+                    <p>La <strong>circulation</strong> Γ est l'intégrale de la vitesse le long d'une courbe fermée.</p>
+                    <div class="formula">
+                        Γ = ∮<sub>C</sub> <strong>V</strong>·d<strong>l</strong>
+                    </div>
+                    <p><strong>Théorème de Stokes :</strong></p>
+                    <div class="formula">
+                        Γ = ∬<sub>S</sub> (∇×<strong>V</strong>)·<strong>n</strong> dS = ∬<sub>S</sub> <strong>ω</strong>·<strong>n</strong> dS
+                    </div>
+                    <p><strong>Propriétés :</strong></p>
+                    <ul>
+                        <li>Si l'écoulement est irrotationnel (∇×<strong>V</strong> = 0), alors Γ = 0.</li>
+                        <li>La circulation est une grandeur fondamentale en <strong>aérodynamique</strong> (portance d'une aile).</li>
+                        <li>Le théorème de Kelvin : la circulation est conservée le long d'une courbe matérielle (fluide parfait).</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Exemple :</strong> Portance d'une aile d'avion : L = ρ·U·Γ (théorème de Kutta-Joukowski).
+                    </div>
+                `
+            },
+            30: {
+                title: "Fonction de courant ψ",
+                sub: "u = ∂ψ/∂y, v = -∂ψ/∂x",
+                tag: "Écoulements",
+                content: `
+                    <p>La <strong>fonction de courant</strong> ψ est une fonction scalaire qui permet de décrire un écoulement <strong>bidimensionnel incompressible</strong>.</p>
+                    <div class="formula">
+                        u = ∂ψ/∂y,  v = -∂ψ/∂x  (en coordonnées cartésiennes)
+                    </div>
+                    <p><strong>Propriétés :</strong></p>
+                    <ul>
+                        <li>Les lignes ψ = constant sont des <strong>lignes de courant</strong>.</li>
+                        <li>La divergence est automatiquement nulle : ∇·<strong>V</strong> = 0.</li>
+                        <li>Le débit entre deux lignes de courant est égal à la différence de ψ.</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Exemple :</strong> Écoulement uniforme : ψ = U·y.<br>
+                        <strong>Exemple :</strong> Source ponctuelle : ψ = (Q/(2π))·θ.<br>
+                        <strong>Exemple :</strong> Tourbillon : ψ = -(Γ/(2π))·ln(r).
+                    </div>
+                    <p>La fonction de courant est très utile pour <strong>visualiser</strong> les écoulements 2D.</p>
+                `
+            },
+            // ---------- ÉQUATIONS FONDAMENTALES (31-40) ----------
+            31: {
+                title: "Équation de continuité",
+                sub: "∂ρ/∂t + ∇·(ρV) = 0",
+                tag: "Équations",
+                content: `
+                    <p>L'<strong>équation de continuité</strong> exprime la <strong>conservation de la masse</strong> dans un volume de contrôle.</p>
+                    <div class="formula">
+                        <strong>Forme différentielle :</strong><br>
+                        ∂ρ/∂t + ∇·(ρ<strong>V</strong>) = 0
+                    </div>
+                    <p><strong>Cas particuliers :</strong></p>
+                    <ul>
+                        <li><strong>Fluide incompressible</strong> (ρ = constante) : ∇·<strong>V</strong> = 0</li>
+                        <li><strong>Écoulement stationnaire</strong> : ∇·(ρ<strong>V</strong>) = 0</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Exemple :</strong> Conduite de section variable (incompressible) :<br>
+                        ∂u/∂x + ∂v/∂y + ∂w/∂z = 0<br>
+                        Pour un écoulement 1D : u₁·A₁ = u₂·A₂.
+                    </div>
+                    <p>L'équation de continuité est la <strong>première équation</strong> de la mécanique des fluides.</p>
+                `
+            },
+            32: {
+                title: "Équation d'Euler",
+                sub: "ρ·DV/Dt = -∇p + ρ·g",
+                tag: "Équations",
+                content: `
+                    <p>L'<strong>équation d'Euler</strong> est la forme <strong>non visqueuse</strong> (μ = 0) de l'équation de quantité de mouvement.</p>
+                    <div class="formula">
+                        ρ·D<strong>V</strong>/Dt = -∇p + ρ·<strong>g</strong>
+                    </div>
+                    <p>Soit en développant la dérivée matérielle :</p>
+                    <div class="formula">
+                        ρ·(∂<strong>V</strong>/∂t + (<strong>V</strong>·∇)<strong>V</strong>) = -∇p + ρ·<strong>g</strong>
+                    </div>
+                    <p><strong>Application :</strong></p>
+                    <ul>
+                        <li>Écoulement parfait (fluide non visqueux)</li>
+                        <li>Écoulement à grand nombre de Reynolds (hors couche limite)</li>
+                        <li>Écoulement potentiel</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Exemple :</strong> Écoulement autour d'un profil d'aile (zone hors couche limite).
+                    </div>
+                    <p>L'équation d'Euler est à la base de l'<strong>aérodynamique théorique</strong>.</p>
+                `
+            },
+            33: {
+                title: "Équation de Navier-Stokes",
+                sub: "ρ·DV/Dt = -∇p + μ·ΔV + ρ·g",
+                tag: "Équations",
+                content: `
+                    <p>L'<strong>équation de Navier-Stokes</strong> est l'équation fondamentale de la mécanique des fluides <strong>visqueux</strong>.</p>
+                    <div class="formula">
+                        ρ·D<strong>V</strong>/Dt = -∇p + μ·Δ<strong>V</strong> + ρ·<strong>g</strong>
+                    </div>
+                    <p>Soit en développant :</p>
+                    <div class="formula">
+                        ρ·(∂<strong>V</strong>/∂t + (<strong>V</strong>·∇)<strong>V</strong>) = -∇p + μ·∇²<strong>V</strong> + ρ·<strong>g</strong>
+                    </div>
+                    <p><strong>Termes :</strong></p>
+                    <ul>
+                        <li><strong>ρ·DV/Dt</strong> : accélération (inertie)</li>
+                        <li><strong>-∇p</strong> : force de pression</li>
+                        <li><strong>μ·ΔV</strong> : forces visqueuses (frottement)</li>
+                        <li><strong>ρ·g</strong> : force de gravité</li>
+                    </ul>
+                    <p>C'est une <strong>équation différentielle non linéaire</strong> (terme d'advection (<strong>V</strong>·∇)<strong>V</strong>).</p>
+                    <p>Elle est utilisée dans tous les domaines : aérodynamique, hydraulique, météo, océanographie, etc.</p>
+                `
+            },
+            34: {
+                title: "Théorème de Bernoulli",
+                sub: "p + ½ρV² + ρgz = constante",
+                tag: "Équations",
+                content: `
+                    <p>Le <strong>théorème de Bernoulli</strong> est une conséquence de l'équation d'Euler pour un écoulement <strong>stationnaire, incompressible, irrotationnel</strong> et <strong>non visqueux</strong>.</p>
+                    <div class="formula">
+                        <strong>Forme générale :</strong><br>
+                        p + ½ρV² + ρ·g·z = constante (le long d'une ligne de courant)
+                    </div>
+                    <p><strong>Termes :</strong></p>
+                    <ul>
+                        <li><strong>p</strong> : pression statique (Pa)</li>
+                        <li><strong>½ρV²</strong> : pression dynamique (Pa)</li>
+                        <li><strong>ρ·g·z</strong> : pression de pesanteur (Pa)</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Exemple :</strong> Tube de Pitot (mesure de vitesse) :<br>
+                        V = √(2·(p<sub>tot</sub> - p<sub>stat</sub>)/ρ)
+                    </div>
+                    <p>Le théorème de Bernoulli est utilisé en <strong>aérodynamique</strong>, <strong>hydraulique</strong> et <strong>météorologie</strong>.</p>
+                `
+            },
+            35: {
+                title: "Équation de continuité en 1D",
+                sub: "u₁·A₁ = u₂·A₂",
+                tag: "Équations",
+                content: `
+                    <p>Pour un écoulement <strong>incompressible</strong> et <strong>stationnaire</strong> dans une conduite, la conservation de la masse s'écrit :</p>
+                    <div class="formula">
+                        Q = u₁·A₁ = u₂·A₂ = constant
+                    </div>
+                    <p>où :</p>
+                    <ul>
+                        <li><strong>Q</strong> : débit volumique (m³/s)</li>
+                        <li><strong>u</strong> : vitesse moyenne (m/s)</li>
+                        <li><strong>A</strong> : section de la conduite (m²)</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Exemple :</strong> Tuyau de diamètre D₁ = 0,2 m, D₂ = 0,1 m<br>
+                        Q = 0,05 m³/s<br>
+                        u₁ = Q/(π·D₁²/4) = 1,59 m/s<br>
+                        u₂ = Q/(π·D₂²/4) = 6,37 m/s
+                    </div>
+                    <p>Cette équation est la base de l'<strong>hydraulique</strong> industrielle.</p>
+                `
+            },
+            36: {
+                title: "Équation de Darcy-Weisbach",
+                sub: "Δp = f·(L/D)·(½ρV²)",
+                tag: "Équations",
+                content: `
+                    <p>L'équation de <strong>Darcy-Weisbach</strong> calcule la <strong>perte de charge</strong> due au frottement dans une conduite.</p>
+                    <div class="formula">
+                        Δp = f · (L/D) · (½ρV²)
+                    </div>
+                    <p>où :</p>
+                    <ul>
+                        <li><strong>Δp</strong> : perte de pression (Pa)</li>
+                        <li><strong>f</strong> : coefficient de friction (de Darcy)</li>
+                        <li><strong>L</strong> : longueur de la conduite (m)</li>
+                        <li><strong>D</strong> : diamètre hydraulique (m)</li>
+                        <li><strong>V</strong> : vitesse moyenne (m/s)</li>
+                    </ul>
+                    <p>Le coefficient f dépend du <strong>nombre de Reynolds</strong> et de la <strong>rugosité</strong> de la paroi.</p>
+                    <div class="example">
+                        <strong>Exemple :</strong> Conduite en acier, L = 100 m, D = 0,1 m, V = 2 m/s, f = 0,02<br>
+                        Δp = 0,02 × (100/0,1) × (½×1000×4) = 40 000 Pa = 0,4 bar
+                    </div>
+                    <p>Cette équation est utilisée pour le <strong>dimensionnement des réseaux</strong>.</p>
+                `
+            },
+            37: {
+                title: "Équation de la couche limite",
+                sub: "Théorie de Prandtl (1904)",
+                tag: "Équations",
+                content: `
+                    <p>La <strong>théorie de la couche limite</strong> de Prandtl (1904) décrit l'écoulement près d'une paroi solide.</p>
+                    <p><strong>Hypothèses :</strong></p>
+                    <ul>
+                        <li>La couche limite est très mince (δ << L).</li>
+                        <li>Les variations normales à la paroi sont beaucoup plus grandes que les variations longitudinales.</li>
+                        <li>La pression est constante à travers la couche limite.</li>
+                    </ul>
+                    <div class="formula">
+                        <strong>Équations de Prandtl (2D) :</strong><br>
+                        u·∂u/∂x + v·∂u/∂y = (1/ρ)·(-dp/dx) + ν·∂²u/∂y²<br>
+                        ∂u/∂x + ∂v/∂y = 0
+                    </div>
+                    <p>La couche limite peut être <strong>laminaire</strong> (Re < 5×10⁵) ou <strong>turbulente</strong>.</p>
+                    <div class="example">
+                        <strong>Exemple :</strong> Couche limite sur une plaque plane :<br>
+                        δ(x) ≈ 5·x/√(Re<sub>x</sub>) pour un écoulement laminaire.
+                    </div>
+                `
+            },
+            38: {
+                title: "Équation de la chaleur",
+                sub: "ρCp·DT/Dt = k·ΔT + Φ",
+                tag: "Équations",
+                content: `
+                    <p>L'<strong>équation de la chaleur</strong> (ou énergie) décrit l'évolution de la <strong>température</strong> dans un fluide.</p>
+                    <div class="formula">
+                        ρ·C<sub>p</sub>·DT/Dt = k·ΔT + Φ
+                    </div>
+                    <p>où :</p>
+                    <ul>
+                        <li><strong>ρ</strong> : masse volumique (kg/m³)</li>
+                        <li><strong>C<sub>p</sub></strong> : chaleur spécifique (J/kg·K)</li>
+                        <li><strong>k</strong> : conductivité thermique (W/m·K)</li>
+                        <li><strong>Φ</strong> : source de chaleur volumique (W/m³)</li>
+                    </ul>
+                    <div class="formula">
+                        <strong>En coordonnées cartésiennes (stationnaire) :</strong><br>
+                        ρC<sub>p</sub>·(u·∂T/∂x + v·∂T/∂y + w·∂T/∂z) = k·(∂²T/∂x² + ∂²T/∂y² + ∂²T/∂z²) + Φ
+                    </div>
+                    <p>Cette équation est couplée avec les équations de Navier-Stokes (<strong>convection naturelle</strong>).</p>
+                `
+            },
+            39: {
+                title: "Nombre de Reynolds",
+                sub: "Re = ρVL/μ = VL/ν",
+                tag: "Équations",
+                content: `
+                    <p>Le <strong>nombre de Reynolds</strong> Re est le nombre adimensionnel qui caractérise le <strong>régime d'écoulement</strong> (laminaire ou turbulent).</p>
+                    <div class="formula">
+                        Re = ρ·V·L / μ = V·L / ν
+                    </div>
+                    <p><strong>Interprétation :</strong></p>
+                    <ul>
+                        <li><strong>Re < 2300</strong> (conduite) : écoulement <strong>laminaire</strong>.</li>
+                        <li><strong>2300 < Re < 4000</strong> : zone de <strong>transition</strong>.</li>
+                        <li><strong>Re > 4000</strong> : écoulement <strong>turbulent</strong>.</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Exemple :</strong> Écoulement d'eau dans une conduite (D = 0,1 m, V = 1 m/s) :<br>
+                        Re = (1000 × 1 × 0,1) / 1×10⁻³ = 100 000 → turbulent.
+                    </div>
+                    <p>Le nombre de Reynolds est le critère de <strong>similitude</strong> le plus important en mécanique des fluides.</p>
+                `
+            },
+            40: {
+                title: "Nombre de Froude",
+                sub: "Fr = V/√(gL)",
+                tag: "Équations",
+                content: `
+                    <p>Le <strong>nombre de Froude</strong> Fr caractérise l'importance des <strong>forces de gravité</strong> par rapport aux forces d'inertie.</p>
+                    <div class="formula">
+                        Fr = V / √(g·L)
+                    </div>
+                    <p><strong>Interprétation :</strong></p>
+                    <ul>
+                        <li><strong>Fr < 1</strong> : écoulement <strong>fluvial</strong> (lent, contrôlé par l'aval).</li>
+                        <li><strong>Fr = 1</strong> : écoulement <strong>critique</strong>.</li>
+                        <li><strong>Fr > 1</strong> : écoulement <strong>torrentiel</strong> (rapide, contrôlé par l'amont).</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Exemple :</strong> Écoulement dans un canal de L = 1 m, V = 2 m/s :<br>
+                        Fr = 2 / √(9,81×1) = 0,64 → fluvial.
+                    </div>
+                    <p>Le nombre de Froude est utilisé en <strong>hydraulique à surface libre</strong> (rivières, canaux).</p>
+                `
+            },
+            // ---------- APPLICATIONS & EXEMPLES (41-50) ----------
+            41: {
+                title: "Écoulement de Poiseuille (plan)",
+                sub: "Entre deux plaques parallèles",
+                tag: "Applications",
+                content: `
+                    <p>L'<strong>écoulement de Poiseuille plan</strong> est l'écoulement <strong>laminaire</strong> d'un fluide visqueux entre deux plaques parallèles fixes.</p>
+                    <div class="formula">
+                        <strong>Solution :</strong><br>
+                        u(y) = (1/(2μ))·(-dp/dx)·(h² - y²)<br>
+                        v = 0, w = 0
+                    </div>
+                    <p>où :</p>
+                    <ul>
+                        <li><strong>h</strong> : demi-hauteur entre les plaques</li>
+                        <li><strong>-dp/dx</strong> : gradient de pression (constante positive)</li>
+                        <li><strong>μ</strong> : viscosité dynamique</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Vitesse maximale (au centre) :</strong> u<sub>max</sub> = (1/(2μ))·(-dp/dx)·h²<br>
+                        <strong>Vitesse moyenne :</strong> u<sub>moy</sub> = (2/3)·u<sub>max</sub><br>
+                        <strong>Débit par unité de largeur :</strong> Q/L = (2/3)·u<sub>max</sub>·h
+                    </div>
+                    <p>Ce cas est utilisé pour la <strong>lubrification</strong> et les <strong>écoulements dans les canaux</strong>.</p>
+                `
+            },
+            42: {
+                title: "Écoulement de Poiseuille (cylindrique)",
+                sub: "Dans une conduite circulaire",
+                tag: "Applications",
+                content: `
+                    <p>L'<strong>écoulement de Poiseuille cylindrique</strong> (ou de Hagen-Poiseuille) est l'écoulement <strong>laminaire</strong> d'un fluide visqueux dans une conduite circulaire.</p>
+                    <div class="formula">
+                        <strong>Solution :</strong><br>
+                        u<sub>z</sub>(r) = (1/(4μ))·(-dp/dz)·(R² - r²)<br>
+                        u<sub>r</sub> = 0, u<sub>θ</sub> = 0
+                    </div>
+                    <p>où :</p>
+                    <ul>
+                        <li><strong>R</strong> : rayon de la conduite</li>
+                        <li><strong>-dp/dz</strong> : gradient de pression axial</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Vitesse maximale (au centre) :</strong> u<sub>max</sub> = (1/(4μ))·(-dp/dz)·R²<br>
+                        <strong>Vitesse moyenne :</strong> u<sub>moy</sub> = u<sub>max</sub>/2<br>
+                        <strong>Loi de Hagen-Poiseuille :</strong> Q = π·R⁴/(8μ)·(-dp/dz)
+                    </div>
+                    <p>La loi de Hagen-Poiseuille est fondamentale en <strong>rhéologie</strong> et en <strong>hydraulique</strong>.</p>
+                `
+            },
+            43: {
+                title: "Écoulement de Couette",
+                sub: "Entre deux plaques mobiles",
+                tag: "Applications",
+                content: `
+                    <p>L'<strong>écoulement de Couette</strong> est l'écoulement <strong>laminaire</strong> entre deux plaques parallèles, dont l'une est en mouvement.</p>
+                    <div class="formula">
+                        <strong>Solution (plaque supérieure en mouvement, pas de gradient de pression) :</strong><br>
+                        u(y) = U·y/h<br>
+                        v = 0, w = 0
+                    </div>
+                    <p>où :</p>
+                    <ul>
+                        <li><strong>U</strong> : vitesse de la plaque supérieure</li>
+                        <li><strong>h</strong> : distance entre les plaques</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Contrainte de cisaillement :</strong> τ = μ·du/dy = μ·U/h<br>
+                        <strong>Force par unité de surface :</strong> F/A = μ·U/h
+                    </div>
+                    <p>L'écoulement de Couette est utilisé pour la <strong>mesure de viscosité</strong> et l'étude des <strong>lubrifiants</strong>.</p>
+                `
+            },
+            44: {
+                title: "Écoulement autour d'une sphère",
+                sub: "Problème de Stokes (Re << 1)",
+                tag: "Applications",
+                content: `
+                    <p>L'<strong>écoulement autour d'une sphère</strong> à faible nombre de Reynolds (Re << 1) est décrit par la <strong>solution de Stokes</strong>.</p>
+                    <div class="formula">
+                        <strong>Traînée sur la sphère :</strong> F<sub>d</sub> = 3π·μ·D·U
+                    </div>
+                    <p>où :</p>
+                    <ul>
+                        <li><strong>D</strong> : diamètre de la sphère</li>
+                        <li><strong>U</strong> : vitesse de l'écoulement</li>
+                        <li><strong>μ</strong> : viscosité dynamique</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Vitesse de sédimentation (loi de Stokes) :</strong><br>
+                        V<sub>s</sub> = (ρ<sub>p</sub> - ρ<sub>f</sub>)·g·D² / (18μ)
+                    </div>
+                    <p>La loi de Stokes est utilisée en <strong>sédimentologie</strong>, <strong>aérosols</strong> et <strong>microfluidique</strong>.</p>
+                `
+            },
+            45: {
+                title: "Écoulement potentiel autour d'un cylindre",
+                sub: "Théorie des écoulements irrotationnels",
+                tag: "Applications",
+                content: `
+                    <p>L'<strong>écoulement potentiel autour d'un cylindre</strong> est un exemple classique d'écoulement <strong>irrotationnel</strong>.</p>
+                    <div class="formula">
+                        <strong>Fonction potentiel :</strong> φ(r,θ) = U·(r + R²/r)·cos(θ)<br>
+                        <strong>Fonction de courant :</strong> ψ(r,θ) = U·(r - R²/r)·sin(θ)
+                    </div>
+                    <p><strong>Champ de vitesse :</strong></p>
+                    <ul>
+                        <li>u<sub>r</sub> = U·(1 - R²/r²)·cos(θ)</li>
+                        <li>u<sub>θ</sub> = -U·(1 + R²/r²)·sin(θ)</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Points d'arrêt :</strong> θ = 0 et θ = π (à r = R)<br>
+                        <strong>Vitesse maximale :</strong> u<sub>θ</sub> = 2U (à θ = π/2, sur la paroi)
+                    </div>
+                    <p>Ce modèle est une approximation de l'écoulement autour d'un <strong>obstacle cylindrique</strong> (ponts, piliers).</p>
+                `
+            },
+            46: {
+                title: "Effet Venturi",
+                sub: "Variation de pression dans un convergent-divergent",
+                tag: "Applications",
+                content: `
+                    <p>L'<strong>effet Venturi</strong> décrit la <strong>baisse de pression</strong> dans une section de passage rétrécie.</p>
+                    <p><strong>Principe :</strong></p>
+                    <ul>
+                        <li>Dans un convergent : la vitesse augmente, la pression diminue (Bernoulli).</li>
+                        <li>Dans le col (section minimale) : la vitesse est maximale, la pression est minimale.</li>
+                        <li>Dans le divergent : la vitesse diminue, la pression remonte.</li>
+                    </ul>
+                    <div class="formula">
+                        <strong>Débit à travers un Venturi :</strong><br>
+                        Q = C<sub>d</sub> · (A₂/√(1 - (A₂/A₁)²)) · √(2·(p₁-p₂)/ρ)
+                    </div>
+                    <div class="example">
+                        <strong>Applications :</strong><br>
+                        - Mesure de débit (débitmètre Venturi)<br>
+                        - Carburateurs de voiture (aspiration du carburant)<br>
+                        - Éjecteurs et pompes à vide
+                    </div>
+                    <p>L'effet Venturi est exploité dans de nombreux <strong>instruments de mesure</strong> et <strong>dispositifs industriels</strong>.</p>
+                `
+            },
+            47: {
+                title: "Portance d'une aile",
+                sub: "Théorème de Kutta-Joukowski",
+                tag: "Applications",
+                content: `
+                    <p>La <strong>portance</strong> d'une aile d'avion est générée par la <strong>circulation</strong> de l'écoulement autour du profil.</p>
+                    <div class="formula">
+                        <strong>Théorème de Kutta-Joukowski :</strong><br>
+                        L = ρ·U·Γ
+                    </div>
+                    <p>où :</p>
+                    <ul>
+                        <li><strong>L</strong> : portance par unité d'envergure (N/m)</li>
+                        <li><strong>ρ</strong> : masse volumique de l'air</li>
+                        <li><strong>U</strong> : vitesse de l'écoulement</li>
+                        <li><strong>Γ</strong> : circulation autour du profil</li>
+                    </ul>
+                    <p><strong>Phénomène physique :</strong></p>
+                    <ul>
+                        <li>Le profil asymétrique crée une différence de vitesse entre l'extrados et l'intrados.</li>
+                        <li>La vitesse plus élevée sur l'extrados (surface supérieure) crée une pression plus faible.</li>
+                        <li>La différence de pression génère une force verticale vers le haut : la portance.</li>
+                    </ul>
+                    <p>La portance est le principe fondamental de l'<strong>aéronautique</strong>.</p>
+                `
+            },
+            48: {
+                title: "Traînée et coefficient de traînée",
+                sub: "C<sub>d</sub> = F<sub>d</sub> / (½ρV²A)",
+                tag: "Applications",
+                content: `
+                    <p>La <strong>traînée</strong> est la force de résistance d'un fluide à l'avancement d'un corps solide.</p>
+                    <div class="formula">
+                        F<sub>d</sub> = ½·ρ·V²·A·C<sub>d</sub>
+                    </div>
+                    <p>où :</p>
+                    <ul>
+                        <li><strong>ρ</strong> : masse volumique du fluide</li>
+                        <li><strong>V</strong> : vitesse relative</li>
+                        <li><strong>A</strong> : surface de référence (maître-couple)</li>
+                        <li><strong>C<sub>d</sub></strong> : coefficient de traînée (adimensionnel)</li>
+                    </ul>
+                    <p><strong>Valeurs typiques de C<sub>d</sub> :</strong></p>
+                    <ul>
+                        <li>Sphère lisse (Re ≫ 1) : C<sub>d</sub> ≈ 0,47</li>
+                        <li>Sphère rugueuse : C<sub>d</sub> ≈ 0,2</li>
+                        <li>Profil d'aile : C<sub>d</sub> ≈ 0,01</li>
+                        <li>Voiture moderne : C<sub>d</sub> ≈ 0,25-0,35</li>
+                    </ul>
+                    <p>La traînée est un paramètre clé en <strong>aérodynamique</strong> et en <strong>automobile</strong>.</p>
+                `
+            },
+            49: {
+                title: "Couche limite sur une plaque plane",
+                sub: "Solution de Blasius",
+                tag: "Applications",
+                content: `
+                    <p>La <strong>couche limite laminaire</strong> sur une plaque plane est décrite par la <strong>solution de Blasius</strong> (1908).</p>
+                    <p><strong>Épaisseur de couche limite :</strong></p>
+                    <div class="formula">
+                        δ(x) ≈ 5·x / √(Re<sub>x</sub>)  (avec Re<sub>x</sub> = U·x/ν)
+                    </div>
+                    <p><strong>Contrainte pariétale :</strong></p>
+                    <div class="formula">
+                        τ<sub>w</sub>(x) ≈ 0,332·ρ·U² / √(Re<sub>x</sub>)
+                    </div>
+                    <p><strong>Coefficient de frottement local :</strong></p>
+                    <div class="formula">
+                        C<sub>f</sub>(x) = τ<sub>w</sub>/(½ρU²) ≈ 0,664 / √(Re<sub>x</sub>)
+                    </div>
+                    <div class="example">
+                        <strong>Exemple :</strong> Plaque plane de 1 m, air (U = 10 m/s, ν = 1,5×10⁻⁵ m²/s) :<br>
+                        Re<sub>x</sub> = 10×1/1,5×10⁻⁵ = 6,67×10⁵<br>
+                        δ ≈ 5×1/√(6,67×10⁵) ≈ 0,006 m = 6 mm
+                    </div>
+                    <p>La solution de Blasius est la base de la <strong>théorie de la couche limite</strong>.</p>
+                `
+            },
+            50: {
+                title: "Transition laminaire-turbulent",
+                sub: "Critère de stabilité de Tollmien-Schlichting",
+                tag: "Applications",
+                content: `
+                    <p>La <strong>transition</strong> entre un écoulement laminaire et turbulent est un phénomène complexe qui dépend de nombreux paramètres.</p>
+                    <p><strong>Facteurs favorisant la transition :</strong></p>
+                    <ul>
+                        <li>Augmentation du <strong>nombre de Reynolds</strong> (Re > 5×10⁵ pour une plaque plane).</li>
+                        <li>Rugosité de la paroi (perturbations).</li>
+                        <li>Vibrations et perturbations extérieures.</li>
+                        <li>Gradient de pression favorable/défavorable.</li>
+                    </ul>
+                    <div class="formula">
+                        <strong>Critère de stabilité (Tollmien-Schlichting) :</strong><br>
+                        Des ondes de perturbation se développent pour Re > Re<sub>critique</sub>.
+                    </div>
+                    <div class="example">
+                        <strong>Exemple :</strong> Plaque plane : Re<sub>critique</sub> ≈ 5×10⁵.<br>
+                        Conduite circulaire : Re<sub>critique</sub> ≈ 2300.
+                    </div>
+                    <p>La transition est un sujet majeur en <strong>aérodynamique</strong>, <strong>turbulence</strong> et <strong>météorologie</strong>.</p>
+                `
+            }
+        };
+
+        // ================================================================
+        //  CONSTRUCTION DES GRILLES
+        // ================================================================
+
+        const categories = {
+            maths: { ids: [1,2,3,4,5,6,7,8,9,10,11,12], gridId: 'grid-maths' },
+            general: { ids: [13,14,15,16,17,18,19,20], gridId: 'grid-general' },
+            ecoulements: { ids: [21,22,23,24,25,26,27,28,29,30], gridId: 'grid-ecoulements' },
+            equations: { ids: [31,32,33,34,35,36,37,38,39,40], gridId: 'grid-equations' },
+            applications: { ids: [41,42,43,44,45,46,47,48,49,50], gridId: 'grid-applications' }
+        };
+
+        for (const [cat, obj] of Object.entries(categories)) {
+            const grid = document.getElementById(obj.gridId);
+            for (const id of obj.ids) {
+                const item = data[id];
+                if (!item) continue;
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.setAttribute('data-id', id);
+                card.innerHTML = `
+                    <span class="num">${String(id).padStart(2, '0')}</span>
+                    <span class="text">${item.title}<small>${item.sub}</small></span>
+                `;
+                card.addEventListener('click', () => navigateToArticle(id));
+                grid.appendChild(card);
+            }
+        }
+
+        // ================================================================
+        //  ROUTING (Hash-based)
+        // ================================================================
+
+        const homePage = document.getElementById('homePage');
+        const articlePage = document.getElementById('articlePage');
+
+        function showHome() {
+            homePage.classList.remove('hidden');
+            articlePage.classList.remove('active');
+            window.location.hash = '';
+            document.title = 'Mécanique des Fluides - Concepts & Mathématiques';
+        }
+
+        function showArticle(id) {
+            homePage.classList.add('hidden');
+            articlePage.classList.add('active');
+            window.location.hash = `article-${id}`;
+            renderArticle(id);
+        }
+
+        function renderArticle(id) {
+            const item = data[id];
+            if (!item) {
+                showHome();
+                return;
+            }
+            document.getElementById('articleNum').textContent = String(id).padStart(2, '0');
+            document.getElementById('articleTitle').textContent = item.title;
+            document.getElementById('articleSub').textContent = item.sub;
+            document.getElementById('articleTag').textContent = `🏷️ ${item.tag}`;
+            document.getElementById('articleContent').innerHTML = item.content;
+            document.title = `${item.title} - Mécanique des Fluides`;
+        }
+
+        function navigateToArticle(id) {
+            showArticle(id);
+        }
+
+        function handleHash() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#article-')) {
+                const id = parseInt(hash.replace('#article-', ''), 10);
+                if (data[id]) {
+                    showArticle(id);
+                    return;
+                }
+            }
+            showHome();
+        }
+
+        document.getElementById('backToHomeLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+        document.getElementById('backHomeBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+
+        window.addEventListener('hashchange', handleHash);
+        window.addEventListener('load', handleHash);
+        window.addEventListener('popstate', handleHash);
+    </script>
+</body>
+</html>
