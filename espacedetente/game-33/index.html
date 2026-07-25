@@ -1,0 +1,1913 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprendre le Monde Moderne — Technologie &amp; Ingénierie</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            color: #1a2634;
+            padding: 2rem 1rem;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* --- HEADER --- */
+        .header {
+            background: linear-gradient(135deg, #0d1b2a, #1a4a6a);
+            color: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(100, 200, 255, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header h1 span {
+            color: #7fc8ff;
+        }
+
+        .header .subtitle {
+            margin-top: 0.4rem;
+            font-size: 1.05rem;
+            opacity: 0.85;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: rgba(127, 200, 255, 0.15);
+            color: #7fc8ff;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-top: 0.6rem;
+            border: 1px solid rgba(127, 200, 255, 0.2);
+            letter-spacing: 0.05em;
+        }
+
+        .header .meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 0.8rem;
+            flex-wrap: wrap;
+            font-size: 0.8rem;
+            opacity: 0.75;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #7fc8ff;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        /* --- SOMMAIRE --- */
+        .sommaire {
+            background: #fff;
+            border-radius: 16px;
+            padding: 1.8rem 2rem;
+            border: 1px solid #dce4ec;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .sommaire h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a2634;
+            margin-bottom: 1rem;
+        }
+
+        .sommaire .partie {
+            margin-bottom: 1.2rem;
+        }
+
+        .sommaire .partie-title {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #1a4a6a;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.3rem;
+            border-bottom: 1px solid #eef3f8;
+            padding-bottom: 0.3rem;
+        }
+
+        .sommaire-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.3rem;
+        }
+
+        .sommaire-grid a {
+            display: block;
+            padding: 0.2rem 0.5rem;
+            color: #2a4a6a;
+            text-decoration: none;
+            font-size: 0.82rem;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .sommaire-grid a:hover {
+            background: #eef3f8;
+            color: #1a4a6a;
+        }
+
+        .sommaire-grid .ch-num {
+            font-weight: 600;
+            color: #7a8fa3;
+            margin-right: 0.3rem;
+        }
+
+        /* --- GRILLE D'ACCUEIL --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 1.2rem 1.4rem;
+            border: 1px solid #dce4ec;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+            border-color: #1a4a6a;
+        }
+
+        .card .num {
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: #7a8fa3;
+            background: #eef3f8;
+            padding: 0.1rem 0.7rem;
+            border-radius: 12px;
+            display: inline-block;
+            letter-spacing: 0.05em;
+        }
+
+        .card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #1a2634;
+            margin: 0.3rem 0 0.2rem;
+        }
+
+        .card .part {
+            font-size: 0.65rem;
+            color: #1a4a6a;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .card .desc {
+            font-size: 0.82rem;
+            color: #4a5a6a;
+            margin-top: 0.2rem;
+        }
+
+        /* --- PAGE CHAPITRE --- */
+        #articlePage {
+            display: none;
+        }
+
+        #articlePage.active {
+            display: block;
+        }
+
+        #homePage.hidden {
+            display: none;
+        }
+
+        .chapter-container {
+            background: #fff;
+            border-radius: 20px;
+            padding: 2.8rem 3.2rem;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.07);
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .chapter-container .chapter-num {
+            font-size: 0.7rem;
+            color: #7a8fa3;
+            background: #eef3f8;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            display: inline-block;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .chapter-container h2 {
+            font-size: 2rem;
+            margin: 0.3rem 0 0.1rem;
+            color: #1a2634;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .chapter-container .chapter-part {
+            font-size: 0.7rem;
+            color: #1a4a6a;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.5rem;
+        }
+
+        .chapter-container .chapter-content {
+            font-size: 1.02rem;
+            line-height: 1.9;
+            color: #1a2634;
+        }
+
+        .chapter-container .chapter-content h4 {
+            color: #1a2634;
+            margin: 1.2rem 0 0.3rem;
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .chapter-container .chapter-content p {
+            margin-bottom: 0.9rem;
+        }
+
+        .chapter-container .chapter-content ul {
+            padding-left: 1.5rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .chapter-container .chapter-content ul li {
+            margin-bottom: 0.3rem;
+        }
+
+        .chapter-container .chapter-content .encadre {
+            background: #f4f8fb;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            border-left: 4px solid #1a4a6a;
+            margin: 0.8rem 0;
+        }
+
+        .chapter-container .chapter-content .encadre strong {
+            color: #1a4a6a;
+        }
+
+        .chapter-container .chapter-content .histoire {
+            background: #faf6f0;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            border-left: 4px solid #f0c27a;
+            margin: 0.8rem 0;
+            font-style: italic;
+        }
+
+        .chapter-container .chapter-content .application {
+            background: #eef7ee;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            border-left: 4px solid #2a7a2a;
+            margin: 0.8rem 0;
+        }
+
+        .chapter-container .chapter-content .quiz {
+            background: #f0f4f8;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #1a4a6a;
+            margin: 1rem 0;
+        }
+
+        .chapter-container .chapter-content .quiz strong {
+            color: #1a4a6a;
+        }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 2rem;
+            color: #1a4a6a;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.6rem 1.4rem;
+            border: 2px solid #1a4a6a;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+
+        .back-home:hover {
+            background: #1a4a6a;
+            color: #fff;
+        }
+
+        .nav-chapitres {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-chapitres a {
+            color: #1a4a6a;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.4rem 1rem;
+            border: 1px solid #dce4ec;
+            border-radius: 30px;
+            transition: 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .nav-chapitres a:hover {
+            background: #1a4a6a;
+            color: #fff;
+            border-color: #1a4a6a;
+        }
+
+        @media (max-width: 640px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            .chapter-container {
+                padding: 1.5rem;
+            }
+            .chapter-container h2 {
+                font-size: 1.4rem;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .sommaire-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .header .meta {
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+        }
+
+        .footer {
+            margin-top: 2.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #7a8fa3;
+            border-top: 1px solid #dce4ec;
+            padding-top: 1.5rem;
+        }
+
+        .footer span {
+            color: #1a4a6a;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ============================================================ -->
+        <!-- PAGE D'ACCUEIL -->
+        <!-- ============================================================ -->
+        <div id="homePage">
+            <div class="header">
+                <h1>⚙️ <span>Comprendre le Monde Moderne</span></h1>
+                <div class="subtitle">Technologie &amp; Ingénierie — Des matériaux aux innovations du futur</div>
+                <div class="badge">14–25 ans · 20 chapitres · Chaque chapitre a sa propre URL</div>
+                <div class="meta">
+                    <span>🔧 8 parties</span>
+                    <span>📖 20 chapitres</span>
+                    <span>🌍 Comment le monde est construit</span>
+                </div>
+            </div>
+
+            <!-- Sommaire -->
+            <div class="sommaire">
+                <h2>📋 Sommaire</h2>
+                <div class="partie">
+                    <div class="partie-title">Partie 1 — Les bases de l'ingénieur</div>
+                    <div class="sommaire-grid">
+                        <a href="#" data-ch="1"><span class="ch-num">1.</span> Qu'est-ce qu'un ingénieur ?</a>
+                    </div>
+                </div>
+                <div class="partie">
+                    <div class="partie-title">Partie 2 — Les matériaux qui construisent notre monde</div>
+                    <div class="sommaire-grid">
+                        <a href="#" data-ch="2"><span class="ch-num">2.</span> L'histoire des matériaux</a>
+                        <a href="#" data-ch="3"><span class="ch-num">3.</span> Science des matériaux</a>
+                    </div>
+                </div>
+                <div class="partie">
+                    <div class="partie-title">Partie 3 — Génie civil : bâtir les civilisations</div>
+                    <div class="sommaire-grid">
+                        <a href="#" data-ch="4"><span class="ch-num">4.</span> Les grands ouvrages</a>
+                        <a href="#" data-ch="5"><span class="ch-num">5.</span> Comment construit-on un bâtiment ?</a>
+                        <a href="#" data-ch="6"><span class="ch-num">6.</span> La mécanique des structures</a>
+                    </div>
+                </div>
+                <div class="partie">
+                    <div class="partie-title">Partie 4 — Machines et mécanique</div>
+                    <div class="sommaire-grid">
+                        <a href="#" data-ch="7"><span class="ch-num">7.</span> Les machines qui ont changé le monde</a>
+                        <a href="#" data-ch="8"><span class="ch-num">8.</span> Mécanique fondamentale</a>
+                    </div>
+                </div>
+                <div class="partie">
+                    <div class="partie-title">Partie 5 — Électricité et énergie</div>
+                    <div class="sommaire-grid">
+                        <a href="#" data-ch="9"><span class="ch-num">9.</span> L'électricité invisible</a>
+                        <a href="#" data-ch="10"><span class="ch-num">10.</span> Les grandes énergies</a>
+                    </div>
+                </div>
+                <div class="partie">
+                    <div class="partie-title">Partie 6 — Informatique et intelligence artificielle</div>
+                    <div class="sommaire-grid">
+                        <a href="#" data-ch="11"><span class="ch-num">11.</span> La naissance de l'informatique</a>
+                        <a href="#" data-ch="12"><span class="ch-num">12.</span> Comment fonctionne un ordinateur ?</a>
+                        <a href="#" data-ch="13"><span class="ch-num">13.</span> Intelligence artificielle</a>
+                    </div>
+                </div>
+                <div class="partie">
+                    <div class="partie-title">Partie 7 — Les grandes technologies du futur</div>
+                    <div class="sommaire-grid">
+                        <a href="#" data-ch="14"><span class="ch-num">14.</span> Robotique</a>
+                        <a href="#" data-ch="15"><span class="ch-num">15.</span> Exploration spatiale</a>
+                        <a href="#" data-ch="16"><span class="ch-num">16.</span> Nanotechnologies</a>
+                        <a href="#" data-ch="17"><span class="ch-num">17.</span> Biotechnologies</a>
+                    </div>
+                </div>
+                <div class="partie">
+                    <div class="partie-title">Partie 8 — Les grands défis de l'ingénieur</div>
+                    <div class="sommaire-grid">
+                        <a href="#" data-ch="18"><span class="ch-num">18.</span> Construire durablement</a>
+                        <a href="#" data-ch="19"><span class="ch-num">19.</span> Sécurité et fiabilité</a>
+                        <a href="#" data-ch="20"><span class="ch-num">20.</span> L'ingénieur de demain</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="homeContent"></div>
+
+            <div class="footer">
+                <p>⚙️ <span>Comprendre le Monde Moderne</span> — Technologie &amp; Ingénierie</p>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PAGE CHAPITRE -->
+        <!-- ============================================================ -->
+        <div id="articlePage">
+            <div class="header" style="margin-bottom: 1.5rem;">
+                <h1>⚙️ <span>Comprendre le Monde Moderne</span></h1>
+                <a class="back-link" href="#" id="backToHomeLink">← Retour au sommaire</a>
+            </div>
+            <div class="chapter-container" id="chapterContainer">
+                <div class="chapter-num" id="chapterNum">Chapitre 1</div>
+                <h2 id="chapterTitle">Titre</h2>
+                <div class="chapter-part" id="chapterPart">Partie 1</div>
+                <div class="chapter-content" id="chapterContent">
+                    <p>Contenu...</p>
+                </div>
+                <div class="nav-chapitres" id="navChapitres">
+                    <a href="#" id="prevChapter">← Chapitre précédent</a>
+                    <a href="#" id="nextChapter">Chapitre suivant →</a>
+                </div>
+                <a href="#" class="back-home" id="backHomeBtn">← Sommaire</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ================================================================
+        //  DONNÉES DES 20 CHAPITRES
+        // ================================================================
+
+        const chapitres = [{
+            id: 1,
+            part: "Partie 1 — Les bases de l'ingénieur",
+            titre: "Qu'est-ce qu'un ingénieur ?",
+            contenu: `
+                <p>Un <strong>ingénieur</strong> est une personne qui utilise les sciences et les mathématiques pour résoudre des problèmes concrets. L'ingénieur transforme les idées en réalisations tangibles : des ponts, des ordinateurs, des énergies renouvelables, des robots, des médicaments.</p>
+
+                <div class="histoire">
+                    <strong>📖 Histoire vraie : Gustave Eiffel</strong><br>
+                    Gustave Eiffel était un ingénieur français qui a conçu la Tour Eiffel pour l'Exposition universelle de 1889. À l'époque, beaucoup pensaient que c'était impossible. Il a utilisé des calculs de vent et de résistance des matériaux pour créer une structure qui est encore debout aujourd'hui.
+                </div>
+
+                <h4>🔧 Différence entre scientifique, ingénieur et technicien</h4>
+                <ul>
+                    <li><strong>Scientifique</strong> : cherche à comprendre le monde (pourquoi ?).</li>
+                    <li><strong>Ingénieur</strong> : utilise la science pour créer des solutions (comment ?).</li>
+                    <li><strong>Technicien</strong> : met en œuvre et maintient les solutions.</li>
+                </ul>
+
+                <h4>📐 La méthode de l'ingénieur</h4>
+                <ul>
+                    <li><strong>1. Concevoir</strong> — Imaginer une solution.</li>
+                    <li><strong>2. Calculer</strong> — Vérifier que la solution est faisable.</li>
+                    <li><strong>3. Tester</strong> — Vérifier que cela fonctionne.</li>
+                    <li><strong>4. Améliorer</strong> — Optimiser en fonction des retours.</li>
+                </ul>
+
+                <h4>⚡ Les grands domaines de l'ingénierie</h4>
+                <ul>
+                    <li><strong>Génie civil</strong> : bâtiments, ponts, barrages, tunnels.</li>
+                    <li><strong>Mécanique</strong> : voitures, avions, machines, robots.</li>
+                    <li><strong>Électrique</strong> : électricité, circuits, énergie, télécommunications.</li>
+                    <li><strong>Informatique</strong> : logiciels, algorithmes, intelligence artificielle.</li>
+                    <li><strong>Aéronautique</strong> : avions, fusées, satellites.</li>
+                    <li><strong>Énergie</strong> : production et distribution d'énergie.</li>
+                    <li><strong>Biomédical</strong> : prothèses, imagerie médicale, thérapies.</li>
+                </ul>
+
+                <div class="application">
+                    <strong>💡 Application concrète</strong><br>
+                    Les ingénieurs ont conçu les smartphones que nous utilisons tous les jours. Ils ont travaillé sur le processeur (informatique), l'écran tactile (électrique), la batterie (énergie), et le boîtier (matériaux).
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Quelle est la différence principale entre un scientifique et un ingénieur ?<br>
+                    <em>Réponse : Le scientifique cherche à comprendre (pourquoi), l'ingénieur cherche à créer (comment).</em></p>
+                    <p>2. Cite deux domaines de l'ingénierie.<br>
+                    <em>Réponse : Génie civil, mécanique, électrique, informatique, etc.</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Quel problème aimerais-tu résoudre en tant qu'ingénieur ?</li>
+                    <li>Quelle invention récente t'impressionne le plus ?</li>
+                </ul>
+            `
+        }, {
+            id: 2,
+            part: "Partie 2 — Les matériaux qui construisent notre monde",
+            titre: "L'histoire des matériaux",
+            contenu: `
+                <p>L'histoire de l'humanité est l'histoire des matériaux. Chaque époque est définie par les matériaux que les hommes ont appris à utiliser.</p>
+
+                <h4>🪨 Pierre et bois</h4>
+                <ul>
+                    <li>Les premières constructions (abris, outils) étaient en pierre et en bois.</li>
+                    <li>La pierre est résistante en compression (elle écrase), mais fragile en traction (elle casse).</li>
+                </ul>
+
+                <h4>⚒️ Métaux : cuivre, bronze, fer, acier</h4>
+                <ul>
+                    <li><strong>Cuivre</strong> : premier métal utilisé (vers 6000 av. J.-C.), malléable et résistant à la corrosion.</li>
+                    <li><strong>Bronze</strong> : alliage de cuivre et d'étain, plus dur que le cuivre.</li>
+                    <li><strong>Fer</strong> : plus résistant, mais plus difficile à travailler. Révolution vers 1200 av. J.-C.</li>
+                    <li><strong>Acier</strong> : fer + carbone, beaucoup plus résistant. Révolution industrielle.</li>
+                </ul>
+
+                <div class="histoire">
+                    <strong>📖 Histoire vraie : Le fer</strong><br>
+                    La maîtrise du fer a permis de construire des armes plus résistantes, des outils agricoles plus efficaces, et des structures plus grandes. C'est l'une des raisons de l'expansion de l'Empire romain.
+                </div>
+
+                <h4>🏗️ Béton et béton armé</h4>
+                <ul>
+                    <li>Le béton (mélange de ciment, sable, gravier et eau) résiste bien en compression.</li>
+                    <li>Le <strong>béton armé</strong> (béton + barres d'acier) résiste aussi en traction, car l'acier prend les forces de traction.</li>
+                    <li>Ce matériau a permis de construire des gratte-ciel et des ponts modernes.</li>
+                </ul>
+
+                <h4>🪙 Aluminium</h4>
+                <ul>
+                    <li>Léger, résistant à la corrosion, il est utilisé dans l'aviation, l'automobile et l'emballage.</li>
+                    <li>Sa production nécessite beaucoup d'énergie, ce qui en fait un matériau coûteux.</li>
+                </ul>
+
+                <h4>🧪 Polymères et composites</h4>
+                <ul>
+                    <li><strong>Polymères</strong> (plastiques) : légers, flexibles, peu coûteux. Utilisés partout : emballages, vêtements, pièces automobiles.</li>
+                    <li><strong>Composites</strong> : matériaux hybrides (ex : fibres de carbone + résine) très résistants et légers. Utilisés dans l'aéronautique, le sport, les voitures de course.</li>
+                </ul>
+
+                <div class="application">
+                    <strong>💡 Application concrète</strong><br>
+                    L'avion Boeing 787 Dreamliner est fabriqué à 50% en matériaux composites. Il est plus léger, consomme moins de carburant et offre plus de confort aux passagers.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Quel alliage a été utilisé pendant l'âge du bronze ?<br>
+                    <em>Réponse : le bronze (cuivre + étain).</em></p>
+                    <p>2. Pourquoi le béton armé est-il plus résistant que le béton seul ?<br>
+                    <em>Réponse : l'acier prend les forces de traction.</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Quel matériau est le plus important dans ta vie quotidienne ?</li>
+                    <li>Comment les matériaux vont-ils évoluer dans le futur ?</li>
+                </ul>
+            `
+        }, {
+            id: 3,
+            part: "Partie 2 — Les matériaux qui construisent notre monde",
+            titre: "Science des matériaux",
+            contenu: `
+                <p>La science des matériaux étudie la structure et les propriétés des matériaux. Pourquoi un matériau est-il résistant ? Pourquoi se casse-t-il ? Pourquoi rouille-t-il ?</p>
+
+                <h4>🔬 Structure atomique</h4>
+                <ul>
+                    <li>Les matériaux sont composés d'atomes. La manière dont les atomes sont organisés détermine les propriétés du matériau.</li>
+                    <li><strong>Cristallin</strong> : les atomes sont organisés en réseau régulier (ex : métaux, diamant).</li>
+                    <li><strong>Amorphe</strong> : les atomes sont désorganisés (ex : verre, plastiques).</li>
+                </ul>
+
+                <h4>📏 Cristallographie</h4>
+                <ul>
+                    <li>La structure cristalline influence la résistance, la ductilité et la conductivité.</li>
+                    <li>Les défauts dans le réseau cristallin (dislocations) permettent au métal de se déformer sans se casser.</li>
+                    <li>Les métaux sont généralement ductiles (ils se déforment) car leurs dislocations se déplacent facilement.</li>
+                </ul>
+
+                <h4>💪 Résistance mécanique</h4>
+                <ul>
+                    <li><strong>Résistance à la traction</strong> : force maximale avant rupture.</li>
+                    <li><strong>Résistance à la compression</strong> : force maximale avant écrasement.</li>
+                    <li><strong>Dureté</strong> : résistance à la pénétration.</li>
+                    <li><strong>Ductilité</strong> : capacité à se déformer avant rupture.</li>
+                </ul>
+
+                <div class="histoire">
+                    <strong>📖 Histoire vraie : Le Titanic</strong><br>
+                    Le Titanic a coulé en 1912. Une des causes : l'acier utilisé était fragile à basse température. Il s'est brisé comme du verre dans l'eau glacée de l'Atlantique. Cette catastrophe a conduit à des recherches sur la résistance des matériaux au froid.
+                </div>
+
+                <h4>⏳ Fatigue et corrosion</h4>
+                <ul>
+                    <li><strong>Fatigue</strong> : un matériau peut se casser après des millions de cycles de charge, même si la charge est inférieure à sa résistance maximale.</li>
+                    <li><strong>Corrosion</strong> : attaque chimique du matériau par l'environnement (ex : rouille du fer).</li>
+                    <li><strong>Vieillissement</strong> : dégradation des propriétés dans le temps.</li>
+                </ul>
+
+                <h4>🧪 Exemples concrets</h4>
+                <ul>
+                    <li><strong>Pourquoi un pont métallique casse ?</strong> La fatigue peut provoquer des fissures après des années de circulation.</li>
+                    <li><strong>Pourquoi le béton fissure ?</strong> Le béton est fragile en traction, et le retrait (diminution de volume pendant le séchage) peut provoquer des fissures.</li>
+                    <li><strong>Pourquoi les avions utilisent des composites ?</strong> Les composites sont légers, résistants et ne se corrodent pas.</li>
+                </ul>
+
+                <div class="application">
+                    <strong>💡 Application concrète</strong><br>
+                    Les ingénieurs utilisent des capteurs pour surveiller l'état des ponts. Ils mesurent les déformations, les fissures et la corrosion. Cela permet de faire des maintenances préventives et d'éviter des catastrophes.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Qu'est-ce que la fatigue des matériaux ?<br>
+                    <em>Réponse : la dégradation d'un matériau sous des charges répétées.</em></p>
+                    <p>2. Pourquoi le béton armé est-il utilisé pour les ponts ?<br>
+                    <em>Réponse : le béton résiste en compression, l'acier en traction.</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi les avions sont-ils inspectés régulièrement ?</li>
+                    <li>Comment la science des matériaux peut-elle améliorer la sécurité ?</li>
+                </ul>
+            `
+        }, {
+            id: 4,
+            part: "Partie 3 — Génie civil : bâtir les civilisations",
+            titre: "Les grands ouvrages",
+            contenu: `
+                <p>Les grands ouvrages sont les symboles de la puissance humaine. Des pyramides aux gratte-ciel, chaque civilisation a laissé sa marque.</p>
+
+                <h4>🏛️ Pyramides (Égypte, vers 2500 av. J.-C.)</h4>
+                <ul>
+                    <li>Les pyramides sont les plus grandes structures en pierre jamais construites.</li>
+                    <li>La pyramide de Khéops mesure 146 m de haut, elle a été la plus haute structure du monde pendant 3800 ans.</li>
+                    <li>Les Égyptiens utilisaient des rampes et des leviers pour transporter des blocs de pierre de plusieurs tonnes.</li>
+                </ul>
+
+                <h4>🌉 Ponts</h4>
+                <ul>
+                    <li>Les ponts permettent de franchir des obstacles (rivières, vallées).</li>
+                    <li><strong>Pont en arc</strong> : compression pure (ex : pont du Gard).</li>
+                    <li><strong>Pont suspendu</strong> : câbles en traction (ex : Golden Gate).</li>
+                    <li><strong>Pont à haubans</strong> : câbles inclinés (ex : Millau).</li>
+                </ul>
+
+                <div class="histoire">
+                    <strong>📖 Histoire vraie : Le viaduc de Millau</strong><br>
+                    Le viaduc de Millau (France, 2004) est le plus haut pont du monde (343 m). Il a été conçu par l'ingénieur Michel Virlogeux et l'architecte Norman Foster. Il utilise des haubans pour soutenir le tablier.
+                </div>
+
+                <h4>🏗️ Barrages</h4>
+                <ul>
+                    <li>Les barrages retiennent l'eau pour l'irrigation, l'énergie hydroélectrique et la protection contre les inondations.</li>
+                    <li><strong>Barrage-poids</strong> : résiste par son propre poids (ex : barrage de Grand Coulee).</li>
+                    <li><strong>Barrage-voûte</strong> : résiste par sa forme arquée (ex : barrage de Hoover).</li>
+                </ul>
+
+                <h4>🗼 Tours</h4>
+                <ul>
+                    <li>Les tours sont des symboles de puissance et d'ingénierie.</li>
+                    <li><strong>Tour Eiffel</strong> (1889) : 324 m, en acier, résiste au vent grâce à sa forme.</li>
+                    <li><strong>Burj Khalifa</strong> (2010) : 828 m, plus haute structure du monde, en béton armé et acier.</li>
+                </ul>
+
+                <h4>🚇 Tunnels</h4>
+                <ul>
+                    <li>Les tunnels permettent de traverser des montagnes ou de passer sous l'eau.</li>
+                    <li><strong>Tunnel sous la Manche</strong> (1994) : 50 km de long, relie la France et l'Angleterre.</li>
+                </ul>
+
+                <div class="application">
+                    <strong>💡 Application concrète</strong><br>
+                    Le viaduc de Millau a été conçu pour résister au vent. Des ingénieurs ont testé des maquettes en soufflerie pour optimiser la forme. Résultat : le pont résiste à des vents de plus de 200 km/h.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Quel pont français est le plus haut du monde ?<br>
+                    <em>Réponse : le viaduc de Millau.</em></p>
+                    <p>2. Pourquoi les barrages-voûtes sont-ils en forme d'arc ?<br>
+                    <em>Réponse : la forme en arc transforme la pression de l'eau en compression.</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi les pyramides ont-elles résisté à l'épreuve du temps ?</li>
+                    <li>Quel ouvrage aimerais-tu visiter ?</li>
+                </ul>
+            `
+        }, {
+            id: 5,
+            part: "Partie 3 — Génie civil : bâtir les civilisations",
+            titre: "Comment construit-on un bâtiment ?",
+            contenu: `
+                <p>Construire un bâtiment est un processus complexe qui demande plusieurs années et de nombreux métiers.</p>
+
+                <h4>📋 Étapes de la construction</h4>
+
+                <p><strong>1. Étude du terrain</strong></p>
+                <ul>
+                    <li>Analyse géotechnique : nature du sol, présence d'eau.</li>
+                    <li>Étude d'impact : environnement, voisinage.</li>
+                    <li>Obtention des permis et autorisations.</li>
+                </ul>
+
+                <p><strong>2. Conception architecturale</strong></p>
+                <ul>
+                    <li>L'architecte imagine les espaces, l'esthétique, la fonctionnalité.</li>
+                    <li>Il dessine les plans, les coupes, les façades.</li>
+                </ul>
+
+                <p><strong>3. Calcul de structure</strong></p>
+                <ul>
+                    <li>L'ingénieur structure calcule les charges et les contraintes.</li>
+                    <li>Il dimensionne les poutres, les poteaux, les fondations.</li>
+                    <li>Il vérifie la stabilité sous le vent, le séisme, les charges.</li>
+                </ul>
+
+                <div class="histoire">
+                    <strong>📖 Histoire vraie : La Tour Eiffel</strong><br>
+                    Gustave Eiffel a utilisé des calculs précis pour dimensionner chaque poutre. Il a prévu des vérins hydrauliques pour ajuster la tour pendant la construction. La tour est restée debout malgré les critiques.
+                </div>
+
+                <p><strong>4. Fondations</strong></p>
+                <ul>
+                    <li>Les fondations transmettent les charges au sol.</li>
+                    <li><strong>Semelles</strong> : pour les petites structures.</li>
+                    <li><strong>Pieux</strong> : pour les sols meubles ou les grandes hauteurs.</li>
+                    <li><strong>Radier</strong> : dalle épaisse pour les grands bâtiments.</li>
+                </ul>
+
+                <p><strong>5. Construction</strong></p>
+                <ul>
+                    <li>Le gros œuvre : structure porteuse (béton, acier).</li>
+                    <li>Le second œuvre : murs, cloisons, planchers.</li>
+                    <li>Les équipements : électricité, plomberie, chauffage, ventilation.</li>
+                </ul>
+
+                <p><strong>6. Contrôle qualité</strong></p>
+                <ul>
+                    <li>Vérification des matériaux et des assemblages.</li>
+                    <li>Essais de résistance (béton, acier).</li>
+                    <li>Contrôle des dimensions et de la planéité.</li>
+                </ul>
+
+                <div class="application">
+                    <strong>💡 Application concrète</strong><br>
+                    Les bâtiments modernes sont souvent équipés de capteurs qui surveillent en temps réel les déformations, les températures et les vibrations. Cela permet de détecter les problèmes avant qu'ils ne deviennent graves.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Quelle est la première étape de la construction d'un bâtiment ?<br>
+                    <em>Réponse : l'étude du terrain et les autorisations.</em></p>
+                    <p>2. Quel est le rôle de l'ingénieur structure ?<br>
+                    <em>Réponse : calculer les charges, dimensionner les éléments et vérifier la stabilité.</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi les fondations sont-elles si importantes ?</li>
+                    <li>Combien de métiers différents participent à la construction d'un immeuble ?</li>
+                </ul>
+            `
+        }, {
+            id: 6,
+            part: "Partie 3 — Génie civil : bâtir les civilisations",
+            titre: "La mécanique des structures",
+            contenu: `
+                <p>La mécanique des structures étudie comment les forces agissent sur les constructions et comment celles-ci y résistent.</p>
+
+                <h4>⚖️ Forces et moments</h4>
+                <ul>
+                    <li><strong>Force</strong> : une poussée ou une traction (N).</li>
+                    <li><strong>Moment</strong> : une force qui fait tourner (N·m).</li>
+                    <li>Une poutre subit des forces verticales (poids) et horizontales (vent).</li>
+                </ul>
+
+                <h4>📊 Contraintes et déformations</h4>
+                <ul>
+                    <li><strong>Contrainte</strong> : force par unité de surface (MPa).</li>
+                    <li><strong>Déformation</strong> : modification de la forme (allongement, compression).</li>
+                    <li><strong>Module d'élasticité</strong> : relation entre contrainte et déformation.</li>
+                </ul>
+
+                <div class="histoire">
+                    <strong>📖 Histoire vraie : Le pont de Tacoma</strong><br>
+                    En 1940, le pont de Tacoma (États-Unis) s'est effondré à cause de vibrations causées par le vent. Le mouvement de torsion a amplifié les oscillations jusqu'à la rupture. Cette catastrophe a conduit à des études approfondies sur la résistance au vent.
+                </div>
+
+                <h4>🏗️ Stabilité</h4>
+                <ul>
+                    <li>Une structure doit résister aux forces extérieures sans s'effondrer.</li>
+                    <li>La stabilité dépend de la forme, des matériaux et des liaisons.</li>
+                    <li>Les gratte-ciel utilisent des systèmes de contreventement (ex : noyau central).</li>
+                </ul>
+
+                <h4>📐 Exemples concrets</h4>
+                <ul>
+                    <li><strong>Pourquoi une poutre fléchit ?</strong> La force verticale crée un moment de flexion qui courbe la poutre.</li>
+                    <li><strong>Pourquoi un gratte-ciel résiste au vent ?</strong> Le vent crée une pression sur la façade. Le bâtiment est conçu pour la supporter grâce à sa forme et à ses matériaux.</li>
+                    <li><strong>Pourquoi un pont peut supporter des milliers de tonnes ?</strong> Les ponts sont conçus pour répartir les charges sur de grandes surfaces grâce à des poutres, des câbles et des arcs.</li>
+                </ul>
+
+                <div class="application">
+                    <strong>💡 Application concrète</strong><br>
+                    Les ingénieurs utilisent des logiciels de simulation (ex : Robot, SAP2000) pour modéliser les structures et tester leur résistance avant la construction.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Qu'est-ce qu'une contrainte ?<br>
+                    <em>Réponse : une force par unité de surface.</em></p>
+                    <p>2. Pourquoi le pont de Tacoma s'est-il effondré ?<br>
+                    <em>Réponse : des vibrations causées par le vent ont provoqué un mouvement de torsion.</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi les gratte-ciel ont-ils besoin de systèmes de contreventement ?</li>
+                    <li>Comment la forme d'une structure influence-t-elle sa résistance ?</li>
+                </ul>
+            `
+        }, {
+            id: 7,
+            part: "Partie 4 — Machines et mécanique",
+            titre: "Les machines qui ont changé le monde",
+            contenu: `
+                <p>Certaines machines ont transformé la société. Elles ont permis de produire plus, plus vite et de voyager plus loin.</p>
+
+                <h4>🔧 La roue (vers 3500 av. J.-C.)</h4>
+                <ul>
+                    <li>La roue est l'une des inventions les plus importantes de l'histoire.</li>
+                    <li>Elle a permis le transport de charges lourdes, l'agriculture, et le commerce.</li>
+                    <li>Elle est utilisée aujourd'hui dans les voitures, les vélos, les machines.</li>
+                </ul>
+
+                <h4>💨 Machine à vapeur (XVIIIe siècle)</h4>
+                <ul>
+                    <li>La machine à vapeur transforme la chaleur en énergie mécanique.</li>
+                    <li>Elle a été développée par James Watt (1769).</li>
+                    <li>Elle a permis la révolution industrielle : usines, chemins de fer, navires à vapeur.</li>
+                </ul>
+
+                <div class="histoire">
+                    <strong>📖 Histoire vraie : Le premier train</strong><br>
+                    Le premier train à vapeur, la "Rocket" de George Stephenson (1829), a atteint une vitesse de 48 km/h. C'était une révolution pour l'époque, et le début du transport ferroviaire.
+                </div>
+
+                <h4>🔥 Moteur thermique (XIXe siècle)</h4>
+                <ul>
+                    <li>Le moteur à combustion interne brûle du carburant pour produire de l'énergie.</li>
+                    <li>Il a permis l'invention de la voiture (Carl Benz, 1886).</li>
+                    <li>Aujourd'hui, les moteurs thermiques équipent encore la plupart des véhicules.</li>
+                </ul>
+
+                <h4>⚡ Turbine (XXe siècle)</h4>
+                <ul>
+                    <li>La turbine transforme l'énergie d'un fluide (eau, vapeur, gaz) en énergie mécanique.</li>
+                    <li>Elle est utilisée dans les centrales électriques (hydroélectriques, thermiques, nucléaires).</li>
+                    <li>Les éoliennes sont des turbines qui utilisent l'énergie du vent.</li>
+                </ul>
+
+                <h4>🤖 Robot (XXe siècle)</h4>
+                <ul>
+                    <li>Le premier robot industriel, Unimate, a été installé en 1961.</li>
+                    <li>Les robots automatisaient les tâches répétitives et dangereuses.</li>
+                    <li>Aujourd'hui, les robots sont utilisés dans l'industrie, la médecine et l'exploration.</li>
+                </ul>
+
+                <div class="application">
+                    <strong>💡 Application concrète</strong><br>
+                    Les robots industriels sont utilisés dans les usines automobiles pour souder, peindre et assembler les voitures. Ils travaillent plus vite et plus précisément que les humains.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Quelle machine a permis la révolution industrielle ?<br>
+                    <em>Réponse : la machine à vapeur.</em></p>
+                    <p>2. Qui a inventé la première voiture ?<br>
+                    <em>Réponse : Carl Benz (1886).</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Quelle machine a le plus changé ta vie ?</li>
+                    <li>Comment les machines vont-elles évoluer dans le futur ?</li>
+                </ul>
+            `
+        }, {
+            id: 8,
+            part: "Partie 4 — Machines et mécanique",
+            titre: "Mécanique fondamentale",
+            contenu: `
+                <p>La mécanique est l'étude du mouvement et des forces. Elle est à la base de toutes les machines.</p>
+
+                <h4>🏃 Mouvement</h4>
+                <ul>
+                    <li><strong>Vitesse</strong> : changement de position dans le temps (m/s).</li>
+                    <li><strong>Accélération</strong> : changement de vitesse dans le temps (m/s²).</li>
+                    <li><strong>Mouvement rectiligne</strong> : en ligne droite.</li>
+                    <li><strong>Mouvement circulaire</strong> : en cercle (ex : roue).</li>
+                </ul>
+
+                <h4>⚡ Forces</h4>
+                <ul>
+                    <li>Une force est une action qui peut modifier le mouvement d'un objet.</li>
+                    <li><strong>Poids</strong> : force due à la gravité.</li>
+                    <li><strong>Friction</strong> : force qui s'oppose au mouvement.</li>
+                    <li><strong>Force normale</strong> : force exercée par une surface.</li>
+                </ul>
+
+                <h4>⚡ Énergie</h4>
+                <ul>
+                    <li><strong>Énergie cinétique</strong> : énergie du mouvement (½mv²).</li>
+                    <li><strong>Énergie potentielle</strong> : énergie stockée (ex : mgh).</li>
+                    <li><strong>Conservation de l'énergie</strong> : l'énergie ne se crée pas, elle se transforme.</li>
+                </ul>
+
+                <h4>📊 Rendement</h4>
+                <ul>
+                    <li>Le rendement est le rapport entre l'énergie utile et l'énergie fournie.</li>
+                    <li>Une machine parfaite aurait un rendement de 100%, mais c'est impossible à cause des pertes (frottements, chaleur).</li>
+                </ul>
+
+                <h4>🔧 Transmission mécanique</h4>
+                <ul>
+                    <li>La transmission mécanique permet de transmettre une force d'un point à un autre.</li>
+                    <li><strong>Engrenages</strong> : transmission par des roues dentées.</li>
+                    <li><strong>Courroies</strong> : transmission par des ceintures.</li>
+                    <li><strong>Vérins</strong> : transmission hydraulique ou pneumatique.</li>
+                </ul>
+
+                <div class="application">
+                    <strong>💡 Application concrète</strong><br>
+                    Une voiture transforme l'énergie chimique de l'essence en énergie cinétique. Le moteur brûle le carburant, la transmission transmet la force aux roues, et les roues permettent le mouvement.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Qu'est-ce que le rendement d'une machine ?<br>
+                    <em>Réponse : le rapport entre l'énergie utile et l'énergie fournie.</em></p>
+                    <p>2. Quel est le rôle d'une courroie ?<br>
+                    <em>Réponse : transmettre une force d'un point à un autre.</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Comment les voitures transforment-elles l'énergie ?</li>
+                    <li>Pourquoi les machines ont-elles des pertes ?</li>
+                </ul>
+            `
+        }, {
+            id: 9,
+            part: "Partie 5 — Électricité et énergie",
+            titre: "L'électricité invisible",
+            contenu: `
+                <p>L'électricité est une forme d'énergie invisible qui alimente notre monde moderne. Elle est partout : dans nos maisons, nos téléphones, nos transports.</p>
+
+                <h4>⚡ Courant, tension et résistance</h4>
+                <ul>
+                    <li><strong>Courant</strong> (I) : flux d'électrons (ampères).</li>
+                    <li><strong>Tension</strong> (U) : force qui pousse les électrons (volts).</li>
+                    <li><strong>Résistance</strong> (R) : opposition au passage du courant (ohms).</li>
+                    <li><strong>Loi d'Ohm</strong> : U = R × I.</li>
+                </ul>
+
+                <h4>🔌 Circuits électriques</h4>
+                <ul>
+                    <li>Un circuit électrique est un chemin fermé pour le courant.</li>
+                    <li><strong>Circuit série</strong> : les éléments sont en ligne.</li>
+                    <li><strong>Circuit parallèle</strong> : les éléments sont en dérivation.</li>
+                </ul>
+
+                <h4>🏭 Production d'électricité</h4>
+                <ul>
+                    <li>L'électricité est produite par des générateurs qui transforment une énergie mécanique en énergie électrique.</li>
+                    <li><strong>Hydroélectricité</strong> : l'eau fait tourner une turbine.</li>
+                    <li><strong>Éolien</strong> : le vent fait tourner une turbine.</li>
+                    <li><strong>Solaire</strong> : les panneaux photovoltaïques convertissent la lumière en électricité.</li>
+                    <li><strong>Nucléaire</strong> : la fission nucléaire chauffe de l'eau qui fait tourner une turbine.</li>
+                </ul>
+
+                <div class="histoire">
+                    <strong>📖 Histoire vraie : La guerre des courants</strong><br>
+                    À la fin du XIXe siècle, Nikola Tesla (courant alternatif) et Thomas Edison (courant continu) se sont disputé la standardisation de l'électricité. Le courant alternatif a gagné parce qu'il peut être transporté sur de longues distances avec moins de pertes.
+                </div>
+
+                <h4>⚡ Puissance électrique</h4>
+                <ul>
+                    <li>La puissance (P) est le produit de la tension et du courant : P = U × I.</li>
+                    <li>Elle est mesurée en watts (W).</li>
+                    <li>Un kilowatt-heure (kWh) est l'énergie consommée par un appareil de 1000 W pendant une heure.</li>
+                </ul>
+
+                <div class="application">
+                    <strong>💡 Application concrète</strong><br>
+                    Une ampoule LED de 10 W consomme 10 fois moins d'énergie qu'une ampoule à incandescence de 100 W pour le même éclairage. C'est pourquoi les LED sont recommandées pour économiser l'énergie.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Quelle est la loi d'Ohm ?<br>
+                    <em>Réponse : U = R × I.</em></p>
+                    <p>2. Quelle source d'énergie est utilisée par les panneaux solaires ?<br>
+                    <em>Réponse : la lumière du soleil.</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Comment l'électricité arrive-t-elle jusqu'à ta maison ?</li>
+                    <li>Pourquoi est-il important d'économiser l'électricité ?</li>
+                </ul>
+            `
+        }, {
+            id: 10,
+            part: "Partie 5 — Électricité et énergie",
+            titre: "Les grandes énergies",
+            contenu: `
+                <p>Le monde a besoin d'énergie pour fonctionner. Chaque source d'énergie a ses avantages et ses inconvénients.</p>
+
+                <h4>🔥 Charbon</h4>
+                <ul>
+                    <li>Le charbon est une énergie fossile, la plus polluante.</li>
+                    <li>Il émet du CO₂, des particules et des gaz nocifs.</li>
+                    <li>Il a été le moteur de la révolution industrielle.</li>
+                </ul>
+
+                <h4>☢️ Nucléaire</h4>
+                <ul>
+                    <li>L'énergie nucléaire provient de la fission d'atomes lourds (uranium).</li>
+                    <li>Elle émet peu de CO₂, mais produit des déchets radioactifs.</li>
+                    <li>Une centrale nucléaire peut produire une grande quantité d'énergie sur une petite surface.</li>
+                </ul>
+
+                <h4>💧 Hydraulique</h4>
+                <ul>
+                    <li>L'énergie hydraulique utilise la force de l'eau (barrages, courants).</li>
+                    <li>Elle est renouvelable, propre et flexible.</li>
+                    <li>La plus grande centrale hydroélectrique est le barrage des Trois-Gorges (Chine).</li>
+                </ul>
+
+                <div class="histoire">
+                    <strong>📖 Histoire vraie : Le barrage des Trois-Gorges</strong><br>
+                    Le barrage des Trois-Gorges, en Chine, est le plus grand du monde. Il produit plus de 100 TWh par an, soit l'équivalent de la consommation de plusieurs pays. Il a été construit pour contrôler les inondations et produire de l'énergie.
+                </div>
+
+                <h4>☀️ Solaire</h4>
+                <ul>
+                    <li>L'énergie solaire utilise la lumière du soleil (photovoltaïque ou thermique).</li>
+                    <li>Elle est renouvelable, propre, mais intermittente (pas de soleil la nuit).</li>
+                    <li>Les panneaux solaires se développent rapidement, de plus en plus efficaces et moins chers.</li>
+                </ul>
+
+                <h4>💨 Éolien</h4>
+                <ul>
+                    <li>L'énergie éolienne utilise la force du vent.</li>
+                    <li>Elle est renouvelable, propre, mais intermittente (pas de vent, trop de vent).</li>
+                    <li>Les éoliennes offshore sont de plus en plus utilisées.</li>
+                </ul>
+
+                <h4>💧 Hydrogène</h4>
+                <ul>
+                    <li>L'hydrogène peut être utilisé comme combustible (sans CO₂).</li>
+                    <li>Il peut être produit à partir d'électricité renouvelable (électrolyse).</li>
+                    <li>Il est prometteur pour les transports lourds (camions, trains, avions).</li>
+                </ul>
+
+                <h4>⚡ Transition énergétique</h4>
+                <ul>
+                    <li>La transition énergétique est le passage des énergies fossiles aux énergies renouvelables.</li>
+                    <li>Elle est complexe car elle nécessite des investissements, des changements de comportement, et de nouvelles technologies.</li>
+                    <li>Le stockage de l'énergie (batteries, hydrogène) est un défi majeur.</li>
+                </ul>
+
+                <div class="application">
+                    <strong>💡 Application concrète</strong><br>
+                    En France, l'énergie nucléaire représente environ 70% de la production électrique. La France prévoit de réduire cette part en développant les énergies renouvelables pour atteindre la neutralité carbone en 2050.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Quelle est la source d'énergie la plus polluante ?<br>
+                    <em>Réponse : le charbon.</em></p>
+                    <p>2. Quelle est la particularité de l'énergie hydraulique ?<br>
+                    <em>Réponse : elle est renouvelable, propre et flexible.</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi la transition énergétique est-elle difficile ?</li>
+                    <li>Quelle source d'énergie te semble la plus prometteuse pour le futur ?</li>
+                </ul>
+            `
+        }, {
+            id: 11,
+            part: "Partie 6 — Informatique et intelligence artificielle",
+            titre: "La naissance de l'informatique",
+            contenu: `
+                <p>L'informatique est née de la volonté de calculer plus vite et de traiter plus d'informations. Elle est devenue l'un des moteurs du monde moderne.</p>
+
+                <h4>🧮 Premiers calculateurs</h4>
+                <ul>
+                    <li><strong>Boulier</strong> : instrument de calcul ancien (3000 av. J.-C.).</li>
+                    <li><strong>Machine de Pascal</strong> : première calculatrice mécanique (1642).</li>
+                    <li><strong>Machine de Babbage</strong> : concept de l'ordinateur programmable (XIXe siècle).</li>
+                </ul>
+
+                <h4>💻 Ordinateurs</h4>
+                <ul>
+                    <li><strong>ENIAC</strong> (1946) : premier ordinateur électronique, immense et coûteux.</li>
+                    <li><strong>Microprocesseur</strong> (1971) : ordinateur personnel.</li>
+                    <li><strong>Apple II</strong> (1977) : premier ordinateur grand public.</li>
+                </ul>
+
+                <div class="histoire">
+                    <strong>📖 Histoire vraie : Alan Turing</strong><br>
+                    Alan Turing est un mathématicien britannique qui a posé les bases de l'informatique moderne. Il a créé la machine de Turing, un modèle théorique de calcul. Il a également décrypté le code Enigma pendant la Seconde Guerre mondiale, sauvant des milliers de vies.
+                </div>
+
+                <h4>🌐 Internet</h4>
+                <ul>
+                    <li><strong>ARPANET</strong> (1969) : ancêtre d'Internet, réseau militaire.</li>
+                    <li><strong>World Wide Web</strong> (1989) : Tim Berners-Lee invente le web, rendant Internet accessible au public.</li>
+                    <li>Aujourd'hui, Internet est utilisé par plus de 5 milliards de personnes.</li>
+                </ul>
+
+                <h4>📱 Smartphones</h4>
+                <ul>
+                    <li>Le premier smartphone, l'iPhone (2007), a révolutionné la manière de communiquer.</li>
+                    <li>Les smartphones sont des ordinateurs de poche avec connexion Internet, appareil photo, GPS, etc.</li>
+                </ul>
+
+                <div class="application">
+                    <strong>💡 Application concrète</strong><br>
+                    Les smartphones modernes ont des processeurs plus puissants que les ordinateurs qui ont envoyé l'homme sur la Lune en 1969. C'est une illustration de la progression fulgurante de l'informatique.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Qui a inventé le World Wide Web ?<br>
+                    <em>Réponse : Tim Berners-Lee (1989).</em></p>
+                    <p>2. Quel était le premier ordinateur électronique ?<br>
+                    <em>Réponse : l'ENIAC (1946).</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Comment l'informatique a-t-elle changé ta vie ?</li>
+                    <li>Quelles seront les prochaines étapes de l'informatique ?</li>
+                </ul>
+            `
+        }, {
+            id: 12,
+            part: "Partie 6 — Informatique et intelligence artificielle",
+            titre: "Comment fonctionne un ordinateur ?",
+            contenu: `
+                <p>Un ordinateur est une machine qui exécute des instructions. Il est composé de plusieurs éléments qui travaillent ensemble.</p>
+
+                <h4>🧠 Processeur (CPU)</h4>
+                <ul>
+                    <li>Le processeur est le "cerveau" de l'ordinateur.</li>
+                    <li>Il exécute les instructions des programmes.</li>
+                    <li>Il est composé de millions de transistors (interrupteurs microscopiques).</li>
+                </ul>
+
+                <h4>💾 Mémoire</h4>
+                <ul>
+                    <li><strong>RAM</strong> (mémoire vive) : stockage temporaire des données en cours d'utilisation.</li>
+                    <li><strong>ROM</strong> (mémoire morte) : stockage permanent des instructions de base.</li>
+                </ul>
+
+                <h4>💽 Stockage</h4>
+                <ul>
+                    <li><strong>Disque dur (HDD)</strong> : stockage magnétique, grande capacité mais lent.</li>
+                    <li><strong>SSD</strong> : stockage électronique, rapide et fiable.</li>
+                    <li><strong>Cloud</strong> : stockage en ligne, accessible partout.</li>
+                </ul>
+
+                <h4>🖥️ Systèmes d'exploitation</h4>
+                <ul>
+                    <li>Le système d'exploitation (OS) est le logiciel de base qui gère l'ordinateur.</li>
+                    <li>Exemples : Windows, macOS, Linux, Android, iOS.</li>
+                    <li>Il gère les fichiers, les programmes et les périphériques.</li>
+                </ul>
+
+                <h4>🌐 Réseaux</h4>
+                <ul>
+                    <li>Les ordinateurs sont connectés en réseaux pour échanger des informations.</li>
+                    <li><strong>LAN</strong> (réseau local) : connexion dans une zone limitée.</li>
+                    <li><strong>WAN</strong> (réseau étendu) : connexion sur de grandes distances (ex : Internet).</li>
+                </ul>
+
+                <div class="application">
+                    <strong>💡 Application concrète</strong><br>
+                    Un ordinateur portable moderne est plus puissant que les superordinateurs des années 1990. Il contient des milliards de transistors qui exécutent des millions d'opérations par seconde.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Quel est le rôle du processeur ?<br>
+                    <em>Réponse : exécuter les instructions des programmes.</em></p>
+                    <p>2. Quelle est la différence entre la RAM et le stockage ?<br>
+                    <em>Réponse : la RAM est temporaire, le stockage est permanent.</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Comment un ordinateur exécute-t-il une action quand tu cliques sur une icône ?</li>
+                    <li>Pourquoi les ordinateurs deviennent-ils plus rapides chaque année ?</li>
+                </ul>
+            `
+        }, {
+            id: 13,
+            part: "Partie 6 — Informatique et intelligence artificielle",
+            titre: "Intelligence artificielle",
+            contenu: `
+                <p>L'intelligence artificielle (IA) est la capacité des machines à imiter l'intelligence humaine. Elle est en train de transformer de nombreux secteurs.</p>
+
+                <h4>🧠 Algorithmes</h4>
+                <ul>
+                    <li>Un algorithme est une séquence d'instructions pour résoudre un problème.</li>
+                    <li>Les algorithmes d'IA sont conçus pour apprendre à partir de données.</li>
+                </ul>
+
+                <h4>📊 Données et apprentissage</h4>
+                <ul>
+                    <li><strong>Apprentissage automatique (Machine Learning)</strong> : les machines apprennent à partir d'exemples.</li>
+                    <li><strong>Deep Learning</strong> : réseaux de neurones profonds pour des tâches complexes.</li>
+                    <li><strong>Apprentissage supervisé</strong> : les données sont étiquetées.</li>
+                    <li><strong>Apprentissage non supervisé</strong> : les données ne sont pas étiquetées.</li>
+                </ul>
+
+                <div class="histoire">
+                    <strong>📖 Histoire vraie : AlphaGo</strong><br>
+                    En 2016, AlphaGo (un programme d'IA) a battu le champion du monde de Go, un jeu considéré comme plus complexe que les échecs. AlphaGo a appris en jouant des millions de parties contre lui-même.
+                </div>
+
+                <h4>🧠 Réseaux neuronaux</h4>
+                <ul>
+                    <li>Les réseaux neuronaux imitent le fonctionnement du cerveau humain.</li>
+                    <li>Ils sont composés de neurones artificiels connectés entre eux.</li>
+                    <li>Ils peuvent reconnaître des images, des sons, des textes.</li>
+                </ul>
+
+                <h4>💬 IA générative</h4>
+                <ul>
+                    <li>L'IA générative crée du contenu (textes, images, musique).</li>
+                    <li>ChatGPT (2022) : IA capable de répondre à des questions et de rédiger des textes.</li>
+                    <li>DALL-E, Midjourney : IA créatrices d'images.</li>
+                </ul>
+
+                <h4>⚡ Applications concrètes</h4>
+                <ul>
+                    <li><strong>Médecine</strong> : diagnostic, recherche de médicaments.</li>
+                    <li><strong>Industrie</strong> : maintenance prédictive, contrôle qualité.</li>
+                    <li><strong>Construction</strong> : conception de structures, optimisation des matériaux.</li>
+                    <li><strong>Transport</strong> : voitures autonomes, gestion du trafic.</li>
+                </ul>
+
+                <div class="application">
+                    <strong>💡 Application concrète</strong><br>
+                    Les IA sont utilisées dans les hôpitaux pour analyser des scanners et détecter des cancers plus rapidement que les médecins. Elles aident également à concevoir de nouveaux médicaments.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Qu'est-ce que le machine learning ?<br>
+                    <em>Réponse : l'apprentissage automatique à partir de données.</em></p>
+                    <p>2. Quelle IA a battu le champion du monde de Go ?<br>
+                    <em>Réponse : AlphaGo.</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Comment l'IA pourrait-elle changer ton futur métier ?</li>
+                    <li>Quels sont les risques de l'IA ?</li>
+                </ul>
+            `
+        }, {
+            id: 14,
+            part: "Partie 7 — Les grandes technologies du futur",
+            titre: "Robotique",
+            contenu: `
+                <p>La robotique est la science qui conçoit, construit et programme des robots. Les robots sont de plus en plus présents dans notre vie.</p>
+
+                <h4>🏭 Robots industriels</h4>
+                <ul>
+                    <li>Les robots industriels sont utilisés dans les usines pour des tâches répétitives : soudage, peinture, assemblage.</li>
+                    <li>Ils travaillent 24h/24, sans fatigue, avec une grande précision.</li>
+                    <li>Le premier robot industriel, Unimate, a été installé en 1961.</li>
+                </ul>
+
+                <h4>🏥 Robots médicaux</h4>
+                <ul>
+                    <li>Les robots médicaux assistent les chirurgiens (ex : le robot Da Vinci).</li>
+                    <li>Ils permettent des opérations moins invasives, plus précises.</li>
+                    <li>Les robots sont aussi utilisés pour la rééducation (exosquelettes).</li>
+                </ul>
+
+                <h4>🤖 Robots autonomes</h4>
+                <ul>
+                    <li>Les robots autonomes peuvent se déplacer et agir sans intervention humaine.</li>
+                    <li><strong>Voitures autonomes</strong> : Tesla, Waymo.</li>
+                    <li><strong>Drones</strong> : pour la livraison, la surveillance, l'inspection.</li>
+                    <li><strong>Robots de service</strong> : aspirateurs, tondeuses, robots de nettoyage.</li>
+                </ul>
+
+                <div class="histoire">
+                    <strong>📖 Histoire vraie : Le robot Perseverance</strong><br>
+                    Perseverance est le rover de la NASA qui explore Mars. Il est équipé de nombreux instruments scientifiques. Il a atterri sur Mars en 2021 et cherche des traces de vie ancienne.
+                </div>
+
+                <h4>🔧 Exosquelettes</h4>
+                <ul>
+                    <li>Les exosquelettes sont des structures robotiques portables qui augmentent la force humaine.</li>
+                    <li>Ils sont utilisés dans l'industrie pour aider les ouvriers à porter des charges lourdes.</li>
+                    <li>Ils sont aussi utilisés dans la rééducation pour aider les personnes paralysées à marcher.</li>
+                </ul>
+
+                <div class="application">
+                    <strong>💡 Application concrète</strong><br>
+                    Les robots collaboratifs (cobots) travaillent main dans la main avec les humains en usine. Ils sont conçus pour être sûrs, et ils augmentent la productivité tout en réduisant la pénibilité du travail.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Quel est le rôle des robots industriels ?<br>
+                    <em>Réponse : effectuer des tâches répétitives dans les usines.</em></p>
+                    <p>2. Quel robot explore Mars ?<br>
+                    <em>Réponse : Perseverance (et Curiosity).</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Comment les robots pourraient-ils nous aider dans la vie quotidienne ?</li>
+                    <li>Les robots remplaceront-ils les humains dans certains métiers ?</li>
+                </ul>
+            `
+        }, {
+            id: 15,
+            part: "Partie 7 — Les grandes technologies du futur",
+            titre: "Exploration spatiale",
+            contenu: `
+                <p>L'exploration spatiale est la conquête de l'espace. Elle a commencé avec la course à l'espace et continue aujourd'hui avec des missions vers Mars et au-delà.</p>
+
+                <h4>🚀 Fusées</h4>
+                <ul>
+                    <li>Les fusées sont des engins propulsés par des moteurs à réaction.</li>
+                    <li>Le premier vol habité a été réalisé par Youri Gagarine (1961).</li>
+                    <li>La plus grande fusée actuelle est le Starship de SpaceX.</li>
+                </ul>
+
+                <h4>🛰️ Satellites</h4>
+                <ul>
+                    <li>Les satellites orbitent autour de la Terre et servent à la communication, la navigation, l'observation.</li>
+                    <li>Le premier satellite, Spoutnik 1, a été lancé par l'URSS en 1957.</li>
+                    <li>Les satellites Starlink fournissent Internet à haut débit.</li>
+                </ul>
+
+                <div class="histoire">
+                    <strong>📖 Histoire vraie : Apollo 11</strong><br>
+                    Le 20 juillet 1969, Neil Armstrong a posé le pied sur la Lune. Il a déclaré : "C'est un petit pas pour l'homme, mais un grand bond pour l'humanité." La mission Apollo 11 a été l'une des plus grandes réalisations humaines.
+                </div>
+
+                <h4>🚀 Stations spatiales</h4>
+                <ul>
+                    <li>Les stations spatiales permettent aux astronautes de vivre et de travailler dans l'espace.</li>
+                    <li><strong>ISS</strong> (Station spatiale internationale) : construite par 15 nations, elle orbite à 400 km d'altitude.</li>
+                    <li>La Chine a construit sa propre station, Tiangong.</li>
+                </ul>
+
+                <h4>🪐 Mars</h4>
+                <ul>
+                    <li>Mars est la planète la plus proche de la Terre.</li>
+                    <li>Des robots (rovers) explorent sa surface.</li>
+                    <li>SpaceX prévoit d'envoyer des humains sur Mars dans les prochaines décennies.</li>
+                </ul>
+
+                <div class="application">
+                    <strong>💡 Application concrète</strong><br>
+                    Les technologies spatiales ont des applications terrestres : les panneaux solaires, les matériaux légers, les systèmes de communication, et même les capteurs médicaux sont nés de la recherche spatiale.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Qui a été le premier homme dans l'espace ?<br>
+                    <em>Réponse : Youri Gagarine (1961).</em></p>
+                    <p>2. Quelle mission a posé le pied sur la Lune ?<br>
+                    <em>Réponse : Apollo 11 (1969).</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi faut-il explorer l'espace ?</li>
+                    <li>Voudrais-tu aller sur Mars ?</li>
+                </ul>
+            `
+        }, {
+            id: 16,
+            part: "Partie 7 — Les grandes technologies du futur",
+            titre: "Nanotechnologies",
+            contenu: `
+                <p>Les nanotechnologies manipulent la matière à l'échelle de l'atome (1 nanomètre = 1 milliardième de mètre).</p>
+
+                <h4>🔬 Matériaux à l'échelle atomique</h4>
+                <ul>
+                    <li>À l'échelle nanométrique, les matériaux ont des propriétés différentes.</li>
+                    <li><strong>Graphène</strong> : couche d'atomes de carbone d'un atome d'épaisseur, très résistant et conducteur.</li>
+                    <li><strong>Nanotubes de carbone</strong> : tubes microscopiques très résistants.</li>
+                </ul>
+
+                <h4>🏥 Applications médicales</h4>
+                <ul>
+                    <li>Les nanoparticules peuvent transporter des médicaments directement dans les cellules.</li>
+                    <li>Les capteurs nanométriques peuvent détecter des maladies à un stade précoce.</li>
+                    <li>L'imagerie nanométrique permet de visualiser les cellules en détail.</li>
+                </ul>
+
+                <h4>💻 Électronique avancée</h4>
+                <ul>
+                    <li>Les transistors des processeurs mesurent quelques nanomètres.</li>
+                    <li>Les nanotechnologies permettent des ordinateurs plus puissants et plus petits.</li>
+                    <li>Les mémoires quantiques sont en développement.</li>
+                </ul>
+
+                <div class="histoire">
+                    <strong>📖 Histoire vraie : Le microscope à effet tunnel</strong><br>
+                    Le microscope à effet tunnel (STM), inventé en 1981, a permis de visualiser les atomes pour la première fois. C'est une avancée majeure qui a ouvert la voie aux nanotechnologies.
+                </div>
+
+                <div class="application">
+                    <strong>💡 Application concrète</strong><br>
+                    Les nanoparticules d'or sont utilisées en cancérologie pour cibler les cellules tumorales. Elles sont chauffées par laser pour détruire les tumeurs sans endommager les tissus sains.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Qu'est-ce que le graphène ?<br>
+                    <em>Réponse : une couche d'atomes de carbone d'un atome d'épaisseur.</em></p>
+                    <p>2. À quoi servent les nanoparticules en médecine ?<br>
+                    <em>Réponse : à transporter des médicaments directement dans les cellules.</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Comment les nanotechnologies pourraient-elles changer notre vie ?</li>
+                    <li>Quels sont les risques des nanotechnologies ?</li>
+                </ul>
+            `
+        }, {
+            id: 17,
+            part: "Partie 7 — Les grandes technologies du futur",
+            titre: "Biotechnologies",
+            contenu: `
+                <p>Les biotechnologies utilisent les êtres vivants ou leurs composants pour créer des produits ou des services.</p>
+
+                <h4>🧬 Génétique</h4>
+                <ul>
+                    <li>Le génie génétique permet de modifier l'ADN des organismes.</li>
+                    <li><strong>CRISPR</strong> : technique d'édition génétique précise, révolutionnaire en biologie.</li>
+                    <li>Applications : agriculture (plantes résistantes), médecine (thérapies géniques).</li>
+                </ul>
+
+                <h4>💊 Thérapies innovantes</h4>
+                <ul>
+                    <li>Les thérapies géniques remplacent les gènes défectueux.</li>
+                    <li>Les cellules souches peuvent se transformer en différents types de cellules.</li>
+                    <li>Les anticorps monoclonaux ciblent des cellules spécifiques, comme les cellules cancéreuses.</li>
+                </ul>
+
+                <h4>🧪 Ingénierie du vivant</h4>
+                <ul>
+                    <li>La biologie synthétique crée de nouveaux organismes pour des applications industrielles.</li>
+                    <li>Exemples : bactéries produisant du carburant, levures produisant des médicaments.</li>
+                    <li>La fermentation est utilisée pour produire de la bière, du vin, du pain, et de plus en plus de biomolécules.</li>
+                </ul>
+
+                <div class="histoire">
+                    <strong>📖 Histoire vraie : L'insuline génétiquement modifiée</strong><br>
+                    Avant 1982, l'insuline était extraite du pancréas de porcs et de bovins. Depuis, l'insuline est produite par des bactéries génétiquement modifiées. C'est plus efficace, plus sûr, et plus accessible.
+                </div>
+
+                <div class="application">
+                    <strong>💡 Application concrète</strong><br>
+                    Les biotechnologies permettent de produire des médicaments complexes comme les anticorps monoclonaux. Ces médicaments sont utilisés pour traiter des cancers, des maladies auto-immunes, et bien d'autres pathologies.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Qu'est-ce que CRISPR ?<br>
+                    <em>Réponse : une technique d'édition génétique précise.</em></p>
+                    <p>2. Pourquoi les biotechnologies sont-elles importantes en médecine ?<br>
+                    <em>Réponse : elles permettent de produire des médicaments efficaces et de traiter des maladies génétiques.</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Comment les biotechnologies pourraient-elles améliorer la santé humaine ?</li>
+                    <li>Quelles sont les questions éthiques posées par les biotechnologies ?</li>
+                </ul>
+            `
+        }, {
+            id: 18,
+            part: "Partie 8 — Les grands défis de l'ingénieur",
+            titre: "Construire durablement",
+            contenu: `
+                <p>Construire durablement, c'est concevoir des structures qui respectent l'environnement et les générations futures.</p>
+
+                <h4>♻️ Économie circulaire</h4>
+                <ul>
+                    <li>L'économie circulaire vise à réduire les déchets et à réutiliser les matériaux.</li>
+                    <li>Au lieu de "prendre, fabriquer, jeter", on recycle et on réemploie.</li>
+                </ul>
+
+                <h4>⬇️ Réduction carbone</h4>
+                <ul>
+                    <li>La construction émet environ 40% des gaz à effet de serre dans le monde.</li>
+                    <li>Réduire l'empreinte carbone passe par des matériaux bas carbone (bois, béton recyclé, géopolymères).</li>
+                    <li>Les bâtiments à énergie positive produisent plus d'énergie qu'ils n'en consomment.</li>
+                </ul>
+
+                <h4>♻️ Matériaux recyclés</h4>
+                <ul>
+                    <li>Les granulats recyclés remplacent les matériaux naturels.</li>
+                    <li>Le béton recyclé est utilisé dans les fondations et les chaussées.</li>
+                    <li>L'acier est 100% recyclable.</li>
+                </ul>
+
+                <h4>🏠 Bâtiments intelligents</h4>
+                <ul>
+                    <li>Les bâtiments intelligents utilisent des capteurs pour optimiser la consommation d'énergie.</li>
+                    <li>L'éclairage, le chauffage, la climatisation s'adaptent à la présence des occupants.</li>
+                    <li>Les bâtiments sont connectés et peuvent communiquer entre eux.</li>
+                </ul>
+
+                <div class="histoire">
+                    <strong>📖 Histoire vraie : La Tour ELITHIS</strong><br>
+                    La Tour ELITHIS à Dijon (France) est un bâtiment à énergie positive. Il produit plus d'énergie qu'il n'en consomme grâce à des panneaux solaires et une conception bioclimatique.
+                </div>
+
+                <div class="application">
+                    <strong>💡 Application concrète</strong><br>
+                    Les toitures végétalisées (jardins sur les toits) réduisent les îlots de chaleur, absorbent les eaux de pluie et améliorent l'isolation thermique. Elles sont de plus en plus utilisées dans les constructions durables.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Qu'est-ce que l'économie circulaire ?<br>
+                    <em>Réponse : réduire les déchets et réutiliser les matériaux.</em></p>
+                    <p>2. Que sont les bâtiments à énergie positive ?<br>
+                    <em>Réponse : des bâtiments qui produisent plus d'énergie qu'ils n'en consomment.</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Comment pourrais-tu contribuer à construire un monde plus durable ?</li>
+                    <li>Quelles innovations pourraient aider à réduire l'empreinte carbone de la construction ?</li>
+                </ul>
+            `
+        }, {
+            id: 19,
+            part: "Partie 8 — Les grands défis de l'ingénieur",
+            titre: "Sécurité et fiabilité",
+            contenu: `
+                <p>Les ingénieurs conçoivent des systèmes qui doivent être sûrs et fiables. Les défaillances peuvent avoir des conséquences graves.</p>
+
+                <h4>⚠️ Pourquoi les systèmes échouent ?</h4>
+                <ul>
+                    <li><strong>Erreur de conception</strong> : mauvais calculs, hypothèses incorrectes.</li>
+                    <li><strong>Matériaux défectueux</strong> : défauts de fabrication.</li>
+                    <li><strong>Fatigue</strong> : usure progressive des matériaux.</li>
+                    <li><strong>Erreur humaine</strong> : mauvaise utilisation, négligence.</li>
+                </ul>
+
+                <div class="histoire">
+                    <strong>📖 Histoire vraie : La catastrophe de Tchernobyl (1986)</strong><br>
+                    L'explosion du réacteur nucléaire de Tchernobyl (Ukraine) a été causée par une erreur de conception et une série d'erreurs humaines. Elle a eu des conséquences environnementales et sanitaires majeures.
+                </div>
+
+                <h4>📋 Retour d'expérience</h4>
+                <ul>
+                    <li>Les accidents industriels sont analysés pour comprendre ce qui s'est passé.</li>
+                    <li>Les leçons tirées sont utilisées pour améliorer les normes et les procédures.</li>
+                    <li>Exemple : le crash du Concorde (2000) a conduit à des améliorations de la sécurité aérienne.</li>
+                </ul>
+
+                <h4>📏 Importance des normes</h4>
+                <ul>
+                    <li>Les normes (Eurocodes, ISO) définissent des règles de conception et de construction.</li>
+                    <li>Elles garantissent un niveau minimal de sécurité et de qualité.</li>
+                    <li>Les normes sont régulièrement mises à jour pour tenir compte des avancées technologiques et des retours d'expérience.</li>
+                </ul>
+
+                <h4>📐 Exemples de normes</h4>
+                <ul>
+                    <li><strong>Eurocode 2</strong> : conception des structures en béton.</li>
+                    <li><strong>Eurocode 3</strong> : conception des structures en acier.</li>
+                    <li><strong>Eurocode 8</strong> : conception parasismique.</li>
+                </ul>
+
+                <div class="application">
+                    <strong>💡 Application concrète</strong><br>
+                    Les avions sont conçus avec une redondance des systèmes (plusieurs systèmes identiques) pour que l'avion puisse continuer à voler en cas de défaillance d'un système. C'est l'un des principes de la sécurité en aéronautique.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Pourquoi les normes sont-elles importantes ?<br>
+                    <em>Réponse : elles garantissent la sécurité et la qualité.</em></p>
+                    <p>2. Qu'est-ce que le retour d'expérience ?<br>
+                    <em>Réponse : l'analyse des accidents pour en tirer des leçons.</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Quel est le rôle de la sécurité dans la conception des systèmes ?</li>
+                    <li>Pourquoi les normes évoluent-elles avec le temps ?</li>
+                </ul>
+            `
+        }, {
+            id: 20,
+            part: "Partie 8 — Les grands défis de l'ingénieur",
+            titre: "L'ingénieur de demain",
+            contenu: `
+                <p>L'ingénieur de demain devra relever des défis complexes. Il aura besoin de compétences techniques, mais aussi humaines.</p>
+
+                <h4>🧠 Compétences essentielles</h4>
+                <ul>
+                    <li><strong>Sciences</strong> : mathématiques, physique, informatique.</li>
+                    <li><strong>Créativité</strong> : imaginer des solutions nouvelles.</li>
+                    <li><strong>Communication</strong> : expliquer des idées complexes à différents publics.</li>
+                    <li><strong>Gestion de projet</strong> : organiser le travail, gérer les ressources.</li>
+                    <li><strong>Éthique</strong> : agir de manière responsable.</li>
+                    <li><strong>Adaptation permanente</strong> : apprendre en continu.</li>
+                </ul>
+
+                <h4>🌍 Les défis du futur</h4>
+                <ul>
+                    <li><strong>Changement climatique</strong> : construire des infrastructures résilientes.</li>
+                    <li><strong>Transition énergétique</strong> : développer des énergies propres.</li>
+                    <li><strong>Vieillissement de la population</strong> : concevoir des bâtiments et des technologies adaptés.</li>
+                    <li><strong>Urbanisation</strong> : gérer la croissance des villes.</li>
+                    <li><strong>Ressources</strong> : optimiser l'utilisation des matériaux.</li>
+                </ul>
+
+                <div class="histoire">
+                    <strong>📖 Histoire vraie : Les ingénieurs de la reconstruction</strong><br>
+                    Après la Seconde Guerre mondiale, des ingénieurs ont reconstruit des villes entières. Ils ont utilisé des techniques innovantes pour créer des bâtiments plus sûrs et plus confortables.
+                </div>
+
+                <h4>🤝 L'ingénieur citoyen</h4>
+                <ul>
+                    <li>L'ingénieur a une responsabilité sociale.</li>
+                    <li>Il doit prendre en compte les conséquences de ses décisions.</li>
+                    <li>Il doit contribuer à un monde plus juste et durable.</li>
+                </ul>
+
+                <h4>🔮 L'ingénierie du futur</h4>
+                <ul>
+                    <li>Les ingénieurs travailleront avec des outils toujours plus puissants : intelligence artificielle, réalité augmentée, impression 3D.</li>
+                    <li>Ils devront collaborer avec d'autres disciplines (biologie, sciences sociales, design).</li>
+                    <li>L'ingénierie deviendra plus interdisciplinaire et plus humaine.</li>
+                </ul>
+
+                <div class="application">
+                    <strong>💡 Application concrète</strong><br>
+                    Les ingénieurs du futur concevront des bâtiments qui produisent leur propre énergie, qui s'adaptent aux conditions climatiques, et qui améliorent le bien-être des occupants.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Quelles sont les compétences essentielles de l'ingénieur de demain ?<br>
+                    <em>Réponse : sciences, créativité, communication, gestion de projet, éthique, adaptation.</em></p>
+                    <p>2. Pourquoi l'ingénieur a-t-il une responsabilité sociale ?<br>
+                    <em>Réponse : ses décisions ont un impact sur la société et l'environnement.</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Quel type d'ingénieur voudrais-tu devenir ?</li>
+                    <li>Comment l'ingénierie peut-elle contribuer à un monde meilleur ?</li>
+                </ul>
+
+                <p style="text-align:center;font-style:italic;color:#6a5a4a;margin-top:1.5rem;">
+                    « L'ingénierie, c'est transformer les idées en réalisations qui améliorent le monde. »
+                </p>
+            `
+        }];
+
+        // ================================================================
+        //  CONSTRUCTION DE LA PAGE D'ACCUEIL
+        // ================================================================
+
+        const homeContent = document.getElementById('homeContent');
+
+        const grid = document.createElement('div');
+        grid.className = 'grid';
+
+        chapitres.forEach(ch => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.setAttribute('data-id', ch.id);
+            const partNum = ch.part.split(' ')[1].replace('—', '').trim();
+            card.innerHTML = `
+                <div class="num">Chapitre ${ch.id}</div>
+                <div class="part">${ch.part.substring(0, 30)}</div>
+                <h3>${ch.titre}</h3>
+                <div class="desc">${ch.contenu.substring(0, 80)}...</div>
+            `;
+            card.addEventListener('click', () => navigateToChapter(ch.id));
+            grid.appendChild(card);
+        });
+
+        homeContent.appendChild(grid);
+
+        // ================================================================
+        //  ROUTING (Hash-based) + Navigation
+        // ================================================================
+
+        const homePage = document.getElementById('homePage');
+        const articlePage = document.getElementById('articlePage');
+
+        function showHome() {
+            homePage.classList.remove('hidden');
+            articlePage.classList.remove('active');
+            window.location.hash = '';
+            document.title = 'Comprendre le Monde Moderne — Technologie & Ingénierie';
+        }
+
+        function showChapter(id) {
+            homePage.classList.add('hidden');
+            articlePage.classList.add('active');
+            window.location.hash = `chapitre-${id}`;
+            renderChapter(id);
+        }
+
+        function renderChapter(id) {
+            const ch = chapitres.find(c => c.id === id);
+            if (!ch) {
+                showHome();
+                return;
+            }
+            document.getElementById('chapterNum').textContent = `Chapitre ${ch.id}`;
+            document.getElementById('chapterTitle').textContent = ch.titre;
+            document.getElementById('chapterPart').textContent = ch.part;
+            document.getElementById('chapterContent').innerHTML = ch.contenu;
+
+            const prev = chapitres.find(c => c.id === id - 1);
+            const next = chapitres.find(c => c.id === id + 1);
+
+            const prevLink = document.getElementById('prevChapter');
+            const nextLink = document.getElementById('nextChapter');
+
+            if (prev) {
+                prevLink.style.display = 'inline-block';
+                prevLink.href = '#';
+                prevLink.onclick = (e) => { e.preventDefault();
+                    navigateToChapter(prev.id); };
+            } else {
+                prevLink.style.display = 'none';
+            }
+
+            if (next) {
+                nextLink.style.display = 'inline-block';
+                nextLink.href = '#';
+                nextLink.onclick = (e) => { e.preventDefault();
+                    navigateToChapter(next.id); };
+            } else {
+                nextLink.style.display = 'none';
+            }
+
+            document.title = `${ch.titre} — Comprendre le Monde Moderne`;
+        }
+
+        function navigateToChapter(id) {
+            showChapter(id);
+        }
+
+        function handleHash() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#chapitre-')) {
+                const id = parseInt(hash.replace('#chapitre-', ''), 10);
+                if (chapitres.find(c => c.id === id)) {
+                    showChapter(id);
+                    return;
+                }
+            }
+            showHome();
+        }
+
+        // Liens du sommaire
+        document.querySelectorAll('.sommaire-grid a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const chNum = parseInt(link.getAttribute('data-ch'), 10);
+                if (chNum) navigateToChapter(chNum);
+            });
+        });
+
+        document.getElementById('backToHomeLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+        document.getElementById('backHomeBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+
+        window.addEventListener('hashchange', handleHash);
+        window.addEventListener('load', handleHash);
+        window.addEventListener('popstate', handleHash);
+    </script>
+
+</body>
+</html>
