@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Secret de la Maison des Collines — Roman jeunesse</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: #f5f0eb;
+            color: #1a1a2e;
+            padding: 2rem 1rem;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* --- HEADER --- */
+        .header {
+            background: linear-gradient(135deg, #1a1a2e, #2d4059);
+            color: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            right: -80px;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(240, 194, 122, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            font-family: 'Georgia', serif;
+        }
+
+        .header h1 span {
+            color: #f0c27a;
+        }
+
+        .header .subtitle {
+            margin-top: 0.4rem;
+            font-size: 1rem;
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: rgba(240, 194, 122, 0.15);
+            color: #f0c27a;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-top: 0.6rem;
+            border: 1px solid rgba(240, 194, 122, 0.2);
+            letter-spacing: 0.05em;
+        }
+
+        .header .meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 0.8rem;
+            flex-wrap: wrap;
+            font-size: 0.8rem;
+            opacity: 0.75;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #f0c27a;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        /* --- GRILLE D'ACCUEIL --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 1.4rem 1.6rem;
+            border: 1px solid #e2d8cc;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+            border-color: #2d4059;
+        }
+
+        .card .num {
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: #8a7a6a;
+            background: #f5ede4;
+            padding: 0.1rem 0.7rem;
+            border-radius: 12px;
+            display: inline-block;
+            letter-spacing: 0.05em;
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin: 0.4rem 0 0.2rem;
+            font-family: 'Georgia', serif;
+        }
+
+        .card .desc {
+            font-size: 0.85rem;
+            color: #4a3a3a;
+            margin-top: 0.3rem;
+        }
+
+        .card .pages {
+            font-size: 0.65rem;
+            color: #8a7a6a;
+            margin-top: 0.4rem;
+        }
+
+        /* --- PAGE ARTICLE (CHAPITRE) --- */
+        #articlePage {
+            display: none;
+        }
+
+        #articlePage.active {
+            display: block;
+        }
+
+        #homePage.hidden {
+            display: none;
+        }
+
+        .chapter-container {
+            background: #fff;
+            border-radius: 20px;
+            padding: 2.8rem 3.2rem;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.07);
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .chapter-container .chapter-num {
+            font-size: 0.7rem;
+            color: #8a7a6a;
+            background: #f5ede4;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            display: inline-block;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .chapter-container h2 {
+            font-size: 2rem;
+            margin: 0.4rem 0 0.2rem;
+            color: #1a1a2e;
+            font-weight: 700;
+            line-height: 1.2;
+            font-family: 'Georgia', serif;
+        }
+
+        .chapter-container .chapter-meta {
+            font-size: 0.8rem;
+            color: #6a5a4a;
+            margin-bottom: 1.2rem;
+            font-style: italic;
+        }
+
+        .chapter-container .chapter-content {
+            font-size: 1.05rem;
+            line-height: 1.9;
+            color: #2a2a3a;
+        }
+
+        .chapter-container .chapter-content p {
+            margin-bottom: 1.2rem;
+            text-indent: 2em;
+        }
+
+        .chapter-container .chapter-content .dialogue {
+            margin-left: 2em;
+            font-style: italic;
+            color: #1a1a2e;
+        }
+
+        .chapter-container .chapter-content .dialogue strong {
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        .chapter-container .chapter-content .action {
+            font-weight: 500;
+            color: #2d4059;
+        }
+
+        .chapter-container .chapter-content hr {
+            border: none;
+            border-top: 1px solid #e2d8cc;
+            margin: 1.5rem 0;
+        }
+
+        .chapter-container .chapter-content .citation {
+            font-style: italic;
+            color: #4a3a3a;
+            padding: 0.5rem 1.5rem;
+            border-left: 3px solid #f0c27a;
+            margin: 1rem 0;
+            background: #faf6f0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .chapter-container .chapter-content .fin-chapitre {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #8a7a6a;
+            margin-top: 2rem;
+            font-style: italic;
+        }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 2rem;
+            color: #2d4059;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.6rem 1.4rem;
+            border: 2px solid #2d4059;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+
+        .back-home:hover {
+            background: #2d4059;
+            color: #fff;
+        }
+
+        .nav-chapitres {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-chapitres a {
+            color: #2d4059;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.4rem 1rem;
+            border: 1px solid #e2d8cc;
+            border-radius: 30px;
+            transition: 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .nav-chapitres a:hover {
+            background: #2d4059;
+            color: #fff;
+            border-color: #2d4059;
+        }
+
+        @media (max-width: 640px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            .chapter-container {
+                padding: 1.5rem;
+            }
+            .chapter-container h2 {
+                font-size: 1.4rem;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .chapter-container .chapter-content p {
+                text-indent: 1.5em;
+            }
+        }
+
+        .footer {
+            margin-top: 2.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #8a7a6a;
+            border-top: 1px solid #e2d8cc;
+            padding-top: 1.5rem;
+        }
+
+        .footer span {
+            color: #2d4059;
+            font-weight: 600;
+        }
+
+        .personnages {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            background: #faf6f0;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            border: 1px solid #e2d8cc;
+        }
+
+        .personnages .perso {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .personnages .perso strong {
+            display: block;
+            color: #1a1a2e;
+            font-size: 0.9rem;
+        }
+
+        .personnages .perso span {
+            font-size: 0.8rem;
+            color: #5a4a3a;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ============================================================ -->
+        <!-- PAGE D'ACCUEIL -->
+        <!-- ============================================================ -->
+        <div id="homePage">
+            <div class="header">
+                <h1>📖 <span>Le Secret de la Maison des Collines</span></h1>
+                <div class="subtitle">Un roman jeunesse · 5 chapitres · 30 pages</div>
+                <div class="badge">13–18 ans · Suspense · Aventure · Science</div>
+                <div class="meta">
+                    <span>👤 Noah (16 ans)</span>
+                    <span>👤 Lina (15 ans)</span>
+                    <span>👤 Gabriel (70 ans)</span>
+                    <span>👤 Élias (75 ans)</span>
+                </div>
+            </div>
+
+            <div id="homeContent"></div>
+
+            <div class="footer">
+                <p>📖 <span>Le Secret de la Maison des Collines</span> — Une grande découverte commence toujours par une question.</p>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PAGE CHAPITRE -->
+        <!-- ============================================================ -->
+        <div id="articlePage">
+            <div class="header" style="margin-bottom: 1.5rem;">
+                <h1>📖 <span>Le Secret de la Maison des Collines</span></h1>
+                <a class="back-link" href="#" id="backToHomeLink">← Retour au sommaire</a>
+            </div>
+            <div class="chapter-container" id="chapterContainer">
+                <div class="chapter-num" id="chapterNum">Chapitre 1</div>
+                <h2 id="chapterTitle">Titre</h2>
+                <div class="chapter-meta" id="chapterMeta">6 pages</div>
+                <div class="chapter-content" id="chapterContent">
+                    <p>Contenu...</p>
+                </div>
+                <div class="nav-chapitres" id="navChapitres">
+                    <a href="#" id="prevChapter">← Chapitre précédent</a>
+                    <a href="#" id="nextChapter">Chapitre suivant →</a>
+                </div>
+                <a href="#" class="back-home" id="backHomeBtn">← Sommaire</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ================================================================
+        //  DONNÉES DES 5 CHAPITRES
+        // ================================================================
+
+        const chapitres = [{
+            id: 1,
+            titre: "La Maison qui Cachait un Secret",
+            pages: "6 pages",
+            content: `
+                <p>Noah n'aimait pas cet endroit. Le village de Saint-Michel-des-Collines était perdu au milieu des montagnes, à trois heures de la ville la plus proche. Pas de réseau, peu de jeunes, aucune distraction. Pour un adolescent de seize ans passionné de technologie, c'était l'enfer.</p>
+
+                <p>— "Je vais m'ennuyer à mourir", grommela-t-il en sortant de la voiture de son père.</p>
+
+                <p>Devant lui, la maison de son grand-père se dressait au sommet de la colline. Une vieille bâtisse en pierre, avec des volets bleus délavés et un toit d'ardoise qui avait vu passer des décennies. Elle avait l'air de sortir tout droit d'un roman du XIXe siècle.</p>
+
+                <p>— "Elle est belle, non ?" demanda son père.</p>
+
+                <p>— "Elle est vieille", répondit Noah.</p>
+
+                <p>Son grand-père, Gabriel, l'attendait sur le pas de la porte. Un homme grand, au regard vif, avec des mains calleuses d'ancien ingénieur. Il avait soixante-dix ans, mais il en paraissait dix de moins.</p>
+
+                <p>— "Noah ! Enfin !" s'exclama-t-il en ouvrant ses bras.</p>
+
+                <p>Noah se laissa enlacer. Malgré son air boudeur, il était content de revoir son grand-père. Gabriel était le seul membre de sa famille qui l'écoutait vraiment, qui ne lui disait pas "tu es trop jeune pour comprendre".</p>
+
+                <p>— "Je t'ai préparé une chambre au deuxième étage. Tu as une vue magnifique sur la vallée."</p>
+
+                <p>— "Génial", répondit Noah sans enthousiasme.</p>
+
+                <p>Les premiers jours furent longs. Noah passa son temps à explorer la maison, à ouvrir des placards, à feuilleter des livres poussiéreux. Rien d'intéressant. Des vieilleries. Des bibelots sans valeur.</p>
+
+                <p>Jusqu'à cette nuit-là.</p>
+
+                <p>Un orage s'était levé. La pluie battait contre les vitres, le vent sifflait dans les cheminées. Noah n'arrivait pas à dormir. Il était descendu boire un verre d'eau quand il entendit un bruit venant du grenier.</p>
+
+                <p><span class="action">*Scratch... scratch...*</span></p>
+
+                <p>Il s'arrêta. Le bruit recommença. On aurait dit quelqu'un qui grattait du bois.</p>
+
+                <p>Intrigué, Noah monta l'escalier qui menait au grenier. La porte était entrouverte. Il la poussa doucement.</p>
+
+                <p>Le grenier était encombré de vieux meubles, de valises poussiéreuses et de cartons scotchés. Mais au centre, une boîte métallique attira son attention. Elle était fermée par un cadenas rouillé.</p>
+
+                <p>Noah l'ouvrit avec un tournevis trouvé dans un tiroir. À l'intérieur : une photo ancienne, un carnet rempli de schémas et une clé.</p>
+
+                <p>Sur la photo, quatre jeunes hommes souriaient devant un atelier. L'un d'eux ressemblait étrangement à son grand-père. Noah retourna la photo. Au dos, une inscription : "Projet Horizon — 1986".</p>
+
+                <p>Il feuilleta le carnet. Des calculs, des croquis, des formules. Une machine. Une invention. Il ne comprenait pas tout, mais il voyait bien qu'il s'agissait de quelque chose d'important.</p>
+
+                <p>Le lendemain, il montra la photo à Gabriel.</p>
+
+                <p>— "Grand-père, qui sont ces personnes ?"</p>
+
+                <p>Gabriel resta silencieux. Son regard s'assombrit. Il prit la photo avec des mains qui tremblaient légèrement.</p>
+
+                <p>— "Où as-tu trouvé cela ?" demanda-t-il d'une voix grave.</p>
+
+                <p>— "Dans le grenier."</p>
+
+                <p>Gabriel soupira. Il s'assit lourdement sur une chaise.</p>
+
+                <p>— "Certaines inventions peuvent changer le monde… mais certaines découvertes peuvent aussi détruire des amitiés."</p>
+
+                <p>Il fixa Noah, puis ajouta :</p>
+
+                <p>— "J'aurais préféré que tu ne trouves jamais cela."</p>
+
+                <p>Cette nuit-là, Noah ne dormit pas. Il savait que son grand-père cachait quelque chose. Et il était déterminé à découvrir la vérité.</p>
+
+                <div class="fin-chapitre">— Fin du chapitre 1 —</div>
+            `
+        }, {
+            id: 2,
+            titre: "Les Plans Disparus",
+            pages: "6 pages",
+            content: `
+                <p>Noah commença son enquête dès le lendemain. Il savait que Gabriel ne lui dirait rien de plus, du moins pas tout de suite. Il devait trouver d'autres sources.</p>
+
+                <p>Il se rendit à la bibliothèque du village, une petite bâtisse en pierre, tenue par une bibliothécaire âgée aux lunettes épaisses. Il demanda s'il existait des archives sur le "Projet Horizon".</p>
+
+                <p>— "Projet Horizon ?" répéta la bibliothécaire. "Attendez, je crois avoir vu cela dans les vieux journaux."</p>
+
+                <p>Elle revint avec un dossier poussiéreux. Noah y découvrit des articles datant de 1986. Ils parlaient de quatre jeunes ingénieurs qui avaient mis au point un prototype capable de produire de l'énergie propre grâce à la force de l'eau. Le projet avait été présenté au concours national des jeunes inventeurs. Il avait reçu un prix, puis il avait mystérieusement disparu.</p>
+
+                <p>Un nom revenait souvent : <strong>Élias Morel</strong>.</p>
+
+                <p>— "Vous cherchez des informations sur Élias Morel ?"</p>
+
+                <p>Noah sursauta. Une jeune fille de son âge se tenait derrière lui. Cheveux bruns, regard perçant, elle tenait un vieux livre à la main.</p>
+
+                <p>— "Je suis Lina. Je viens ici tout le temps. J'adore l'histoire de ce village."</p>
+
+                <p>Elle s'assit à côté de lui. Elle lui expliqua qu'elle avait déjà entendu parler du Projet Horizon. Son grand-père, qui avait été maire du village, en avait souvent parlé. Le projet avait été abandonné après une dispute. Personne ne savait vraiment ce qui s'était passé.</p>
+
+                <p>— "Mais ce que je sais, c'est que la dernière trace d'Élias Morel mène à une ferme abandonnée, près du lac."</p>
+
+                <p>Noah et Lina décidèrent de s'y rendre. Ils prirent leurs vélos et pédalèrent pendant une heure. La ferme était isolée, entourée de champs en friche. Elle semblait inhabitée depuis des années.</p>
+
+                <p>Ils entrèrent par une porte entrouverte. À l'intérieur, des tas de vieux papiers, des caisses, des outils rouillés. Ils fouillèrent pendant des heures.</p>
+
+                <p>Soudain, Noah trouva un plan. Il était caché sous une planche. Des schémas, des formules, des croquis. Il le reconnut : c'était la suite du carnet qu'il avait trouvé dans le grenier.</p>
+
+                <p>— "Regarde", dit-il à Lina. "Il manque une partie. Quelqu'un l'a coupée."</p>
+
+                <p>Il comprit que le projet avait été volontairement séparé. Chaque inventeur gardait une partie de l'invention. Ils avaient dû se disputer et décider de diviser leurs travaux.</p>
+
+                <p>Mais qui détenait la dernière pièce ?</p>
+
+                <p>Cette nuit-là, alors qu'ils rentraient chez Noah, ils entendirent un bruit venant de la maison de Gabriel. Des pas. Des voix.</p>
+
+                <p>Noah se cacha derrière un buisson. Il vit deux hommes en noir entrer dans la maison. Il entendit des cris. Quelques minutes plus tard, ils ressortirent, emportant quelque chose.</p>
+
+                <p>Quand ils entrèrent, le carnet avait disparu. Gabriel était là, assis, le visage marqué.</p>
+
+                <p>— "Ils ont pris le carnet", murmura-t-il. "Ils ne veulent pas que le projet soit retrouvé."</p>
+
+                <p>Noah comprit que leur quête était devenue dangereuse. Mais il ne pouvait pas s'arrêter. Il avait maintenant une mission : retrouver Élias Morel et la dernière pièce du puzzle.</p>
+
+                <div class="fin-chapitre">— Fin du chapitre 2 —</div>
+            `
+        }, {
+            id: 3,
+            titre: "L'Homme qui Avait Disparu",
+            pages: "6 pages",
+            content: `
+                <p>Noah et Lina passèrent les jours suivants à chercher Élias Morel. Les archives du village ne donnaient aucune adresse. Les voisins n'avaient pas de nouvelles de lui depuis des années. Il semblait s'être volatilisé.</p>
+
+                <p>Un soir, alors qu'ils parcouraient les vieux registres de la mairie, Lina trouva une adresse : une ferme isolée, à l'orée de la forêt. Elle était mentionnée sur un acte de propriété datant de 1988.</p>
+
+                <p>— "On y va demain", décida Noah.</p>
+
+                <p>Le lendemain matin, ils pédalèrent pendant deux heures. La ferme était encore plus isolée que la précédente. Elle semblait presque abandonnée. Mais une lueur filtrait par une fenêtre.</p>
+
+                <p>Noah frappa à la porte. Personne. Il frappa à nouveau. Il entendit des pas traînants.</p>
+
+                <p>La porte s'ouvrit sur un vieil homme au regard fatigué, au visage creusé par le temps. Il avait une barbe blanche et des mains tremblantes.</p>
+
+                <p>— "Qu'est-ce que vous voulez ?" demanda-t-il d'une voix rauque.</p>
+
+                <p>— "Vous êtes Élias Morel ?"</p>
+
+                <p>L'homme hésita. Il les regarda longuement, puis soupira.</p>
+
+                <p>— "Je pensais que ce projet était mort. Qu'on l'avait oublié."</p>
+
+                <p>Il les fit entrer. L'intérieur était simple : une cuisine, un poêle à bois, des étagères remplies de livres et de carnets.</p>
+
+                <p>Élias leur raconta son histoire. En 1986, quatre amis — Gabriel, Élias, Marc et Julien — avaient mis au point une invention révolutionnaire. Leur prototype pouvait produire de l'énergie propre à partir de l'eau, sans émission de carbone. Le monde les regardait. Mais une grande entreprise leur proposa beaucoup d'argent pour acheter leur découverte.</p>
+
+                <p>— "Gabriel voulait continuer gratuitement, pour aider le village", expliqua Élias. "Moi, je voulais vendre pour financer d'autres recherches. Nous nous sommes disputés. Le groupe s'est séparé."</p>
+
+                <p>Il baissa les yeux.</p>
+
+                <p>— "Le projet n'était pas terminé. Une partie essentielle de la machine est cachée quelque part dans la vallée. Chacun de nous gardait une pièce du puzzle."</p>
+
+                <p>Il sortit une vieille carte de sa poche. Il la posa sur la table.</p>
+
+                <p>— "Mais avant de mourir, Marc a laissé un message : <span class="citation">'La dernière pièce appartient à celui qui comprend pourquoi nous avons commencé.'</span>"</p>
+
+                <p>Noah réfléchit. "Pourquoi nous avons commencé..." répéta-t-il.</p>
+
+                <p>Il comprit soudain. Le projet n'avait pas été créé pour l'argent. Il avait été créé pour aider les gens. Pour apporter de l'énergie au village, pour donner un avenir à cette vallée. La dernière pièce n'était pas une invention technique. C'était l'intention. Le sens.</p>
+
+                <p>— "Je crois que je comprends", dit Noah.</p>
+
+                <p>Il était temps d'agir.</p>
+
+                <div class="fin-chapitre">— Fin du chapitre 3 —</div>
+            `
+        }, {
+            id: 4,
+            titre: "La Course Contre le Temps",
+            pages: "6 pages",
+            content: `
+                <p>Noah, Lina et Élias retournèrent dans les anciens tunnels sous la montagne. Gabriel avait parlé de ces tunnels dans ses carnets. Ils étaient autrefois utilisés pour extraire du minerai, mais ils étaient abandonnés depuis la guerre. C'était là, selon Élias, que les quatre inventeurs avaient caché leurs prototypes.</p>
+
+                <p>L'entrée était dissimulée par un mur de pierres. Derrière, un couloir sombre s'enfonçait dans la montagne. Ils s'avancèrent avec prudence, éclairés par des lampes torches.</p>
+
+                <p>Ils découvrirent un laboratoire abandonné. Des tables, des instruments, des machines. Au centre, un prototype : une machine étrange, faite de tuyaux, de vannes et d'un réservoir d'eau. Elle était impressionnante, mais elle semblait incomplète.</p>
+
+                <p>— "C'est cela", murmura Élias. "Le projet original."</p>
+
+                <p>Noah compara le prototype avec les schémas du carnet. Il manquait une pièce. Une pièce qui rendait tout cohérent. Il se souvint du message de Marc : <span class="citation">"La dernière pièce appartient à celui qui comprend pourquoi nous avons commencé."</span></p>
+
+                <p>Il ferma les yeux. Il revit les photos, les carnets, les articles de journaux. Il revit le visage de Gabriel, quand il lui avait parlé de l'invention. Il avait dit : "Certaines inventions peuvent changer le monde..."</p>
+
+                <p>Noah comprit. La dernière pièce n'était pas un objet. C'était une décision. La machine avait besoin d'un système d'activation que seul le véritable inventeur pouvait comprendre. Ce système était basé sur un principe simple : l'eau devait circuler en circuit fermé, mais il fallait un déclencheur pour lancer le processus.</p>
+
+                <p>— "J'ai trouvé !" s'écria-t-il.</p>
+
+                <p>Il se mit au travail. Il utilisa ses connaissances en technologie, Lina retrouva les anciens calculs, et Élias apporta son expérience. Trois générations travaillaient ensemble.</p>
+
+                <p>Ils réparèrent la machine. Ils installèrent le système de déclenchement. Mais alors qu'ils s'apprêtaient à la tester, ils entendirent des bruits venant de l'entrée du tunnel.</p>
+
+                <p>— "Ils sont là", murmura Lina. "L'entreprise. Ils ont trouvé notre trace."</p>
+
+                <p>Ils n'avaient plus que quelques minutes.</p>
+
+                <div class="fin-chapitre">— Fin du chapitre 4 —</div>
+            `
+        }, {
+            id: 5,
+            titre: "Le Dernier Essai",
+            pages: "6 pages",
+            content: `
+                <p>Noah, Lina et Élias savaient qu'ils n'avaient pas le temps de fuir. La seule issue était de réussir le test. Si la machine fonctionnait, ils prouveraient que le projet était viable. L'entreprise n'aurait plus aucune raison de les poursuivre.</p>
+
+                <p>— "Il faut la lancer maintenant", dit Noah.</p>
+
+                <p>Élias actionna le levier principal. La machine s'ébranla. Des bruits métalliques résonnèrent. L'eau se mit à circuler dans les tuyaux. Une lueur apparut dans le réservoir.</p>
+
+                <p>Puis tout s'arrêta.</p>
+
+                <p>— "Non !" s'écria Noah.</p>
+
+                <p>Il relut les notes du vieux carnet. Une phrase, écrite en marge, qu'il n'avait jamais comprise :</p>
+
+                <p><span class="citation">"Une invention ne fonctionne jamais seule. Elle a besoin de ceux qui croient en elle."</span></p>
+
+                <p>Il comprit. Ce n'était pas une question technique. La machine ne fonctionnait pas parce qu'ils la testaient dans la peur. Elle avait besoin de confiance. Elle avait besoin que ceux qui la lançaient croient vraiment en son potentiel.</p>
+
+                <p>— "On recommence", dit-il. "Mais cette fois, on y croit."</p>
+
+                <p>Ils se regardèrent. Noah, Lina, Élias. Trois générations, trois histoires, trois croyances. Ils actionnèrent ensemble le levier.</p>
+
+                <p>Cette fois, la machine démarra.</p>
+
+                <p>L'eau circula. Les tuyaux vibrèrent. Une lumière bleutée emplit le laboratoire. Les aiguilles des compteurs s'affolèrent puis se stabilisèrent. La machine produisait de l'énergie. Propre. Silencieuse. Inépuisable.</p>
+
+                <p>L'entreprise, arrivée à l'entrée, s'arrêta net. Le bruit de la machine résonnait dans tout le tunnel. Ils savaient qu'ils avaient perdu. Le projet était publique maintenant.</p>
+
+                <p>Quelques mois plus tard, Noah retourna au lycée. Il était différent. Il avait découvert que la technologie n'était pas une fin en soi. C'était un moyen de rendre le monde meilleur. Il avait appris que les plus grandes inventions ne naissent pas de la volonté de dominer, mais du désir d'aider.</p>
+
+                <p>Il garda le carnet dans son sac. Sur la dernière page, il écrivit :</p>
+
+                <p><span class="citation">"Une grande découverte ne commence pas par une réponse. Elle commence toujours par une question."</span></p>
+
+                <p>Il sourit. Il savait maintenant qu'il avait trouvé sa voie.</p>
+
+                <div class="fin-chapitre">— Fin —</div>
+            `
+        }];
+
+        // ================================================================
+        //  CONSTRUCTION DE LA PAGE D'ACCUEIL
+        // ================================================================
+
+        const homeContent = document.getElementById('homeContent');
+
+        const grid = document.createElement('div');
+        grid.className = 'grid';
+
+        chapitres.forEach(ch => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.setAttribute('data-id', ch.id);
+            card.innerHTML = `
+                <div class="num">Chapitre ${ch.id}</div>
+                <h3>${ch.titre}</h3>
+                <div class="desc">${ch.pages}</div>
+                <div class="pages">📖 ${ch.pages}</div>
+            `;
+            card.addEventListener('click', () => navigateToChapter(ch.id));
+            grid.appendChild(card);
+        });
+
+        homeContent.appendChild(grid);
+
+        // ================================================================
+        //  ROUTING (Hash-based)
+        // ================================================================
+
+        const homePage = document.getElementById('homePage');
+        const articlePage = document.getElementById('articlePage');
+
+        function showHome() {
+            homePage.classList.remove('hidden');
+            articlePage.classList.remove('active');
+            window.location.hash = '';
+            document.title = 'Le Secret de la Maison des Collines — Roman jeunesse';
+        }
+
+        function showChapter(id) {
+            homePage.classList.add('hidden');
+            articlePage.classList.add('active');
+            window.location.hash = `chapitre-${id}`;
+            renderChapter(id);
+        }
+
+        function renderChapter(id) {
+            const ch = chapitres.find(c => c.id === id);
+            if (!ch) {
+                showHome();
+                return;
+            }
+            document.getElementById('chapterNum').textContent = `Chapitre ${ch.id}`;
+            document.getElementById('chapterTitle').textContent = ch.titre;
+            document.getElementById('chapterMeta').textContent = ch.pages;
+            document.getElementById('chapterContent').innerHTML = ch.content;
+
+            // Navigation entre chapitres
+            const prev = chapitres.find(c => c.id === id - 1);
+            const next = chapitres.find(c => c.id === id + 1);
+
+            const prevLink = document.getElementById('prevChapter');
+            const nextLink = document.getElementById('nextChapter');
+
+            if (prev) {
+                prevLink.style.display = 'inline-block';
+                prevLink.href = '#';
+                prevLink.onclick = (e) => { e.preventDefault();
+                    navigateToChapter(prev.id); };
+            } else {
+                prevLink.style.display = 'none';
+            }
+
+            if (next) {
+                nextLink.style.display = 'inline-block';
+                nextLink.href = '#';
+                nextLink.onclick = (e) => { e.preventDefault();
+                    navigateToChapter(next.id); };
+            } else {
+                nextLink.style.display = 'none';
+            }
+
+            document.title = `${ch.titre} — Le Secret de la Maison des Collines`;
+        }
+
+        function navigateToChapter(id) {
+            showChapter(id);
+        }
+
+        function handleHash() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#chapitre-')) {
+                const id = parseInt(hash.replace('#chapitre-', ''), 10);
+                if (chapitres.find(c => c.id === id)) {
+                    showChapter(id);
+                    return;
+                }
+            }
+            showHome();
+        }
+
+        document.getElementById('backToHomeLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+        document.getElementById('backHomeBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+
+        window.addEventListener('hashchange', handleHash);
+        window.addEventListener('load', handleHash);
+        window.addEventListener('popstate', handleHash);
+    </script>
+
+</body>
+</html>
