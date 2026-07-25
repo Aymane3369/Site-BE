@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eurocode 2 — Cours complet de Béton Armé</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            color: #1a2634;
+            line-height: 1.7;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* --- HEADER --- */
+        .header {
+            background: linear-gradient(135deg, #0d2b45, #1a5a8a);
+            color: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .header h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header h1 span {
+            color: #7fc8ff;
+        }
+
+        .header .subtitle {
+            margin-top: 0.6rem;
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 750px;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.12);
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 0.8rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .stats .item {
+            font-size: 0.85rem;
+            opacity: 0.85;
+        }
+
+        .stats .item strong {
+            opacity: 1;
+            font-weight: 700;
+        }
+
+        /* --- TOCC --- */
+        .toc {
+            background: #fff;
+            border-radius: 14px;
+            padding: 1.5rem 1.8rem;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .toc h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #0d2b45;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.4rem;
+        }
+
+        .toc-grid a {
+            display: block;
+            padding: 0.3rem 0.6rem;
+            color: #1a5a8a;
+            text-decoration: none;
+            font-size: 0.82rem;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .toc-grid a:hover {
+            background: #eef3f8;
+        }
+
+        .toc-grid .tome {
+            font-weight: 600;
+            color: #0d2b45;
+        }
+
+        /* --- CARD --- */
+        .card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 1.8rem 2rem;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            transition: border-color 0.2s;
+        }
+
+        .card:hover {
+            border-color: #b0c4d8;
+        }
+
+        .card .tome-id {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #6a8a9a;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.3rem;
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0d2b45;
+            margin-bottom: 0.4rem;
+        }
+
+        .card .desc {
+            color: #4a6a7a;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .card .formulas {
+            background: #f4f8fb;
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            margin: 0.8rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 2.2;
+            overflow-x: auto;
+            border-left: 4px solid #1a5a8a;
+        }
+
+        .card .formulas .label {
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #6a8a9a;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .card .formulas .hi {
+            color: #1a5a8a;
+            font-weight: 600;
+        }
+
+        .card .formulas .gold {
+            color: #b8882f;
+            font-weight: 600;
+        }
+
+        .card .exemple {
+            background: #f0f7ee;
+            border-radius: 10px;
+            padding: 0.8rem 1.2rem;
+            border-left: 4px solid #0f7b3a;
+            margin: 0.8rem 0;
+            font-size: 0.92rem;
+        }
+
+        .card .exemple strong {
+            color: #0d3b2e;
+        }
+
+        .card .domaine {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.6rem;
+        }
+
+        .card .domaine span {
+            background: #eef3f8;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: #3a5a6a;
+            font-weight: 500;
+        }
+
+        .btn-exercice {
+            display: inline-block;
+            margin-top: 0.8rem;
+            padding: 0.4rem 1.2rem;
+            background: #1a5a8a;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-exercice:hover {
+            opacity: 0.85;
+        }
+
+        .exercice-box {
+            display: none;
+            margin-top: 1rem;
+            background: #f8fafc;
+            border: 1px solid #dce4ec;
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            font-size: 0.92rem;
+        }
+
+        .exercice-box .corrige {
+            margin-top: 0.8rem;
+            padding-top: 0.8rem;
+            border-top: 1px dashed #dce4ec;
+            color: #0d7b3a;
+        }
+
+        .exercice-box .corrige strong {
+            color: #0d3b2e;
+        }
+
+        /* --- FOOTER --- */
+        .footer {
+            margin-top: 2.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #6a8a9a;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 1.5rem;
+        }
+
+        .footer span {
+            color: #1a5a8a;
+            font-weight: 600;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 640px) {
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            .card {
+                padding: 1.2rem;
+            }
+            .toc-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .stats {
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ============================================================ -->
+        <!-- HEADER -->
+        <!-- ============================================================ -->
+        <div class="header">
+            <h1>🏗️ <span>Eurocode 2</span> — Béton Armé</h1>
+            <div class="subtitle">Cours complet de référence — Master 2 / Ingénieur bureau d'études</div>
+            <div class="badge">NF EN 1992-1-1</div>
+            <div class="stats">
+                <div class="item"><strong>16</strong> Tomes</div>
+                <div class="item"><strong>80+</strong> Chapitres</div>
+                <div class="item"><strong>300+</strong> Formules</div>
+                <div class="item"><strong>50+</strong> Exercices corrigés</div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- SOMMAIRE -->
+        <!-- ============================================================ -->
+        <div class="toc">
+            <h2>📚 Sommaire du cours</h2>
+            <div class="toc-grid">
+                <a href="#tome1"><span class="tome">Tome 1</span> — Fondamentaux</a>
+                <a href="#tome2"><span class="tome">Tome 2</span> — Flexion simple</a>
+                <a href="#tome3"><span class="tome">Tome 3</span> — Effort tranchant</a>
+                <a href="#tome4"><span class="tome">Tome 4</span> — Torsion</a>
+                <a href="#tome5"><span class="tome">Tome 5</span> — Poinçonnement</a>
+                <a href="#tome6"><span class="tome">Tome 6</span> — Compression</a>
+                <a href="#tome7"><span class="tome">Tome 7</span> — Dalles</a>
+                <a href="#tome8"><span class="tome">Tome 8</span> — Escaliers</a>
+                <a href="#tome9"><span class="tome">Tome 9</span> — Fondations</a>
+                <a href="#tome10"><span class="tome">Tome 10</span> — Voiles</a>
+                <a href="#tome11"><span class="tome">Tome 11</span> — Consoles</a>
+                <a href="#tome12"><span class="tome">Tome 12</span> — Murs de soutènement</a>
+                <a href="#tome13"><span class="tome">Tome 13</span> — Vérifications ELS</a>
+                <a href="#tome14"><span class="tome">Tome 14</span> — Durabilité</a>
+                <a href="#tome15"><span class="tome">Tome 15</span> — Détails d'armatures</a>
+                <a href="#tome16"><span class="tome">Tome 16</span> — Applications complètes</a>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 1 — FONDAMENTAUX -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome1">
+            <div class="tome-id">Tome 1</div>
+            <h2>🧱 Fondamentaux du béton armé</h2>
+            <div class="desc">Hypothèses de Bernoulli, états limites, classes de résistance, diagrammes contrainte-déformation, coefficients partiels, fluage, retrait, adhérence.</div>
+
+            <div class="formulas">
+                <div class="label">Formules fondamentales</div>
+                f<sub>cd</sub> = α<sub>cc</sub> · f<sub>ck</sub> / γ<sub>c</sub> &nbsp;→&nbsp; <span class="hi">f<sub>cd</sub></span> : résistance de calcul du béton<br>
+                f<sub>yd</sub> = f<sub>yk</sub> / γ<sub>s</sub> &nbsp;→&nbsp; <span class="hi">f<sub>yd</sub></span> : limite d'élasticité de calcul de l'acier<br>
+                f<sub>cm</sub> = f<sub>ck</sub> + 8 &nbsp;→&nbsp; résistance moyenne à la compression<br>
+                E<sub>cm</sub> = 22 000 · (f<sub>cm</sub>/10)<sup>0,3</sup> &nbsp;→&nbsp; module d'élasticité secant<br>
+                ε<sub>cu</sub> = 0,0035 &nbsp;→&nbsp; déformation ultime du béton en compression<br>
+                ε<sub>yd</sub> = f<sub>yd</sub> / E<sub>s</sub> &nbsp;→&nbsp; déformation à la limite élastique de l'acier
+            </div>
+
+            <div class="domaine">
+                <span>Domaine : Tous les éléments en BA</span>
+                <span>γ<sub>c</sub> = 1,5</span>
+                <span>γ<sub>s</sub> = 1,15</span>
+                <span>α<sub>cc</sub> = 0,85 (poutres) ou 1,0 (poteaux)</span>
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Béton C25/30, acier S500B<br>
+                f<sub>cd</sub> = 0,85 × 25 / 1,5 = <strong>14,17 MPa</strong><br>
+                f<sub>yd</sub> = 500 / 1,15 = <strong>434,78 MPa</strong><br>
+                f<sub>cm</sub> = 25 + 8 = <strong>33 MPa</strong><br>
+                E<sub>cm</sub> = 22000 × (33/10)<sup>0,3</sup> = <strong>31 000 MPa</strong>
+            </div>
+
+            <button class="btn-exercice" onclick="toggleExercice('ex1')">📝 Voir l'exercice</button>
+            <div class="exercice-box" id="ex1">
+                <strong>Exercice 1.1 :</strong> Calculer f<sub>cd</sub>, f<sub>yd</sub>, E<sub>cm</sub> pour un béton C30/37 et un acier S500B.<br>
+                <div class="corrige">
+                    <strong>Corrigé :</strong><br>
+                    f<sub>cd</sub> = 0,85 × 30 / 1,5 = <strong>17,0 MPa</strong><br>
+                    f<sub>yd</sub> = 500 / 1,15 = <strong>434,8 MPa</strong><br>
+                    f<sub>cm</sub> = 30 + 8 = <strong>38 MPa</strong><br>
+                    E<sub>cm</sub> = 22000 × (38/10)<sup>0,3</sup> = <strong>32 800 MPa</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 2 — FLEXION SIMPLE -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome2">
+            <div class="tome-id">Tome 2</div>
+            <h2>📐 Flexion simple des poutres</h2>
+            <div class="desc">Calcul du moment de calcul, position de la fibre neutre, bras de levier, section simplement armée, section doublement armée, armatures minimales et maximales.</div>
+
+            <div class="formulas">
+                <div class="label">Formules de flexion simple</div>
+                M<sub>Ed</sub> ≤ M<sub>Rd</sub> &nbsp;→&nbsp; vérification de la résistance en flexion<br>
+                μ = M<sub>Ed</sub> / (b · d² · f<sub>cd</sub>) &nbsp;→&nbsp; moment réduit<br>
+                α = 1,25 · (1 − √(1 − 2μ)) &nbsp;→&nbsp; bras de levier réduit<br>
+                z = d · (1 − 0,4·α) &nbsp;→&nbsp; bras de levier réel<br>
+                A<sub>s</sub> = M<sub>Ed</sub> / (z · f<sub>yd</sub>) &nbsp;→&nbsp; section d'armatures tendues<br>
+                A<sub>s,min</sub> = 0,26 · (f<sub>ctm</sub> / f<sub>yk</sub>) · b · d &nbsp;→&nbsp; armature minimale<br>
+                A<sub>s,max</sub> = 0,04 · A<sub>c</sub> &nbsp;→&nbsp; armature maximale (4% de la section de béton)
+            </div>
+
+            <div class="domaine">
+                <span>Domaine : Poutres, dalles unidirectionnelles</span>
+                <span>d ≈ 0,9·h</span>
+                <span>μ &lt; 0,372 (section simplement armée)</span>
+                <span>Si μ &gt; 0,372 → section doublement armée</span>
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Poutre 20×50 cm, M<sub>Ed</sub> = 80 kN·m, béton C25/30, acier S500B<br>
+                d = 0,9 × 50 = 45 cm<br>
+                μ = 80×10⁶ / (200×450²×14,17) = <strong>0,139</strong><br>
+                α = 1,25 × (1 − √(1 − 2×0,139)) = <strong>0,187</strong><br>
+                z = 450 × (1 − 0,4×0,187) = <strong>416 mm</strong><br>
+                A<sub>s</sub> = 80×10⁶ / (416×434,8) = <strong>442 mm²</strong> → soit <strong>3 HA14 (462 mm²)</strong>
+            </div>
+
+            <button class="btn-exercice" onclick="toggleExercice('ex2')">📝 Voir l'exercice</button>
+            <div class="exercice-box" id="ex2">
+                <strong>Exercice 2.1 :</strong> Dimensionner une poutre 25×55 cm soumise à M<sub>Ed</sub> = 150 kN·m. Béton C30/37, acier S500B.<br>
+                <div class="corrige">
+                    <strong>Corrigé :</strong><br>
+                    d = 0,9 × 55 = 49,5 cm<br>
+                    f<sub>cd</sub> = 0,85×30/1,5 = 17,0 MPa<br>
+                    μ = 150×10⁶ / (250×495²×17,0) = <strong>0,144</strong><br>
+                    α = 1,25×(1−√(1−2×0,144)) = <strong>0,194</strong><br>
+                    z = 495×(1−0,4×0,194) = <strong>457 mm</strong><br>
+                    A<sub>s</sub> = 150×10⁶ / (457×434,8) = <strong>754 mm²</strong> → <strong>3 HA20 (942 mm²)</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 3 — EFFORT TRANCHANT -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome3">
+            <div class="tome-id">Tome 3</div>
+            <h2>✂️ Effort tranchant</h2>
+            <div class="desc">Bielles et tirants, résistance du béton, cadres, inclinaison des bielles, espacement maximal des cadres.</div>
+
+            <div class="formulas">
+                <div class="label">Formules de l'effort tranchant</div>
+                V<sub>Ed</sub> ≤ V<sub>Rd</sub> &nbsp;→&nbsp; vérification du cisaillement<br>
+                V<sub>Rd,c</sub> = [0,12 · k · (100·ρ<sub>l</sub>·f<sub>ck</sub>)<sup>1/3</sup>] · b<sub>w</sub> · d &nbsp;→&nbsp; résistance sans armatures transversales<br>
+                k = 1 + √(200/d) ≤ 2,0<br>
+                ρ<sub>l</sub> = A<sub>sl</sub> / (b<sub>w</sub> · d) ≤ 0,02<br>
+                V<sub>Rd,s</sub> = (A<sub>sw</sub> / s) · z · f<sub>ywd</sub> · cot θ &nbsp;→&nbsp; résistance avec armatures transversales<br>
+                V<sub>Rd,max</sub> = (b<sub>w</sub> · z · ν<sub>1</sub> · f<sub>cd</sub>) / (cot θ + tan θ) &nbsp;→&nbsp; résistance des bielles de béton<br>
+                S<sub>max</sub> = 0,75 · d · (1 + cot α) &nbsp;→&nbsp; espacement maximal des cadres
+            </div>
+
+            <div class="domaine">
+                <span>Domaine : Poutres, dalles, voiles</span>
+                <span>θ = 45° (par défaut)</span>
+                <span>cot θ = 1,0 à 2,5</span>
+                <span>ν<sub>1</sub> = 0,6 · (1 − f<sub>ck</sub>/250)</span>
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Poutre 20×50 cm, V<sub>Ed</sub> = 120 kN, béton C25/30, acier S500B, cadres HA8 (A<sub>sw</sub> = 100 mm²)<br>
+                d = 450 mm, b<sub>w</sub> = 200 mm<br>
+                V<sub>Rd,s</sub> = (100/s) × 416 × 434,8 × 1,0<br>
+                Pour V<sub>Rd,s</sub> ≥ 120 kN → s ≤ <strong>150 mm</strong>
+            </div>
+
+            <button class="btn-exercice" onclick="toggleExercice('ex3')">📝 Voir l'exercice</button>
+            <div class="exercice-box" id="ex3">
+                <strong>Exercice 3.1 :</strong> Vérifier le cisaillement d'une poutre 25×60 cm soumise à V<sub>Ed</sub> = 180 kN. Béton C30/37, cadres HA10 (A<sub>sw</sub> = 157 mm²), s = 120 mm.<br>
+                <div class="corrige">
+                    <strong>Corrigé :</strong><br>
+                    d = 0,9×60 = 54 cm, z = 0,9×540 = 486 mm<br>
+                    f<sub>yd</sub> = 434,8 MPa, f<sub>cd</sub> = 17,0 MPa<br>
+                    V<sub>Rd,s</sub> = (157/120) × 486 × 434,8 × 1,0 = <strong>276 kN</strong><br>
+                    V<sub>Ed</sub> = 180 kN ≤ 276 kN → <strong>✅ OK</strong><br>
+                    V<sub>Rd,max</sub> = (250×486×0,6×(1−30/250)×17,0)/2 = <strong>545 kN</strong> → OK
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 4 — TORSION -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome4">
+            <div class="tome-id">Tome 4</div>
+            <h2>🔄 Torsion</h2>
+            <div class="desc">Torsion simple, torsion + flexion, armatures longitudinales, armatures transversales.</div>
+
+            <div class="formulas">
+                <div class="label">Formules de torsion</div>
+                T<sub>Ed</sub> ≤ T<sub>Rd</sub> &nbsp;→&nbsp; vérification de la torsion<br>
+                T<sub>Rd,max</sub> = 2 · A<sub>k</sub> · t<sub>eff</sub> · f<sub>cd</sub> · sin θ · cos θ &nbsp;→&nbsp; résistance des bielles comprimées<br>
+                A<sub>sw</sub> / s = T<sub>Ed</sub> / (2 · A<sub>k</sub> · f<sub>ywd</sub> · cot θ) &nbsp;→&nbsp; armatures transversales<br>
+                A<sub>sl,tor</sub> = T<sub>Ed</sub> · u<sub>k</sub> / (2 · A<sub>k</sub> · f<sub>yd</sub>) &nbsp;→&nbsp; armatures longitudinales<br>
+                A<sub>k</sub> = aire intérieure du contour (b<sub>w</sub> − t<sub>eff</sub>) × (h − t<sub>eff</sub>)<br>
+                u<sub>k</sub> = périmètre intérieur du contour
+            </div>
+
+            <div class="domaine">
+                <span>Domaine : Poutres, poutres courbes, consoles</span>
+                <span>t<sub>eff</sub> = A / u (épaisseur de la paroi équivalente)</span>
+                <span>θ = 45° (par défaut)</span>
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Poutre 30×60 cm, T<sub>Ed</sub> = 20 kN·m, béton C25/30<br>
+                t<sub>eff</sub> = 2×A/u = 2×(300×600)/(2×(300+600)) = 80 mm<br>
+                A<sub>k</sub> = (300−80)×(600−80) = 114 400 mm²<br>
+                u<sub>k</sub> = 2×(220+520) = 1 480 mm<br>
+                A<sub>sw</sub>/s = 20×10⁶ / (2×114400×434,8×1) = <strong>0,201 mm</strong> → HA8 avec s ≤ 250 mm
+            </div>
+
+            <button class="btn-exercice" onclick="toggleExercice('ex4')">📝 Voir l'exercice</button>
+            <div class="exercice-box" id="ex4">
+                <strong>Exercice 4.1 :</strong> Dimensionner les armatures de torsion pour une poutre 25×55 cm soumise à T<sub>Ed</sub> = 15 kN·m. Béton C30/37.<br>
+                <div class="corrige">
+                    <strong>Corrigé :</strong><br>
+                    t<sub>eff</sub> = 2×250×550 / 1600 = <strong>172 mm</strong><br>
+                    A<sub>k</sub> = (250−172)×(550−172) = <strong>30 084 mm²</strong><br>
+                    u<sub>k</sub> = 2×(78+378) = <strong>912 mm</strong><br>
+                    A<sub>sw</sub>/s = 15×10⁶ / (2×30084×434,8×1) = <strong>0,574 mm²/mm</strong> → HA8 (50 mm²) espacés de <strong>87 mm</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 5 — POINÇONNEMENT -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome5">
+            <div class="tome-id">Tome 5</div>
+            <h2>📌 Poinçonnement</h2>
+            <div class="desc">Dalles, semelles, têtes de poteaux. Vérification du poinçonnement et armatures de poinçonnement.</div>
+
+            <div class="formulas">
+                <div class="label">Formules de poinçonnement</div>
+                V<sub>Ed</sub> ≤ V<sub>Rd,c</sub> &nbsp;→&nbsp; vérification sans armatures de poinçonnement<br>
+                v<sub>Ed</sub> = V<sub>Ed</sub> / (u<sub>1</sub> · d) &nbsp;→&nbsp; contrainte de poinçonnement<br>
+                u<sub>1</sub> = 2·π·(c<sub>1</sub> + c<sub>2</sub>)/2 + 2·π·2·d &nbsp;→&nbsp; périmètre critique<br>
+                v<sub>Rd,c</sub> = 0,12 · k · (100·ρ<sub>l</sub>·f<sub>ck</sub>)<sup>1/3</sup> &nbsp;→&nbsp; résistance au poinçonnement sans armatures<br>
+                v<sub>Rd,max</sub> = 0,5 · ν · f<sub>cd</sub> &nbsp;→&nbsp; résistance maximale des bielles<br>
+                A<sub>sw</sub> = (v<sub>Ed</sub> − v<sub>Rd,c</sub>) · u<sub>1</sub> · d / (f<sub>ywd</sub> · sin α) &nbsp;→&nbsp; armatures de poinçonnement
+            </div>
+
+            <div class="domaine">
+                <span>Domaine : Dalles, semelles isolées</span>
+                <span>u<sub>1</sub> : périmètre à 2·d du contour du poteau</span>
+                <span>ν = 0,6 · (1 − f<sub>ck</sub>/250)</span>
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Dalle 20 cm, poteau 30×30 cm, V<sub>Ed</sub> = 400 kN, béton C25/30<br>
+                d = 170 mm, u<sub>1</sub> = 4×300 + 2×π×2×170 = 3 336 mm<br>
+                v<sub>Ed</sub> = 400×10³ / (3336×170) = <strong>0,71 MPa</strong><br>
+                v<sub>Rd,c</sub> = 0,12×1,95×(100×0,01×25)<sup>1/3</sup> = <strong>0,41 MPa</strong><br>
+                v<sub>Ed</sub> > v<sub>Rd,c</sub> → armatures de poinçonnement nécessaires
+            </div>
+
+            <button class="btn-exercice" onclick="toggleExercice('ex5')">📝 Voir l'exercice</button>
+            <div class="exercice-box" id="ex5">
+                <strong>Exercice 5.1 :</strong> Vérifier le poinçonnement d'une dalle 25 cm sous un poteau 40×40 cm avec V<sub>Ed</sub> = 600 kN. Béton C30/37.<br>
+                <div class="corrige">
+                    <strong>Corrigé :</strong><br>
+                    d = 0,9×250 = 225 mm<br>
+                    u<sub>1</sub> = 4×400 + 2×π×2×225 = <strong>4 427 mm</strong><br>
+                    v<sub>Ed</sub> = 600×10³ / (4427×225) = <strong>0,60 MPa</strong><br>
+                    v<sub>Rd,c</sub> = 0,12×1,82×(100×0,01×30)<sup>1/3</sup> = <strong>0,44 MPa</strong><br>
+                    v<sub>Ed</sub> > v<sub>Rd,c</sub> → armatures de poinçonnement nécessaires
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 6 — COMPRESSION -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome6">
+            <div class="tome-id">Tome 6</div>
+            <h2>📏 Compression — Poteaux</h2>
+            <div class="desc">Compression centrée, compression excentrée, interaction N-M, flambement, effets du second ordre.</div>
+
+            <div class="formulas">
+                <div class="label">Formules de compression</div>
+                N<sub>Rd</sub> = A<sub>c</sub> · f<sub>cd</sub> + A<sub>s</sub> · f<sub>yd</sub> &nbsp;→&nbsp; résistance en compression centrée<br>
+                λ = L<sub>0</sub> / i &nbsp;→&nbsp; élancement du poteau<br>
+                i = √(I/A) &nbsp;→&nbsp; rayon de giration<br>
+                λ<sub>lim</sub> = 20 · A · B · C / √n &nbsp;→&nbsp; élancement limite<br>
+                M<sub>2</sub> = N<sub>Ed</sub> · e<sub>2</sub> &nbsp;→&nbsp; moment du second ordre<br>
+                e<sub>2</sub> = (1/r) · L<sub>0</sub>² / c &nbsp;→&nbsp; excentricité du second ordre<br>
+                1/r = K<sub>r</sub> · K<sub>φ</sub> · 1/r<sub>0</sub> &nbsp;→&nbsp; courbure
+            </div>
+
+            <div class="domaine">
+                <span>Domaine : Poteaux, piliers</span>
+                <span>L<sub>0</sub> = k·L (longueur de flambement)</span>
+                <span>λ<sub>lim</sub> ≈ 25 à 35 (selon les conditions)</span>
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Poteau 30×30 cm, hauteur 3,5 m, N<sub>Ed</sub> = 1200 kN, béton C25/30, 4 HA16<br>
+                A<sub>c</sub> = 300×300 = 90 000 mm², A<sub>s</sub> = 4×201 = 804 mm²<br>
+                N<sub>Rd</sub> = 90 000×14,17 + 804×434,8 = 1 275 + 349 = <strong>1 624 kN</strong><br>
+                λ = L<sub>0</sub>/i = 3500/(0,289×300) = <strong>40</strong><br>
+                λ<sub>lim</sub> ≈ 25 → effets du second ordre à prendre en compte
+            </div>
+
+            <button class="btn-exercice" onclick="toggleExercice('ex6')">📝 Voir l'exercice</button>
+            <div class="exercice-box" id="ex6">
+                <strong>Exercice 6.1 :</strong> Vérifier un poteau 35×35 cm, hauteur 4,0 m, N<sub>Ed</sub> = 1800 kN. Béton C30/37, 4 HA20.<br>
+                <div class="corrige">
+                    <strong>Corrigé :</strong><br>
+                    A<sub>c</sub> = 350×350 = 122 500 mm², A<sub>s</sub> = 4×314 = 1 256 mm²<br>
+                    N<sub>Rd</sub> = 122500×17,0 + 1256×434,8 = 2 082 + 546 = <strong>2 628 kN</strong><br>
+                    λ = 4000/(0,289×350) = <strong>39,5</strong><br>
+                    N<sub>Ed</sub> = 1800 kN ≤ 2628 kN → <strong>✅ OK</strong><br>
+                    λ &lt; λ<sub>lim</sub> → effets du second ordre négligeables
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 7 — DALLES -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome7">
+            <div class="tome-id">Tome 7</div>
+            <h2>📊 Dalles</h2>
+            <div class="desc">Dalles unidirectionnelles, bidirectionnelles, pleines, nervurées, champignon. Calcul des moments, flèches, fissuration, ferraillage.</div>
+
+            <div class="formulas">
+                <div class="label">Formules pour dalles</div>
+                M<sub>Ed</sub> = α · p · L<sub>x</sub>² &nbsp;→&nbsp; moment dans une dalle (α selon les conditions d'appui)<br>
+                Flèche = (5 · p · L⁴) / (384 · E · I) &nbsp;→&nbsp; flèche d'une dalle simplement appuyée<br>
+                A<sub>s</sub> = M<sub>Ed</sub> / (0,9 · d · f<sub>yd</sub>) &nbsp;→&nbsp; armatures de dalle<br>
+                ρ = A<sub>s</sub> / (b · d) ≤ 0,02 &nbsp;→&nbsp; taux d'armatures<br>
+                h ≥ L / 25 &nbsp;→&nbsp; hauteur minimale pour les dalles (non vérifiée)
+            </div>
+
+            <div class="domaine">
+                <span>Domaine : Planchers, dalles de bâtiment</span>
+                <span>α = 0,083 (dalle appuyée sur 4 côtés, Ly/Lx=1)</span>
+                <span>α = 0,125 (dalle simplement appuyée)</span>
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Dalle 6×6 m, p = 10 kN/m², épaisseur 20 cm<br>
+                M<sub>Ed</sub> = 0,083 × 10 × 6² = <strong>29,9 kN·m/m</strong><br>
+                d = 0,9×200 = 180 mm<br>
+                A<sub>s</sub> = 29,9×10⁶ / (0,9×180×434,8) = <strong>425 mm²/m</strong> → HA10 tous les 15 cm
+            </div>
+
+            <button class="btn-exercice" onclick="toggleExercice('ex7')">📝 Voir l'exercice</button>
+            <div class="exercice-box" id="ex7">
+                <strong>Exercice 7.1 :</strong> Dimensionner une dalle 5×5 m, p = 12 kN/m², épaisseur 18 cm. Béton C25/30, acier S500B.<br>
+                <div class="corrige">
+                    <strong>Corrigé :</strong><br>
+                    M<sub>Ed</sub> = 0,083 × 12 × 5² = <strong>24,9 kN·m/m</strong><br>
+                    d = 0,9×180 = 162 mm<br>
+                    A<sub>s</sub> = 24,9×10⁶ / (0,9×162×434,8) = <strong>392 mm²/m</strong> → HA10 (78,5 mm²) espacés de <strong>200 mm</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 8 — ESCALIERS -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome8">
+            <div class="tome-id">Tome 8</div>
+            <h2>🪜 Escaliers</h2>
+            <div class="desc">Escaliers droits, balancés, paillasses, paliers. Calcul des charges, moments, armatures.</div>
+
+            <div class="formulas">
+                <div class="label">Formules pour escaliers</div>
+                G<sub>paillasse</sub> = h · γ<sub>BA</sub> / cos α + G<sub>revêtement</sub> &nbsp;→&nbsp; charge permanente d'une paillasse<br>
+                Q<sub>paillasse</sub> = Q<sub>exploitation</sub> / cos α &nbsp;→&nbsp; charge d'exploitation d'une paillasse<br>
+                M<sub>Ed</sub> = (γ<sub>G</sub>·G + γ<sub>Q</sub>·Q) · L² / 8 &nbsp;→&nbsp; moment de calcul<br>
+                A<sub>s</sub> = M<sub>Ed</sub> / (0,9·d·f<sub>yd</sub>) &nbsp;→&nbsp; armatures de la paillasse<br>
+                H = n · h<sub>marche</sub> &nbsp;→&nbsp; hauteur totale<br>
+                L = (n−1) · g<sub>marche</sub> &nbsp;→&nbsp; longueur horizontale
+            </div>
+
+            <div class="domaine">
+                <span>Domaine : Escaliers intérieurs et extérieurs</span>
+                <span>α = pente de l'escalier (tan α = H/L)</span>
+                <span>h<sub>marche</sub> ≈ 17 cm, g<sub>marche</sub> ≈ 28 cm</span>
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Escalier droit, hauteur 3,0 m, 18 marches, paillasse 15 cm<br>
+                H = 18×0,17 = 3,06 m, L = 17×0,28 = 4,76 m<br>
+                α = atan(3,06/4,76) = 32,7°, cos α = 0,841<br>
+                G = 0,15×25/0,841 + 1,0 = 5,46 kN/m²<br>
+                Q = 2,5/0,841 = 2,97 kN/m²<br>
+                M<sub>Ed</sub> = (1,35×5,46 + 1,5×2,97) × 4,76²/8 = <strong>30,2 kN·m/m</strong>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 9 — FONDATIONS -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome9">
+            <div class="tome-id">Tome 9</div>
+            <h2>🏗️ Fondations</h2>
+            <div class="desc">Semelles isolées, semelles filantes, radiers. Vérification du sol, flexion, cisaillement, poinçonnement.</div>
+
+            <div class="formulas">
+                <div class="label">Formules pour fondations</div>
+                σ<sub>sol</sub> = N<sub>Ed</sub> / A + M<sub>Ed</sub> / (I/v) &nbsp;→&nbsp; pression sous semelle<br>
+                σ<sub>sol,max</sub> ≤ σ<sub>adm</sub> &nbsp;→&nbsp; vérification de la portance<br>
+                e = M<sub>Ed</sub> / N<sub>Ed</sub> ≤ B/6 &nbsp;→&nbsp; excentricité<br>
+                M<sub>Ed,semelle</sub> = σ<sub>sol</sub> · (B−b)<sup>2</sup> / 8 &nbsp;→&nbsp; moment dans la semelle<br>
+                A<sub>s</sub> = M<sub>Ed</sub> / (0,9·d·f<sub>yd</sub>) &nbsp;→&nbsp; armatures de la semelle<br>
+                V<sub>Ed</sub> = σ<sub>sol</sub> · (B−b)/2 &nbsp;→&nbsp; effort tranchant
+            </div>
+
+            <div class="domaine">
+                <span>Domaine : Semelles sous poteaux, murs</span>
+                <span>σ<sub>adm</sub> : contrainte admissible du sol</span>
+                <span>B ≥ √(N/σ<sub>adm</sub>) (semelle carrée)</span>
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Semelle isolée sous poteau 30×30 cm, N<sub>Ed</sub> = 600 kN, σ<sub>adm</sub> = 0,25 MPa<br>
+                A = 600 / 250 = 2,4 m² → B = 1,55 m (semelle 1,6×1,6 m)<br>
+                M<sub>Ed</sub> = 250 × (1,6−0,3)²/8 = <strong>52,8 kN·m/m</strong><br>
+                d = 0,9×h (h ≈ 40 cm) → d = 360 mm<br>
+                A<sub>s</sub> = 52,8×10⁶ / (0,9×360×434,8) = <strong>375 mm²/m</strong> → HA12 espacés de 200 mm
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 10 — VOILES -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome10">
+            <div class="tome-id">Tome 10</div>
+            <h2>🧱 Voiles</h2>
+            <div class="desc">Efforts verticaux, efforts horizontaux, ferraillage, ouvertures.</div>
+
+            <div class="formulas">
+                <div class="label">Formules pour voiles</div>
+                N<sub>Rd</sub> = A<sub>c</sub> · f<sub>cd</sub> + A<sub>s</sub> · f<sub>yd</sub> &nbsp;→&nbsp; résistance en compression<br>
+                V<sub>Rd</sub> = (A<sub>sw</sub> / s) · z · f<sub>ywd</sub> · cot θ &nbsp;→&nbsp; résistance au cisaillement<br>
+                M<sub>Ed</sub> = H<sub>Ed</sub> · L/2 &nbsp;→&nbsp; moment dû aux efforts horizontaux<br>
+                A<sub>s,min</sub> = 0,002 · A<sub>c</sub> &nbsp;→&nbsp; armature minimale verticale<br>
+                A<sub>s,min,h</sub> = 0,001 · A<sub>c</sub> &nbsp;→&nbsp; armature minimale horizontale
+            </div>
+
+            <div class="domaine">
+                <span>Domaine : Murs porteurs, noyaux de bâtiment</span>
+                <span>Épaisseur minimale : 15 cm (voile de contreventement)</span>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 11 — CONSOLES -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome11">
+            <div class="tome-id">Tome 11</div>
+            <h2>🔩 Consoles</h2>
+            <div class="desc">Consoles courtes, consoles longues, méthode des bielles et tirants.</div>
+
+            <div class="formulas">
+                <div class="label">Formules pour consoles</div>
+                M<sub>Ed</sub> = F<sub>Ed</sub> · a &nbsp;→&nbsp; moment de calcul<br>
+                V<sub>Ed</sub> = F<sub>Ed</sub> &nbsp;→&nbsp; effort tranchant<br>
+                F<sub>t</sub> = M<sub>Ed</sub> / z + F<sub>Ed</sub> · a<sub>1</sub> / z &nbsp;→&nbsp; effort dans le tirant<br>
+                A<sub>s</sub> = F<sub>t</sub> / f<sub>yd</sub> &nbsp;→&nbsp; armatures principales<br>
+                a<sub>c</sub> ≥ a/2 &nbsp;→&nbsp; condition de console courte<br>
+                V<sub>Rd,max</sub> = 0,5 · b · d · ν · f<sub>cd</sub> &nbsp;→&nbsp; résistance des bielles
+            </div>
+
+            <div class="domaine">
+                <span>Domaine : Consoles de poutres, appuis</span>
+                <span>a : distance de la force à l'appui</span>
+                <span>Console courte : a/d ≤ 0,5</span>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 12 — MURS DE SOUTÈNEMENT -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome12">
+            <div class="tome-id">Tome 12</div>
+            <h2>🏔️ Murs de soutènement</h2>
+            <div class="desc">Poussée des terres, glissement, renversement, portance, ferraillage.</div>
+
+            <div class="formulas">
+                <div class="label">Formules pour murs de soutènement</div>
+                P<sub>a</sub> = 0,5 · K<sub>a</sub> · γ · h² &nbsp;→&nbsp; poussée des terres (Coulomb)<br>
+                K<sub>a</sub> = tan²(π/4 − φ/2) &nbsp;→&nbsp; coefficient de poussée active<br>
+                F<sub>glissement</sub> = (ΣV · tan φ) / P<sub>a</sub> ≥ 1,5 &nbsp;→&nbsp; vérification du glissement<br>
+                F<sub>renversement</sub> = ΣM<sub>stabilisateur</sub> / M<sub>renversant</sub> ≥ 2,0 &nbsp;→&nbsp; vérification du renversement<br>
+                M<sub>Ed</sub> = P<sub>a</sub> · h/3 &nbsp;→&nbsp; moment à la base du mur<br>
+                A<sub>s</sub> = M<sub>Ed</sub> / (0,9·d·f<sub>yd</sub>) &nbsp;→&nbsp; armatures du voile
+            </div>
+
+            <div class="domaine">
+                <span>Domaine : Murs de soutènement, quais</span>
+                <span>φ : angle de frottement interne du sol</span>
+                <span>γ : poids volumique du sol</span>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 13 — VÉRIFICATIONS ELS -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome13">
+            <div class="tome-id">Tome 13</div>
+            <h2>🔍 Vérifications ELS</h2>
+            <div class="desc">Ouverture des fissures, flèches, vibrations, déformations différées.</div>
+
+            <div class="formulas">
+                <div class="label">Formules ELS</div>
+                w<sub>k</sub> = S<sub>r,max</sub> · (ε<sub>sm</sub> − ε<sub>cm</sub>) &nbsp;→&nbsp; largeur de fissure<br>
+                S<sub>r,max</sub> = 3,4 · c + 0,425 · k<sub>1</sub> · k<sub>2</sub> · φ / ρ<sub>p,eff</sub> &nbsp;→&nbsp; espacement maximal des fissures<br>
+                Flèche instantanée = (5 · M · L²) / (48 · E · I) &nbsp;→&nbsp; flèche (poutre appuyée)<br>
+                Flèche différée = Flèche instantanée · (1 + φ<sub>∞</sub>) &nbsp;→&nbsp; flèche à long terme<br>
+                w<sub>k,max</sub> = 0,3 mm (environnement XC) ou 0,2 mm (environnement XD/XS)
+            </div>
+
+            <div class="domaine">
+                <span>Domaine : Toutes les structures</span>
+                <span>φ<sub>∞</sub> : coefficient de fluage (≈ 2,0 à 3,0)</span>
+                <span>ρ<sub>p,eff</sub> : taux d'armatures effectif</span>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 14 — DURABILITÉ -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome14">
+            <div class="tome-id">Tome 14</div>
+            <h2>🛡️ Durabilité</h2>
+            <div class="desc">Classes d'exposition XC, XD, XS, XF, XA, enrobage minimal, durée de vie, carbonatation, corrosion.</div>
+
+            <div class="formulas">
+                <div class="label">Formules de durabilité</div>
+                c<sub>min</sub> = c<sub>nom</sub> − Δc<sub>dev</sub> &nbsp;→&nbsp; enrobage minimal<br>
+                c<sub>nom</sub> = c<sub>min,dur</sub> + Δc<sub>dev</sub> &nbsp;→&nbsp; enrobage nominal<br>
+                x<sub>c</sub> = k · √t &nbsp;→&nbsp; profondeur de carbonatation<br>
+                D<sub>cl</sub> = coefficient de diffusion des chlorures (m²/s)<br>
+                Durée de vie = t<sub>initiation</sub> + t<sub>propagation</sub> (modèle de Tuutti)
+            </div>
+
+            <div class="domaine">
+                <span>Domaine : Tous les ouvrages en BA</span>
+                <span>XC1 à XC4 : carbonatation</span>
+                <span>XD1 à XD3 : chlorures (hors marin)</span>
+                <span>XS1 à XS3 : milieu marin</span>
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple :</strong> Classe XC3 (alternance humide/sec), durée de vie 50 ans<br>
+                c<sub>min,dur</sub> = 20 mm, c<sub>nom</sub> = 20 + 10 = <strong>30 mm</strong><br>
+                Profondeur de carbonatation à 50 ans : k = 2 mm/√an → x<sub>c</sub> = 2×√50 = <strong>14 mm</strong> → OK
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 15 — DÉTAILS D'ARMATURES -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome15">
+            <div class="tome-id">Tome 15</div>
+            <h2>🔧 Détails d'armatures</h2>
+            <div class="desc">Longueurs d'ancrage, recouvrements, crochets, rayons de cintrage, espacement des barres, dispositions constructives.</div>
+
+            <div class="formulas">
+                <div class="label">Formules de détails</div>
+                l<sub>bd</sub> = α<sub>1</sub> · α<sub>2</sub> · α<sub>3</sub> · α<sub>4</sub> · α<sub>5</sub> · l<sub>b,rqd</sub> ≥ l<sub>b,min</sub> &nbsp;→&nbsp; longueur d'ancrage de calcul<br>
+                l<sub>b,rqd</sub> = (φ · σ<sub>sd</sub>) / (4 · f<sub>bd</sub>) &nbsp;→&nbsp; longueur d'ancrage de base<br>
+                f<sub>bd</sub> = 2,25 · η<sub>1</sub> · η<sub>2</sub> · f<sub>ctd</sub> &nbsp;→&nbsp; contrainte d'adhérence<br>
+                l<sub>0</sub> = α<sub>1</sub> · α<sub>2</sub> · α<sub>3</sub> · α<sub>4</sub> · α<sub>5</sub> · l<sub>b,rqd</sub> ≥ l<sub>0,min</sub> &nbsp;→&nbsp; longueur de recouvrement<br>
+                Rayon de cintrage = ≥ 4φ (pour φ ≤ 16 mm) ou ≥ 7φ (pour φ > 16 mm)
+            </div>
+
+            <div class="domaine">
+                <span>Domaine : Tous les éléments en BA</span>
+                <span>l<sub>bd</sub> ≈ 30 à 60 φ (selon le diamètre et la qualité du béton)</span>
+                <span>Recouvrement ≈ 40 à 80 φ</span>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TOME 16 — APPLICATIONS COMPLÈTES -->
+        <!-- ============================================================ -->
+        <div class="card" id="tome16">
+            <div class="tome-id">Tome 16</div>
+            <h2>📋 Applications complètes</h2>
+            <div class="desc">Descente de charges, détermination des efforts (N, V, M, T), calcul manuel selon l'Eurocode 2, vérification ELU et ELS, ferraillage détaillé, plans de ferraillage, contrôle dans Robot Structural Analysis / Arche.</div>
+
+            <div class="formulas">
+                <div class="label">Méthodologie complète</div>
+                <strong>1. Descente de charges</strong> : G<sub>k</sub> + Q<sub>k</sub> → efforts aux éléments porteurs<br>
+                <strong>2. Détermination des efforts</strong> : N<sub>Ed</sub>, V<sub>Ed</sub>, M<sub>Ed</sub>, T<sub>Ed</sub><br>
+                <strong>3. Calcul manuel EC2</strong> : flexion, cisaillement, torsion, poinçonnement, compression<br>
+                <strong>4. Vérification ELU</strong> : N<sub>Rd</sub> ≥ N<sub>Ed</sub>, M<sub>Rd</sub> ≥ M<sub>Ed</sub>, V<sub>Rd</sub> ≥ V<sub>Ed</sub><br>
+                <strong>5. Vérification ELS</strong> : contraintes, fissuration, flèches<br>
+                <strong>6. Ferraillage</strong> : armatures longitudinales, transversales, étriers<br>
+                <strong>7. Plans de ferraillage</strong> : coupes, nomenclatures<br>
+                <strong>8. Contrôle logiciel</strong> : Robot Structural Analysis, Arche
+            </div>
+
+            <div class="domaine">
+                <span>Domaine : Tous les bâtiments et ouvrages</span>
+                <span>Vérification complète selon EN 1992-1-1</span>
+                <span>Applications : bâtiments, ponts, ouvrages d'art</span>
+            </div>
+
+            <div class="exemple">
+                <strong>Exemple complet :</strong> Poutre 25×55 cm, portée 6 m, charges G=8 kN/m, Q=6 kN/m, béton C25/30, acier S500B<br>
+                <strong>1. ELU :</strong> P=1,35×8+1,5×6=19,8 kN/m → M=19,8×6²/8=89,1 kN·m<br>
+                <strong>2. A<sub>s</sub> :</strong> d=495 mm → A<sub>s</sub>=89,1×10⁶/(0,9×495×434,8)=459 mm² → 3 HA14<br>
+                <strong>3. ELS :</strong> σ<sub>b</sub>=4,2 MPa ≤ 0,45×14,17=6,38 MPa → OK<br>
+                <strong>4. Cisaillement :</strong> V=59,4 kN → τ=59,4×10³/(250×495)=0,48 MPa ≤ 0,15×25/1,15=3,26 MPa → OK<br>
+                <strong>5. Étriers :</strong> HA6 espacés de 200 mm (zones courantes), 150 mm (zones critiques)<br>
+                <strong>6. Vérification Robot :</strong> Confirmation des résultats avec une marge < 5%
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- FOOTER -->
+        <!-- ============================================================ -->
+        <div class="footer">
+            <p>📚 Cours complet de référence — <span>Eurocode 2</span> (NF EN 1992-1-1)<br>
+            Niveau Master 2 / Ingénieur bureau d'études — Béton armé</p>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleExercice(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+            }
+        }
+    </script>
+
+</body>
+</html>
