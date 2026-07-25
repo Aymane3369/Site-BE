@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les 20 Leçons d'un Sage — 15-18 ans</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f5f0eb;
+            color: #1a1a2e;
+            padding: 2rem 1rem;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0d0d1a, #1a1a2e);
+            color: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            right: -80px;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(240, 194, 122, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header h1 span {
+            color: #f0c27a;
+        }
+
+        .header .subtitle {
+            margin-top: 0.6rem;
+            font-size: 1.05rem;
+            opacity: 0.85;
+            max-width: 700px;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: rgba(240, 194, 122, 0.15);
+            color: #f0c27a;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 0.8rem;
+            border: 1px solid rgba(240, 194, 122, 0.2);
+        }
+
+        .header .meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+            opacity: 0.75;
+        }
+
+        .header .meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #f0c27a;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 1.4rem 1.6rem;
+            border: 1px solid #e2d8cc;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+            border-color: #2d4059;
+        }
+
+        .card .num {
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: #8a7a6a;
+            background: #f5ede4;
+            padding: 0.1rem 0.7rem;
+            border-radius: 12px;
+            display: inline-block;
+            letter-spacing: 0.05em;
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin: 0.4rem 0 0.2rem;
+        }
+
+        .card .theme {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #2d4059;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-top: 0.1rem;
+        }
+
+        .card .desc {
+            font-size: 0.85rem;
+            color: #4a3a3a;
+            margin-top: 0.3rem;
+        }
+
+        .card .competences {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            margin-top: 0.6rem;
+        }
+
+        .card .competences span {
+            font-size: 0.6rem;
+            padding: 0.15rem 0.6rem;
+            background: #f0ece6;
+            border-radius: 12px;
+            color: #4a3a3a;
+        }
+
+        #articlePage {
+            display: none;
+        }
+
+        #articlePage.active {
+            display: block;
+        }
+
+        #homePage.hidden {
+            display: none;
+        }
+
+        .article-container {
+            background: #fff;
+            border-radius: 20px;
+            padding: 2.8rem 3.2rem;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.07);
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .article-container .article-num {
+            font-size: 0.7rem;
+            color: #8a7a6a;
+            background: #f5ede4;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            display: inline-block;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .article-container h2 {
+            font-size: 2rem;
+            margin: 0.4rem 0 0.2rem;
+            color: #1a1a2e;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .article-container .article-theme {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #2d4059;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.5rem;
+        }
+
+        .article-container .article-competences {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .article-container .article-competences span {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.8rem;
+            background: #f0ece6;
+            border-radius: 20px;
+            color: #3a3a4a;
+        }
+
+        .article-container .article-content h4 {
+            color: #1a1a2e;
+            margin: 1.4rem 0 0.4rem;
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .article-container .article-content p {
+            margin-bottom: 0.9rem;
+            font-size: 1.02rem;
+            line-height: 1.85;
+            color: #2a2a3a;
+        }
+
+        .article-container .article-content .story {
+            background: #faf6f0;
+            padding: 1.2rem 1.8rem;
+            border-radius: 12px;
+            border-left: 4px solid #f0c27a;
+            margin: 1rem 0;
+            font-style: italic;
+            color: #3a3a4a;
+        }
+
+        .article-container .article-content .analyse {
+            background: #f0f4f8;
+            padding: 1.2rem 1.8rem;
+            border-radius: 12px;
+            border-left: 4px solid #2d4059;
+            margin: 1rem 0;
+        }
+
+        .article-container .article-content .analyse h5 {
+            color: #1a1a2e;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .article-container .article-content .dilemme {
+            background: #fdf6ee;
+            padding: 1.2rem 1.8rem;
+            border-radius: 12px;
+            border: 2px dashed #f0c27a;
+            margin: 1rem 0;
+        }
+
+        .article-container .article-content .lecon-pratique {
+            background: #eef3f8;
+            padding: 1.2rem 1.8rem;
+            border-radius: 12px;
+            border-left: 4px solid #2d7a2d;
+            margin: 1rem 0;
+        }
+
+        .article-container .article-content ul {
+            padding-left: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .article-container .article-content ul li {
+            margin-bottom: 0.4rem;
+            color: #2a2a3a;
+        }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 2rem;
+            color: #2d4059;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.6rem 1.4rem;
+            border: 2px solid #2d4059;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+
+        .back-home:hover {
+            background: #2d4059;
+            color: #fff;
+        }
+
+        @media (max-width: 640px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            .article-container {
+                padding: 1.5rem;
+            }
+            .article-container h2 {
+                font-size: 1.4rem;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .header .meta {
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+        }
+
+        .footer {
+            margin-top: 2.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #8a7a6a;
+            border-top: 1px solid #e2d8cc;
+            padding-top: 1.5rem;
+        }
+
+        .footer span {
+            color: #2d4059;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ============================================================ -->
+        <!-- PAGE D'ACCUEIL -->
+        <!-- ============================================================ -->
+        <div id="homePage">
+            <div class="header">
+                <h1>📖 <span>Les 20 Leçons d'un Sage</span></h1>
+                <div class="subtitle">Récits initiatiques pour développer l'intelligence, la maturité et la capacité de réflexion</div>
+                <div class="badge">15–18 ans · Chaque leçon a sa propre URL</div>
+                <div class="meta">
+                    <span>🧠 20 leçons</span>
+                    <span>📚 Psychologie · Économie · Philosophie</span>
+                    <span>🎯 Compétences de vie</span>
+                </div>
+            </div>
+
+            <div id="homeContent"></div>
+
+            <div class="footer">
+                <p>📖 <span>Les 20 Leçons d'un Sage</span> — Grandir, réfléchir, décider</p>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PAGE ARTICLE -->
+        <!-- ============================================================ -->
+        <div id="articlePage">
+            <div class="header" style="margin-bottom: 1.5rem;">
+                <h1>📖 <span>Les 20 Leçons d'un Sage</span></h1>
+                <a class="back-link" href="#" id="backToHomeLink">← Retour à la liste des leçons</a>
+            </div>
+            <div class="article-container" id="articleContainer">
+                <div class="article-num" id="articleNum">01</div>
+                <h2 id="articleTitle">Titre</h2>
+                <div class="article-theme" id="articleTheme">Thème</div>
+                <div class="article-competences" id="articleCompetences"></div>
+                <div class="article-content" id="articleContent">
+                    <p>Contenu...</p>
+                </div>
+                <a href="#" class="back-home" id="backHomeBtn">← Toutes les leçons</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ================================================================
+        //  DONNÉES DES 20 LEÇONS
+        // ================================================================
+
+        const lecons = [{
+            id: 1,
+            title: "La Décision qui Compte",
+            theme: "Prise de décision",
+            competences: ["Analyse", "Peser les options", "Assumer les conséquences"],
+            content: `
+                <div class="story">
+                    Le jeune Lucas, 17 ans, était à un carrefour. Sa famille devait déménager à l'autre bout du pays. Il devait choisir : suivre ses parents et tout recommencer, ou rester chez son oncle pour finir son année de terminale. Deux options, deux futurs.
+                </div>
+
+                <p>Il consulta le sage du village, un ancien ingénieur nommé Monsieur Armand. Ce dernier ne lui donna pas de réponse. Il lui raconta une histoire : "Un jour, un roi devait choisir entre la guerre et la paix. Il réunit ses conseillers. Le premier lui dit que la guerre était la seule option. Le second lui dit que la paix était la seule option. Le roi comprit que la vérité était entre les deux. Il choisit de négocier, et évita ainsi une guerre qui aurait coûté des milliers de vies."</p>
+
+                <p>Armand expliqua à Lucas : "Une bonne décision n'est pas celle qui est parfaite, car il n'y a pas de perfection. C'est celle qui est la meilleure possible avec les informations que tu as au moment où tu décides. Tu ne peux pas tout prévoir. Mais tu peux réfléchir à ce qui est vraiment important pour toi."</p>
+
+                <p>Lucas réfléchit. Ce qui comptait pour lui, c'était d'avoir une chance de réussir son bac et de rester en contact avec ses amis. Il choisit de rester chez son oncle. Il travailla dur, obtint son bac avec mention, et rejoignit sa famille à l'été. Il avait appris que décider, ce n'est pas choisir le bon chemin, c'est choisir un chemin et le construire.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de la décision</h5>
+                    <p>Lucas a utilisé une méthode simple mais efficace : il a identifié ses priorités (réussir son bac, garder ses amis), puis il a choisi l'option qui maximisait ces priorités. Il a accepté l'incertitude (ne pas savoir comment il vivrait loin de ses parents) et il a assumé les conséquences de son choix.</p>
+                    <p>Cette approche est celle de la <strong>décision rationnelle</strong> : définir ses critères, évaluer les options, choisir celle qui correspond le mieux à ses valeurs, et assumer les conséquences.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Si vous étiez Lucas, auriez-vous fait le même choix ? Comment décider quand aucune option n'est parfaite ?</p>
+                </div>
+
+                <div class="lecon-pratique">
+                    <h5>🎯 Leçon pratique</h5>
+                    <p>La prochaine fois que vous devez prendre une décision importante, écrivez :</p>
+                    <ul>
+                        <li><strong>1.</strong> Ce qui est vraiment important pour vous (vos valeurs)</li>
+                        <li><strong>2.</strong> Les options possibles</li>
+                        <li><strong>3.</strong> Les conséquences probables de chaque option</li>
+                        <li><strong>4.</strong> La décision qui correspond le mieux à vos valeurs</li>
+                    </ul>
+                    <p>Et souvenez-vous : une fois la décision prise, construisez-la plutôt que de la regretter.</p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Lucas a-t-il choisi de rester chez son oncle ?</li>
+                    <li>Qu'est-ce qui rend une décision "bonne" ?</li>
+                    <li>Avez-vous déjà dû faire un choix difficile entre deux options ? Comment avez-vous décidé ?</li>
+                    <li>Comment gérer l'incertitude quand on doit décider ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Psychologie :</strong> La théorie de la décision, les biais cognitifs.</li>
+                    <li><strong>Philosophie :</strong> L'éthique des conséquences.</li>
+                    <li><strong>Économie :</strong> Le coût d'opportunité.</li>
+                </ul>
+            `
+        }, {
+            id: 2,
+            title: "Les Graines du Futur",
+            theme: "Le pouvoir des habitudes",
+            competences: ["Discipline", "Construction personnelle", "Constance"],
+            content: `
+                <div class="story">
+                    Le sage Armand avait un jardin. Mais ce n'était pas un jardin ordinaire. Chaque plante représentait une habitude. Les mauvaises herbes étaient les mauvaises habitudes. Les fleurs étaient les bonnes. Il expliqua à sa jeune voisine, Manon, 16 ans, que les habitudes sont comme des graines : elles germent lentement, mais elles grandissent jusqu'à tout envahir.
+                </div>
+
+                <p>"Si tu plantes une graine de paresse", dit-il, "elle poussera et deviendra une plante qui étouffera tout. Si tu plantes une graine de discipline, elle deviendra un arbre qui protégera les autres plantes."</p>
+
+                <p>Manon était une élève brillante mais elle procrastinait beaucoup. Elle décida de planter une graine de discipline. Chaque jour, elle s'engagea à faire ses devoirs dès qu'elle rentrait chez elle, pendant une heure. Les premières semaines furent difficiles. Elle était tentée de regarder les réseaux sociaux ou de traîner. Mais elle tint bon. Au bout d'un mois, l'habitude était devenue naturelle. Ses notes s'améliorèrent, son stress diminua, et elle se sentit plus maître de sa vie.</p>
+
+                <p>Armand lui dit : "Les habitudes sont comme les graines. On ne voit pas les résultats immédiatement, mais chaque jour, elles grandissent. Un jour, on se réveille et on réalise qu'on est devenu la personne qu'on a construite, graine après graine."</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse du pouvoir des habitudes</h5>
+                    <p>Manon a découvert que les habitudes sont des <strong>automatismes</strong> qui libèrent de l'énergie mentale. Ce qui demande un effort au début devient naturel avec le temps. La clé est de <strong>commencer petit</strong> et d'être <strong>constant</strong>.</p>
+                    <p>Cette approche est validée par la psychologie : il faut environ 66 jours pour qu'une habitude devienne automatique. Le plus difficile est de tenir les premières semaines.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Comment résister aux tentations quotidiennes quand on veut changer une habitude ? Faut-il se forcer ou attendre la motivation ?</p>
+                </div>
+
+                <div class="lecon-pratique">
+                    <h5>🎯 Leçon pratique</h5>
+                    <p>Identifiez une habitude que vous aimeriez créer ou modifier. Appliquez la méthode :</p>
+                    <ul>
+                        <li><strong>1.</strong> Commencez par une petite version (5 minutes par jour).</li>
+                        <li><strong>2.</strong> Faites-la à la même heure chaque jour pour créer un rituel.</li>
+                        <li><strong>3.</strong> Tenez au moins 3 semaines sans exception.</li>
+                        <li><strong>4.</strong> Observez ce qui change.</li>
+                    </ul>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Manon avait-elle du mal à se mettre au travail ?</li>
+                    <li>Quelle est la différence entre une habitude et un choix ponctuel ?</li>
+                    <li>Quelle habitude aimeriez-vous cultiver dans votre vie ?</li>
+                    <li>Comment les petites actions quotidiennes transforment-elles notre vie ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Psychologie :</strong> La formation des habitudes (James Clear, Atomic Habits).</li>
+                    <li><strong>Neuroscience :</strong> La plasticité cérébrale.</li>
+                    <li><strong>Philosophie :</strong> La discipline comme liberté.</li>
+                </ul>
+            `
+        }, {
+            id: 3,
+            title: "Le Trésor Invisible",
+            theme: "L'argent et la liberté",
+            competences: ["Gestion financière", "Épargne", "Valeur du travail"],
+            content: `
+                <div class="story">
+                    Le jeune Théo, 18 ans, avait reçu 200 euros pour son anniversaire. Il hésita entre deux options : les dépenser tout de suite pour une nouvelle console de jeux, ou les garder pour un projet futur. Il demanda conseil au sage Armand.
+                </div>
+
+                <p>Armand ne lui donna pas de réponse. Il lui raconta l'histoire de deux frères. L'un dépensait tout ce qu'il gagnait aussitôt. Il vivait dans le luxe, mais il était constamment endetté. L'autre épargnait et investissait une partie de ses revenus. Il vivait modestement, mais au bout de vingt ans, il était libre : il pouvait choisir ce qu'il voulait faire de sa vie.</p>
+
+                <p>"L'argent", expliqua Armand, "n'est pas une fin. C'est un outil. Il peut te donner du temps, de la liberté, et la possibilité de choisir ta vie. Si tu le dépenses immédiatement, tu achètes un plaisir immédiat. Si tu le gardes et le fais fructifier, tu achètes une liberté future."</p>
+
+                <p>Théo choisit d'épargner. Il investit les 200 euros dans un petit projet : il acheta des fournitures pour créer des bijoux artisanaux, qu'il vendit sur le marché. En trois mois, il avait transformé ses 200 euros en 600 euros. Il comprit que l'argent n'est pas une récompense, mais un outil qui permet de créer plus de valeur.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de la décision de Théo</h5>
+                    <p>Théo a fait un choix de <strong>gratification différée</strong>. Il a renoncé à un plaisir immédiat pour un bénéfice futur. Cette capacité est un indicateur de succès dans la vie. Les études montrent que les enfants capables de différer une récompense (test du marshmallow) réussissent mieux dans la vie.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Entre un plaisir immédiat et un bénéfice futur, comment choisir ? La modération est-elle la seule voie ?</p>
+                </div>
+
+                <div class="lecon-pratique">
+                    <h5>🎯 Leçon pratique</h5>
+                    <p>La prochaine fois que vous recevez de l'argent (cadeau, travail, etc.), posez-vous ces questions :</p>
+                    <ul>
+                        <li><strong>1.</strong> Est-ce que je veux ceci maintenant ou préfère-je un bénéfice plus grand plus tard ?</li>
+                        <li><strong>2.</strong> Comment cet argent pourrait-il me rendre plus libre à l'avenir ?</li>
+                        <li><strong>3.</strong> Puis-je investir une partie dans quelque chose qui crée de la valeur ?</li>
+                    </ul>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Théo a-t-il choisi d'épargner ?</li>
+                    <li>Quelle est la différence entre l'argent et la richesse ?</li>
+                    <li>Comment gérer son argent quand on est jeune ?</li>
+                    <li>Qu'est-ce que la liberté financière pour vous ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Économie :</strong> L'épargne et l'investissement.</li>
+                    <li><strong>Psychologie :</strong> La gratification différée.</li>
+                    <li><strong>Philosophie :</strong> La liberté comme choix.</li>
+                </ul>
+            `
+        }, {
+            id: 4,
+            title: "Les Mots qui Guérissent",
+            theme: "L'art d'écouter",
+            competences: ["Écoute active", "Empathie", "Communication"],
+            content: `
+                <div class="story">
+                    Dans le village, un conflit opposait deux familles. La source du différend était ancienne, personne ne s'en souvenait vraiment, mais chacun était convaincu d'avoir raison. Les insultes volaient, les portes claquaient. Le jeune Julien, 17 ans, qui connaissait bien les deux familles, était désolé de voir cette division.
+                </div>
+
+                <p>Il alla voir le sage Armand. "Que puis-je faire ?", demanda-t-il. Armand lui répondit : "Va chez les deux familles. N'essaie pas de les convaincre, ne prends pas parti. Écoute-les. Demande-leur de te raconter leur histoire. Pose des questions. Laisse-les parler jusqu'à ce qu'ils se sentent entendus."</p>
+
+                <p>Julien fit ce qu'Armand lui avait conseillé. Il passa plusieurs heures avec chaque famille. Il écouta leurs rancœurs, leurs peurs, leurs espoirs. Sans juger, sans donner de conseils. Il nota ce qu'il entendait. Puis il retourna voir les deux familles et leur dit : "J'ai écouté les deux versions. Vous avez tous des raisons d'être en colère. Mais j'ai aussi entendu des peurs que vous partagez."</p>
+
+                <p>Pour la première fois, les deux familles s'écoutèrent. Elles découvrirent que leurs peurs étaient similaires, que leurs désirs étaient communs. Le conflit s'apaisa. Julien avait appris que l'écoute est un acte de construction, pas de passivité.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de la méthode de Julien</h5>
+                    <p>Julien a utilisé l'<strong>écoute active</strong> : il a écouté sans juger, il a reformulé, il a permis aux deux parties de se sentir comprises. Cette approche désamorce les tensions et ouvre un espace de dialogue.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Est-il possible d'écouter vraiment sans prendre parti ? L'écoute est-elle toujours la meilleure réponse dans un conflit ?</p>
+                </div>
+
+                <div class="lecon-pratique">
+                    <h5>🎯 Leçon pratique</h5>
+                    <p>La prochaine fois que vous êtes dans une conversation difficile, essayez cette méthode :</p>
+                    <ul>
+                        <li><strong>1.</strong> Ne préparez pas votre réponse pendant que l'autre parle.</li>
+                        <li><strong>2.</strong> Reformulez ce que vous avez compris : "Si j'ai bien compris, vous pensez que..."</li>
+                        <li><strong>3.</strong> Posez des questions ouvertes : "Pouvez-vous m'expliquer pourquoi cela est si important pour vous ?"</li>
+                    </ul>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi les deux familles étaient-elles en conflit ?</li>
+                    <li>Qu'est-ce qui a permis d'apaiser le conflit ?</li>
+                    <li>Quand avez-vous été écouté(e) pour la dernière fois ?</li>
+                    <li>Comment peut-on devenir un meilleur auditeur ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Psychologie :</strong> L'écoute active (Carl Rogers).</li>
+                    <li><strong>Communication :</strong> La reformulation.</li>
+                    <li><strong>Gestion des conflits :</strong> La médiation.</li>
+                </ul>
+            `
+        }, {
+            id: 5,
+            title: "Le Contrat de Confiance",
+            theme: "La confiance",
+            competences: ["Fiabilité", "Réputation", "Intégrité"],
+            content: `
+                <div class="story">
+                    Le jeune Malik, 18 ans, avait promis à son père de s'occuper de la boutique familiale pendant son absence. Une semaine plus tard, ses amis l'invitèrent à une sortie. Il hésita : il pouvait fermer la boutique une journée, personne ne le saurait. Mais il avait donné sa parole.
+                </div>
+
+                <p>Il se souvint des paroles du sage Armand : "La confiance est comme un vase en cristal. Elle se construit patiemment, coup par coup, mais elle se brise en un instant. Une fois brisée, il est presque impossible de la reconstruire."</p>
+
+                <p>Malik refusa l'invitation. Il resta à la boutique, même si personne ne venait. Le soir, un client régulier entra. Il avait besoin d'un conseil urgent. Malik l'aida avec compétence et sincérité. Le client, impressionné, recommanda la boutique à plusieurs de ses amis.</p>
+
+                <p>Malik comprit que la confiance n'est pas une promesse qui se fait une fois, mais une pratique quotidienne. Il avait gardé sa parole, et cette fiabilité lui avait ouvert des portes qu'il n'avait pas anticipées.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse du choix de Malik</h5>
+                    <p>Malik a fait un choix de <strong>fiabilité</strong> qui a eu des conséquences imprévues. Il a montré que la confiance se construit par la constance : on ne fait pas confiance à quelqu'un qui est fiable une fois sur deux, mais à quelqu'un qui est fiable toujours.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Peut-on être fiable sans être rigide ? Comment concilier ses engagements et ses envies ?</p>
+                </div>
+
+                <div class="lecon-pratique">
+                    <h5>🎯 Leçon pratique</h5>
+                    <ul>
+                        <li><strong>1.</strong> Si vous faites une promesse, tenez-la, même si c'est difficile.</li>
+                        <li><strong>2.</strong> Si vous ne pouvez pas tenir une promesse, prévenez avant, pas après.</li>
+                        <li><strong>3.</strong> N'acceptez pas un engagement si vous n'êtes pas sûr de pouvoir le tenir.</li>
+                    </ul>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Malik a-t-il refusé l'invitation ?</li>
+                    <li>Quelle est la différence entre une promesse et une intention ?</li>
+                    <li>Dans quelles situations la confiance est-elle la plus importante ?</li>
+                    <li>Comment réparer une confiance brisée ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Éthique :</strong> La parole donnée.</li>
+                    <li><strong>Psychologie :</strong> La confiance comme fondement des relations.</li>
+                    <li><strong>Économie :</strong> La réputation comme capital.</li>
+                </ul>
+            `
+        }, {
+            id: 6,
+            title: "Le Moment du Courage",
+            theme: "Le courage moral",
+            competences: ["Intégrité", "Justice", "Responsabilité"],
+            content: `
+                <div class="story">
+                    Dans son lycée, Leila, 17 ans, était témoin d'un harcèlement. Un élève était moqué quotidiennement. Personne ne disait rien. Leila avait peur de parler : elle pourrait devenir la prochaine cible. Elle hésita longtemps.
+                </div>
+
+                <p>Elle se souvint de ce que le sage Armand lui avait dit : "Le courage n'est pas l'absence de peur. C'est agir malgré la peur. Ceux qui se taisent deviennent complices de ce qu'ils ne dénoncent pas."</p>
+
+                <p>Leila prit la parole. Elle parla à un professeur, puis à la direction. Une enquête fut ouverte. Le harcèlement cessa. L'élève victime vint la remercier. Elle se sentit soulagée, mais aussi fière d'avoir agi.</p>
+
+                <p>Elle comprit que le courage moral est une responsabilité. Parler peut sembler risqué, mais le silence coûte plus cher.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse du choix de Leila</h5>
+                    <p>Leila a fait un choix de <strong>courage moral</strong>. Elle a agi malgré sa peur, ce qui est la définition même du courage. Elle a compris que le silence est une forme de complicité et que la justice est une responsabilité collective.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Quand est-il juste de parler, et quand est-il préférable de se taire ? Comment savoir si le courage est utile ou dangereux ?</p>
+                </div>
+
+                <div class="lecon-pratique">
+                    <h5>🎯 Leçon pratique</h5>
+                    <p>Si vous êtes témoin d'une injustice, posez-vous ces questions :</p>
+                    <ul>
+                        <li><strong>1.</strong> Est-ce que je peux agir sans me mettre en danger ?</li>
+                        <li><strong>2.</strong> Qui peut m'aider à agir de manière efficace ?</li>
+                        <li><strong>3.</strong> Quel serait le coût de mon silence ?</li>
+                    </ul>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Leila a-t-elle hésité ?</li>
+                    <li>Qu'est-ce qui a changé sa décision ?</li>
+                    <li>Quelle est la différence entre le courage et l'imprudence ?</li>
+                    <li>Avez-vous déjà dû faire preuve de courage moral ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Éthique :</strong> La justice et la responsabilité.</li>
+                    <li><strong>Psychologie :</strong> Le courage comme force de caractère.</li>
+                    <li><strong>Philosophie :</strong> L'engagement moral.</li>
+                </ul>
+            `
+        }, {
+            id: 7,
+            title: "La Monnaie de la Vie",
+            theme: "Le temps",
+            competences: ["Gestion du temps", "Priorisation", "Conscience"],
+            content: `
+                <div class="story">
+                    Le jeune Ethan, 16 ans, passait des heures sur son téléphone. Il se sentait toujours pressé, mais il n'avançait jamais vraiment. Il alla voir le sage Armand pour lui demander comment il pouvait mieux gérer son temps.
+                </div>
+
+                <p>Armand sortit un sablier. "Regarde ce sablier", dit-il. "Le sable coule. Tu ne peux pas l'arrêter. Mais tu peux choisir comment tu utilises le temps qui te reste." Il lui raconta l'histoire d'un homme riche qui avait offert une montre en or à son fils, en disant : "Cette montre te rappelle que tu as un nombre limité de minutes. Utilise-les pour ce qui compte vraiment."</p>
+
+                <p>Ethan comprit que le temps est une ressource non renouvelable. Il décida de noter comment il passait ses journées. Il réalisa qu'il passait en moyenne 4 heures par jour sur les réseaux sociaux. Il réduisit ce temps à 1 heure et utilisa les 3 heures restantes pour apprendre, lire et créer. En un mois, il avait avancé sur ses projets et se sentait plus épanoui.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de la gestion du temps</h5>
+                    <p>Ethan a découvert que le temps est une ressource que l'on doit <strong>allouer consciemment</strong>. Passer du temps sur une activité n'est pas un problème en soi, mais il faut que ce soit un choix, pas une habitude inconsciente. Il a utilisé la <strong>méthode du suivi du temps</strong> pour prendre conscience de ses priorités.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Comment équilibrer le temps consacré aux loisirs, aux études, aux relations et au repos ? Faut-il tout planifier ?</p>
+                </div>
+
+                <div class="lecon-pratique">
+                    <h5>🎯 Leçon pratique</h5>
+                    <p>Pendant une semaine, notez comment vous passez votre temps. Ensuite :</p>
+                    <ul>
+                        <li><strong>1.</strong> Identifiez ce qui est important pour vous.</li>
+                        <li><strong>2.</strong> Réduisez les activités qui ne vous apportent rien.</li>
+                        <li><strong>3.</strong> Investissez le temps libéré dans ce qui compte vraiment.</li>
+                    </ul>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Ethan se sentait-il toujours pressé ?</li>
+                    <li>Quelle est la différence entre être occupé et être productif ?</li>
+                    <li>Que feriez-vous si vous aviez une heure supplémentaire chaque jour ?</li>
+                    <li>Comment le temps passé aujourd'hui influence-t-il demain ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Gestion :</strong> La gestion du temps et des priorités.</li>
+                    <li><strong>Philosophie :</strong> Le temps comme dimension de l'existence.</li>
+                    <li><strong>Psychologie :</strong> La conscience du temps.</li>
+                </ul>
+            `
+        }, {
+            id: 8,
+            title: "La Leçon de l'Échec",
+            theme: "L'échec",
+            competences: ["Résilience", "Apprentissage", "Persévérance"],
+            content: `
+                <div class="story">
+                    Lison, 16 ans, venait d'échouer à un examen important. Elle était dévastée. Elle s'enferma dans sa chambre, convaincue qu'elle n'était pas assez intelligente. Sa mère l'envoya voir le sage Armand.
+                </div>
+
+                <p>Armand ne la consola pas. Il lui raconta l'histoire d'un scientifique célèbre qui avait échoué 99 fois avant de réussir une invention majeure. "L'échec", dit-il, "n'est pas un verdict. C'est une information. Il te dit ce qui ne fonctionne pas, et c'est la première étape pour trouver ce qui fonctionne."</p>
+
+                <p>Lison réalisa que son échec n'était pas une condamnation, mais un diagnostic. Elle analysa ses erreurs, identifia ce qu'elle devait améliorer, et se remit au travail. Six mois plus tard, elle réussit l'examen avec mention. Elle avait appris que l'échec est un professeur, à condition de l'écouter.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de la transformation de Lison</h5>
+                    <p>Lison a fait un changement de <strong>mindset</strong> : elle est passée d'une vision fixe ("je suis nulle") à une vision de croissance ("je peux progresser"). Cette approche est validée par la recherche en psychologie : les personnes qui voient l'échec comme une opportunité d'apprendre réussissent mieux dans la vie.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Comment ne pas se décourager quand on échoue à plusieurs reprises ? L'échec est-il toujours une chance d'apprendre ?</p>
+                </div>
+
+                <div class="lecon-pratique">
+                    <h5>🎯 Leçon pratique</h5>
+                    <p>Quand vous échouez :</p>
+                    <ul>
+                        <li><strong>1.</strong> Acceptez l'échec sans vous juger.</li>
+                        <li><strong>2.</strong> Analysez ce qui n'a pas fonctionné.</li>
+                        <li><strong>3.</strong> Identifiez ce que vous pouvez améliorer.</li>
+                        <li><strong>4.</strong> Réessayez avec une nouvelle approche.</li>
+                    </ul>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Lison était-elle dévastée ?</li>
+                    <li>Comment Armand a-t-il changé sa perspective ?</li>
+                    <li>Quelle est la différence entre un échec et une erreur ?</li>
+                    <li>Quel est l'échec qui vous a le plus appris ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Psychologie :</strong> Growth mindset (Carol Dweck).</li>
+                    <li><strong>Éducation :</strong> L'apprentissage par l'erreur.</li>
+                    <li><strong>Philosophie :</strong> L'échec comme passage nécessaire.</li>
+                </ul>
+            `
+        }, {
+            id: 9,
+            title: "Le Miroir des Algorithmes",
+            theme: "Les réseaux sociaux",
+            competences: ["Conscience numérique", "Estime de soi", "Discernement"],
+            content: `
+                <div class="story">
+                    Clara, 16 ans, passait des heures sur les réseaux sociaux. Elle comparait sa vie à celle des autres et se sentait toujours insuffisante. Elle ne comprenait pas pourquoi elle se sentait mal après avoir scrollé pendant des heures.
+                </div>
+
+                <p>Le sage Armand lui expliqua : "Les réseaux sociaux sont des miroirs déformants. Ils montrent une version idéalisée de la vie des autres, et ils te vendent l'illusion que tu devrais être comme eux. Mais ce que tu vois, ce n'est pas la réalité, c'est une vitrine soigneusement préparée."</p>
+
+                <p>Il lui proposa un défi : une semaine sans réseaux sociaux. Clara accepta. Les premiers jours furent difficiles. Elle se sentait coupée du monde. Puis, elle redécouvrit le plaisir des conversations en face à face, des livres, des promenades. Elle se sentit plus légère, plus présente.</p>
+
+                <p>Elle comprit que les réseaux sociaux sont des outils, pas des maîtres. Elle apprit à les utiliser avec discernement, sans se laisser piéger par la comparaison.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de l'expérience de Clara</h5>
+                    <p>Clara a découvert que les réseaux sociaux créent un <strong>biais de comparaison</strong> : on compare notre vie réelle à la version idéalisée des autres. Cette comparaison est toxique pour l'estime de soi. La <strong>détox numérique</strong> lui a permis de retrouver une relation plus saine avec elle-même.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Les réseaux sociaux sont-ils une menace ou une opportunité ? Comment les utiliser sans qu'ils nous utilisent ?</p>
+                </div>
+
+                <div class="lecon-pratique">
+                    <h5>🎯 Leçon pratique</h5>
+                    <p>Essayez un défi :</p>
+                    <ul>
+                        <li><strong>1.</strong> Une journée sans réseaux sociaux.</li>
+                        <li><strong>2.</strong> Observez ce que vous ressentez.</li>
+                        <li><strong>3.</strong> Notez les activités que vous avez faites à la place.</li>
+                        <li><strong>4.</strong> Décidez si vous voulez changer votre usage des réseaux.</li>
+                    </ul>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Clara se sentait-elle insuffisante ?</li>
+                    <li>Qu'est-ce que les réseaux sociaux ne montrent pas ?</li>
+                    <li>Comment les algorithmes influencent-ils ce qu'on voit ?</li>
+                    <li>Quelle est la différence entre une présence en ligne et une présence réelle ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Psychologie :</strong> La comparaison sociale.</li>
+                    <li><strong>Sociologie :</strong> L'impact des réseaux sociaux sur l'estime de soi.</li>
+                    <li><strong>Éthique :</strong> L'usage responsable de la technologie.</li>
+                </ul>
+            `
+        }, {
+            id: 10,
+            title: "La Vérité Déguisée",
+            theme: "L'esprit critique",
+            competences: ["Analyse", "Vérification", "Discernement"],
+            content: `
+                <div class="story">
+                    Le jeune Maxime, 17 ans, avait partagé une information sur les réseaux sociaux sans la vérifier. Elle s'était avérée fausse. Il avait perdu la confiance de plusieurs amis qui l'avaient crû sur parole. Il alla voir le sage Armand, honteux et confus.
+                </div>
+
+                <p>Armand lui dit : "L'information est comme une arme. On peut s'en servir pour éclairer ou pour tromper. Mais avant de partager, pose-toi trois questions : Qui a dit cela ? Quelles sont ses sources ? Pourquoi devrais-je le croire ?"</p>
+
+                <p>Il lui raconta l'histoire d'un roi qui avait reçu des nouvelles d'une guerre lointaine. Il avait envoyé trois émissaires différents pour vérifier l'information. Ce n'est qu'en croisant les trois versions qu'il avait pu prendre une décision éclairée.</p>
+
+                <p>Maxime comprit que l'esprit critique est une responsabilité. Il décida de ne plus partager d'informations sans les vérifier. Il apprit à croiser les sources, à questionner les certitudes, à douter de ce qui semblait trop beau pour être vrai.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de la méthode de Maxime</h5>
+                    <p>Maxime a adopté une <strong>démarche critique</strong> : vérifier les sources, croiser les informations, douter de ses certitudes. Il a compris que la crédibilité se construit par la rigueur et que la légèreté dans l'information peut avoir des conséquences graves.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Comment savoir si une information est fiable quand les sources sont nombreuses et contradictoires ?</p>
+                </div>
+
+                <div class="lecon-pratique">
+                    <h5>🎯 Leçon pratique</h5>
+                    <p>Avant de partager une information :</p>
+                    <ul>
+                        <li><strong>1.</strong> Vérifiez la source (qui a publié ?).</li>
+                        <li><strong>2.</strong> Croisez avec d'autres sources.</li>
+                        <li><strong>3.</strong> Demandez-vous si l'information est plausible.</li>
+                        <li><strong>4.</strong> Si vous avez un doute, ne partagez pas.</li>
+                    </ul>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Maxime a-t-il partagé l'information sans la vérifier ?</li>
+                    <li>Qu'est-ce que l'esprit critique ?</li>
+                    <li>Comment reconnaître une source fiable ?</li>
+                    <li>Pourquoi est-il important de douter de ce qu'on lit ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Épistémologie :</strong> La critique des sources.</li>
+                    <li><strong>Journalisme :</strong> La vérification des faits.</li>
+                    <li><strong>Psychologie :</strong> Les biais cognitifs (biais de confirmation).</li>
+                </ul>
+            `
+        }, {
+            id: 11,
+            title: "Le Capitaine Silencieux",
+            theme: "Le leadership",
+            competences: ["Inspiration", "Responsabilité", "Écoute"],
+            content: `
+                <div class="story">
+                    Lucas, 18 ans, était le capitaine de l'équipe de basket. Il était talentueux, mais il criait sur ses coéquipiers quand ils faisaient des erreurs. Il pensait que la peur les motiverait. L'équipe perdait match après match.
+                </div>
+
+                <p>Le sage Armand l'invita à observer un match de football. L'équipe gagnante avait un capitaine qui ne criait pas. Il encourageait, il écoutait, il conseillait. Ses coéquipiers jouaient avec confiance, pas avec peur.</p>
+
+                <p>Lucas comprit que le leadership n'est pas une question de commandement, mais d'inspiration. Un leader élève les autres, il ne les écrase pas. Il changea son approche. Il écouta ses coéquipiers, les encouragea, les guida. L'équipe commença à gagner, non pas parce qu'il était plus fort, mais parce qu'ils étaient plus unis.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de la transformation de Lucas</h5>
+                    <p>Lucas est passé d'un <strong>leadership autoritaire</strong> à un <strong>leadership inspirant</strong>. Il a compris que la peur motive à court terme, mais l'inspiration motive à long terme. Un leader qui écoute et encourage crée une dynamique de confiance et de performance.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Comment concilier exigence et bienveillance dans le leadership ?</p>
+                </div>
+
+                <div class="lecon-pratique">
+                    <h5>🎯 Leçon pratique</h5>
+                    <p>Si vous êtes dans une position de leader (capitaine, chef de projet, etc.) :</p>
+                    <ul>
+                        <li><strong>1.</strong> Écoutez avant de décider.</li>
+                        <li><strong>2.</strong> Encouragez plutôt que de critiquer.</li>
+                        <li><strong>3.</strong> Montrez l'exemple plutôt que d'imposer.</li>
+                    </ul>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi l'approche de Lucas échouait-elle ?</li>
+                    <li>Qu'est-ce qui fait un bon leader ?</li>
+                    <li>Quelle est la différence entre un chef et un leader ?</li>
+                    <li>Avez-vous déjà été inspiré par un leader ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Gestion :</strong> Le leadership inspirant.</li>
+                    <li><strong>Psychologie :</strong> La motivation par l'encouragement.</li>
+                    <li><strong>Sociologie :</strong> La dynamique des groupes.</li>
+                </ul>
+            `
+        }, {
+            id: 12,
+            title: "L'Invention du Possible",
+            theme: "L'entrepreneuriat",
+            competences: ["Innovation", "Persévérance", "Prise de risque"],
+            content: `
+                <div class="story">
+                    Le jeune Elias, 17 ans, avait une idée : créer un service de livraison de repas pour les personnes âgées de son quartier. Personne ne croyait en son projet. "Ça ne marchera pas", lui disait-on. "Tu es trop jeune." "C'est trop compliqué."
+                </div>
+
+                <p>Il alla voir le sage Armand. Armand lui dit : "Toutes les grandes inventions ont commencé par une idée que personne ne croyait possible. L'électricité, l'avion, l'ordinateur... Ce qui rend une idée possible, ce n'est pas l'opinion des autres, c'est la persévérance de celui qui la porte."</p>
+
+                <p>Elias décida de se lancer. Il commença petit : il livra des repas à trois personnes âgées du quartier. Le bouche-à-oreille fonctionna. En quelques mois, il servait vingt clients. Il embaucha d'autres jeunes du quartier. Son projet était devenu une vraie petite entreprise. Il avait appris qu'une idée ne devient réelle que par l'action.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de l'entreprise d'Elias</h5>
+                    <p>Elias a appliqué les principes de l'<strong>entrepreneuriat</strong> : commencer petit, tester, s'adapter, persévérer. Il a compris que la prise de risque est nécessaire, mais qu'elle doit être mesurée et accompagnée d'action.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Comment prendre des risques sans s'exposer à un échec trop lourd ?</p>
+                </div>
+
+                <div class="lecon-pratique">
+                    <h5>🎯 Leçon pratique</h5>
+                    <p>Si vous avez une idée :</p>
+                    <ul>
+                        <li><strong>1.</strong> Commencez petit (testez sur un petit groupe).</li>
+                        <li><strong>2.</strong> Recueillez des retours pour améliorer.</li>
+                        <li><strong>3.</strong> Adaptez-vous en fonction des retours.</li>
+                        <li><strong>4.</strong> Persévérez malgré les difficultés.</li>
+                    </ul>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi les autres ne croyaient-ils pas en l'idée d'Elias ?</li>
+                    <li>Qu'est-ce qui rend une idée réalisable ?</li>
+                    <li>Avez-vous déjà eu une idée que vous n'avez pas réalisée ?</li>
+                    <li>Comment surmonter la peur de l'échec ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Entrepreneuriat :</strong> L'innovation et la prise de risque.</li>
+                    <li><strong>Économie :</strong> La création de valeur.</li>
+                    <li><strong>Psychologie :</strong> La persévérance.</li>
+                </ul>
+            `
+        }, {
+            id: 13,
+            title: "Les Murs Invisibles",
+            theme: "La psychologie humaine",
+            competences: ["Conscience de soi", "Compréhension des émotions", "Empathie"],
+            content: `
+                <div class="story">
+                    La jeune Inès était en conflit avec sa mère. Chaque conversation tournait à la dispute. Elle ne comprenait pas pourquoi sa mère ne l'écoutait jamais. Elle alla voir Armand.
+                </div>
+
+                <p>Armand lui dit : "Les conflits ne viennent pas toujours de ce qui est dit, mais de ce qui n'est pas dit. Ta mère a peut-être des peurs qu'elle n'exprime pas. Et toi, tu as peut-être des attentes que tu n'expliques pas." Il lui raconta l'histoire d'un couple qui avait failli se séparer, pour finalement découvrir qu'ils n'avaient pas exprimé leurs besoins fondamentaux.</p>
+
+                <p>Inès décida d'écouter sa mère sans l'interrompre. Elle découvrit que sa mère avait peur de la voir quitter la maison et de se retrouver seule. Elle comprit que le conflit n'était pas une question de volonté, mais de peur et d'amour. Elle apprit à exprimer ses besoins avec calme et à écouter ceux de sa mère. Leur relation s'apaisa.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de la relation d'Inès</h5>
+                    <p>Inès a découvert que les conflits sont souvent des <strong>communications indirectes</strong> : on dit une chose, mais on exprime autre chose. Comprendre les émotions cachées permet de désamorcer les tensions. L'<strong>intelligence émotionnelle</strong> est une compétence clé pour les relations humaines.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Comment exprimer ses besoins sans créer de conflit ? Comment écouter sans se sentir agressé ?</p>
+                </div>
+
+                <div class="lecon-pratique">
+                    <h5>🎯 Leçon pratique</h5>
+                    <p>Dans une conversation difficile :</p>
+                    <ul>
+                        <li><strong>1.</strong> Écoutez sans interrompre.</li>
+                        <li><strong>2.</strong> Essayez de comprendre les émotions sous les mots.</li>
+                        <li><strong>3.</strong> Exprimez vos besoins sans accuser.</li>
+                    </ul>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Inès était-elle en conflit avec sa mère ?</li>
+                    <li>Qu'est-ce que l'intelligence émotionnelle ?</li>
+                    <li>Comment exprimer ses besoins sans créer de conflit ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Psychologie :</strong> L'intelligence émotionnelle (Daniel Goleman).</li>
+                    <li><strong>Communication :</strong> La communication non-violente.</li>
+                    <li><strong>Philosophie :</strong> La compréhension des autres.</li>
+                </ul>
+            `
+        }, {
+            id: 14,
+            title: "Le Laboratoire de l'Échec",
+            theme: "Les grandes inventions",
+            competences: ["Persévérance", "Innovation", "Apprentissage"],
+            content: `
+                <div class="story">
+                    Le jeune Antoine, 17 ans, voulait devenir inventeur. Mais ses premières tentatives étaient des échecs. Il avait construit un petit robot qui ne fonctionnait pas, un circuit qui grillait, un programme qui plantait. Il était découragé.
+                </div>
+
+                <p>Armand l'emmena visiter un laboratoire de recherche. Il lui montra les archives : des centaines de prototypes ratés. "Chaque échec", dit Armand, "est une étape vers la découverte. Thomas Edison a échoué des milliers de fois avant d'inventer l'ampoule. Il disait que l'échec était une source de connaissances."</p>
+
+                <p>Antoine comprit que l'invention n'est pas un coup de chance, mais une accumulation d'essais et d'apprentissages. Il retourna à son robot avec une nouvelle approche : il ne cherchait plus à réussir, il cherchait à apprendre. Après des mois de tentatives, son robot fonctionna. Il avait découvert que l'échec est le meilleur professeur d'innovation.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de l'approche d'Antoine</h5>
+                    <p>Antoine a changé sa perception de l'échec. Il est passé d'une vision de <strong>sanction</strong> à une vision de <strong>donnée</strong>. Chaque échec lui fournissait des informations sur ce qui ne fonctionnait pas, ce qui est la base de la méthode scientifique.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Comment persévérer quand on échoue encore et encore ? Faut-il toujours continuer ou parfois abandonner ?</p>
+                </div>
+
+                <div class="lecon-pratique">
+                    <h5>🎯 Leçon pratique</h5>
+                    <p>Si vous échouez :</p>
+                    <ul>
+                        <li><strong>1.</strong> Notez ce que vous avez appris de cet échec.</li>
+                        <li><strong>2.</strong> Identifiez ce que vous pouvez améliorer.</li>
+                        <li><strong>3.</strong> Réessayez avec les nouvelles informations.</li>
+                    </ul>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Antoine était-il découragé ?</li>
+                    <li>Qu'est-ce qui fait qu'une invention devient possible ?</li>
+                    <li>Quelle est la différence entre un échec et un apprentissage ?</li>
+                    <li>Quelle invention a été précédée de nombreux échecs ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Science :</strong> La méthode scientifique.</li>
+                    <li><strong>Innovation :</strong> L'échec comme étape nécessaire.</li>
+                    <li><strong>Psychologie :</strong> La résilience dans l'innovation.</li>
+                </ul>
+            `
+        }, {
+            id: 15,
+            title: "Le Marché des Accords",
+            theme: "La négociation",
+            competences: ["Communication", "Compromis", "Créativité"],
+            content: `
+                <div class="story">
+                    Le jeune Malik et son ami Adrien se disputaient. Ils devaient vendre ensemble un projet de fin d'année, mais ils n'arrivaient pas à s'entendre sur la répartition du travail. Chacun voulait faire sa partie préférée.
+                </div>
+
+                <p>Le sage Armand leur dit : "La négociation n'est pas un combat. C'est une recherche de solution où chacun peut gagner. Essayez de comprendre ce qui est vraiment important pour l'autre."</p>
+
+                <p>Ils s'écoutèrent. Malik voulait diriger la partie technique. Adrien voulait diriger la partie créative. Ils trouvèrent un accord : Malik s'occuperait de la technique, Adrien de la créativité, et ils partageraient la présentation. Le projet fut un succès. Ils avaient appris que le compromis n'est pas une défaite, c'est une victoire collective.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de leur négociation</h5>
+                    <p>Malik et Adrien ont utilisé une <strong>approche gagnant-gagnant</strong> : ils ont identifié leurs intérêts respectifs et ont trouvé une solution qui satisfaisait les deux. La clé était de comprendre ce qui était important pour l'autre, pas de se battre pour ce qu'on voulait.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Comment négocier quand les intérêts sont opposés ? Est-il toujours possible de trouver un accord gagnant-gagnant ?</p>
+                </div>
+
+                <div class="lecon-pratique">
+                    <h5>🎯 Leçon pratique</h5>
+                    <p>Dans une négociation :</p>
+                    <ul>
+                        <li><strong>1.</strong> Identifiez vos intérêts réels.</li>
+                        <li><strong>2.</strong> Cherchez à comprendre les intérêts de l'autre.</li>
+                        <li><strong>3.</strong> Proposez des solutions créatives.</li>
+                        <li><strong>4.</strong> Cherchez le compromis.</li>
+                    </ul>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Malik et Adrien se disputaient-ils ?</li>
+                    <li>Qu'est-ce qui a permis de trouver un accord ?</li>
+                    <li>Quelle est la différence entre négocier et se battre ?</li>
+                    <li>Comment réagissez-vous face à un conflit ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Gestion :</strong> La négociation gagnant-gagnant.</li>
+                    <li><strong>Psychologie :</strong> La communication non-violente.</li>
+                    <li><strong>Économie :</strong> Les échanges et les accords.</li>
+                </ul>
+            `
+        }, {
+            id: 16,
+            title: "La Balance de Justice",
+            theme: "La justice",
+            competences: ["Équité", "Discernement", "Responsabilité"],
+            content: `
+                <div class="story">
+                    Dans le village, un conflit opposait deux familles. L'une avait volé du bois à l'autre. La loi était claire : le voleur devait être puni. Mais la famille qui avait volé était pauvre et avait besoin de ce bois pour se chauffer.
+                </div>
+
+                <p>Le juge, un homme sage, ne se contenta pas d'appliquer la loi. Il écouta les deux parties, comprit leurs situations, et trouva une solution : la famille pauvre rembourserait le bois en travaillant pour l'autre famille. La justice avait été rendue, mais avec humanité.</p>
+
+                <p>Le jeune Marc, 17 ans, qui assistait à la scène, comprit que la justice n'est pas seulement une question de règles, mais aussi d'équité et de compréhension.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de la décision du juge</h5>
+                    <p>Le juge a distingué la <strong>loi</strong> (ce qui est prescrit) de la <strong>justice</strong> (ce qui est équitable). Il a pris en compte le contexte et les besoins des personnes concernées. Il a montré que la justice ne doit pas être aveugle, mais humaine.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Que faire quand la loi est juste en théorie mais injuste en pratique ?</p>
+                </div>
+
+                <div class="lecon-pratique">
+                    <h5>🎯 Leçon pratique</h5>
+                    <p>Face à une injustice :</p>
+                    <ul>
+                        <li><strong>1.</strong> Écoutez toutes les parties.</li>
+                        <li><strong>2.</strong> Comprenez le contexte.</li>
+                        <li><strong>3.</strong> Cherchez une solution qui soit à la fois juste et humaine.</li>
+                    </ul>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi le juge n'a-t-il pas appliqué la loi strictement ?</li>
+                    <li>Quelle est la différence entre la loi et la justice ?</li>
+                    <li>Quand avez-vous vu une décision juste (ou injuste) ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Philosophie :</strong> La justice selon Aristote.</li>
+                    <li><strong>Droit :</strong> La distinction entre loi et équité.</li>
+                    <li><strong>Éthique :</strong> La justice comme responsabilité.</li>
+                </ul>
+            `
+        }, {
+            id: 17,
+            title: "Le Printemps Après l'Hiver",
+            theme: "La résilience",
+            competences: ["Résilience", "Espoir", "Rebond"],
+            content: `
+                <div class="story">
+                    La jeune Camille avait perdu son grand-père, qu'elle adorait. Elle était en deuil et ne voyait pas comment elle pourrait aller de l'avant. Elle avait l'impression que tout était fini.
+                </div>
+
+                <p>Le sage Armand lui dit : "L'hiver semble interminable, mais le printemps vient toujours. La douleur est comme la neige : elle recouvre tout, mais elle finit par fondre. Ce qui reste, ce sont les racines, plus profondes qu'avant."</p>
+
+                <p>Il lui raconta l'histoire d'un arbre qui avait survécu à un incendie. Il était calciné, mais il avait repoussé, plus fort. Camille comprit que la résilience n'est pas l'absence de douleur, mais la capacité à grandir à travers elle. Elle décida de continuer à vivre pour honorer la mémoire de son grand-père.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de la résilience de Camille</h5>
+                    <p>Camille a fait l'expérience de la <strong>résilience</strong> : la capacité à traverser une épreuve et à en sortir transformé. Elle n'a pas nié sa douleur, elle l'a intégrée comme une partie de son histoire, sans qu'elle définisse toute sa vie.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Comment avancer quand on a perdu quelque chose d'important ? La résilience est-elle toujours possible ?</p>
+                </div>
+
+                <div class="lecon-pratique">
+                    <h5>🎯 Leçon pratique</h5>
+                    <p>Dans une période difficile :</p>
+                    <ul>
+                        <li><strong>1.</strong> Autorisez-vous à ressentir la douleur.</li>
+                        <li><strong>2.</strong> Entourez-vous de personnes bienveillantes.</li>
+                        <li><strong>3.</strong> Cherchez ce que cette épreuve peut vous apprendre.</li>
+                        <li><strong>4.</strong> Avancez pas à pas, sans vous précipiter.</li>
+                    </ul>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Camille avait-elle du mal à avancer ?</li>
+                    <li>Qu'est-ce que la résilience ?</li>
+                    <li>Comment trouver de l'espoir après une perte ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Psychologie :</strong> La résilience.</li>
+                    <li><strong>Philosophie :</strong> La force de vivre.</li>
+                    <li><strong>Spiritualité :</strong> L'espoir comme ressource.</li>
+                </ul>
+            `
+        }, {
+            id: 18,
+            title: "Les Frontières du Savoir",
+            theme: "La science et l'éthique",
+            competences: ["Éthique", "Responsabilité", "Conscience"],
+            content: `
+                <div class="story">
+                    Le jeune scientifique, Théo, avait découvert une technique pour modifier l'ADN des plantes. Elle était puissante et efficace. Mais il réalisa qu'elle pouvait aussi être utilisée à des fins dangereuses. Il avait peur que ses découvertes soient utilisées contre la nature.
+                </div>
+
+                <p>Il alla voir Armand, qui lui dit : "La science est une force. Comme toute force, elle peut être utilisée pour construire ou pour détruire. Ce n'est pas la technique qui est bonne ou mauvaise, c'est l'usage qu'on en fait."</p>
+
+                <p>Théo décida de partager ses découvertes avec des chercheurs responsables, et de ne pas les vendre à des entreprises sans scrupules. Il avait compris que la science et l'éthique doivent aller de pair, et que le savoir impose une responsabilité.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de la décision de Théo</h5>
+                    <p>Théo a fait le choix de l'<strong>éthique scientifique</strong> : il a pris en compte les conséquences de ses découvertes et a agi pour limiter les risques. Il a compris que le savoir n'est pas neutre, et que la science doit être au service de l'humanité.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Que faire quand la science permet de faire quelque chose, mais que ce n'est pas souhaitable ?</p>
+                </div>
+
+                <div class="lecon-pratique">
+                    <h5>🎯 Leçon pratique</h5>
+                    <p>Face à une découverte ou une technologie :</p>
+                    <ul>
+                        <li><strong>1.</strong> Posez-vous la question des conséquences.</li>
+                        <li><strong>2.</strong> Demandez-vous qui pourrait en profiter ou en souffrir.</li>
+                        <li><strong>3.</strong> Agissez pour que le progrès soit bénéfique.</li>
+                    </ul>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Théo était-il inquiet ?</li>
+                    <li>Quelle est la responsabilité d'un scientifique ?</li>
+                    <li>La science doit-elle toujours être libre, ou doit-elle avoir des limites ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Éthique :</strong> La responsabilité scientifique.</li>
+                    <li><strong>Philosophie :</strong> La science et ses limites.</li>
+                    <li><strong>Biologie :</strong> L'éthique de la modification génétique.</li>
+                </ul>
+            `
+        }, {
+            id: 19,
+            title: "Le Chemin Choisi",
+            theme: "Les choix de carrière",
+            competences: ["Authenticité", "Vision", "Décision"],
+            content: `
+                <div class="story">
+                    La jeune Manon, 17 ans, était une excellente élève. Ses parents voulaient qu'elle devienne médecin. Elle aimait l'art, la peinture, mais elle avait peur de décevoir sa famille. Elle ne savait pas quel chemin choisir.
+                </div>
+
+                <p>Le sage Armand lui dit : "Une carrière n'est pas une voie toute tracée. C'est un chemin que tu construis. Si tu choisis un chemin qui n'est pas le tien, tu marcheras toujours contre la pente. Si tu choisis ta passion, même les obstacles deviendront des étapes."</p>
+
+                <p>Manon décida de parler à ses parents. Elle leur expliqua sa passion pour l'art. Ils furent d'abord déçus, puis ils comprirent que son bonheur était plus important que leurs attentes. Elle choisit une école d'art, et elle s'y épanouit. Elle avait appris que la meilleure carrière est celle qui nous ressemble.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse du choix de Manon</h5>
+                    <p>Manon a fait un choix d'<strong>authenticité</strong> : elle a suivi ses valeurs et ses passions plutôt que la pression sociale. Elle a compris que la réussite n'est pas une question de statut, mais de satisfaction personnelle. Une carrière que l'on choisit pour soi est une carrière que l'on construit avec énergie.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Comment concilier les attentes des autres et ses propres aspirations ?</p>
+                </div>
+
+                <div class="lecon-pratique">
+                    <h5>🎯 Leçon pratique</h5>
+                    <p>Pour choisir une carrière :</p>
+                    <ul>
+                        <li><strong>1.</strong> Identifiez ce qui vous passionne vraiment.</li>
+                        <li><strong>2.</strong> Cherchez comment transformer cette passion en métier.</li>
+                        <li><strong>3.</strong> Parlez à des personnes qui exercent ce métier.</li>
+                        <li><strong>4.</strong> Faites un choix qui vous ressemble.</li>
+                    </ul>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Manon hésitait-elle ?</li>
+                    <li>Qu'est-ce qui fait un bon choix de carrière ?</li>
+                    <li>Quelle est la différence entre un métier et une vocation ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Psychologie :</strong> L'orientation professionnelle.</li>
+                    <li><strong>Philosophie :</strong> Le choix de vie.</li>
+                    <li><strong>Sociologie :</strong> La pression sociale.</li>
+                </ul>
+            `
+        }, {
+            id: 20,
+            title: "Les Vingt Lettres",
+            theme: "L'héritage",
+            competences: ["Vision", "Transmission", "Sagesse"],
+            content: `
+                <div class="story">
+                    Le vieux sage Armand approchait de la fin de sa vie. Il ne laissait ni fortune ni biens matériels. Il laissait vingt lettres, chacune contenant une leçon de vie. Chaque semaine, il en lisait une à son jeune protégé, Lucas, et lui demandait de réfléchir sur son sens.
+                </div>
+
+                <p>La première lettre parlait de l'<strong>honnêteté</strong>. La seconde, du <strong>courage</strong>. La troisième, de la <strong>patience</strong>. Et ainsi de suite. Lucas comprit que l'héritage le plus précieux n'est pas matériel. Ce sont les valeurs, les leçons, les réflexions que l'on transmet.</p>
+
+                <p>Armand lui dit : "Je ne te laisse pas d'argent. Je te laisse ce qui permet de le gagner : une tête bien faite, une conscience éveillée, et le courage de choisir ta voie." Lucas promit de transmettre ces lettres à ses propres enfants. Il avait compris que l'héritage n'est pas ce qu'on possède, mais ce qu'on laisse dans l'esprit des autres.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de l'héritage d'Armand</h5>
+                    <p>Armand a fait le choix d'une <strong>transmission immatérielle</strong>. Il a compris que les valeurs et les leçons de vie ont plus d'impact que les biens matériels. Un héritage intellectuel peut traverser les générations et influencer des vies bien au-delà de ce qu'un héritage financier permettrait.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Qu'est-ce qui est le plus important à transmettre : l'argent ou les valeurs ?</p>
+                </div>
+
+                <div class="lecon-pratique">
+                    <h5>🎯 Leçon pratique</h5>
+                    <p>Réfléchissez à ce que vous voulez laisser derrière vous :</p>
+                    <ul>
+                        <li><strong>1.</strong> Quelles valeurs souhaitez-vous transmettre ?</li>
+                        <li><strong>2.</strong> Quelles leçons de vie voulez-vous partager ?</li>
+                        <li><strong>3.</strong> Comment pouvez-vous commencer à les transmettre dès aujourd'hui ?</li>
+                    </ul>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Armand a-t-il choisi de laisser des lettres ?</li>
+                    <li>Qu'est-ce qu'un héritage durable ?</li>
+                    <li>Que souhaiteriez-vous transmettre à ceux qui vous succéderont ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Philosophie :</strong> L'héritage intellectuel.</li>
+                    <li><strong>Éthique :</strong> La transmission des valeurs.</li>
+                    <li><strong>Psychologie :</strong> Le sens de la vie dans la transmission.</li>
+                </ul>
+            `
+        }];
+
+        // ================================================================
+        //  CONSTRUCTION DE LA PAGE D'ACCUEIL
+        // ================================================================
+
+        const homeContent = document.getElementById('homeContent');
+
+        const grid = document.createElement('div');
+        grid.className = 'grid';
+
+        lecons.forEach(h => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.setAttribute('data-id', h.id);
+            card.innerHTML = `
+                <div class="num">Leçon ${String(h.id).padStart(2, '0')}</div>
+                <h3>${h.title}</h3>
+                <div class="theme">${h.theme}</div>
+                <div class="desc">${h.competences.slice(0, 3).join(' · ')}</div>
+                <div class="competences">${h.competences.map(c => `<span>${c}</span>`).join('')}</div>
+            `;
+            card.addEventListener('click', () => navigateToArticle(h.id));
+            grid.appendChild(card);
+        });
+
+        homeContent.appendChild(grid);
+
+        // ================================================================
+        //  ROUTING (Hash-based)
+        // ================================================================
+
+        const homePage = document.getElementById('homePage');
+        const articlePage = document.getElementById('articlePage');
+
+        function showHome() {
+            homePage.classList.remove('hidden');
+            articlePage.classList.remove('active');
+            window.location.hash = '';
+            document.title = 'Les 20 Leçons d\'un Sage — 15-18 ans';
+        }
+
+        function showArticle(id) {
+            homePage.classList.add('hidden');
+            articlePage.classList.add('active');
+            window.location.hash = `lecon-${id}`;
+            renderArticle(id);
+        }
+
+        function renderArticle(id) {
+            const h = lecons.find(e => e.id === id);
+            if (!h) {
+                showHome();
+                return;
+            }
+            document.getElementById('articleNum').textContent = `Leçon ${String(h.id).padStart(2, '0')}`;
+            document.getElementById('articleTitle').textContent = h.title;
+            document.getElementById('articleTheme').textContent = h.theme;
+            document.getElementById('articleCompetences').innerHTML = h.competences.map(c => `<span>${c}</span>`).join('');
+            document.getElementById('articleContent').innerHTML = h.content;
+            document.title = `${h.title} — Les 20 Leçons d\'un Sage`;
+        }
+
+        function navigateToArticle(id) {
+            showArticle(id);
+        }
+
+        function handleHash() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#lecon-')) {
+                const id = parseInt(hash.replace('#lecon-', ''), 10);
+                if (lecons.find(e => e.id === id)) {
+                    showArticle(id);
+                    return;
+                }
+            }
+            showHome();
+        }
+
+        document.getElementById('backToHomeLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+        document.getElementById('backHomeBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+
+        window.addEventListener('hashchange', handleHash);
+        window.addEventListener('load', handleHash);
+        window.addEventListener('popstate', handleHash);
+    </script>
+
+</body>
+</html>
