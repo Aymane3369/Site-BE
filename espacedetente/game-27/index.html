@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20 Récits initiatiques — 15-18 ans</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f5f0eb;
+            color: #1a1a2e;
+            padding: 2rem 1rem;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a2e, #2d4059);
+            color: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header h1 span {
+            color: #f0c27a;
+        }
+
+        .header .subtitle {
+            margin-top: 0.6rem;
+            font-size: 1.05rem;
+            opacity: 0.9;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.12);
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 0.8rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #f0c27a;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin: 1.5rem 0 1rem;
+            padding-left: 0.5rem;
+            border-left: 6px solid #f0c27a;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 1.2rem 1.4rem;
+            border: 1px solid #e2d8cc;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+            border-color: #2d4059;
+        }
+
+        .card .num {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #8a7a6a;
+            background: #f5ede4;
+            padding: 0.1rem 0.6rem;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        .card h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin: 0.3rem 0 0.2rem;
+        }
+
+        .card .desc {
+            font-size: 0.82rem;
+            color: #5a4a3a;
+        }
+
+        .card .theme {
+            display: inline-block;
+            font-size: 0.6rem;
+            padding: 0.15rem 0.6rem;
+            background: #f5ede4;
+            border-radius: 12px;
+            color: #5a4a3a;
+            margin-top: 0.4rem;
+        }
+
+        .card .lecon {
+            font-size: 0.7rem;
+            color: #2d4059;
+            font-weight: 500;
+            margin-top: 0.3rem;
+            font-style: italic;
+        }
+
+        #articlePage {
+            display: none;
+        }
+
+        #articlePage.active {
+            display: block;
+        }
+
+        #homePage.hidden {
+            display: none;
+        }
+
+        .article-container {
+            background: #fff;
+            border-radius: 20px;
+            padding: 2.5rem 2.8rem;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.07);
+            max-width: 820px;
+            margin: 0 auto;
+        }
+
+        .article-container .article-num {
+            font-size: 0.7rem;
+            color: #8a7a6a;
+            background: #f5ede4;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            display: inline-block;
+            font-weight: 600;
+        }
+
+        .article-container h2 {
+            font-size: 1.8rem;
+            margin: 0.3rem 0 0.2rem;
+            color: #1a1a2e;
+        }
+
+        .article-container .article-lecon {
+            font-size: 0.9rem;
+            color: #2d4059;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            font-style: italic;
+        }
+
+        .article-container .article-theme {
+            font-size: 0.75rem;
+            color: #8a7a6a;
+            margin-bottom: 0.8rem;
+        }
+
+        .article-container .article-theme span {
+            background: #f5ede4;
+            padding: 0.15rem 0.8rem;
+            border-radius: 12px;
+        }
+
+        .article-container .article-content h4 {
+            color: #1a1a2e;
+            margin: 1.2rem 0 0.3rem;
+            font-size: 1.05rem;
+        }
+
+        .article-container .article-content p {
+            margin-bottom: 0.8rem;
+            font-size: 1.02rem;
+            line-height: 1.8;
+        }
+
+        .article-container .article-content .story {
+            background: #faf6f0;
+            padding: 1.2rem 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #f0c27a;
+            margin: 1rem 0;
+        }
+
+        .article-container .article-content .morale {
+            background: #f0f7ee;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #2d7a2d;
+            margin: 1rem 0;
+        }
+
+        .article-container .article-content .defi {
+            background: #eef3f8;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #2d4059;
+            margin: 1rem 0;
+        }
+
+        .article-container .article-content ul {
+            padding-left: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .article-container .article-content ul li {
+            margin-bottom: 0.3rem;
+        }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 1.8rem;
+            color: #2d4059;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1.2rem;
+            border: 2px solid #2d4059;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+
+        .back-home:hover {
+            background: #2d4059;
+            color: #fff;
+        }
+
+        @media (max-width: 640px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            .article-container {
+                padding: 1.5rem;
+            }
+            .article-container h2 {
+                font-size: 1.4rem;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .footer {
+            margin-top: 2.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #8a7a6a;
+            border-top: 1px solid #e2d8cc;
+            padding-top: 1.5rem;
+        }
+
+        .footer span {
+            color: #2d4059;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ============================================================ -->
+        <!-- PAGE D'ACCUEIL -->
+        <!-- ============================================================ -->
+        <div id="homePage">
+            <div class="header">
+                <h1>📖 <span>20 récits initiatiques</span></h1>
+                <div class="subtitle">Pour adolescents de 15 à 18 ans — Compétences de vie, leadership, résilience, gestion des émotions</div>
+                <div class="badge">Chaque histoire a sa propre URL</div>
+            </div>
+
+            <div id="homeContent">
+                <!-- Les histoires seront générées par JavaScript -->
+            </div>
+
+            <div class="footer">
+                <p>📚 <span>20 récits</span> — Grandir, apprendre, s'inspirer</p>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PAGE ARTICLE -->
+        <!-- ============================================================ -->
+        <div id="articlePage">
+            <div class="header" style="margin-bottom: 1.5rem;">
+                <h1>📖 <span>Récits initiatiques</span></h1>
+                <a class="back-link" href="#" id="backToHomeLink">← Retour à la liste</a>
+            </div>
+            <div class="article-container" id="articleContainer">
+                <div class="article-num" id="articleNum">01</div>
+                <h2 id="articleTitle">Titre</h2>
+                <div class="article-lecon" id="articleLecon">Leçon</div>
+                <div class="article-theme" id="articleTheme"><span>Thèmes</span></div>
+                <div class="article-content" id="articleContent">
+                    <p>Contenu...</p>
+                </div>
+                <a href="#" class="back-home" id="backHomeBtn">← Tous les récits</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ================================================================
+        //  DONNÉES DES 20 RÉCITS
+        // ================================================================
+
+        const recits = [{
+            id: 1,
+            title: "Le Prix de l'Honnêteté",
+            lecon: "L'intégrité vaut plus que le succès obtenu par la tricherie.",
+            themes: "Honnêteté, réputation, confiance",
+            content: `
+                <div class="story">
+                    Adrien était le meilleur élève de sa classe, mais il était aussi le plus compétitif. Pour le concours national de mathématiques, il avait tout misé : des mois de travail, des nuits blanches, des espoirs immenses. Le jour de l'épreuve, il vit un élève tricher en regardant le portable de son voisin. Un instant, il fut tenté de l'imiter. Le sujet était si difficile, et il avait tellement peur d'échouer.
+                </div>
+
+                <p>Mais il se souvint des paroles de son grand-père : "Un homme qui ment à lui-même ne peut pas être fier de ses réussites." Il tourna la tête et continua son examen seul, sans tricher. Il obtint la deuxième place, derrière l'élève tricheur. Il fut déçu, mais il avait gardé son intégrité.</p>
+
+                <p>Quelques jours plus tard, la supercherie fut découverte. L'élève tricheur fut disqualifié, et Adrien fut déclaré vainqueur. Mais ce n'était pas la victoire qui comptait : c'était la fierté d'avoir été honnête.</p>
+
+                <div class="morale">
+                    <strong>📖 Leçon de vie :</strong> L'intégrité n'est pas une question de prix ou de reconnaissance. C'est un choix que l'on fait dans le silence, et qui construit notre caractère. La confiance des autres est plus précieuse que tous les trophées.
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Adrien a-t-il résisté à la tentation de tricher ?</li>
+                    <li>Quelle aurait été la conséquence d'une tricherie, même si elle n'avait pas été découverte ?</li>
+                    <li>Dans ta vie, as-tu déjà dû faire un choix difficile entre le facile et le juste ?</li>
+                </ul>
+
+                <div class="defi">
+                    <strong>🎯 Défi pratique :</strong> Cette semaine, identifie une situation où tu pourrais être tenté de prendre un raccourci. Choisis délibérément la voie honnête, même si elle est plus difficile. Note ce que tu as ressenti.
+                </div>
+            `
+        }, {
+            id: 2,
+            title: "Le Silence qui a Tout Changé",
+            lecon: "Savoir écouter est parfois plus puissant que savoir parler.",
+            themes: "Écoute active, empathie, résolution de conflits",
+            content: `
+                <div class="story">
+                    Dans le lycée, deux groupes d'élèves se disputaient depuis des semaines. Chaque camp avait ses arguments, ses rancœurs, et personne ne voulait entendre l'autre. La tension était palpable, et une bagarre semblait inévitable.
+                </div>
+
+                <p>Lina, une jeune fille discrète, décida de faire quelque chose. Elle invita un représentant de chaque groupe à s'asseoir autour d'une table. Elle ne prit pas la parole. Elle les écouta. Pendant une heure, elle écouta sans juger, sans interrompre, sans donner de conseil.</p>
+
+                <p>À la fin, les deux élèves, qui ne s'étaient jamais vraiment écoutés, commencèrent à se comprendre. Ils réalisèrent qu'ils partageaient les mêmes peurs et les mêmes frustrations. Ils se serrèrent la main, et la tension du lycée s'apaisa.</p>
+
+                <p>Lina n'avait pas parlé, mais elle avait tout changé.</p>
+
+                <div class="morale">
+                    <strong>📖 Leçon de vie :</strong> L'écoute active est une forme de respect. Elle permet de comprendre l'autre, de désamorcer les conflits et de bâtir des ponts. Parfois, le silence est plus éloquent que les mots.
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Lina a-t-elle choisi d'écouter plutôt que de parler ?</li>
+                    <li>Quand as-tu vécu une situation où l'écoute a permis de résoudre un conflit ?</li>
+                    <li>Comment peux-tu devenir un meilleur auditeur ?</li>
+                </ul>
+
+                <div class="defi">
+                    <strong>🎯 Défi pratique :</strong> Dans une conversation difficile cette semaine, essaie de ne pas interrompre. Reformule ce que l'autre a dit pour montrer que tu as compris. Observe l'effet sur la relation.
+                </div>
+            `
+        }, {
+            id: 3,
+            title: "Les 100 Euros",
+            lecon: "Gestion financière, patience et vision à long terme.",
+            themes: "Finances, patience, investissement",
+            content: `
+                <div class="story">
+                    Pour ses 18 ans, Samir reçut un billet de 100 euros de son grand-père. "Ne les dépense pas tout de suite", lui dit-il. "Réfléchis à ce que tu veux vraiment." Samir voulait une nouvelle paire de baskets. Il les voyait déjà à ses pieds, brillantes et neuves.
+                </div>
+
+                <p>Mais il réfléchit. Il pouvait acheter les baskets, ou il pouvait investir dans un petit projet. Il décida d'acheter des fournitures pour créer des bijoux artisanaux, qu'il vendit sur les marchés. En trois mois, il avait transformé ses 100 euros en 300 euros.</p>
+
+                <p>Il comprit que l'argent pouvait travailler pour lui, et que la patience était une forme d'intelligence. Il remercia son grand-père de lui avoir appris à voir au-delà de l'instant.</p>
+
+                <div class="morale">
+                    <strong>📖 Leçon de vie :</strong> La gestion financière est une compétence de vie. Savoir attendre, planifier et investir peut transformer une petite somme en une grande opportunité.
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Quelle a été la décision clé de Samir ?</li>
+                    <li>Pourquoi est-il important d'apprendre à gérer son argent dès le plus jeune âge ?</li>
+                    <li>Quel projet pourrais-tu lancer avec une petite somme ?</li>
+                </ul>
+
+                <div class="defi">
+                    <strong>🎯 Défi pratique :</strong> Prends un petit montant d'argent (5 ou 10 euros) et essaie de le faire fructifier de manière créative. Note ton plan et tes résultats.
+                </div>
+            `
+        }, {
+            id: 4,
+            title: "Le Capitaine de l'Équipe",
+            lecon: "Un bon leader ne commande pas : il inspire.",
+            themes: "Leadership, responsabilité, esprit d'équipe",
+            content: `
+                <div class="story">
+                    L'équipe de basket du lycée était talentueuse, mais elle perdait tous les matchs. Le capitaine, Maxime, était un excellent joueur, mais il criait sur ses coéquipiers quand ils faisaient des erreurs. Il pensait que la peur motiverait ses coéquipiers.
+                </div>
+
+                <p>Un jour, à la mi-temps d'un match où ils perdaient 30 points d'écart, Maxime prit la parole. Mais au lieu de crier, il dit : "Je suis désolé. Je vous ai traités comme des soldats, pas comme une équipe. Je veux être votre capitaine, pas votre chef. Ensemble, on peut y arriver."</p>
+
+                <p>Pour la première fois, l'équipe joua avec cohésion. Ils perdirent de justesse, mais ils étaient unis. Les matchs suivants furent des victoires. Maxime avait compris que le leadership, c'est inspirer, pas imposer.</p>
+
+                <div class="morale">
+                    <strong>📖 Leçon de vie :</strong> Le vrai leadership ne repose pas sur l'autorité, mais sur l'inspiration. Un leader élève les autres, il ne les écrase pas.
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Quelle erreur Maxime faisait-il en tant que capitaine ?</li>
+                    <li>Qu'est-ce qui a changé quand il a parlé autrement ?</li>
+                    <li>Quelles qualités fais de toi un bon leader ?</li>
+                </ul>
+
+                <div class="defi">
+                    <strong>🎯 Défi pratique :</strong> Cette semaine, dans un travail de groupe, concentre-toi sur l'encouragement plutôt que sur la critique. Observe comment les autres réagissent.
+                </div>
+            `
+        }, {
+            id: 5,
+            title: "L'Entreprise du Quartier",
+            lecon: "Entrepreneuriat, organisation, répartition des rôles.",
+            themes: "Entrepreneuriat, organisation, travail d'équipe",
+            content: `
+                <div class="story">
+                    Pendant les vacances d'été, quatre amis — Sofia, Elias, Malika et Lucas — décidèrent de créer une petite entreprise de nettoyage de vitres. Ils avaient 17 ans, pas d'argent, mais beaucoup d'énergie.
+                </div>
+
+                <p>Ils se répartirent les rôles : Sofia gérait les finances, Elias le marketing, Malika les opérations, et Lucas les relations clients. Les premiers jours furent difficiles, mais ils persévérèrent. Ils imprimèrent des flyers, démarchèrent les commerces, et firent un excellent travail.</p>
+
+                <p>En un mois, ils avaient gagné 800 euros chacun. Ils apprirent que l'organisation et la confiance en leurs capacités étaient les clés de leur succès.</p>
+
+                <div class="morale">
+                    <strong>📖 Leçon de vie :</strong> L'entrepreneuriat est une aventure qui apprend la responsabilité, l'organisation et la collaboration. Chaque rôle est important pour la réussite du projet.
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi était-il important de se répartir les rôles ?</li>
+                    <li>Qu'est-ce qui a fait la force de leur équipe ?</li>
+                    <li>Quelle entreprise aimerais-tu créer un jour ?</li>
+                </ul>
+
+                <div class="defi">
+                    <strong>🎯 Défi pratique :</strong> Imagine un petit projet entrepreneurial que tu pourrais lancer avec des amis. Définis les rôles de chacun et élabore un plan simple.
+                </div>
+            `
+        }, {
+            id: 6,
+            title: "Une Seconde Chance",
+            lecon: "Persévérance, discipline, confiance en soi.",
+            themes: "Persévérance, discipline, confiance",
+            content: `
+                <div class="story">
+                    Hugo était en échec scolaire. Ses notes étaient mauvaises, et il avait perdu toute confiance en lui. Ses professeurs le considéraient comme un "cas désespéré". Mais le professeur Bernard, un vieux professeur de français, ne le voyait pas ainsi.
+                </div>
+
+                <p>Il lui proposa un contrat : si Hugo acceptait de venir en aide une heure par semaine, et de lire un livre par mois, il l'aiderait à progresser. Hugo accepta, sans grand enthousiasme. Mais semaine après semaine, il découvrit le plaisir de lire, la satisfaction de comprendre. En six mois, ses notes remontèrent. Il obtint son bac avec mention.</p>
+
+                <p>Il comprit qu'une seconde chance n'est pas donnée, elle se construit.</p>
+
+                <div class="morale">
+                    <strong>📖 Leçon de vie :</strong> L'échec n'est pas une fatalité. Avec de la discipline, de l'aide et de la persévérance, on peut toujours se relever. La confiance en soi se construit pas à pas.
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Hugo était-il en échec ?</li>
+                    <li>Qu'est-ce qui a changé sa situation ?</li>
+                    <li>Dans quel domaine as-tu besoin d'une "seconde chance" ?</li>
+                </ul>
+
+                <div class="defi">
+                    <strong>🎯 Défi pratique :</strong> Identifie un domaine où tu aimerais progresser. Fixe-toi un petit objectif quotidien et tiens-le pendant un mois. Note tes progrès.
+                </div>
+            `
+        }, {
+            id: 7,
+            title: "Les Deux Frères",
+            lecon: "Les choix quotidiens construisent l'avenir.",
+            themes: "Choix, effort, responsabilité",
+            content: `
+                <div class="story">
+                    Marc et Julien étaient deux frères jumeaux. Ils avaient les mêmes talents, les mêmes opportunités. Mais Marc choisissait la facilité : il jouait aux jeux vidéo au lieu d'étudier, il négligeait ses devoirs. Julien, lui, travaillait tous les jours, lisait, s'entraînait.
+                </div>
+
+                <p>À 18 ans, Julien avait une bourse pour une grande école. Marc, lui, avait du mal à trouver sa voie. Il ne comprenait pas pourquoi son frère avait réussi alors qu'ils étaient si semblables. Julien lui dit : "Ce n'est pas ce qu'on fait une fois qui change tout, c'est ce qu'on fait chaque jour."</p>
+
+                <p>Marc comprit que les petites décisions quotidiennes dessinent notre avenir.</p>
+
+                <div class="morale">
+                    <strong>📖 Leçon de vie :</strong> Nos choix quotidiens, mêmes petits, finissent par dessiner notre destin. La constance et la discipline sont plus importantes que les grandes résolutions.
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Julien a-t-il réussi là où Marc a échoué ?</li>
+                    <li>Quelle différence y a-t-il entre un choix ponctuel et une habitude ?</li>
+                    <li>Quelles habitudes quotidiennes pourrais-tu améliorer ?</li>
+                </ul>
+
+                <div class="defi">
+                    <strong>🎯 Défi pratique :</strong> Identifie une habitude que tu aimerais changer. Note-la et fixe-toi un petit engagement quotidien pendant 21 jours.
+                </div>
+            `
+        }, {
+            id: 8,
+            title: "Le Dernier Train",
+            lecon: "Les imprévus peuvent devenir des opportunités.",
+            themes: "Imprévus, opportunités, ouverture d'esprit",
+            content: `
+                <div class="story">
+                    Léa rata son train. Elle était en colère contre elle-même, contre les horaires, contre tout. Elle devait attendre deux heures le prochain train. Pour tuer le temps, elle s'installa sur un banc et sortit un livre.
+                </div>
+
+                <p>Un vieil homme s'assit à côté d'elle. Il lui demanda ce qu'elle lisait. Ils engagèrent une conversation. Il était un ancien architecte, et il lui parla de sa carrière, de ses voyages. Elle fut fascinée. Il lui donna sa carte et lui proposa un stage dans son ancienne agence.</p>
+
+                <p>Léa accepta. Elle découvrit une passion pour l'architecture qu'elle ne soupçonnait pas. Le train qu'elle avait raté lui avait offert une nouvelle direction.</p>
+
+                <div class="morale">
+                    <strong>📖 Leçon de vie :</strong> Les imprévus ne sont pas toujours des obstacles. Parfois, ils sont des portes dérobées qui mènent à des chemins inattendus. Être ouvert aux rencontres est une force.
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Léa était-elle en colère d'abord ?</li>
+                    <li>Que s'est-il passé grâce à cette attente ?</li>
+                    <li>As-tu déjà vécu un imprévu qui a changé ta vie ?</li>
+                </ul>
+
+                <div class="defi">
+                    <strong>🎯 Défi pratique :</strong> La prochaine fois qu'un imprévu change tes plans, essaie de voir ce qu'il pourrait t'apporter de positif. Note les opportunités que tu as découvertes grâce à des imprévus.
+                </div>
+            `
+        }, {
+            id: 9,
+            title: "Le Journal de Grand-Père",
+            lecon: "Gratitude, mémoire, transmission.",
+            themes: "Gratitude, mémoire, famille",
+            content: `
+                <div class="story">
+                    Après la mort de son grand-père, Clara hérita d'un vieux journal intime. Elle ne s'y était jamais intéressée. Mais un soir, elle l'ouvrit. Elle y découvrit une vie de sacrifices, d'efforts et de rêves. Son grand-père avait quitté son pays à 17 ans avec rien, et avait construit une vie digne.
+                </div>
+
+                <p>Elle comprit que tout ce qu'elle avait — sa maison, ses études, ses opportunités — était le fruit du travail de ceux qui l'avaient précédée. Elle se sentit reconnaissante. Elle décida d'écrire à son tour un journal, pour transmettre à ses enfants l'histoire qu'elle avait découverte.</p>
+
+                <p>Elle avait retrouvé ses racines.</p>
+
+                <div class="morale">
+                    <strong>📖 Leçon de vie :</strong> La gratitude envers ceux qui nous ont précédés est une source de force. Connaître ses racines, c'est se connaître soi-même.
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Clara a-t-elle été touchée par le journal ?</li>
+                    <li>Quelle est l'importance de transmettre les histoires familiales ?</li>
+                    <li>Que sais-tu de l'histoire de tes ancêtres ?</li>
+                </ul>
+
+                <div class="defi">
+                    <strong>🎯 Défi pratique :</strong> Interroge un membre de ta famille (parent, grand-parent) sur son histoire. Note ce qu'il te raconte. Tu pourrais découvrir des trésors insoupçonnés.
+                </div>
+            `
+        }, {
+            id: 10,
+            title: "Le Mensonge Parfait",
+            lecon: "La vérité finit toujours par être plus simple.",
+            themes: "Mensonge, vérité, conséquences",
+            content: `
+                <div class="story">
+                    Élise, 16 ans, avait menti à ses parents sur ses notes. Un petit mensonge, juste pour éviter une dispute. Mais ce mensonge en appela un autre, puis un autre. Elle inventa des profs, des cours, des rendez-vous. Elle devait constamment se souvenir de ce qu'elle avait dit.
+                </div>
+
+                <p>Un jour, ses parents reçurent un appel du lycée. La vérité éclata. Ils étaient déçus, pas tant par les notes que par le mensonge. Elle réalisa que le mensonge lui avait coûté plus d'énergie que la vérité n'en aurait demandé.</p>
+
+                <p>Elle promit de ne plus jamais mentir. Ce fut le plus grand soulagement de sa vie.</p>
+
+                <div class="morale">
+                    <strong>📖 Leçon de vie :</strong> Le mensonge crée un labyrinthe dont il est difficile de sortir. La vérité, même inconfortable, est toujours plus légère à porter.
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Élise a-t-elle commencé à mentir ?</li>
+                    <li>Quelles ont été les conséquences de son mensonge ?</li>
+                    <li>As-tu déjà vécu une situation où un mensonge a créé des problèmes ?</li>
+                </ul>
+
+                <div class="defi">
+                    <strong>🎯 Défi pratique :</strong> Pendant une semaine, sois attentif à ce que tu dis. Essaie d'être aussi honnête que possible. Observe comment les autres réagissent et comment tu te sens.
+                </div>
+            `
+        }, {
+            id: 11,
+            title: "Le Village après la Tempête",
+            lecon: "Solidarité, résilience, engagement.",
+            themes: "Solidarité, résilience, engagement",
+            content: `
+                <div class="story">
+                    Le village de Saint-Martin avait été dévasté par une tempête. Les maisons étaient endommagées, les routes coupées. Personne ne savait par où commencer. Un groupe de jeunes, mené par Thomas, décida de ne pas attendre les secours. Ils organisèrent les équipes, priorisèrent les besoins, et firent le travail.
+                </div>
+
+                <p>Ils aidèrent les personnes âgées à nettoyer leurs maisons, apportèrent de l'eau et de la nourriture, et relevèrent le moral de tous. En une semaine, le village avait repris vie. Les habitants les remercièrent, mais eux disaient que c'était leur devoir de faire partie de la solution.</p>
+
+                <p>Ils avaient appris que la solidarité est une force qui nous dépasse.</p>
+
+                <div class="morale">
+                    <strong>📖 Leçon de vie :</strong> Les défis collectifs exigent des actions collectives. Chaque petit geste compte, et la solidarité est une force qui nous rend plus forts.
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Qu'a fait Thomas et son groupe ?</li>
+                    <li>Pourquoi n'ont-ils pas attendu les secours ?</li>
+                    <li>Dans ta communauté, comment pourrais-tu t'engager ?</li>
+                </ul>
+
+                <div class="defi">
+                    <strong>🎯 Défi pratique :</strong> Identifie un besoin dans ta communauté (aide aux devoirs, nettoyage, etc.). Propose ton aide à une association ou lance une petite action avec des amis.
+                </div>
+            `
+        }, {
+            id: 12,
+            title: "Le Choix du Courage",
+            lecon: "Courage moral, responsabilité.",
+            themes: "Courage, responsabilité, justice",
+            content: `
+                <div class="story">
+                    Dans son lycée, Sam était témoin de harcèlement. Un élève était victime de moqueries quotidiennes. Sam était silencieux, comme beaucoup d'autres. Il avait peur d'être la prochaine cible. Mais un jour, il se dit que le silence était une forme de complicité.
+                </div>
+
+                <p>Il parla au proviseur. Il décrivit ce qu'il voyait. Une enquête fut ouverte, et le harcèlement cessa. L'élève victime vint le remercier. Sam comprit que le courage, ce n'est pas l'absence de peur, c'est agir malgré la peur.</p>
+
+                <p>Il avait fait la différence.</p>
+
+                <div class="morale">
+                    <strong>📖 Leçon de vie :</strong> Le courage moral, c'est oser parler pour ceux qui ne le peuvent pas. La justice commence par une voix qui ose se lever.
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Sam a-t-il pris la parole ?</li>
+                    <li>Quelles auraient été les conséquences de son silence ?</li>
+                    <li>Quelle injustice aimerais-tu combattre ?</li>
+                </ul>
+
+                <div class="defi">
+                    <strong>🎯 Défi pratique :</strong> Si tu vois une injustice, fais un pas pour la dénoncer, même petit (parle à un adulte, écris un message de soutien, etc.).
+                </div>
+            `
+        }, {
+            id: 13,
+            title: "Le Smartphone Éteint",
+            lecon: "Équilibre numérique, présence, communication.",
+            themes: "Équilibre numérique, présence, communication",
+            content: `
+                <div class="story">
+                    Dans une classe de terminale, le professeur proposa un défi : une semaine sans téléphone. Les élèves étaient sceptiques, voire paniqués. Mais ils acceptèrent. Les premiers jours furent difficiles : ils ne savaient pas quoi faire de leurs mains, de leur temps.
+                </div>
+
+                <p>Peu à peu, ils se parlèrent. Ils jouèrent aux cartes, racontèrent des histoires, rirent ensemble. À la fin de la semaine, ils étaient plus proches que jamais. Ils avaient redécouvert la présence réelle, la conversation vraie.</p>
+
+                <p>Ils décidèrent de garder une journée par semaine sans téléphone.</p>
+
+                <div class="morale">
+                    <strong>📖 Leçon de vie :</strong> Les écrans sont des outils merveilleux, mais ils ne doivent pas remplacer les relations humaines. La présence réelle est une forme d'attention précieuse.
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Quelle a été la réaction des élèves au début ?</li>
+                    <li>Qu'ont-ils redécouvert pendant cette semaine ?</li>
+                    <li>Quelle est ta relation avec ton téléphone ?</li>
+                </ul>
+
+                <div class="defi">
+                    <strong>🎯 Défi pratique :</strong> Essaie une journée (ou même quelques heures) sans téléphone. Note ce que tu as fait différemment, comment tu as interagi avec les autres.
+                </div>
+            `
+        }, {
+            id: 14,
+            title: "Le Contrat",
+            lecon: "Objectifs, planification, discipline.",
+            themes: "Objectifs, planification, discipline",
+            content: `
+                <div class="story">
+                    Deux amis, Chloé et Yanis, étaient inséparables. À 18 ans, ils firent un pacte : dans cinq ans, ils se retrouveraient pour partager leurs réussites. Chloé voulait devenir médecin, Yanis ingénieur. Ils écrivirent leurs objectifs, leurs plans d'action, leurs échéances.
+                </div>
+
+                <p>Les cinq années passèrent. Chloé était en troisième année de médecine, Yanis avait un diplôme d'ingénieur. Ils se retrouvèrent, regardèrent leur contrat, et sourirent. Ils avaient tenu leur promesse.</p>
+
+                <p>Ils comprirent que les rêves ont besoin d'un plan pour devenir réalité.</p>
+
+                <div class="morale">
+                    <strong>📖 Leçon de vie :</strong> Les objectifs sans plan ne sont que des souhaits. La discipline et la planification transforment les rêves en réalité.
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi le contrat était-il important ?</li>
+                    <li>Comment Chloé et Yanis ont-ils réussi à atteindre leurs objectifs ?</li>
+                    <li>Quels sont tes objectifs pour les cinq prochaines années ?</li>
+                </ul>
+
+                <div class="defi">
+                    <strong>🎯 Défi pratique :</strong> Écris trois objectifs pour les cinq prochaines années. Pour chaque objectif, note trois actions concrètes que tu peux entreprendre dès maintenant.
+                </div>
+            `
+        }, {
+            id: 15,
+            title: "La Valeur d'un 'Merci'",
+            lecon: "Respect, reconnaissance, humilité.",
+            themes: "Respect, reconnaissance, humilité",
+            content: `
+                <div class="story">
+                    Amine était un lycéen populaire, mais il avait un défaut : il ne remerciait jamais personne. Pour lui, tout lui était dû. Un jour, sa grand-mère lui offrit un cadeau et il ne la remercia pas. Elle fut déçue, mais ne dit rien.
+                </div>
+
+                <p>Le lendemain, elle ne lui prépara pas son petit-déjeuner. Il fut surpris. Elle lui dit : "Je n'ai pas été remerciée pour ce que je fais depuis des années, alors j'ai décidé de m'arrêter." Amine comprit que la reconnaissance est une forme de respect.</p>
+
+                <p>Il s'excusa et la remercia. Depuis, il exprimait sa gratitude chaque jour.</p>
+
+                <div class="morale">
+                    <strong>📖 Leçon de vie :</strong> Un "merci" sincère est une petite phrase qui a un grand pouvoir. Il montre que l'on voit l'autre, que l'on respecte son temps et ses efforts.
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Amine ne remerciait-il jamais ?</li>
+                    <li>Que lui a appris cette expérience ?</li>
+                    <li>À qui n'as-tu pas dit merci alors que tu aurais dû ?</li>
+                </ul>
+
+                <div class="defi">
+                    <strong>🎯 Défi pratique :</strong> Pendant une semaine, remercie consciemment au moins trois personnes chaque jour. Note comment tu te sens et comment les autres réagissent.
+                </div>
+            `
+        }, {
+            id: 16,
+            title: "Le Projet Impossible",
+            lecon: "Gestion de projet, coopération, créativité.",
+            themes: "Gestion de projet, coopération, créativité",
+            content: `
+                <div class="story">
+                    Le défi était simple en apparence : construire une maquette de pont capable de supporter 5 kg avec seulement des bâtons de glace et de la colle. Mais en réalité, c'était un véritable projet d'ingénierie. Une équipe de quatre élèves de terminale se lança dans l'aventure.
+                </div>
+
+                <p>Ils eurent des désaccords, des échecs, des nuits blanches. Mais ils apprirent à coopérer, à répartir les rôles, à écouter les idées des autres. Après trois semaines, leur pont tenait. Ils avaient réussi l'impossible.</p>
+
+                <p>Ils avaient appris que les grands projets naissent de la coopération et de la persévérance.</p>
+
+                <div class="morale">
+                    <strong>📖 Leçon de vie :</strong> Les projets difficiles ne se réalisent pas seuls. La coopération, la créativité et la persévérance sont des clés du succès collectif.
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Quelles difficultés ont-ils rencontrées ?</li>
+                    <li>Comment ont-ils surmonté leurs désaccords ?</li>
+                    <li>Quel projet collectif aimerais-tu mener ?</li>
+                </ul>
+
+                <div class="defi">
+                    <strong>🎯 Défi pratique :</strong> Lance un petit projet avec des amis (un jardin partagé, un événement, un service). Note comment vous organisez le travail et résolvez les problèmes.
+                </div>
+            `
+        }, {
+            id: 17,
+            title: "Le Choix de Sarah",
+            lecon: "Liberté de choix, authenticité, responsabilité.",
+            themes: "Authenticité, choix, liberté",
+            content: `
+                <div class="story">
+                    Sarah était une élève brillante, première de sa classe. Ses parents voulaient qu'elle devienne médecin, comme son père. Mais Sarah aimait l'art, la peinture, la création. Elle était déchirée entre les attentes des autres et ses propres désirs.
+                </div>
+
+                <p>Un jour, elle prit une décision : elle parlerait à ses parents. Elle leur expliqua sa passion pour l'art, son besoin de créer. Ils furent déçus d'abord, puis ils comprirent que son bonheur était plus important que leurs attentes.</p>
+
+                <p>Sarah entra en école d'art. Elle était libre, et elle était elle-même.</p>
+
+                <div class="morale">
+                    <strong>📖 Leçon de vie :</strong> Être fidèle à soi-même est un acte de courage. La liberté de choisir sa voie est une responsabilité, mais aussi une chance de vivre pleinement.
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Sarah hésitait-elle ?</li>
+                    <li>Comment a-t-elle fait face aux attentes de ses parents ?</li>
+                    <li>Dans quel domaine as-tu besoin d'affirmer tes choix ?</li>
+                </ul>
+
+                <div class="defi">
+                    <strong>🎯 Défi pratique :</strong> Identifie un domaine où tu suis les attentes des autres plutôt que tes propres désirs. Prends une petite mesure pour t'en rapprocher (en parler, faire une recherche, etc.).
+                </div>
+            `
+        }, {
+            id: 18,
+            title: "Les Mille Décisions",
+            lecon: "Les habitudes façonnent le destin.",
+            themes: "Habitudes, choix, destin",
+            content: `
+                <div class="story">
+                    Ce n'était pas une grande décision qui changea la vie de Nathan, mais mille petites. Chaque matin, il choisissait de se lever tôt, de lire vingt minutes, de faire une promenade. Chaque soir, il choisissait de revoir ses cours, de méditer cinq minutes.
+                </div>
+
+                <p>Un an plus tard, il était devenu une personne différente : plus concentré, plus calme, plus confiant. Ses amis ne comprenaient pas ce qui s'était passé. Lui savait : ce n'était pas un événement, c'était une accumulation de choix.</p>
+
+                <p>Les habitudes façonnent qui nous devenons.</p>
+
+                <div class="morale">
+                    <strong>📖 Leçon de vie :</strong> Nos vies ne sont pas définies par les grands événements, mais par l'accumulation des petites décisions quotidiennes. Les habitudes construisent notre avenir.
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Quelles petites décisions Nathan prenait-il chaque jour ?</li>
+                    <li>Comment a-t-il changé en un an ?</li>
+                    <li>Quelles habitudes pourrais-tu adopter pour devenir la personne que tu veux être ?</li>
+                </ul>
+
+                <div class="defi">
+                    <strong>🎯 Défi pratique :</strong> Identifie trois petites habitudes que tu aimerais adopter. Note-les et tiens-les pendant 21 jours. Note les changements que tu observes.
+                </div>
+            `
+        }, {
+            id: 19,
+            title: "L'Héritage Invisible",
+            lecon: "Éthique, transmission, vision.",
+            themes: "Éthique, transmission, vision",
+            content: `
+                <div class="story">
+                    Monsieur Dufresne était un entrepreneur à la retraite. Il avait créé une entreprise florissante, mais il ne parlait jamais d'argent. Il parlait de valeurs, de confiance, d'engagement. Un jeune stagiaire, Thomas, lui demanda : "Quel est votre plus grand héritage ?"
+                </div>
+
+                <p>Il répondit : "Ce n'est pas l'entreprise, c'est ce que j'ai appris à ceux qui ont travaillé avec moi. La fiabilité, l'honnêteté, l'attention aux autres. C'est ça qui reste quand l'argent disparaît."</p>
+
+                <p>Thomas comprit que l'héritage le plus précieux est invisible.</p>
+
+                <div class="morale">
+                    <strong>📖 Leçon de vie :</strong> Ce que nous transmettons de plus précieux n'est pas matériel. Ce sont les valeurs, les principes, la vision que nous laissons aux autres.
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Quelle était la véritable richesse de Monsieur Dufresne ?</li>
+                    <li>Qu'est-ce que tu aimerais transmettre ?</li>
+                    <li>Qui t'a transmis des valeurs importantes ?</li>
+                </ul>
+
+                <div class="defi">
+                    <strong>🎯 Défi pratique :</strong> Identifie trois valeurs que tu aimerais incarner dans ta vie. Écris comment tu pourrais les transmettre aux autres par tes actions.
+                </div>
+            `
+        }, {
+            id: 20,
+            title: "Le Sommet",
+            lecon: "Résilience, préparation, esprit d'équipe, dépassement de soi.",
+            themes: "Résilience, esprit d'équipe, dépassement",
+            content: `
+                <div class="story">
+                    Le Mont Blanc était un défi que quatre amis s'étaient promis de relever. Ils s'étaient entraînés pendant des mois, mais la montagne était impitoyable. Le froid, la fatigue, le doute. À mi-parcours, l'un d'eux voulut abandonner.
+                </div>
+
+                <p>Les autres l'encouragèrent. Ils ralentirent, partagèrent leurs forces, leurs provisions, leurs mots. Après des heures d'effort, ils atteignirent le sommet. La vue était spectaculaire, mais ce qui comptait vraiment, c'était ce qu'ils avaient surmonté ensemble.</p>
+
+                <p>Ils avaient appris que le vrai sommet n'est pas une altitude, mais une leçon d'humilité et de persévérance.</p>
+
+                <div class="morale">
+                    <strong>📖 Leçon de vie :</strong> Les plus grands défis ne sont pas ceux qu'on relève seul. La résilience, l'esprit d'équipe et le dépassement de soi transforment l'ascension en un voyage inoubliable.
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi l'un des amis a-t-il voulu abandonner ?</li>
+                    <li>Comment l'équipe a-t-elle surmonté cette épreuve ?</li>
+                    <li>Quel est ton "sommet" personnel ?</li>
+                </ul>
+
+                <div class="defi">
+                    <strong>🎯 Défi pratique :</strong> Identifie un défi personnel que tu veux relever (sportif, académique, créatif). Établis un plan, trouve des personnes pour te soutenir, et lance-toi.
+                </div>
+            `
+        }];
+
+        // ================================================================
+        //  CONSTRUCTION DE LA PAGE D'ACCUEIL
+        // ================================================================
+
+        const homeContent = document.getElementById('homeContent');
+
+        const grid = document.createElement('div');
+        grid.className = 'grid';
+
+        recits.forEach(h => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.setAttribute('data-id', h.id);
+            card.innerHTML = `
+                <div class="num">Récit ${String(h.id).padStart(2, '0')}</div>
+                <h3>${h.title}</h3>
+                <div class="desc">${h.lecon}</div>
+                <div class="theme">${h.themes}</div>
+            `;
+            card.addEventListener('click', () => navigateToArticle(h.id));
+            grid.appendChild(card);
+        });
+
+        homeContent.appendChild(grid);
+
+        // ================================================================
+        //  ROUTING (Hash-based)
+        // ================================================================
+
+        const homePage = document.getElementById('homePage');
+        const articlePage = document.getElementById('articlePage');
+
+        function showHome() {
+            homePage.classList.remove('hidden');
+            articlePage.classList.remove('active');
+            window.location.hash = '';
+            document.title = '20 Récits initiatiques — 15-18 ans';
+        }
+
+        function showArticle(id) {
+            homePage.classList.add('hidden');
+            articlePage.classList.add('active');
+            window.location.hash = `recit-${id}`;
+            renderArticle(id);
+        }
+
+        function renderArticle(id) {
+            const h = recits.find(e => e.id === id);
+            if (!h) {
+                showHome();
+                return;
+            }
+            document.getElementById('articleNum').textContent = `Récit ${String(h.id).padStart(2, '0')}`;
+            document.getElementById('articleTitle').textContent = h.title;
+            document.getElementById('articleLecon').textContent = `"${h.lecon}"`;
+            document.getElementById('articleTheme').innerHTML = `<span>${h.themes}</span>`;
+            document.getElementById('articleContent').innerHTML = h.content;
+            document.title = `${h.title} — Récits initiatiques`;
+        }
+
+        function navigateToArticle(id) {
+            showArticle(id);
+        }
+
+        function handleHash() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#recit-')) {
+                const id = parseInt(hash.replace('#recit-', ''), 10);
+                if (recits.find(e => e.id === id)) {
+                    showArticle(id);
+                    return;
+                }
+            }
+            showHome();
+        }
+
+        document.getElementById('backToHomeLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+        document.getElementById('backHomeBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+
+        window.addEventListener('hashchange', handleHash);
+        window.addEventListener('load', handleHash);
+        window.addEventListener('popstate', handleHash);
+    </script>
+
+</body>
+</html>
