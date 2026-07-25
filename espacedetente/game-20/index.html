@@ -1,1 +1,1253 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Matériaux innovants et durabilité des structures</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f7f4;
+            color: #1a2634;
+            padding: 2rem 1rem;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0d3b2e, #1a6b4a);
+            color: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header h1 span {
+            color: #7fc8a8;
+        }
+
+        .header p {
+            margin-top: 0.6rem;
+            font-size: 1.05rem;
+            opacity: 0.9;
+            max-width: 750px;
+        }
+
+        .badge-count {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 0.8rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #7fc8a8;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2rem 0 1.2rem 0;
+            padding-left: 0.5rem;
+            border-left: 6px solid #1a6b4a;
+            color: #0d3b2e;
+        }
+
+        .section-title .emoji {
+            margin-right: 0.5rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 1rem 1.2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s ease;
+            border: 1px solid #dce8e0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.10);
+            border-color: #1a6b4a;
+        }
+
+        .card .num {
+            font-weight: 700;
+            font-size: 0.65rem;
+            color: #6a8a7a;
+            background: #eef5f0;
+            border-radius: 30px;
+            padding: 0.1rem 0.7rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .card .text {
+            font-size: 0.92rem;
+            color: #1a2634;
+            font-weight: 500;
+        }
+
+        .card .text small {
+            display: block;
+            font-weight: 400;
+            font-size: 0.75rem;
+            color: #6a8a7a;
+            margin-top: 0.1rem;
+        }
+
+        .cat-mod1 .card { border-left: 4px solid #2563eb; }
+        .cat-mod2 .card { border-left: 4px solid #d97706; }
+        .cat-mod3 .card { border-left: 4px solid #0f7b3a; }
+        .cat-mod4 .card { border-left: 4px solid #7c3a9e; }
+        .cat-mod5 .card { border-left: 4px solid #b91c5c; }
+        .cat-mod6 .card { border-left: 4px solid #a6572e; }
+
+        #articlePage {
+            display: none;
+        }
+
+        #articlePage.active {
+            display: block;
+        }
+
+        #homePage.hidden {
+            display: none;
+        }
+
+        .article-container {
+            background: #fff;
+            border-radius: 20px;
+            padding: 2.5rem 2.8rem;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.07);
+            margin-top: 0.5rem;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .article-container .article-num {
+            font-size: 0.8rem;
+            color: #6a8a7a;
+            background: #eef5f0;
+            display: inline-block;
+            padding: 0.2rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+
+        .article-container h2 {
+            font-size: 2rem;
+            margin: 0.3rem 0 0.1rem 0;
+            color: #0d3b2e;
+        }
+
+        .article-container .article-sub {
+            font-size: 1rem;
+            color: #6a8a7a;
+            margin-bottom: 0.5rem;
+        }
+
+        .article-container .article-tag {
+            display: inline-block;
+            background: #eef5f0;
+            padding: 0.25rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #4a6a5a;
+        }
+
+        .article-container .article-content {
+            font-size: 1.02rem;
+            line-height: 1.9;
+            color: #1a2634;
+            margin-top: 1rem;
+        }
+
+        .article-container .article-content p {
+            margin-bottom: 0.9rem;
+        }
+
+        .article-container .article-content ul {
+            padding-left: 1.8rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .article-container .article-content li {
+            margin-bottom: 0.4rem;
+        }
+
+        .article-container .article-content strong {
+            color: #0d3b2e;
+        }
+
+        .article-container .article-content .formula {
+            display: block;
+            background: #f0f7f4;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.05rem;
+            margin: 0.8rem 0;
+            border-left: 4px solid #1a6b4a;
+            overflow-x: auto;
+            text-align: center;
+        }
+
+        .article-container .article-content .example-box {
+            background: #f0f7ee;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            border-left: 4px solid #0f7b3a;
+            margin: 0.8rem 0;
+        }
+
+        .article-container .article-content .table-box {
+            background: #f8fafc;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            border: 1px solid #dce8e0;
+            margin: 0.8rem 0;
+            overflow-x: auto;
+        }
+
+        .article-container .article-content .table-box table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .article-container .article-content .table-box th {
+            background: #1a6b4a;
+            color: #fff;
+            padding: 0.5rem 0.8rem;
+            text-align: left;
+        }
+
+        .article-container .article-content .table-box td {
+            padding: 0.4rem 0.8rem;
+            border-bottom: 1px solid #dce8e0;
+        }
+
+        .article-container .article-content .table-box tr:nth-child(even) {
+            background: #f0f7f4;
+        }
+
+        .article-container .article-content .code-block {
+            background: #1e2a3a;
+            color: #e2e8f0;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin: 0.8rem 0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        .code-block .comment { color: #6a9955; }
+        .code-block .keyword { color: #c586c0; }
+        .code-block .func { color: #dcdcaa; }
+        .code-block .string { color: #ce9178; }
+        .code-block .num { color: #b5cea8; }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 1.8rem;
+            color: #1a6b4a;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1.2rem;
+            border: 2px solid #1a6b4a;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+
+        .back-home:hover {
+            background: #1a6b4a;
+            color: #fff;
+        }
+
+        @media (max-width: 640px) {
+            body { padding: 1rem 0.6rem; }
+            .header { padding: 1.5rem 1rem; }
+            .header h1 { font-size: 1.5rem; }
+            .grid { grid-template-columns: 1fr; }
+            .section-title { font-size: 1.2rem; }
+            .article-container { padding: 1.5rem; }
+            .article-container h2 { font-size: 1.4rem; }
+        }
+
+        .footer {
+            margin-top: 3.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #6a8a7a;
+            border-top: 1px solid #dce8e0;
+            padding-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div id="homePage">
+            <div class="header">
+                <h1>🌱 Matériaux innovants et durabilité des structures · <span>Master Génie Civil</span></h1>
+                <p>Cours technique complet pour ingénieur matériaux et structures. Bétons innovants, composites, biosourcés, durabilité, économie circulaire.</p>
+                <div class="badge-count">📚 50 concepts · Chaque concept est illustré</div>
+            </div>
+
+            <h2 class="section-title"><span class="emoji">🔬</span> Module 1 — Introduction aux matériaux innovants</h2>
+            <div class="grid cat-mod1" id="grid-mod1"></div>
+
+            <h2 class="section-title"><span class="emoji">🧱</span> Module 2 — Bétons innovants</h2>
+            <div class="grid cat-mod2" id="grid-mod2"></div>
+
+            <h2 class="section-title"><span class="emoji">🌿</span> Module 3 — Bétons bas carbone &amp; biosourcés</h2>
+            <div class="grid cat-mod3" id="grid-mod3"></div>
+
+            <h2 class="section-title"><span class="emoji">🧪</span> Module 4 — Composites &amp; matériaux intelligents</h2>
+            <div class="grid cat-mod4" id="grid-mod4"></div>
+
+            <h2 class="section-title"><span class="emoji">🛡️</span> Module 5 — Durabilité &amp; pathologies</h2>
+            <div class="grid cat-mod5" id="grid-mod5"></div>
+
+            <h2 class="section-title"><span class="emoji">♻️</span> Module 6 — Cycle de vie &amp; travaux pratiques</h2>
+            <div class="grid cat-mod6" id="grid-mod6"></div>
+
+            <div class="footer">
+                <p>📌 Matériaux innovants — Bétons · Composites · Biosourcés · Durabilité · ACV</p>
+            </div>
+        </div>
+
+        <div id="articlePage">
+            <div class="header" style="margin-bottom: 1.5rem;">
+                <h1>🌱 <span>Matériaux innovants &amp; Durabilité</span></h1>
+                <a class="back-link" href="#" id="backToHomeLink">← Retour à la liste</a>
+            </div>
+            <div class="article-container" id="articleContainer">
+                <div class="article-num" id="articleNum">01</div>
+                <h2 id="articleTitle">Concept</h2>
+                <div class="article-sub" id="articleSub">Sous-titre</div>
+                <span class="article-tag" id="articleTag">🏷️ Module</span>
+                <div class="article-content" id="articleContent">
+                    <p>Contenu détaillé...</p>
+                </div>
+                <a href="#" class="back-home" id="backHomeBtn">← Tous les concepts</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const data = {
+            // ---------- MODULE 1 : INTRODUCTION ----------
+            1: {
+                title: "Évolution des matériaux de construction",
+                sub: "Traditionnels vs innovants",
+                tag: "Module 1",
+                content: `
+                    <p>Les <strong>matériaux de construction</strong> ont évolué pour répondre aux enjeux de <strong>performance, durabilité et environnement</strong>.</p>
+                    <p><strong>Matériaux traditionnels :</strong></p>
+                    <ul>
+                        <li><strong>Béton armé</strong> : le plus utilisé, mais émetteur de CO₂</li>
+                        <li><strong>Acier</strong> : recyclable mais énergivore</li>
+                        <li><strong>Bois</strong> : renouvelable mais limité en hauteur</li>
+                        <li><strong>Maçonnerie</strong> : durable mais peu adaptée aux grandes portées</li>
+                    </ul>
+                    <p><strong>Limites actuelles :</strong></p>
+                    <ul>
+                        <li>Forte consommation énergétique (énergie grise)</li>
+                        <li>Émissions de CO₂ (8% du CO₂ mondial pour le ciment)</li>
+                        <li>Dégradation prématurée (corrosion, carbonatation)</li>
+                        <li>Besoin de maintenance élevé</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Objectifs des nouveaux matériaux :</strong>
+                        <ul>
+                            <li>✅ Augmenter la durée de vie (50 → 100 ans)</li>
+                            <li>✅ Réduire l'empreinte carbone (-30 à -70%)</li>
+                            <li>✅ Améliorer les performances mécaniques</li>
+                            <li>✅ Adapter les structures aux changements climatiques</li>
+                        </ul>
+                    </div>
+                `
+            },
+            2: {
+                title: "Enjeux de la construction durable",
+                sub: "Transition écologique",
+                tag: "Module 1",
+                content: `
+                    <p>La <strong>construction durable</strong> répond à trois piliers : <strong>environnemental, économique et social</strong>.</p>
+                    <p><strong>Enjeux environnementaux :</strong></p>
+                    <ul>
+                        <li>Réduction des émissions de gaz à effet de serre</li>
+                        <li>Économie des ressources (eau, matériaux)</li>
+                        <li>Réduction des déchets de construction</li>
+                        <li>Protection de la biodiversité</li>
+                    </ul>
+                    <p><strong>Leviers d'action :</strong></p>
+                    <ul>
+                        <li><strong>Matériaux bas carbone</strong> : bétons géopolymères, bois</li>
+                        <li><strong>Économie circulaire</strong> : recyclage, réemploi</li>
+                        <li><strong>Conception durable</strong> : optimisation des structures</li>
+                        <li><strong>Réhabilitation</strong> : prolonger la durée de vie des ouvrages</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Réglementation :</strong> La RE2020 impose des objectifs de performance environnementale pour les bâtiments neufs.
+                    </div>
+                `
+            },
+            // ---------- MODULE 2 : BÉTONS INNOVANTS ----------
+            3: {
+                title: "Bétons à hautes performances (BHP)",
+                sub: "fc > 60 MPa, E/C < 0,40",
+                tag: "Module 2",
+                content: `
+                    <p>Les <strong>Bétons à Hautes Performances (BHP)</strong> ont une <strong>résistance mécanique élevée</strong> et une <strong>durabilité améliorée</strong>.</p>
+                    <div class="formula">
+                        f<sub>c</sub> > 60 MPa  (jusqu'à 120 MPa)
+                    </div>
+                    <div class="formula">
+                        E/C < 0,40  (rapport eau/ciment très faible)
+                    </div>
+                    <p><strong>Constituants :</strong></p>
+                    <ul>
+                        <li><strong>Superplastifiants</strong> : fluidité à faible eau</li>
+                        <li><strong>Fumée de silice</strong> : remplissage, réactivité</li>
+                        <li><strong>Cendres volantes</strong> : amélioration de la compacité</li>
+                        <li><strong>Laitiers de haut-fourneau</strong> : durabilité</li>
+                    </ul>
+                    <div class="table-box">
+                        <table>
+                            <tr><th>Type</th><th>f<sub>c</sub> (MPa)</th><th>E/C</th><th>Applications</th></tr>
+                            <tr><td>BHP classique</td><td>60-80</td><td>0,35-0,40</td><td>Ponts, poteaux</td></tr>
+                            <tr><td>BHP performant</td><td>80-100</td><td>0,28-0,35</td><td>Tours, ouvrages d'art</td></tr>
+                            <tr><td>BHP ultra-performant</td><td>100-150</td><td>< 0,25</td><td>Gratte-ciel, architecture</td></tr>
+                        </table>
+                    </div>
+                    <div class="example-box">
+                        <strong>📌 Avantages :</strong> Sections réduites, portées plus longues, durabilité exceptionnelle.
+                    </div>
+                `
+            },
+            4: {
+                title: "Bétons autoplaçants (BAP)",
+                sub: "Pas de vibration, grande fluidité",
+                tag: "Module 2",
+                content: `
+                    <p>Les <strong>Bétons Autoplaçants (BAP)</strong> se mettent en place <strong>sans vibration mécanique</strong>.</p>
+                    <p><strong>Propriétés :</strong></p>
+                    <ul>
+                        <li><strong>Grande fluidité</strong> : remplissage des coffrages complexes</li>
+                        <li><strong>Stabilité</strong> : pas de ségrégation</li>
+                        <li><strong>Réduction du bruit</strong> sur chantier</li>
+                        <li><strong>Gain de temps</strong> et de main-d'œuvre</li>
+                    </ul>
+                    <p><strong>Contrôles :</strong></p>
+                    <ul>
+                        <li><strong>Essai d'étalement au cône d'Abrams</strong> : diamètre ≥ 550 mm</li>
+                        <li><strong>Essai de viscosité</strong> (T<sub>500</sub>)</li>
+                        <li><strong>Essai de stabilité</strong> (boîte en L)</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Applications :</strong>
+                        <ul>
+                            <li>Éléments préfabriqués</li>
+                            <li>Voiles minces</li>
+                            <li>Zones fortement armées</li>
+                            <li>Architecture complexe</li>
+                        </ul>
+                    </div>
+                `
+            },
+            5: {
+                title: "Bétons fibrés",
+                sub: "Acier, verre, polypropylène, végétales",
+                tag: "Module 2",
+                content: `
+                    <p>Les <strong>bétons fibrés</strong> intègrent des <strong>fibres</strong> pour améliorer les propriétés mécaniques.</p>
+                    <div class="table-box">
+                        <table>
+                            <tr><th>Type de fibres</th><th>Avantages</th><th>Applications</th></tr>
+                            <tr><td><strong>Métalliques</strong></td><td>Résistance, ductilité</td><td>Dallages, structures</td></tr>
+                            <tr><td><strong>Verre</strong></td><td>Résistance chimique</td><td>Revêtements</td></tr>
+                            <tr><td><strong>Polypropylène</strong></td><td>Résistance à la fissuration</td><td>Bétons projetés</td></tr>
+                            <tr><td><strong>Basalte</strong></td><td>Haute résistance, écologique</td><td>Structures spé</td></tr>
+                            <tr><td><strong>Végétales</strong></td><td>Biosourcées, isolantes</td><td>Bétons végétaux</td></tr>
+                        </table>
+                    </div>
+                    <p><strong>Améliorations :</strong></p>
+                    <ul>
+                        <li>✅ Résistance à la fissuration (post-fissuration)</li>
+                        <li>✅ Ductilité (comportement pseudo-plastique)</li>
+                        <li>✅ Résistance aux chocs</li>
+                        <li>✅ Réduction des armatures passives</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Norme :</strong> La norme NF EN 14889-1 (fibres métalliques) et NF EN 14889-2 (fibres polymères) réglementent l'utilisation des fibres.
+                    </div>
+                `
+            },
+            6: {
+                title: "Bétons ultra-performants (BFUP / UHPC)",
+                sub: "fc > 150 MPa",
+                tag: "Module 2",
+                content: `
+                    <p>Les <strong>Bétons Fibrés Ultra-Performants (BFUP)</strong> ou <strong>UHPC (Ultra-High Performance Concrete)</strong> représentent l'état de l'art.</p>
+                    <div class="formula">
+                        f<sub>c</sub> > 150 MPa  (jusqu'à 250 MPa)
+                    </div>
+                    <p><strong>Composition :</strong></p>
+                    <ul>
+                        <li>Rapport E/C < 0,20</li>
+                        <li>Fumée de silice + cendres volantes</li>
+                        <li>Fibres métalliques (2-3%)</li>
+                        <li>Superplastifiants haute performance</li>
+                    </ul>
+                    <p><strong>Applications emblématiques :</strong></p>
+                    <ul>
+                        <li><strong>Passerelle de Séoul (2005)</strong> : arche de 120 m</li>
+                        <li><strong>Viaduc de Millau</strong> : piles en UHPC</li>
+                        <li><strong>Musée Louis Vuitton (Paris)</strong> : éléments architecturaux</li>
+                        <li><strong>Façades</strong> : fines et résistantes</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Avantages :</strong>
+                        <ul>
+                            <li>Résistance exceptionnelle (compression et traction)</li>
+                            <li>Durabilité extrême (chlorures, gel)</li>
+                            <li>Esthétique (surfaces lisses, couleur)</li>
+                            <li>Sections très réduites → économie de matière</li>
+                        </ul>
+                    </div>
+                `
+            },
+            // ---------- MODULE 3 : BAS CARBONE & BIOSOURCÉS ----------
+            7: {
+                title: "Réduction de l'impact carbone du béton",
+                sub: "Substitution du clinker",
+                tag: "Module 3",
+                content: `
+                    <p>Le <strong>ciment Portland</strong> est responsable de <strong>8% des émissions mondiales</strong> de CO₂. La substitution du clinker est la solution principale.</p>
+                    <div class="formula">
+                        CO₂ réduit = % substitution × 0,8 kg CO₂/kg clinker
+                    </div>
+                    <p><strong>Matériaux de substitution :</strong></p>
+                    <div class="table-box">
+                        <table>
+                            <tr><th>Matériau</th><th>Substitution max</th><th>Réduction CO₂</th></tr>
+                            <tr><td>Laitiers de haut-fourneau</td><td>70%</td><td>-50%</td></tr>
+                            <tr><td>Cendres volantes</td><td>35%</td><td>-30%</td></tr>
+                            <tr><td>Métakaolin</td><td>20%</td><td>-20%</td></tr>
+                            <tr><td>Pouzzolanes naturelles</td><td>25%</td><td>-25%</td></tr>
+                            <tr><td>Calcaires</td><td>20%</td><td>-15%</td></tr>
+                        </table>
+                    </div>
+                    <div class="example-box">
+                        <strong>📌 Exemple :</strong> Un béton avec 50% de laitier réduit son empreinte carbone de <strong>40%</strong> (de 300 à 180 kg CO₂/m³).
+                    </div>
+                `
+            },
+            8: {
+                title: "Bétons géopolymères",
+                sub: "Liants alcalins sans ciment",
+                tag: "Module 3",
+                content: `
+                    <p>Les <strong>bétons géopolymères</strong> utilisent des <strong>liants alcalins</strong> à base d'aluminosilicates (argile, laitier) <strong>sans ciment Portland</strong>.</p>
+                    <div class="formula">
+                        Géopolymère = Al<sub>2</sub>O<sub>3</sub> + SiO<sub>2</sub> + activateurs alcalins
+                    </div>
+                    <p><strong>Avantages :</strong></p>
+                    <ul>
+                        <li>✅ Émissions de CO₂ réduites de <strong>70-80%</strong></li>
+                        <li>✅ Résistance chimique élevée</li>
+                        <li>✅ Résistance au feu (jusqu'à 1000°C)</li>
+                        <li>✅ Utilisation de déchets (laitier, cendres)</li>
+                    </ul>
+                    <p><strong>Inconvénients :</strong></p>
+                    <ul>
+                        <li>❌ Normalisation en cours (pas de norme EN 206)</li>
+                        <li>❌ Temps de prise variable</li>
+                        <li>❌ Coût des activateurs (silicates)</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Applications :</strong> Ouvrages maritimes, stockage de déchets, réhabilitation, pièces préfabriquées.
+                    </div>
+                `
+            },
+            9: {
+                title: "Bois d'ingénierie (CLT, LVL, lamellé-collé)",
+                sub: "Stockage carbone, légèreté",
+                tag: "Module 3",
+                content: `
+                    <p>Le <strong>bois d'ingénierie</strong> transforme le bois massif en produits structuraux haute performance.</p>
+                    <div class="table-box">
+                        <table>
+                            <tr><th>Produit</th><th>Caractéristiques</th><th>Applications</th></tr>
+                            <tr><td><strong>CLT</strong> (Cross Laminated Timber)</td><td>Panneaux massifs croisés</td><td>Murs, planchers, immeubles bois</td></tr>
+                            <tr><td><strong>LVL</strong> (Laminated Veneer Lumber)</td><td>Poutres en lamelles</td><td>Poutres, charpentes</td></tr>
+                            <tr><td><strong>Lamellé-collé</strong></td><td>Lames collées</td><td>Grandes portées, ponts</td></tr>
+                        </table>
+                    </div>
+                    <p><strong>Avantages :</strong></p>
+                    <ul>
+                        <li>✅ <strong>Stockage de carbone</strong> (1 m³ de bois = 0,9 t CO₂)</li>
+                        <li>✅ <strong>Légèreté</strong> (1/5 du poids du béton)</li>
+                        <li>✅ <strong>Préfabrication</strong> (rapidité de pose)</li>
+                        <li>✅ <strong>Bonne résistance sismique</strong></li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Records :</strong> Tour Woodland (78 m, Vancouver), Mjøstårnet (85 m, Norvège).
+                    </div>
+                `
+            },
+            10: {
+                title: "Fibres végétales et bétons biosourcés",
+                sub: "Chanvre, lin, bambou, paille",
+                tag: "Module 3",
+                content: `
+                    <p>Les <strong>matériaux biosourcés</strong> utilisent des ressources <strong>renouvelables</strong> et <strong>stockent le carbone</strong>.</p>
+                    <div class="table-box">
+                        <table>
+                            <tr><th>Matériau</th><th>Applications</th><th>Avantages</th></tr>
+                            <tr><td><strong>Béton de chanvre</strong></td><td>Isolation, murs</td><td>Léger, isolant, régulateur hygrométrique</td></tr>
+                            <tr><td><strong>Bambou</strong></td><td>Structures, échafaudages</td><td>Résistant, croissance rapide (30 cm/jour)</td></tr>
+                            <tr><td><strong>Paille</strong></td><td>Isolation, murs porteurs</td><td>Très isolant, économique</td></tr>
+                            <tr><td><strong>Lin</strong></td><td>Isolation, composites</td><td>Résistant, écologique</td></tr>
+                        </table>
+                    </div>
+                    <div class="example-box">
+                        <strong>📌 Bilan carbone :</strong> Le béton de chanvre stocke 1,5 kg CO₂/kg contre 0,8 kg CO₂/kg pour le béton classique.
+                    </div>
+                `
+            },
+            // ---------- MODULE 4 : COMPOSITES & INTELLIGENTS ----------
+            11: {
+                title: "Composites FRP (CFRP, GFRP, AFRP)",
+                sub: "Fiber Reinforced Polymer",
+                tag: "Module 4",
+                content: `
+                    <p>Les <strong>composites FRP</strong> (Fiber Reinforced Polymer) sont des <strong>matériaux hybrides</strong> pour le renforcement et la réparation.</p>
+                    <div class="table-box">
+                        <table>
+                            <tr><th>Type</th><th>Fibres</th><th>Résistance (MPa)</th><th>Applications</th></tr>
+                            <tr><td><strong>CFRP</strong></td><td>Carbone</td><td>2 000 - 4 500</td><td>Renforcement haute performance</td></tr>
+                            <tr><td><strong>GFRP</strong></td><td>Verre</td><td>800 - 1 500</td><td>Renforcement économique</td></tr>
+                            <tr><td><strong>AFRP</strong></td><td>Aramide</td><td>1 500 - 2 500</td><td>Résistance aux chocs</td></tr>
+                        </table>
+                    </div>
+                    <p><strong>Avantages :</strong></p>
+                    <ul>
+                        <li>✅ Légèreté (1/5 de l'acier)</li>
+                        <li>✅ Résistance à la corrosion</li>
+                        <li>✅ Mise en œuvre rapide (collage)</li>
+                        <li>✅ Peu d'encombrement</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Applications :</strong>
+                        <ul>
+                            <li>Renforcement de poutres BA en flexion/cisaillement</li>
+                            <li>Réparation de ponts (pont de Millau)</li>
+                            <li>Renforcement parasismique (enveloppement)</li>
+                            <li>Renforcement de dalles</li>
+                        </ul>
+                    </div>
+                `
+            },
+            12: {
+                title: "Bétons auto-cicatrisants",
+                sub: "Bactéries, microcapsules",
+                tag: "Module 4",
+                content: `
+                    <p>Les <strong>bétons auto-cicatrisants</strong> réparent <strong>automatiquement</strong> leurs microfissures.</p>
+                    <p><strong>Mécanismes :</strong></p>
+                    <ul>
+                        <li><strong>Bactéries</strong> : production de calcaire (Bacillus pseudofirmus)</li>
+                        <li><strong>Microcapsules</strong> : libération d'agent réparateur</li>
+                        <li><strong>Ciments expansifs</strong> : gonflement et obturation</li>
+                    </ul>
+                    <div class="formula">
+                        Fissure refermée = 0,5 - 1,0 mm
+                    </div>
+                    <p><strong>Avantages :</strong></p>
+                    <ul>
+                        <li>✅ Réduction des coûts de maintenance (30-50%)</li>
+                        <li>✅ Prolongation de la durée de vie</li>
+                        <li>✅ Réparation accessible (pas d'intervention humaine)</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Projets pilotes :</strong> Ponts (Pays-Bas), tunnels (Suisse), dallages industriels.
+                    </div>
+                `
+            },
+            13: {
+                title: "Matériaux à changement de phase (PCM)",
+                sub: "Régulation thermique",
+                tag: "Module 4",
+                content: `
+                    <p>Les <strong>Matériaux à Changement de Phase (PCM)</strong> stockent et restituent la <strong>chaleur latente</strong> pour réguler la température.</p>
+                    <div class="formula">
+                        Chaleur stockée = m × L<sub>f</sub>
+                    </div>
+                    <p><strong>Exemples de PCM :</strong></p>
+                    <ul>
+                        <li><strong>Paraffines</strong> : plage 20-30°C (bâtiment)</li>
+                        <li><strong>Sels hydratés</strong> : plage 25-50°C</li>
+                        <li><strong>Acides gras</strong> : biosourcés</li>
+                    </ul>
+                    <p><strong>Applications :</strong></p>
+                    <ul>
+                        <li>✅ Planchers chauffants</li>
+                        <li>✅ Enveloppe des bâtiments</li>
+                        <li>✅ Stockage d'énergie solaire</li>
+                        <li>✅ Bâtiments à énergie positive</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Bilan :</strong> Réduction de la consommation d'énergie de <strong>15-30%</strong> (chauffage/climatisation).
+                    </div>
+                `
+            },
+            // ---------- MODULE 5 : DURABILITÉ & PATHOLOGIES ----------
+            14: {
+                title: "Carbonatation du béton",
+                sub: "CO₂ + Ca(OH)₂ → CaCO₃",
+                tag: "Module 5",
+                content: `
+                    <p>La <strong>carbonatation</strong> est une réaction chimique entre le CO₂ atmosphérique et la <strong>chaux libre</strong> du béton.</p>
+                    <div class="formula">
+                        CO₂ + Ca(OH)₂ → CaCO₃ + H₂O
+                    </div>
+                    <p><strong>Conséquences :</strong></p>
+                    <ul>
+                        <li>⬇️ Diminution du pH (13 → 9)</li>
+                        <li>⚠️ Dépassivation des armatures</li>
+                        <li>⚠️ Début de corrosion</li>
+                    </ul>
+                    <div class="formula">
+                        <strong>Profondeur de carbonatation :</strong><br>
+                        x<sub>c</sub> = k × √t
+                    </div>
+                    <p>avec <strong>k</strong> : coefficient de carbonatation (dépend du béton)</p>
+                    <div class="example-box">
+                        <strong>📌 Exemple :</strong> k = 2 mm/√an → après 50 ans, x<sub>c</sub> = 14 mm.<br>
+                        Si l'enrobage est de 25 mm, les armatures ne sont pas atteintes.
+                    </div>
+                `
+            },
+            15: {
+                title: "Corrosion des armatures",
+                sub: "Causes et conséquences",
+                tag: "Module 5",
+                content: `
+                    <p>La <strong>corrosion des armatures</strong> est la pathologie la plus fréquente du béton armé.</p>
+                    <p><strong>Causes :</strong></p>
+                    <ul>
+                        <li><strong>Carbonatation</strong> (baisse du pH)</li>
+                        <li><strong>Chlorures</strong> (milieu marin, sels de déverglaçage)</li>
+                        <li><strong>Humidité</strong> (eau + oxygène)</li>
+                    </ul>
+                    <div class="formula">
+                        <strong>Réaction anodique :</strong><br>
+                        Fe → Fe²⁺ + 2e⁻
+                    </div>
+                    <div class="formula">
+                        <strong>Réaction cathodique :</strong><br>
+                        O₂ + 2H₂O + 4e⁻ → 4OH⁻
+                    </div>
+                    <p><strong>Conséquences :</strong></p>
+                    <ul>
+                        <li>⚠️ Perte de section des armatures</li>
+                        <li>⚠️ Fissuration (volume de la rouille = 6× volume acier)</li>
+                        <li>⚠️ Éclatement du béton</li>
+                        <li>⚠️ Effondrement potentiel</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Coût :</strong> La corrosion représente <strong>3-4% du PIB</strong> des pays industrialisés (maintenance, remplacement).
+                    </div>
+                `
+            },
+            16: {
+                title: "Attaque par les chlorures",
+                sub: "Milieu marin, sels de déverglaçage",
+                tag: "Module 5",
+                content: `
+                    <p>Les <strong>chlorures</strong> (Cl⁻) sont les agents les plus agressifs pour le béton armé.</p>
+                    <p><strong>Origines :</strong></p>
+                    <ul>
+                        <li><strong>Milieu marin</strong> (embruns, immersion)</li>
+                        <li><strong>Sels de déverglaçage</strong> (routes, ponts)</li>
+                        <li><strong>Eaux souterraines</strong> salines</li>
+                    </ul>
+                    <div class="formula">
+                        <strong>Seuil critique :</strong> [Cl⁻] > 0,4% de la masse de ciment
+                    </div>
+                    <p><strong>Paramètre clé :</strong></p>
+                    <div class="formula">
+                        D<sub>cl</sub> = coefficient de diffusion des chlorures (m²/s)
+                    </div>
+                    <p><strong>Solutions :</strong></p>
+                    <ul>
+                        <li>Enrobage renforcé (classe XS3 → 40-50 mm)</li>
+                        <li>Béton à faible E/C (< 0,40)</li>
+                        <li>Ajout de laitier ou cendres volantes</li>
+                        <li>Protection des surfaces (hydrofuge)</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Exemple :</strong> Un béton avec E/C = 0,45 a D<sub>cl</sub> ≈ 5×10⁻¹² m²/s. Avec E/C = 0,35, D<sub>cl</sub> ≈ 1×10⁻¹² m²/s (5 fois moins).
+                    </div>
+                `
+            },
+            17: {
+                title: "Classes d'exposition EN 206",
+                sub: "XC, XD, XS, XF, XA",
+                tag: "Module 5",
+                content: `
+                    <p>La norme <strong>EN 206</strong> définit les <strong>classes d'exposition</strong> pour le béton selon son environnement.</p>
+                    <div class="table-box">
+                        <table>
+                            <tr><th>Classe</th><th>Description</th><th>Exemple</th></tr>
+                            <tr><td><strong>XC</strong></td><td>Carbonatation</td><td>XC1 (intérieur sec), XC4 (alternance humide/sec)</td></tr>
+                            <tr><td><strong>XD</strong></td><td>Chlorures hors marin</td><td>XD3 (sels de déverglaçage)</td></tr>
+                            <tr><td><strong>XS</strong></td><td>Milieu marin</td><td>XS3 (zone de marée)</td></tr>
+                            <tr><td><strong>XF</strong></td><td>Gel/dégel</td><td>XF2 (gel + absence d'eau)</td></tr>
+                            <tr><td><strong>XA</strong></td><td>Attaques chimiques</td><td>XA3 (sols très agressifs)</td></tr>
+                        </table>
+                    </div>
+                    <p><strong>Prescriptions associées :</strong></p>
+                    <ul>
+                        <li>Rapport E/C max</li>
+                        <li>Enrobage minimal</li>
+                        <li>Classe de résistance minimale</li>
+                        <li>Entraîneur d'air (XF)</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Exemple :</strong> Pour XS3 (milieu marin très agressif) : E/C ≤ 0,40, enrobage ≥ 40 mm, f<sub>ck</sub> ≥ C30/37.
+                    </div>
+                `
+            },
+            18: {
+                title: "Modèles de durée de vie",
+                sub: "Initiation et propagation",
+                tag: "Module 5",
+                content: `
+                    <p>La <strong>durée de vie</strong> d'une structure en béton armé est modélisée par le <strong>modèle de Tuutti</strong>.</p>
+                    <div class="formula">
+                        Durée de vie = t<sub>initiation</sub> + t<sub>propagation</sub>
+                    </div>
+                    <p><strong>Phase 1 - Initiation :</strong></p>
+                    <ul>
+                        <li>Pénétration des agents agressifs (CO₂, Cl⁻)</li>
+                        <li>Jusqu'à atteindre les armatures</li>
+                        <li>Dépend du béton (E/C, enrobage)</li>
+                    </ul>
+                    <p><strong>Phase 2 - Propagation :</strong></p>
+                    <ul>
+                        <li>Dépassivation → corrosion</li>
+                        <li>Perte de section → fissuration</li>
+                        <li>Jusqu'à la ruine de la structure</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Objectif :</strong> Durée de vie ≥ <strong>50-100 ans</strong> pour les ouvrages courants, 120 ans pour les ouvrages d'art.
+                    </div>
+                `
+            },
+            // ---------- MODULE 6 : CYCLE DE VIE & TP ----------
+            19: {
+                title: "Analyse du Cycle de Vie (ACV)",
+                sub: "Énergie grise, CO₂, indicateurs",
+                tag: "Module 6",
+                content: `
+                    <p>L'<strong>Analyse du Cycle de Vie (ACV)</strong> évalue l'<strong>impact environnemental</strong> d'un matériau sur l'ensemble de sa vie.</p>
+                    <p><strong>Étapes :</strong></p>
+                    <ul>
+                        <li><strong>Extraction</strong> des matières premières</li>
+                        <li><strong>Transport</strong></li>
+                        <li><strong>Fabrication</strong> du matériau</li>
+                        <li><strong>Mise en œuvre</strong> (construction)</li>
+                        <li><strong>Utilisation</strong> (entretien, maintenance)</li>
+                        <li><strong>Fin de vie</strong> (recyclage, déconstruction)</li>
+                    </ul>
+                    <div class="table-box">
+                        <table>
+                            <tr><th>Matériau</th><th>Énergie grise (MJ/m³)</th><th>CO₂ (kg/m³)</th></tr>
+                            <tr><td>Béton C25/30</td><td>1 200</td><td>280</td></tr>
+                            <tr><td>Béton géopolymère</td><td>400</td><td>80</td></tr>
+                            <tr><td>Bois CLT</td><td>500</td><td>-400 (stockage)</td></tr>
+                            <tr><td>Acier</td><td>20 000</td><td>1 500</td></tr>
+                        </table>
+                    </div>
+                    <div class="example-box">
+                        <strong>📌 Indicateurs :</strong> kg CO₂/m², énergie grise (MJ), potentiel de réchauffement global (PRG).
+                    </div>
+                `
+            },
+            20: {
+                title: "Économie circulaire et recyclage",
+                sub: "Granulats recyclés, réemploi",
+                tag: "Module 6",
+                content: `
+                    <p>L'<strong>économie circulaire</strong> vise à <strong>réduire les déchets</strong> et à <strong>réutiliser</strong> les matériaux.</p>
+                    <p><strong>Filières :</strong></p>
+                    <ul>
+                        <li><strong>Granulats recyclés</strong> : béton concassé (jusqu'à 50% de substitution)</li>
+                        <li><strong>Bétons de démolition</strong> : revalorisés en sous-couche ou granulats</li>
+                        <li><strong>Réemploi</strong> : réutilisation des éléments (poutres, dalles)</li>
+                        <li><strong>Upcycling</strong> : valorisation en matériaux de qualité supérieure</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Projet exemplaire :</strong> La Tour Tilia (Suisse) — premier immeuble de bureaux démontable. Les éléments sont conçus pour être réutilisés.
+                    </div>
+                `
+            },
+            21: {
+                title: "TP 1 - Formulation béton bas carbone",
+                sub: "Calcul E/C, résistance, CO₂",
+                tag: "Module 6",
+                content: `
+                    <div style="background:#f8fafc;padding:1rem;border-radius:10px;font-family:monospace;font-size:0.85rem;white-space:pre-wrap;">
+                        TP 1 : FORMULATION D'UN BÉTON BAS CARBONE
+
+                        OBJECTIF : Concevoir un béton C25/30 avec réduction de 40% du CO₂
+
+                        DONNÉES :
+                        - Ciment CEM III/A (50% laitier)
+                        - E/C = 0,50
+                        - Substitution : 30% cendres volantes
+                        - Granulats : calcaires (0,8 t CO₂/t)
+
+                        CALCULS :
+                        - Masse ciment : 280 kg/m³
+                        - Masse eau : 280 × 0,50 = 140 L
+                        - Masse cendres volantes : 280 × 0,30 = 84 kg
+                        - Masse totale liants : 364 kg/m³
+
+                        ÉMISSIONS CO₂ :
+                        - Ciment CEM III/A : 0,4 kg CO₂/kg
+                        - Cendres volantes : 0,05 kg CO₂/kg
+                        - Total : 280×0,4 + 84×0,05 = 112 + 4 = 116 kg CO₂/m³
+                        - Béton classique (CEM I) : 280×0,8 = 224 kg CO₂/m³
+                        - Réduction : (224-116)/224 = 48%
+
+                        RÉSULTAT : Béton bas carbone avec une réduction de 48% des émissions.
+                        Résistance attendue : C30/37 (avec adjuvants)
+                    </div>
+                `
+            },
+            22: {
+                title: "TP 2 - Étude de durabilité",
+                sub: "Classe XS3, durée de vie 100 ans",
+                tag: "Module 6",
+                content: `
+                    <div style="background:#f8fafc;padding:1rem;border-radius:10px;font-family:monospace;font-size:0.85rem;white-space:pre-wrap;">
+                        TP 2 : DURABILITÉ D'UN BÉTON ARMÉ EN MILIEU MARIN
+
+                        CONTEXTE : Pont en zone XS3 (marée)
+
+                        DONNÉES :
+                        - Durée de vie : 100 ans
+                        - Classe d'exposition : XS3
+                        - Coefficient de diffusion chlorures : D_cl = 2×10⁻¹² m²/s
+
+                        CALCULS :
+                        - Seuil critique : 0,4% Cl⁻
+                        - Modèle de Fick : C(x,t) = C_s × (1 - erf(x / (2×√(D_cl×t))))
+                        - Pour t = 100 ans = 3,15×10⁹ s
+                        - √(D_cl×t) = √(2×10⁻¹² × 3,15×10⁹) = √(6,3×10⁻³) = 0,079 m
+
+                        ENROBAGE NÉCESSAIRE :
+                        - C/C_s = 0,1
+                        - erf(z) = 0,9 → z ≈ 1,16
+                        - x = 1,16 × 0,079 × 2 = 0,183 m = 18,3 cm
+
+                        CONCLUSION :
+                        - Enrobage minimum = 50 mm (préconisé)
+                        - Utiliser un béton avec E/C < 0,40
+                        - Ajout de laitier (réduction D_cl)
+                    </div>
+                `
+            },
+            23: {
+                title: "TP 3 - Renforcement par CFRP",
+                sub: "Calcul capacité portante",
+                tag: "Module 6",
+                content: `
+                    <div style="background:#f8fafc;padding:1rem;border-radius:10px;font-family:monospace;font-size:0.85rem;white-space:pre-wrap;">
+                        TP 3 : RENFORCEMENT D'UNE POUTRE BA PAR CFRP
+
+                        DONNÉES :
+                        - Poutre : 30 × 50 cm, L = 8 m
+                        - Armatures : 3 HA16 (As = 6,03 cm²)
+                        - Béton : C25/30, acier S500B
+                        - Moment agissant M_Ed = 180 kN.m
+
+                        RÉSISTANCE INITIALE (EC2) :
+                        - M_Rd = As × f_yd × (d - 0,5×x)
+                        - M_Rd ≈ 160 kN.m
+                        - M_Ed = 180 kN.m → Renforcement nécessaire
+
+                        RENFORCEMENT PAR CFRP :
+                        - Module E = 165 GPa
+                        - Résistance f_fu = 2 800 MPa
+                        - Épaisseur : 1,2 mm (2 couches)
+                        - Largeur : 80 mm
+
+                        CAPACITÉ APRÈS RENFORCEMENT :
+                        - ε_fu = 0,017 (1,7%)
+                        - ΔM = 0,85 × E_f × ε_fu × A_f × z
+                        - ΔM ≈ 45 kN.m
+                        - M_Rd,total = 160 + 45 = 205 kN.m > 180 kN.m
+
+                        CONCLUSION : OK. Poutre renforcée avec 2 couches de CFRP.
+                        Vérification du cisaillement et de l'ancrage à réaliser.
+                    </div>
+                `
+            }
+        };
+
+        // Concepts supplémentaires pour compléter
+        const extraData = {
+            24: {
+                title: "Essais de caractérisation des matériaux",
+                sub: "Mécaniques et durabilité",
+                tag: "Module 1",
+                content: `
+                    <p>Les <strong>essais de caractérisation</strong> permettent de vérifier les performances des matériaux.</p>
+                    <p><strong>Essais mécaniques :</strong></p>
+                    <ul>
+                        <li><strong>Compression</strong> : résistance du béton (NF EN 12390-3)</li>
+                        <li><strong>Traction</strong> : résistance des armatures (NF EN 10002)</li>
+                        <li><strong>Flexion</strong> : module de rupture (NF EN 12390-5)</li>
+                        <li><strong>Module d'élasticité</strong> : E (NF EN 12390-13)</li>
+                    </ul>
+                    <p><strong>Essais de durabilité :</strong></p>
+                    <ul>
+                        <li><strong>Porosité</strong> : absorption d'eau (NF EN 1097-6)</li>
+                        <li><strong>Perméabilité</strong> : coefficient de perméabilité</li>
+                        <li><strong>Migration des chlorures</strong> : D<sub>cl</sub> (NF EN 14629)</li>
+                        <li><strong>Carbonatation accélérée</strong> : profondeur (NF EN 13295)</li>
+                    </ul>
+                    <p><strong>Techniques avancées :</strong></p>
+                    <ul>
+                        <li><strong>Microscopie électronique (MEB)</strong> : observation de la microstructure</li>
+                        <li><strong>Diffraction RX</strong> : identification des phases</li>
+                        <li><strong>Analyse thermique (ATG/ATD)</strong> : composition du matériau</li>
+                    </ul>
+                `
+            },
+            25: {
+                title: "Matériaux intelligents - Capteurs",
+                sub: "SHM (Structural Health Monitoring)",
+                tag: "Module 4",
+                content: `
+                    <p>Les <strong>matériaux intelligents</strong> intègrent des <strong>capteurs</strong> pour surveiller l'état de la structure.</p>
+                    <p><strong>Technologies :</strong></p>
+                    <ul>
+                        <li><strong>Fibres optiques</strong> : mesure des déformations (FBG)</li>
+                        <li><strong>Capteurs piézoélectriques</strong> : détection des fissures</li>
+                        <li><strong>Capteurs de corrosion</strong> : surveillance des armatures</li>
+                        <li><strong>Capteurs de température/humidité</strong> : conditions ambiantes</li>
+                    </ul>
+                    <p><strong>Applications :</strong></p>
+                    <ul>
+                        <li>✅ Ponts (monitoring en temps réel)</li>
+                        <li>✅ Bâtiments de grande hauteur</li>
+                        <li>✅ Structures critiques (centrales)</li>
+                        <li>✅ Patrimoine historique</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Exemple :</strong> Le viaduc de Millau est équipé de capteurs à fibre optique pour surveiller les déformations et les contraintes en temps réel.
+                    </div>
+                `
+            },
+            26: {
+                title: "Résistance au feu des matériaux",
+                sub: "Comportement à haute température",
+                tag: "Module 1",
+                content: `
+                    <p>La <strong>résistance au feu</strong> est une propriété clé pour la sécurité des structures.</p>
+                    <div class="table-box">
+                        <table>
+                            <tr><th>Matériau</th><th>Comportement au feu</th><th>Résistance</th></tr>
+                            <tr><td>Béton armé</td><td>Bon (protège l'acier)</td><td>R90-R120</td></tr>
+                            <tr><td>Béton géopolymère</td><td>Excellent (aucun dégagement)</td><td>R120-R180</td></tr>
+                            <tr><td>Acier</td><td>Perte de résistance à 500°C</td><td>Protection nécessaire</td></tr>
+                            <tr><td>Bois CLT</td><td>Carbonisation lente (0,65 mm/min)</td><td>R30-R90</td></tr>
+                        </table>
+                    </div>
+                    <div class="example-box">
+                        <strong>📌 Norme :</strong> La classification au feu se fait selon NF EN 13501 (R30, R60, R90, R120) où R = durée en minutes.
+                    </div>
+                `
+            },
+            27: {
+                title: "Normes et certifications",
+                sub: "EN, ISO, labels",
+                tag: "Module 6",
+                content: `
+                    <p>Les <strong>normes</strong> et <strong>certifications</strong> garantissent la qualité et la durabilité des matériaux.</p>
+                    <p><strong>Normes principales :</strong></p>
+                    <ul>
+                        <li><strong>EN 206</strong> : Béton - Spécifications, performances, production</li>
+                        <li><strong>NF EN 1992-1-1</strong> : Eurocode 2 - Béton armé</li>
+                        <li><strong>NF EN 1990</strong> : Bases du calcul</li>
+                        <li><strong>ISO 14040</strong> : Analyse du cycle de vie</li>
+                    </ul>
+                    <p><strong>Labels et certifications :</strong></p>
+                    <ul>
+                        <li><strong>HQE</strong> : Haute Qualité Environnementale</li>
+                        <li><strong>BREEAM</strong> : Building Research Establishment Environmental Assessment</li>
+                        <li><strong>LEED</strong> : Leadership in Energy and Environmental Design</li>
+                        <li><strong>E+C-</strong> : Énergie positive - Carbone négatif</li>
+                        <li><strong>Recyclé</strong> : Certification des granulats recyclés</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 En France :</strong> La RE2020 impose une évaluation carbone basée sur l'ACV pour les bâtiments neufs.
+                    </div>
+                `
+            }
+        };
+
+        Object.assign(data, extraData);
+
+        // ================================================================
+        //  CONSTRUCTION DES GRILLES
+        // ================================================================
+
+        const categories = {
+            mod1: { ids: [1,2,24,26], gridId: 'grid-mod1' },
+            mod2: { ids: [3,4,5,6], gridId: 'grid-mod2' },
+            mod3: { ids: [7,8,9,10], gridId: 'grid-mod3' },
+            mod4: { ids: [11,12,13,25], gridId: 'grid-mod4' },
+            mod5: { ids: [14,15,16,17,18], gridId: 'grid-mod5' },
+            mod6: { ids: [19,20,21,22,23,27], gridId: 'grid-mod6' }
+        };
+
+        for (const [cat, obj] of Object.entries(categories)) {
+            const grid = document.getElementById(obj.gridId);
+            for (const id of obj.ids) {
+                const item = data[id];
+                if (!item) continue;
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.setAttribute('data-id', id);
+                card.innerHTML = `
+                    <span class="num">${String(id).padStart(2, '0')}</span>
+                    <span class="text">${item.title}<small>${item.sub}</small></span>
+                `;
+                card.addEventListener('click', () => navigateToArticle(id));
+                grid.appendChild(card);
+            }
+        }
+
+        // ================================================================
+        //  ROUTING (Hash-based)
+        // ================================================================
+
+        const homePage = document.getElementById('homePage');
+        const articlePage = document.getElementById('articlePage');
+
+        function showHome() {
+            homePage.classList.remove('hidden');
+            articlePage.classList.remove('active');
+            window.location.hash = '';
+            document.title = 'Matériaux innovants et durabilité - Génie Civil';
+        }
+
+        function showArticle(id) {
+            homePage.classList.add('hidden');
+            articlePage.classList.add('active');
+            window.location.hash = `article-${id}`;
+            renderArticle(id);
+        }
+
+        function renderArticle(id) {
+            const item = data[id];
+            if (!item) {
+                showHome();
+                return;
+            }
+            document.getElementById('articleNum').textContent = String(id).padStart(2, '0');
+            document.getElementById('articleTitle').textContent = item.title;
+            document.getElementById('articleSub').textContent = item.sub;
+            document.getElementById('articleTag').textContent = `🏷️ ${item.tag}`;
+            document.getElementById('articleContent').innerHTML = item.content;
+            document.title = `${item.title} - Matériaux innovants & Durabilité`;
+        }
+
+        function navigateToArticle(id) {
+            showArticle(id);
+        }
+
+        function handleHash() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#article-')) {
+                const id = parseInt(hash.replace('#article-', ''), 10);
+                if (data[id]) {
+                    showArticle(id);
+                    return;
+                }
+            }
+            showHome();
+        }
+
+        document.getElementById('backToHomeLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+        document.getElementById('backHomeBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+
+        window.addEventListener('hashchange', handleHash);
+        window.addEventListener('load', handleHash);
+        window.addEventListener('popstate', handleHash);
+    </script>
+</body>
+</html>
