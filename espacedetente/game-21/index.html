@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dimensionnement des poutres en béton armé — Eurocode 2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            color: #1a2634;
+            padding: 2rem 1rem;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0d2b45, #1a5a8a);
+            color: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header h1 span {
+            color: #7fc8ff;
+        }
+
+        .header p {
+            margin-top: 0.6rem;
+            font-size: 1.05rem;
+            opacity: 0.9;
+            max-width: 750px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 0.8rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 1.2rem;
+            transition: border-color 0.2s;
+        }
+
+        .card:hover {
+            border-color: #b0c4d8;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            padding-left: 0.5rem;
+            border-left: 6px solid #1a5a8a;
+            color: #0d2b45;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .section-title .emoji {
+            font-size: 1.3rem;
+        }
+
+        .grid2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .grid3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .grid4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.8rem;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .field label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #4a6a8a;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .field input,
+        .field select {
+            font-size: 0.95rem;
+            padding: 0.6rem 0.8rem;
+            background: #f8fafc;
+            border: 1px solid #dce4ec;
+            border-radius: 8px;
+            color: #1a2634;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: 'Courier New', monospace;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            outline: none;
+            border-color: #1a5a8a;
+            box-shadow: 0 0 0 3px rgba(26, 90, 138, 0.12);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            background: linear-gradient(135deg, #1a5a8a, #2a7ab8);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+            box-shadow: 0 4px 20px rgba(26, 90, 138, 0.25);
+            margin-top: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            box-shadow: 0 6px 28px rgba(26, 90, 138, 0.35);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .results {
+            display: none;
+            animation: fadeUp 0.4s ease;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.7rem;
+            margin-bottom: 1rem;
+        }
+
+        .metric {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .metric:hover {
+            border-color: #b0c4d8;
+        }
+
+        .metric .lbl {
+            font-size: 0.58rem;
+            font-weight: 600;
+            color: #6a8a9a;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.4rem;
+        }
+
+        .metric .val {
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #0d2b45;
+        }
+
+        .metric .unit {
+            font-size: 0.7rem;
+            color: #6a8a9a;
+            margin-left: 0.2rem;
+            font-weight: 400;
+        }
+
+        .metric.accent {
+            border-color: rgba(26, 90, 138, 0.4);
+            background: #f0f7fc;
+        }
+
+        .metric.accent .val {
+            color: #1a5a8a;
+        }
+
+        .metric.gold {
+            border-color: rgba(212, 168, 83, 0.4);
+            background: #fdf8f0;
+        }
+
+        .metric.gold .val {
+            color: #b8882f;
+        }
+
+        .formula-box {
+            background: #f0f7fc;
+            border: 1px solid #dce4ec;
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.78rem;
+            line-height: 2.2;
+            color: #2a4a5a;
+            margin-top: 0.8rem;
+            overflow-x: auto;
+        }
+
+        .formula-box .hi {
+            color: #1a5a8a;
+            font-weight: 600;
+        }
+
+        .formula-box .gold {
+            color: #b8882f;
+            font-weight: 600;
+        }
+
+        .formula-box .ok {
+            color: #0f7b3a;
+        }
+
+        .formula-box .bad {
+            color: #b91c5c;
+        }
+
+        .tag {
+            display: inline-block;
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.2rem 0.7rem;
+            border-radius: 999px;
+        }
+
+        .tag-ok {
+            background: rgba(16, 185, 129, 0.12);
+            color: #0f7b3a;
+            border: 1px solid rgba(16, 185, 129, 0.25);
+        }
+
+        .tag-warn {
+            background: rgba(245, 158, 11, 0.12);
+            color: #b8882f;
+            border: 1px solid rgba(245, 158, 11, 0.25);
+        }
+
+        .tag-bad {
+            background: rgba(239, 68, 68, 0.12);
+            color: #b91c5c;
+            border: 1px solid rgba(239, 68, 68, 0.25);
+        }
+
+        .check-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .check-table tr {
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .check-table tr:last-child {
+            border-bottom: none;
+        }
+
+        .check-table td {
+            padding: 0.8rem 0;
+            vertical-align: middle;
+        }
+
+        .check-lbl {
+            font-size: 0.9rem;
+            color: #1a2634;
+        }
+
+        .check-sub {
+            font-family: 'Courier New', monospace;
+            font-size: 0.65rem;
+            color: #6a8a9a;
+            margin-top: 0.2rem;
+        }
+
+        .check-right {
+            text-align: right;
+            min-width: 150px;
+        }
+
+        .check-val {
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #0d2b45;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .rebar-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.6rem;
+        }
+
+        .rebar-chip {
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            background: #f0f7fc;
+            border: 1px solid #dce4ec;
+            border-radius: 8px;
+            padding: 0.4rem 0.9rem;
+            color: #1a5a8a;
+        }
+
+        .rebar-chip:first-child {
+            border-color: #1a5a8a;
+            background: rgba(26, 90, 138, 0.08);
+        }
+
+        .etrier-block {
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            line-height: 2;
+            color: #2a4a5a;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            margin-top: 0.8rem;
+        }
+
+        .etrier-block strong {
+            color: #1a5a8a;
+            font-weight: 600;
+        }
+
+        .sub-lbl {
+            font-family: 'Courier New', monospace;
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: #6a8a9a;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.6rem;
+            margin-top: 0.8rem;
+        }
+
+        @media (max-width: 640px) {
+            .grid2,
+            .grid3,
+            .grid4 {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            .metrics {
+                grid-template-columns: 1fr 1fr;
+            }
+            .check-table td {
+                display: block;
+                text-align: left;
+                padding: 0.6rem 0;
+            }
+            .check-right {
+                text-align: left;
+            }
+        }
+
+        .footer {
+            margin-top: 2.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #6a8a9a;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 1.5rem;
+        }
+
+        .footer span {
+            color: #1a5a8a;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ============================================================ -->
+        <!-- HEADER -->
+        <!-- ============================================================ -->
+        <div class="header">
+            <h1>🏗️ Dimensionnement des poutres en <span>béton armé</span></h1>
+            <p>Calcul complet selon l'Eurocode 2 — ELU · ELS · Flèche · Cisaillement · Étriers</p>
+            <div class="badge">f<sub>yk</sub> = 400 MPa &nbsp;·&nbsp; E = 30 000 MPa &nbsp;·&nbsp; n = 15 &nbsp;·&nbsp; d = 0,9 h</div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- FORMULAIRE -->
+        <!-- ============================================================ -->
+        <div class="card">
+            <div class="section-title"><span class="emoji">📐</span> Données de la poutre</div>
+
+            <div class="grid3">
+                <div class="field">
+                    <label>g — charge permanente (kN/m)</label>
+                    <input id="g" type="number" value="10" step="0.1">
+                </div>
+                <div class="field">
+                    <label>q — surcharge d'exploitation (kN/m)</label>
+                    <input id="q" type="number" value="5" step="0.1">
+                </div>
+                <div class="field">
+                    <label>L — portée (m)</label>
+                    <input id="L" type="number" value="5" step="0.1">
+                </div>
+            </div>
+
+            <div class="grid3" style="margin-top:0.8rem;">
+                <div class="field">
+                    <label>b — largeur (cm)</label>
+                    <input id="b" type="number" value="20" step="1">
+                </div>
+                <div class="field">
+                    <label>h — hauteur (cm)</label>
+                    <input id="h" type="number" value="50" step="1">
+                </div>
+                <div class="field">
+                    <label>f<sub>ck</sub> — résistance béton (MPa)</label>
+                    <input id="fck" type="number" value="25" step="1">
+                </div>
+            </div>
+
+            <div class="grid2" style="margin-top:0.8rem;">
+                <div class="field">
+                    <label>Reprise de bétonnage</label>
+                    <select id="reprise">
+                        <option value="0">Non — k = 1,0</option>
+                        <option value="1">Oui — k = 0,0</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Classe de ductilité</label>
+                    <select id="ductilite">
+                        <option value="1.0">DCL — faibles exigences</option>
+                        <option value="0.85" selected>DCM — exigences moyennes</option>
+                        <option value="0.7">DCH — fortes exigences</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="btn" onclick="calculer()">▶ Lancer le calcul complet</button>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- RÉSULTATS -->
+        <!-- ============================================================ -->
+        <div class="results" id="results">
+
+            <!-- ELU -->
+            <div class="card">
+                <div class="section-title"><span class="emoji">⚡</span> État Limite Ultime (ELU)</div>
+
+                <div class="metrics" id="elu-metrics">
+                    <div class="metric"><div class="lbl">P<sub>ELU</sub></div><div class="val"><span id="pelu"></span><span class="unit">kN/m</span></div></div>
+                    <div class="metric"><div class="lbl">M<sub>Ed</sub></div><div class="val"><span id="melu"></span><span class="unit">kN·m</span></div></div>
+                    <div class="metric"><div class="lbl">V<sub>Ed</sub></div><div class="val"><span id="velu"></span><span class="unit">kN</span></div></div>
+                    <div class="metric"><div class="lbl">f<sub>cd</sub></div><div class="val"><span id="fcd"></span><span class="unit">MPa</span></div></div>
+                    <div class="metric"><div class="lbl">f<sub>yd</sub></div><div class="val"><span id="fyd"></span><span class="unit">MPa</span></div></div>
+                    <div class="metric"><div class="lbl">μ</div><div class="val"><span id="mu"></span></div></div>
+                    <div class="metric"><div class="lbl">α</div><div class="val"><span id="alpha"></span></div></div>
+                    <div class="metric accent"><div class="lbl">A<sub>s,requis</sub></div><div class="val"><span id="as"></span><span class="unit">cm²</span></div></div>
+                </div>
+
+                <div class="sub-lbl">Armatures longitudinales proposées</div>
+                <div class="rebar-row" id="rebars"></div>
+
+                <div class="formula-box" id="formula-elu">
+                    <span class="gold">Formules ELU :</span><br>
+                    P<sub>ELU</sub> = 1,35·G + 1,5·Q &nbsp;→&nbsp; M<sub>Ed</sub> = P<sub>ELU</sub>·L²/8<br>
+                    μ = M<sub>Ed</sub> / (b·d²·f<sub>cd</sub>) &nbsp;→&nbsp; α = 1,25·(1 − √(1−2μ))<br>
+                    A<sub>s</sub> = 0,8·α·d·b·f<sub>cd</sub> / f<sub>yd</sub>
+                </div>
+            </div>
+
+            <!-- ELS -->
+            <div class="card">
+                <div class="section-title"><span class="emoji">📊</span> État Limite de Service (ELS)</div>
+
+                <div class="metrics" id="els-metrics">
+                    <div class="metric"><div class="lbl">P<sub>ELS</sub></div><div class="val"><span id="pels"></span><span class="unit">kN/m</span></div></div>
+                    <div class="metric"><div class="lbl">M<sub>ELS</sub></div><div class="val"><span id="mels"></span><span class="unit">kN·m</span></div></div>
+                    <div class="metric"><div class="lbl">z<sub>1</sub></div><div class="val"><span id="z1"></span><span class="unit">mm</span></div></div>
+                    <div class="metric"><div class="lbl">I<sub>fissurée</sub></div><div class="val" style="font-size:0.9rem"><span id="ifi"></span><span class="unit">mm⁴</span></div></div>
+                    <div class="metric"><div class="lbl">I<sub>non fissurée</sub></div><div class="val" style="font-size:0.9rem"><span id="infi"></span><span class="unit">mm⁴</span></div></div>
+                </div>
+
+                <div class="formula-box" id="formula-els">
+                    <span class="gold">Formules ELS :</span><br>
+                    P<sub>ELS</sub> = G + Q &nbsp;→&nbsp; M<sub>ELS</sub> = P<sub>ELS</sub>·L²/8<br>
+                    z<sub>1</sub> = −n·A<sub>s</sub>/b · (1 − √(1 + 2·b·d/(n·A<sub>s</sub>)))<br>
+                    I<sub>fissurée</sub> = (b·z<sub>1</sub>³)/3 + n·A<sub>s</sub>·(d−z<sub>1</sub>)²
+                </div>
+            </div>
+
+            <!-- VÉRIFICATIONS -->
+            <div class="card">
+                <div class="section-title"><span class="emoji">✅</span> Vérifications réglementaires</div>
+
+                <table class="check-table">
+                    <tr>
+                        <td>
+                            <div class="check-lbl">Contrainte dans le béton σ<sub>b</sub></div>
+                            <div class="check-sub">Limite = 0,45 × f<sub>cd</sub> = <span id="lim-beton"></span> MPa</div>
+                        </td>
+                        <td class="check-right">
+                            <span class="check-val"><span id="sbeton"></span> MPa</span>
+                            <span id="tag-beton"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="check-lbl">Contrainte dans l'acier σ<sub>s</sub></div>
+                            <div class="check-sub">Limite = 0,8 × f<sub>yk</sub> = <span id="lim-acier"></span> MPa</div>
+                        </td>
+                        <td class="check-right">
+                            <span class="check-val"><span id="sacier"></span> MPa</span>
+                            <span id="tag-acier"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="check-lbl">Flèche</div>
+                            <div class="check-sub">L/250 = <span id="fl250"></span> mm &nbsp;·&nbsp; L/300 = <span id="fl300"></span> mm</div>
+                        </td>
+                        <td class="check-right">
+                            <span class="check-val"><span id="fleche-val"></span> mm</span>
+                            <span id="fleche-tag"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="check-lbl">Cisaillement τ<sub>u</sub></div>
+                            <div class="check-sub">τ<sub>lim</sub> = 0,15 × f<sub>ck</sub> / 1,15 = <span id="tau-lim"></span> MPa</div>
+                        </td>
+                        <td class="check-right">
+                            <span class="check-val"><span id="tau-val"></span> MPa</span>
+                            <span id="tau-tag"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="check-lbl">Condition poteau fort / poutre faible</div>
+                            <div class="check-sub">Σ M<sub>Rd,c</sub> ≥ 1,3 × Σ M<sub>Rd,b</sub> <span style="color:#6a8a9a;">(non calculée ici)</span></div>
+                        </td>
+                        <td class="check-right">
+                            <span class="tag tag-warn">⚠ Non vérifiée</span>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="formula-box" id="formula-verifs">
+                    <span class="gold">Formules de vérification :</span><br>
+                    σ<sub>b</sub> = M<sub>ELS</sub>·z<sub>1</sub> / I<sub>fiss</sub> &nbsp;≤&nbsp; 0,45·f<sub>cd</sub><br>
+                    σ<sub>s</sub> = 15·M<sub>ELS</sub>·(d−z<sub>1</sub>) / I<sub>fiss</sub> &nbsp;≤&nbsp; 0,8·f<sub>yk</sub><br>
+                    Flèche = (5·P<sub>ELS</sub>·L⁴) / (384·E·I<sub>fiss</sub>) &nbsp;≤&nbsp; L/250<br>
+                    τ<sub>u</sub> = V<sub>Ed</sub> / (b·d) &nbsp;≤&nbsp; 0,15·f<sub>ck</sub>/1,15
+                </div>
+            </div>
+
+            <!-- ÉTRIERS -->
+            <div class="card">
+                <div class="section-title"><span class="emoji">🔩</span> Dimensionnement des étriers</div>
+
+                <!-- Diamètre -->
+                <div class="sub-lbl">Diamètre et section des étriers</div>
+                <div class="metrics">
+                    <div class="metric"><div class="lbl">h / 35</div><div class="val"><span id="h35"></span><span class="unit">mm</span></div></div>
+                    <div class="metric"><div class="lbl">6 mm (minimum)</div><div class="val">6<span class="unit">mm</span></div></div>
+                    <div class="metric"><div class="lbl">b / 10</div><div class="val"><span id="b10"></span><span class="unit">mm</span></div></div>
+                    <div class="metric accent"><div class="lbl">φ<sub>t</sub> = min(h/35, 6, b/10)</div><div class="val"><span id="phi-t"></span><span class="unit">mm</span></div></div>
+                    <div class="metric accent"><div class="lbl">A<sub>t</sub> = 3 × π × φ<sub>t</sub>² / 4</div><div class="val"><span id="at"></span><span class="unit">mm²</span></div></div>
+                </div>
+
+                <!-- Espacement max -->
+                <div class="sub-lbl">Espacement maximal S<sub>t,max</sub></div>
+                <div class="metrics">
+                    <div class="metric"><div class="lbl">0,9 × d</div><div class="val"><span id="st-09d"></span><span class="unit">mm</span></div></div>
+                    <div class="metric"><div class="lbl">400 mm</div><div class="val">400<span class="unit">mm</span></div></div>
+                    <div class="metric"><div class="lbl">(A<sub>t</sub> × f<sub>yk</sub>) / (0,4 × b)</div><div class="val"><span id="st-atfe"></span><span class="unit">mm</span></div></div>
+                    <div class="metric gold"><div class="lbl">S<sub>t,max</sub> = min des 3</div><div class="val"><span id="stmax"></span><span class="unit">mm</span></div></div>
+                </div>
+
+                <!-- Vérification -->
+                <div class="sub-lbl">Vérification de l'espacement retenu</div>
+                <div class="metrics">
+                    <div class="metric"><div class="lbl">f<sub>t28</sub> = 0,6 + 0,06·f<sub>ck</sub></div><div class="val"><span id="ftj"></span><span class="unit">MPa</span></div></div>
+                    <div class="metric"><div class="lbl">k (reprise)</div><div class="val"><span id="k-disp"></span></div></div>
+                    <div class="metric"><div class="lbl">S<sub>t</sub> (formule τ)</div><div class="val" style="font-size:0.9rem"><span id="st-limite"></span><span class="unit">mm</span></div></div>
+                    <div class="metric gold"><div class="lbl">S<sub>t</sub> retenu</div><div class="val"><span id="st-ret"></span><span class="unit">mm</span></div></div>
+                </div>
+
+                <div class="formula-box" id="formula-etriers">
+                    <span class="gold">Formules étriers :</span><br>
+                    φ<sub>t</sub> = min(h/35, 6, b/10) &nbsp; (en mm)<br>
+                    A<sub>t</sub> = 3 × π × φ<sub>t</sub>² / 4 &nbsp; (mm²)<br>
+                    S<sub>t,max</sub> = min(0,9·d, 400, A<sub>t</sub>·f<sub>yk</sub>/(0,4·b))<br>
+                    f<sub>t28</sub> = 0,6 + 0,06·f<sub>ck</sub><br>
+                    S<sub>t</sub> = (0,9·A<sub>t</sub>·f<sub>yk</sub>) / (1,15·b·(τ<sub>u</sub> − 0,3·f<sub>t28</sub>·k))<br>
+                    <span style="color:#6a8a9a;">Si S<sub>t</sub> &lt; S<sub>t,max</sub> → Cas 1 (Caquot progressif)</span><br>
+                    <span style="color:#6a8a9a;">Si S<sub>t</sub> ≥ S<sub>t,max</sub> → Cas 2 (espacement constant)</span>
+                </div>
+
+                <div class="etrier-block" id="etrier-detail">
+                    <strong>Disposition des étriers :</strong><br>
+                    Lancez le calcul pour obtenir la disposition détaillée.
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- FOOTER -->
+        <!-- ============================================================ -->
+        <div class="footer">
+            <p>Dimensionnement selon <span>Eurocode 2</span> (NF EN 1992-1-1) · f<sub>yk</sub> = 400 MPa · E = 30 000 MPa · n = 15</p>
+        </div>
+
+    </div>
+
+    <script>
+        // ================================================================
+        //  CALCUL COMPLET
+        // ================================================================
+
+        function calculer() {
+
+            // --- Lecture des données ---
+            const g = parseFloat(document.getElementById('g').value);
+            const q = parseFloat(document.getElementById('q').value);
+            const L_m = parseFloat(document.getElementById('L').value);
+            const b_cm = parseFloat(document.getElementById('b').value);
+            const h_cm = parseFloat(document.getElementById('h').value);
+            const fck = parseFloat(document.getElementById('fck').value);
+            const reprise = parseInt(document.getElementById('reprise').value);
+            const ductilite = parseFloat(document.getElementById('ductilite').value);
+
+            // --- Constantes ---
+            const fyk = 400; // MPa
+            const E = 30000; // MPa
+            const n = 15; // coefficient d'équivalence acier/béton
+            const gammaG = 1.35;
+            const gammaQ = 1.50;
+
+            // --- Géométrie ---
+            const b_m = b_cm / 100; // m
+            const h_m = h_cm / 100; // m
+            const d_m = 0.9 * h_m; // m
+            const b_mm = b_cm * 10; // mm
+            const h_mm = h_cm * 10; // mm
+            const d_mm = d_m * 1000; // mm
+
+            // --- Résistances ---
+            const fcd = fck / 1.5; // MPa
+            const fyd = fyk / 1.15; // MPa
+
+            // =============================================================
+            // 1. ELU
+            // =============================================================
+
+            const pelu = gammaG * g + gammaQ * q; // kN/m
+            const melu = pelu * Math.pow(L_m, 2) / 8; // kN·m
+            const melu_mm = melu * 1e6; // N·mm
+            const velu = pelu * L_m / 2; // kN
+
+            // Moment réduit μ
+            const mu = melu_mm / (b_mm * d_mm * d_mm * fcd);
+
+            // Bras de levier réduit α
+            const alpha = 1.25 * (1 - Math.sqrt(1 - 2 * mu));
+
+            // Section d'acier requise (mm²)
+            const As_mm2 = 0.8 * alpha * d_mm * b_mm * fcd / fyd;
+            const As_cm2 = As_mm2 / 100;
+
+            // --- Affichage ELU ---
+            document.getElementById('pelu').textContent = pelu.toFixed(2);
+            document.getElementById('melu').textContent = melu.toFixed(2);
+            document.getElementById('velu').textContent = velu.toFixed(2);
+            document.getElementById('fcd').textContent = fcd.toFixed(2);
+            document.getElementById('fyd').textContent = fyd.toFixed(2);
+            document.getElementById('mu').textContent = mu.toFixed(4);
+            document.getElementById('alpha').textContent = alpha.toFixed(4);
+            document.getElementById('as').textContent = As_cm2.toFixed(2);
+
+            // --- Proposition d'armatures ---
+            const diams = [5, 6, 8, 10, 12, 14, 16, 20, 25, 32, 40];
+            const sec = (d, n) => n * (Math.PI * d * d) / 400;
+            let opts = [];
+            for (let d of diams) {
+                for (let n = 1; n <= 20; n++) {
+                    const s = sec(d, n);
+                    if (s >= As_cm2) opts.push({ d, n, s });
+                }
+            }
+            opts.sort((a, b) => a.s - b.s);
+
+            const rb = document.getElementById('rebars');
+            rb.innerHTML = '';
+            opts.slice(0, 4).forEach(o => {
+                const c = document.createElement('div');
+                c.className = 'rebar-chip';
+                c.textContent = `${o.n} × Ø${o.d} = ${o.s.toFixed(2)} cm²`;
+                rb.appendChild(c);
+            });
+
+            // =============================================================
+            // 2. ELS
+            // =============================================================
+
+            const pels = g + q; // kN/m
+            const mels = pels * Math.pow(L_m, 2) / 8; // kN·m
+            const mels_mm = mels * 1e6; // N·mm
+
+            // Position de l'axe neutre z1 (section fissurée)
+            const z1 = -n * As_mm2 / b_mm * (1 - Math.sqrt(1 + (2 * b_mm * d_mm) / (n * As_mm2)));
+
+            // Inertie fissurée
+            const I_fiss = (b_mm * Math.pow(z1, 3)) / 3 + n * As_mm2 * Math.pow(d_mm - z1, 2);
+
+            // Inertie non fissurée
+            const I_nonfiss = (b_mm * Math.pow(h_mm, 3)) / 12;
+
+            // --- Affichage ELS ---
+            document.getElementById('pels').textContent = pels.toFixed(2);
+            document.getElementById('mels').textContent = mels.toFixed(2);
+            document.getElementById('z1').textContent = z1.toFixed(1);
+            document.getElementById('ifi').textContent = I_fiss.toExponential(3);
+            document.getElementById('infi').textContent = I_nonfiss.toExponential(3);
+
+            // =============================================================
+            // 3. Vérifications
+            // =============================================================
+
+            // Contrainte béton (ELS)
+            const sigma_beton = (mels_mm * z1) / I_fiss; // MPa
+
+            // Contrainte acier (ELS)
+            const sigma_acier = n * (mels_mm * (d_mm - z1)) / I_fiss; // MPa
+
+            // Limites
+            const lim_beton = 0.45 * fcd;
+            const lim_acier = 0.8 * fyk;
+
+            // Flèche (mm)
+            const fleche = (5 * pels * Math.pow(L_m * 1000, 4)) / (384 * E * I_fiss);
+
+            // Limites flèche
+            const fl250 = (L_m * 1000) / 250;
+            const fl300 = (L_m * 1000) / 300;
+
+            // Cisaillement
+            const tau_u = (velu * 1000) / (b_mm * d_mm); // MPa (kN en N, mm)
+            const tau_lim = 0.15 * fck / 1.15; // MPa
+
+            // --- Affichage vérifications ---
+            document.getElementById('lim-beton').textContent = lim_beton.toFixed(2);
+            document.getElementById('lim-acier').textContent = lim_acier.toFixed(2);
+
+            document.getElementById('sbeton').textContent = Math.abs(sigma_beton).toFixed(2);
+            document.getElementById('sacier').textContent = Math.abs(sigma_acier).toFixed(2);
+
+            document.getElementById('fl250').textContent = fl250.toFixed(1);
+            document.getElementById('fl300').textContent = fl300.toFixed(1);
+            document.getElementById('fleche-val').textContent = fleche.toFixed(2);
+
+            document.getElementById('tau-val').textContent = tau_u.toFixed(3);
+            document.getElementById('tau-lim').textContent = tau_lim.toFixed(3);
+
+            // Tags
+            document.getElementById('tag-beton').innerHTML = (Math.abs(sigma_beton) <= lim_beton) ?
+                '<span class="tag tag-ok">✓ OK</span>' :
+                '<span class="tag tag-bad">✗ Non conforme</span>';
+
+            document.getElementById('tag-acier').innerHTML = (Math.abs(sigma_acier) <= lim_acier) ?
+                '<span class="tag tag-ok">✓ OK</span>' :
+                '<span class="tag tag-bad">✗ Non conforme</span>';
+
+            let ftag;
+            if (fleche <= fl300) {
+                ftag = '<span class="tag tag-ok">✓ OK (L/300)</span>';
+            } else if (fleche <= fl250) {
+                ftag = '<span class="tag tag-warn">⚠ Acceptable (L/250)</span>';
+            } else {
+                ftag = '<span class="tag tag-bad">✗ Non conforme</span>';
+            }
+            document.getElementById('fleche-tag').innerHTML = ftag;
+
+            document.getElementById('tau-tag').innerHTML = (tau_u <= tau_lim) ?
+                '<span class="tag tag-ok">✓ OK</span>' :
+                '<span class="tag tag-bad">✗ Non conforme</span>';
+
+            // =============================================================
+            // 4. Étriers
+            // =============================================================
+
+            // 4.1 Diamètre
+            const h35 = h_mm / 35;
+            const b10 = b_mm / 10;
+            const phi_t = Math.min(h35, 6, b10);
+
+            // 4.2 Section étrier (3 branches)
+            const At = 3 * Math.PI * Math.pow(phi_t, 2) / 4;
+
+            // 4.3 f_t28
+            const ft28 = 0.6 + 0.06 * fck;
+
+            // 4.4 Coefficient k (reprise)
+            const k = (reprise === 0) ? 1 : 0;
+
+            // 4.5 St_max
+            const stmax_09d = 0.9 * d_mm;
+            const stmax_400 = 400;
+            const stmax_atfe = (At * fyk) / (0.4 * b_mm);
+            const Stmax = Math.min(stmax_09d, stmax_400, stmax_atfe);
+
+            // 4.6 St limite (formule tau)
+            const num_tau = 0.9 * At * fyk;
+            const denom_tau = 1.15 * b_mm * (tau_u - 0.3 * ft28 * k);
+            const St_limite = (denom_tau > 0) ? num_tau / denom_tau : Infinity;
+
+            // 4.7 St retenu
+            const St = (isFinite(St_limite) && St_limite > 0) ? St_limite : Stmax;
+            const St_ret = (St < Stmax) ? St : Stmax;
+
+            // 4.8 Détail de la disposition
+            const R = (L_m * 1000) / 2; // demi-portée en mm
+
+            let det = '';
+            if (isFinite(St) && St < Stmax) {
+                det += `<span class="tag tag-ok" style="margin-bottom:10px;display:inline-block;">Cas 1 — Disposition progressive (Caquot)</span><br>`;
+                det += `S<sub>t</sub> retenu = ${St_ret.toFixed(1)} mm &nbsp;·&nbsp; S<sub>t</sub>/2 = ${(St_ret/2).toFixed(1)} mm<br>`;
+                det += `R = ${R.toFixed(0)} mm<br><br>`;
+
+                const caquot = [70, 80, 90, 100, 110, 130, 160, 200, 250, 300, 350, 400];
+                let idx = 0;
+                while (idx < caquot.length && caquot[idx] < St_ret) idx++;
+                if (idx === caquot.length) idx = caquot.length - 1;
+
+                let x = St_ret / 2;
+                let n_et = 3;
+                let cumul = x;
+                det += `Cumul initial (S/2) = <strong>${x.toFixed(0)}</strong> mm<br>`;
+                while (idx < caquot.length) {
+                    const step = Math.min(caquot[idx], 400);
+                    if (cumul + n_et * step >= R) break;
+                    cumul += n_et * step;
+                    det += `${n_et} × ${step} mm → cumul = <strong>${cumul.toFixed(0)}</strong> mm<br>`;
+                    idx++;
+                }
+                det += `<br>Ajustement final : <strong>${(R - cumul).toFixed(0)} mm</strong>`;
+            } else {
+                det += `<span class="tag tag-warn" style="margin-bottom:10px;display:inline-block;">Cas 2 — Espacement constant</span><br>`;
+                det += `S<sub>t,max</sub> = ${Stmax.toFixed(1)} mm &nbsp;·&nbsp; R = ${R.toFixed(0)} mm<br><br>`;
+                let x = Stmax / 2;
+                let nb = 1;
+                det += `S/2 = ${x.toFixed(0)} mm<br>`;
+                while (x < R) {
+                    x += Stmax;
+                    nb++;
+                    det += `x = ${Math.min(x, R).toFixed(0)} mm (pas = ${Stmax.toFixed(0)} mm)<br>`;
+                }
+                det += `<br><strong>Nombre d'étriers :</strong> ${nb}`;
+            }
+
+            // --- Affichage étriers ---
+            document.getElementById('h35').textContent = h35.toFixed(2);
+            document.getElementById('b10').textContent = b10.toFixed(2);
+            document.getElementById('phi-t').textContent = phi_t.toFixed(1);
+            document.getElementById('at').textContent = At.toFixed(2);
+
+            document.getElementById('st-09d').textContent = stmax_09d.toFixed(1);
+            document.getElementById('st-atfe').textContent = (isFinite(stmax_atfe) ? stmax_atfe.toFixed(1) : '∞');
+            document.getElementById('stmax').textContent = Stmax.toFixed(1);
+
+            document.getElementById('ftj').textContent = ft28.toFixed(2);
+            document.getElementById('k-disp').textContent = k.toFixed(0);
+            document.getElementById('st-limite').textContent = (isFinite(St) ? St.toFixed(1) : '∞');
+            document.getElementById('st-ret').textContent = St_ret.toFixed(1);
+
+            document.getElementById('etrier-detail').innerHTML = det;
+
+            // =============================================================
+            // 5. Formulaires détaillés
+            // =============================================================
+
+            // ELU
+            document.getElementById('formula-elu').innerHTML = `
+                <span class="gold">Formules ELU :</span><br>
+                P<sub>ELU</sub> = 1,35·G + 1,5·Q = 1,35×${g} + 1,5×${q} = <span class="hi">${pelu.toFixed(2)} kN/m</span><br>
+                M<sub>Ed</sub> = P<sub>ELU</sub>·L²/8 = ${pelu.toFixed(2)}×${L_m.toFixed(2)}²/8 = <span class="hi">${melu.toFixed(2)} kN·m</span><br>
+                μ = M<sub>Ed</sub> / (b·d²·f<sub>cd</sub>) = ${melu.toFixed(2)}×10⁶ / (${b_mm}×${d_mm.toFixed(0)}²×${fcd.toFixed(2)}) = <span class="hi">${mu.toFixed(4)}</span><br>
+                α = 1,25·(1 − √(1−2μ)) = 1,25×(1 − √(1−2×${mu.toFixed(4)})) = <span class="hi">${alpha.toFixed(4)}</span><br>
+                A<sub>s</sub> = 0,8·α·d·b·f<sub>cd</sub> / f<sub>yd</sub> = <span class="hi">${As_cm2.toFixed(2)} cm²</span>
+            `;
+
+            // ELS
+            document.getElementById('formula-els').innerHTML = `
+                <span class="gold">Formules ELS :</span><br>
+                P<sub>ELS</sub> = G + Q = ${g} + ${q} = <span class="hi">${pels.toFixed(2)} kN/m</span><br>
+                M<sub>ELS</sub> = P<sub>ELS</sub>·L²/8 = ${pels.toFixed(2)}×${L_m.toFixed(2)}²/8 = <span class="hi">${mels.toFixed(2)} kN·m</span><br>
+                z<sub>1</sub> = −n·A<sub>s</sub>/b · (1 − √(1 + 2·b·d/(n·A<sub>s</sub>))) = <span class="hi">${z1.toFixed(1)} mm</span><br>
+                I<sub>fissurée</sub> = (b·z<sub>1</sub>³)/3 + n·A<sub>s</sub>·(d−z<sub>1</sub>)² = <span class="hi">${I_fiss.toExponential(3)} mm⁴</span>
+            `;
+
+            // Vérifications
+            document.getElementById('formula-verifs').innerHTML = `
+                <span class="gold">Formules de vérification :</span><br>
+                σ<sub>b</sub> = M<sub>ELS</sub>·z<sub>1</sub> / I<sub>fiss</sub> = ${mels_mm.toExponential(3)}×${z1.toFixed(1)} / ${I_fiss.toExponential(3)} = <span class="hi">${Math.abs(sigma_beton).toFixed(2)} MPa</span> ≤ 0,45·f<sub>cd</sub> = ${lim_beton.toFixed(2)} MPa → ${(Math.abs(sigma_beton) <= lim_beton) ? '✅ OK' : '❌ NON'}<br>
+                σ<sub>s</sub> = 15·M<sub>ELS</sub>·(d−z<sub>1</sub>) / I<sub>fiss</sub> = <span class="hi">${Math.abs(sigma_acier).toFixed(2)} MPa</span> ≤ 0,8·f<sub>yk</sub> = ${lim_acier.toFixed(2)} MPa → ${(Math.abs(sigma_acier) <= lim_acier) ? '✅ OK' : '❌ NON'}<br>
+                Flèche = (5·P<sub>ELS</sub>·L⁴) / (384·E·I<sub>fiss</sub>) = <span class="hi">${fleche.toFixed(2)} mm</span> ≤ L/250 = ${fl250.toFixed(1)} mm → ${(fleche <= fl250) ? '✅ OK' : '❌ NON'}<br>
+                τ<sub>u</sub> = V<sub>Ed</sub> / (b·d) = ${(velu*1000).toFixed(0)} / (${b_mm}×${d_mm.toFixed(0)}) = <span class="hi">${tau_u.toFixed(3)} MPa</span> ≤ ${tau_lim.toFixed(3)} MPa → ${(tau_u <= tau_lim) ? '✅ OK' : '❌ NON'}
+            `;
+
+            // Étriers
+            document.getElementById('formula-etriers').innerHTML = `
+                <span class="gold">Formules étriers :</span><br>
+                φ<sub>t</sub> = min(h/35, 6, b/10) = min(${h35.toFixed(2)}, 6, ${b10.toFixed(2)}) = <span class="hi">${phi_t.toFixed(1)} mm</span><br>
+                A<sub>t</sub> = 3 × π × φ<sub>t</sub>² / 4 = 3×π×${phi_t.toFixed(1)}²/4 = <span class="hi">${At.toFixed(2)} mm²</span><br>
+                S<sub>t,max</sub> = min(0,9·d, 400, A<sub>t</sub>·f<sub>yk</sub>/(0,4·b)) = min(${stmax_09d.toFixed(1)}, 400, ${stmax_atfe.toFixed(1)}) = <span class="hi">${Stmax.toFixed(1)} mm</span><br>
+                f<sub>t28</sub> = 0,6 + 0,06·f<sub>ck</sub> = 0,6 + 0,06×${fck} = <span class="hi">${ft28.toFixed(2)} MPa</span> &nbsp; k = ${k}<br>
+                S<sub>t</sub> = (0,9·A<sub>t</sub>·f<sub>yk</sub>) / (1,15·b·(τ<sub>u</sub> − 0,3·f<sub>t28</sub>·k)) = <span class="hi">${(isFinite(St)?St.toFixed(1):'∞')} mm</span><br>
+                <span style="color:#6a8a9a;">St ${(St < Stmax) ? '<span class="ok">❮</span> Stmax → Cas 1 (Caquot progressif)' : '<span class="bad">❯</span> Stmax → Cas 2 (espacement constant)'}</span>
+            `;
+
+            // =============================================================
+            // 6. Affichage des résultats
+            // =============================================================
+
+            const res = document.getElementById('results');
+            res.style.display = 'block';
+            setTimeout(() => res.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+        }
+
+        // ================================================================
+        //  LANCEMENT INITIAL
+        // ================================================================
+
+        // Lance le calcul au chargement de la page
+        window.onload = function() {
+            calculer();
+        };
+    </script>
+</body>
+</html>
