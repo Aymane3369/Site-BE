@@ -33,7 +33,6 @@
             border-radius: 20px;
             margin-bottom: 2.5rem;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            position: relative;
         }
 
         .header h1 {
@@ -62,20 +61,6 @@
             font-weight: 600;
             margin-top: 0.8rem;
             backdrop-filter: blur(4px);
-        }
-
-        .back-link {
-            display: inline-block;
-            color: #7fc8ff;
-            text-decoration: none;
-            font-weight: 600;
-            margin-top: 0.5rem;
-            transition: 0.2s;
-        }
-
-        .back-link:hover {
-            color: #fff;
-            text-decoration: underline;
         }
 
         /* --- GRILLE DES CATÉGORIES --- */
@@ -152,94 +137,108 @@
         .cat-gestion .card { border-left: 4px solid #b91c5c; }
         .cat-specifiques .card { border-left: 4px solid #a6572e; }
 
-        /* --- PAGE ARTICLE --- */
-        #articlePage {
+        /* --- MODAL --- */
+        .modal-overlay {
             display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
         }
 
-        #articlePage.active {
-            display: block;
+        .modal-overlay.active {
+            display: flex;
         }
 
-        #homePage.hidden {
-            display: none;
-        }
-
-        .article-container {
+        .modal {
             background: #fff;
-            border-radius: 20px;
-            padding: 2.5rem 2.8rem;
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.07);
-            margin-top: 0.5rem;
-            max-width: 820px;
-            margin-left: auto;
-            margin-right: auto;
+            max-width: 720px;
+            width: 100%;
+            max-height: 85vh;
+            border-radius: 24px;
+            padding: 2rem 2.2rem;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            overflow-y: auto;
+            position: relative;
+            animation: fadeIn 0.25s ease;
         }
 
-        .article-container .article-num {
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.96) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal .close-btn {
+            position: sticky;
+            top: 0;
+            float: right;
+            background: #f0f2f5;
+            border: none;
+            font-size: 1.8rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2c3e50;
+            transition: 0.2s;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal .close-btn:hover {
+            background: #e2e6ea;
+            transform: rotate(90deg);
+        }
+
+        .modal .modal-num {
             font-size: 0.8rem;
             color: #7a8fa3;
             background: #eef3f8;
             display: inline-block;
-            padding: 0.2rem 1.2rem;
+            padding: 0.2rem 1rem;
             border-radius: 30px;
             font-weight: 600;
         }
 
-        .article-container h2 {
-            font-size: 2rem;
-            margin: 0.5rem 0 1.2rem 0;
+        .modal h2 {
+            font-size: 1.8rem;
+            margin: 0.5rem 0 1rem 0;
             color: #0b2a4a;
         }
 
-        .article-container .article-tag {
+        .modal .modal-content {
+            font-size: 1rem;
+            color: #1e2a3a;
+            line-height: 1.8;
+        }
+
+        .modal .modal-content p {
+            margin-bottom: 0.8rem;
+        }
+
+        .modal .modal-content ul {
+            padding-left: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .modal .modal-content li {
+            margin-bottom: 0.3rem;
+        }
+
+        .modal .modal-tag {
             display: inline-block;
             background: #eef3f8;
-            padding: 0.25rem 1rem;
+            padding: 0.2rem 0.9rem;
             border-radius: 30px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #3a6a8a;
-            margin-bottom: 1.2rem;
-        }
-
-        .article-container .article-content {
-            font-size: 1.05rem;
-            line-height: 1.9;
-            color: #1e2a3a;
-        }
-
-        .article-container .article-content p {
-            margin-bottom: 0.9rem;
-        }
-
-        .article-container .article-content ul {
-            padding-left: 1.8rem;
-            margin-bottom: 0.9rem;
-        }
-
-        .article-container .article-content li {
-            margin-bottom: 0.4rem;
-        }
-
-        .article-container .article-content strong {
-            color: #0b2a4a;
-        }
-
-        .back-home {
-            display: inline-block;
-            margin-top: 1.8rem;
-            color: #1b4a7a;
-            text-decoration: none;
-            font-weight: 600;
-            padding: 0.5rem 1.2rem;
-            border: 2px solid #1b4a7a;
-            border-radius: 40px;
-            transition: 0.2s;
-        }
-
-        .back-home:hover {
-            background: #1b4a7a;
-            color: #fff;
+            margin-top: 0.5rem;
         }
 
         /* --- RESPONSIVE --- */
@@ -249,8 +248,8 @@
             .header h1 { font-size: 1.5rem; }
             .grid { grid-template-columns: 1fr; }
             .section-title { font-size: 1.2rem; }
-            .article-container { padding: 1.5rem; }
-            .article-container h2 { font-size: 1.5rem; }
+            .modal { padding: 1.5rem; }
+            .modal h2 { font-size: 1.4rem; }
         }
 
         /* --- FOOTER --- */
@@ -267,72 +266,63 @@
 <body>
     <div class="container">
 
-        <!-- ============================================================ -->
-        <!-- PAGE D'ACCUEIL -->
-        <!-- ============================================================ -->
-        <div id="homePage">
-            <!-- HEADER -->
-            <div class="header">
-                <h1>🏗️ Génie Civil · <span>Matériaux &amp; Structures</span></h1>
-                <p>60 sujets incontournables. Cliquez sur un thème pour accéder à sa page dédiée.</p>
-                <div class="badge-count">📚 60 articles · Chaque sujet a sa propre URL</div>
-            </div>
-
-            <!-- ===== 1. MATÉRIAUX ===== -->
-            <h2 class="section-title"><span class="emoji">🧱</span> Matériaux</h2>
-            <div class="grid cat-materiaux" id="grid-materiaux"></div>
-
-            <!-- ===== 2. STRUCTURES ===== -->
-            <h2 class="section-title"><span class="emoji">🏗️</span> Structures &amp; Conception</h2>
-            <div class="grid cat-structures" id="grid-structures"></div>
-
-            <!-- ===== 3. DURABILITÉ ===== -->
-            <h2 class="section-title"><span class="emoji">🌍</span> Durabilité &amp; Réhabilitation</h2>
-            <div class="grid cat-durabilite" id="grid-durabilite"></div>
-
-            <!-- ===== 4. PROCÉDÉS ===== -->
-            <h2 class="section-title"><span class="emoji">⚙️</span> Procédés &amp; Innovations</h2>
-            <div class="grid cat-procedes" id="grid-procedes"></div>
-
-            <!-- ===== 5. GESTION ===== -->
-            <h2 class="section-title"><span class="emoji">📐</span> Gestion de projet &amp; Normalisation</h2>
-            <div class="grid cat-gestion" id="grid-gestion"></div>
-
-            <!-- ===== 6. SPÉCIFIQUES ===== -->
-            <h2 class="section-title"><span class="emoji">🔥</span> Spécifiques &amp; Transversaux</h2>
-            <div class="grid cat-specifiques" id="grid-specifiques"></div>
-
-            <div class="footer">
-                <p>📌 60 sujets — Génie Civil · Matériaux &amp; Structures</p>
-            </div>
+        <!-- HEADER -->
+        <div class="header">
+            <h1>🏗️ Génie Civil · <span>Matériaux &amp; Structures</span></h1>
+            <p>60 sujets incontournables. Cliquez sur un thème pour découvrir son contenu détaillé.</p>
+            <div class="badge-count">📚 60 thèmes · Cliquez pour explorer</div>
         </div>
 
-        <!-- ============================================================ -->
-        <!-- PAGE ARTICLE (affichée seule lors du routing) -->
-        <!-- ============================================================ -->
-        <div id="articlePage">
-            <div class="header" style="margin-bottom: 1.5rem;">
-                <h1>🏗️ <span>Génie Civil</span></h1>
-                <a class="back-link" href="#" id="backToHomeLink">← Retour à la liste des articles</a>
-            </div>
-            <div class="article-container" id="articleContainer">
-                <div class="article-num" id="articleNum">01</div>
-                <h2 id="articleTitle">Titre</h2>
-                <div class="article-tag" id="articleTag">🏷️ Matériaux</div>
-                <div class="article-content" id="articleContent">
-                    <p>Contenu détaillé...</p>
-                </div>
-                <a href="#" class="back-home" id="backHomeBtn">← Tous les articles</a>
-            </div>
+        <!-- ===== 1. MATÉRIAUX ===== -->
+        <h2 class="section-title"><span class="emoji">🧱</span> Matériaux</h2>
+        <div class="grid cat-materiaux" id="grid-materiaux"></div>
+
+        <!-- ===== 2. STRUCTURES & CONCEPTION ===== -->
+        <h2 class="section-title"><span class="emoji">🏗️</span> Structures &amp; Conception</h2>
+        <div class="grid cat-structures" id="grid-structures"></div>
+
+        <!-- ===== 3. DURABILITÉ & RÉHABILITATION ===== -->
+        <h2 class="section-title"><span class="emoji">🌍</span> Durabilité &amp; Réhabilitation</h2>
+        <div class="grid cat-durabilite" id="grid-durabilite"></div>
+
+        <!-- ===== 4. PROCÉDÉS CONSTRUCTIFS & INNOVATIONS ===== -->
+        <h2 class="section-title"><span class="emoji">⚙️</span> Procédés &amp; Innovations</h2>
+        <div class="grid cat-procedes" id="grid-procedes"></div>
+
+        <!-- ===== 5. GESTION DE PROJET & NORMALISATION ===== -->
+        <h2 class="section-title"><span class="emoji">📐</span> Gestion de projet &amp; Normalisation</h2>
+        <div class="grid cat-gestion" id="grid-gestion"></div>
+
+        <!-- ===== 6. SUJETS SPÉCIFIQUES & TRANSVERSAUX ===== -->
+        <h2 class="section-title"><span class="emoji">🔥</span> Spécifiques &amp; Transversaux</h2>
+        <div class="grid cat-specifiques" id="grid-specifiques"></div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p>📌 60 sujets — Génie Civil · Matériaux &amp; Structures</p>
         </div>
 
     </div>
 
+    <!-- ===== MODAL ===== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modal">
+            <button class="close-btn" id="closeModal">✕</button>
+            <div class="modal-num" id="modalNum">01</div>
+            <h2 id="modalTitle">Titre</h2>
+            <div class="modal-content" id="modalContent">
+                <p>Contenu détaillé...</p>
+            </div>
+            <div class="modal-tag" id="modalTag">Matériaux</div>
+        </div>
+    </div>
+
     <script>
-        // ================================================================
+        // ============================================================
         //  DONNÉES : 60 SUJETS AVEC CONTENU DÉTAILLÉ
-        // ================================================================
+        // ============================================================
         const data = {
+            // ---------- MATÉRIAUX (01 à 20) ----------
             1: {
                 title: "Bétons bas carbone",
                 tag: "Matériaux",
@@ -577,6 +567,7 @@
                     </ul>
                 `
             },
+            // ---------- STRUCTURES (21 à 35) ----------
             21: {
                 title: "Ponts à haubans, suspendus, en arc",
                 tag: "Structures",
@@ -757,6 +748,7 @@
                     </ul>
                 `
             },
+            // ---------- DURABILITÉ (36 à 42) ----------
             36: {
                 title: "Réhabilitation d'ouvrages anciens",
                 tag: "Durabilité",
@@ -841,6 +833,7 @@
                     </ul>
                 `
             },
+            // ---------- PROCÉDÉS (43 à 48) ----------
             43: {
                 title: "Impression 3D béton",
                 tag: "Procédés",
@@ -913,6 +906,7 @@
                     </ul>
                 `
             },
+            // ---------- GESTION (49 à 54) ----------
             49: {
                 title: "Gestion de projet en ingénierie civile",
                 tag: "Gestion",
@@ -985,6 +979,7 @@
                     </ul>
                 `
             },
+            // ---------- SPÉCIFIQUES (55 à 60) ----------
             55: {
                 title: "Résistance au feu et protection incendie",
                 tag: "Spécifiques",
@@ -1059,9 +1054,9 @@
             }
         };
 
-        // ================================================================
+        // ============================================================
         //  CONSTRUCTION DES GRILLES
-        // ================================================================
+        // ============================================================
 
         const categories = {
             materiaux: { ids: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], gridId: 'grid-materiaux' },
@@ -1083,78 +1078,47 @@
                     <span class="num">${String(id).padStart(2, '0')}</span>
                     <span class="text">${item.title}<small>${item.tag}</small></span>
                 `;
-                card.addEventListener('click', () => navigateToArticle(id));
+                card.addEventListener('click', () => openModal(id));
                 grid.appendChild(card);
             }
         }
 
-        // ================================================================
-        //  ROUTING (Hash-based)
-        // ================================================================
+        // ============================================================
+        //  MODAL
+        // ============================================================
 
-        const homePage = document.getElementById('homePage');
-        const articlePage = document.getElementById('articlePage');
+        const overlay = document.getElementById('modalOverlay');
+        const modal = document.getElementById('modal');
+        const closeBtn = document.getElementById('closeModal');
+        const modalNum = document.getElementById('modalNum');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalContent = document.getElementById('modalContent');
+        const modalTag = document.getElementById('modalTag');
 
-        function showHome() {
-            homePage.classList.remove('hidden');
-            articlePage.classList.remove('active');
-            window.location.hash = '';
-            document.title = 'Génie Civil - Matériaux & Structures';
-        }
-
-        function showArticle(id) {
-            homePage.classList.add('hidden');
-            articlePage.classList.add('active');
-            window.location.hash = `article-${id}`;
-            renderArticle(id);
-        }
-
-        function renderArticle(id) {
+        function openModal(id) {
             const item = data[id];
-            if (!item) {
-                showHome();
-                return;
-            }
-            document.getElementById('articleNum').textContent = String(id).padStart(2, '0');
-            document.getElementById('articleTitle').textContent = item.title;
-            document.getElementById('articleTag').textContent = `🏷️ ${item.tag}`;
-            document.getElementById('articleContent').innerHTML = item.content;
-            document.title = `${item.title} - Génie Civil`;
+            if (!item) return;
+            modalNum.textContent = String(id).padStart(2, '0');
+            modalTitle.textContent = item.title;
+            modalContent.innerHTML = item.content;
+            modalTag.textContent = `🏷️ ${item.tag}`;
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
 
-        function navigateToArticle(id) {
-            showArticle(id);
+        function closeModal() {
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
         }
 
-        // Écoute du hash dans l'URL
-        function handleHash() {
-            const hash = window.location.hash;
-            if (hash.startsWith('#article-')) {
-                const id = parseInt(hash.replace('#article-', ''), 10);
-                if (data[id]) {
-                    showArticle(id);
-                    return;
-                }
-            }
-            showHome();
-        }
-
-        // Retour à l'accueil
-        document.getElementById('backToHomeLink').addEventListener('click', (e) => {
-            e.preventDefault();
-            showHome();
-        });
-        document.getElementById('backHomeBtn').addEventListener('click', (e) => {
-            e.preventDefault();
-            showHome();
+        closeBtn.addEventListener('click', closeModal);
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeModal();
         });
 
-        // Événements
-        window.addEventListener('hashchange', handleHash);
-        window.addEventListener('load', handleHash);
-
-        // Gestion du bouton Précédent / Suivant du navigateur
-        window.addEventListener('popstate', handleHash);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
     </script>
 </body>
-  </html>
+</html>
