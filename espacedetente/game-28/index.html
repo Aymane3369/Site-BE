@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20 Récits initiatiques — Développer l'intelligence</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f5f0eb;
+            color: #1a1a2e;
+            padding: 2rem 1rem;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0d0d1a, #1a1a2e);
+            color: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(240, 194, 122, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header h1 span {
+            color: #f0c27a;
+        }
+
+        .header .subtitle {
+            margin-top: 0.6rem;
+            font-size: 1.05rem;
+            opacity: 0.85;
+            max-width: 700px;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: rgba(240, 194, 122, 0.15);
+            color: #f0c27a;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 0.8rem;
+            border: 1px solid rgba(240, 194, 122, 0.2);
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #f0c27a;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 1.4rem 1.6rem;
+            border: 1px solid #e2d8cc;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+            border-color: #2d4059;
+        }
+
+        .card .num {
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: #8a7a6a;
+            background: #f5ede4;
+            padding: 0.1rem 0.7rem;
+            border-radius: 12px;
+            display: inline-block;
+            letter-spacing: 0.05em;
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin: 0.4rem 0 0.2rem;
+        }
+
+        .card .theme {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #2d4059;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-top: 0.1rem;
+        }
+
+        .card .desc {
+            font-size: 0.85rem;
+            color: #4a3a3a;
+            margin-top: 0.3rem;
+        }
+
+        .card .competences {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            margin-top: 0.6rem;
+        }
+
+        .card .competences span {
+            font-size: 0.6rem;
+            padding: 0.15rem 0.6rem;
+            background: #f0ece6;
+            border-radius: 12px;
+            color: #4a3a3a;
+        }
+
+        #articlePage {
+            display: none;
+        }
+
+        #articlePage.active {
+            display: block;
+        }
+
+        #homePage.hidden {
+            display: none;
+        }
+
+        .article-container {
+            background: #fff;
+            border-radius: 20px;
+            padding: 2.8rem 3.2rem;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.07);
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .article-container .article-num {
+            font-size: 0.7rem;
+            color: #8a7a6a;
+            background: #f5ede4;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            display: inline-block;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .article-container h2 {
+            font-size: 2rem;
+            margin: 0.4rem 0 0.2rem;
+            color: #1a1a2e;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .article-container .article-theme {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #2d4059;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.5rem;
+        }
+
+        .article-container .article-competences {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .article-container .article-competences span {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.8rem;
+            background: #f0ece6;
+            border-radius: 20px;
+            color: #3a3a4a;
+        }
+
+        .article-container .article-content h4 {
+            color: #1a1a2e;
+            margin: 1.4rem 0 0.4rem;
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .article-container .article-content p {
+            margin-bottom: 0.9rem;
+            font-size: 1.02rem;
+            line-height: 1.85;
+            color: #2a2a3a;
+        }
+
+        .article-container .article-content .story {
+            background: #faf6f0;
+            padding: 1.2rem 1.8rem;
+            border-radius: 12px;
+            border-left: 4px solid #f0c27a;
+            margin: 1rem 0;
+            font-style: italic;
+            color: #3a3a4a;
+        }
+
+        .article-container .article-content .analyse {
+            background: #f0f4f8;
+            padding: 1.2rem 1.8rem;
+            border-radius: 12px;
+            border-left: 4px solid #2d4059;
+            margin: 1rem 0;
+        }
+
+        .article-container .article-content .analyse h5 {
+            color: #1a1a2e;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .article-container .article-content .dilemme {
+            background: #fdf6ee;
+            padding: 1.2rem 1.8rem;
+            border-radius: 12px;
+            border: 2px dashed #f0c27a;
+            margin: 1rem 0;
+        }
+
+        .article-container .article-content ul {
+            padding-left: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .article-container .article-content ul li {
+            margin-bottom: 0.4rem;
+            color: #2a2a3a;
+        }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 2rem;
+            color: #2d4059;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.6rem 1.4rem;
+            border: 2px solid #2d4059;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+
+        .back-home:hover {
+            background: #2d4059;
+            color: #fff;
+        }
+
+        @media (max-width: 640px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            .article-container {
+                padding: 1.5rem;
+            }
+            .article-container h2 {
+                font-size: 1.4rem;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .footer {
+            margin-top: 2.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #8a7a6a;
+            border-top: 1px solid #e2d8cc;
+            padding-top: 1.5rem;
+        }
+
+        .footer span {
+            color: #2d4059;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ============================================================ -->
+        <!-- PAGE D'ACCUEIL -->
+        <!-- ============================================================ -->
+        <div id="homePage">
+            <div class="header">
+                <h1>🧠 <span>20 Récits initiatiques</span></h1>
+                <div class="subtitle">Développer l'intelligence — Analyse, stratégie, psychologie, leadership, éthique</div>
+                <div class="badge">15–18 ans · Chaque récit a sa propre URL</div>
+            </div>
+
+            <div id="homeContent"></div>
+
+            <div class="footer">
+                <p>📚 <span>20 récits</span> — Penser, décider, grandir</p>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PAGE ARTICLE -->
+        <!-- ============================================================ -->
+        <div id="articlePage">
+            <div class="header" style="margin-bottom: 1.5rem;">
+                <h1>🧠 <span>Récits initiatiques</span></h1>
+                <a class="back-link" href="#" id="backToHomeLink">← Retour à la liste</a>
+            </div>
+            <div class="article-container" id="articleContainer">
+                <div class="article-num" id="articleNum">01</div>
+                <h2 id="articleTitle">Titre</h2>
+                <div class="article-theme" id="articleTheme">Thème</div>
+                <div class="article-competences" id="articleCompetences"></div>
+                <div class="article-content" id="articleContent">
+                    <p>Contenu...</p>
+                </div>
+                <a href="#" class="back-home" id="backHomeBtn">← Tous les récits</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ================================================================
+        //  DONNÉES DES 20 RÉCITS
+        // ================================================================
+
+        const recits = [{
+            id: 1,
+            title: "Le Roi sans Conseillers",
+            theme: "Prise de décision et humilité intellectuelle",
+            competences: ["Pensée critique", "Leadership", "Écoute"],
+            content: `
+                <div class="story">
+                    Le roi Aldric avait vingt-deux ans lorsqu'il monta sur le trône de Valdoria. Il était intelligent, cultivé, et il le savait. Il avait lu tous les livres de la bibliothèque royale, mémorisé les traités de stratégie, et il considérait ses conseillers comme des vieillards trop lents, trop prudents, trop... inutiles.
+                </div>
+
+                <p>Il les congédia tous. "Un roi digne de ce nom n'a pas besoin de conseillers", déclara-t-il devant la cour. "Je vois clair, je comprends tout, et je déciderai seul."</p>
+
+                <p>Les premières semaines furent glorieuses. Il prit des décisions rapides, trancha des conflits, imposa sa volonté. Le peuple l'admirait. Mais les premiers signes de fragilité apparurent. Il décida d'augmenter les impôts pour financer une armée qu'il jugeait nécessaire. Ses anciens conseillers, s'ils avaient été là, auraient souligné que les récoltes étaient mauvaises et que le peuple souffrait déjà. Mais il ne les écoutait plus.</p>
+
+                <p>La révolte gronde. Il la réprima durement, persuadé que la force était la seule réponse. Puis vint la guerre avec le royaume voisin. Il avait prévu une attaque rapide, mais il n'avait pas anticipé que ses généraux, frustrés par son mépris, exécuteraient ses ordres sans enthousiasme. L'armée fut vaincue.</p>
+
+                <p>Le royaume était au bord du chaos. Aldric, seul dans sa chambre, regarda les cartes, les rapports, les lettres de détresse. Il avait tout perdu, non pas parce qu'il était faible, mais parce qu'il croyait que son intelligence suffisait à tout. Il fit venir ses anciens conseillers. "Je ne vous demande pas de me sauver", dit-il. "Je vous demande de me dire ce que je n'ai pas vu."</p>
+
+                <p>L'un d'eux, le plus âgé, répondit : "Vous n'avez pas vu que le pouvoir n'est pas une question de connaissance, mais de perception. Vous n'avez pas vu que la sagesse ne se trouve pas dans les livres, mais dans la diversité des regards. Vous n'avez pas vu que votre plus grand ennemi n'était pas l'armée adverse, mais votre propre certitude."</p>
+
+                <p>Aldric écouta. Pour la première fois, il écouta vraiment. Il mit en œuvre des réformes, apaisa le peuple, négocia la paix. Il avait appris que le véritable pouvoir ne réside pas dans la certitude, mais dans l'humilité de savoir que l'on peut toujours apprendre.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse des décisions d'Aldric</h5>
+                    <p>Aldric a commis l'erreur classique du "biais de surconfiance". Il a surestimé ses propres capacités et sous-estimé la valeur des autres. Ses décisions étaient cohérentes avec sa vision, mais elles manquaient de perspectives alternatives.</p>
+                    <p>Il a également confondu <strong>intelligence individuelle</strong> et <strong>intelligence collective</strong>. La première est utile, la seconde est nécessaire. Un leader qui s'isole intellectuellement se prive de la diversité des points de vue qui permet d'anticiper les risques.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Si vous étiez Aldric au début de son règne, auriez-vous congédié les conseillers ? Comment trouver l'équilibre entre confiance en soi et écoute des autres ?</p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Aldric a-t-il rejeté ses conseillers ? Quelles croyances le motivaient ?</li>
+                    <li>À quel moment aurait-il pu éviter la crise ?</li>
+                    <li>Dans votre vie, avez-vous déjà rejeté un conseil important que vous auriez dû écouter ?</li>
+                    <li>Comment distinguer un bon conseil d'un mauvais ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Psychologie :</strong> Biais de confirmation — nous avons tendance à privilégier les informations qui confirment nos croyances.</li>
+                    <li><strong>Leadership :</strong> Les meilleurs leaders s'entourent de personnes qui pensent différemment d'eux.</li>
+                    <li><strong>Éthique :</strong> La responsabilité d'un leader inclut l'humilité de reconnaître ses limites.</li>
+                </ul>
+            `
+        }, {
+            id: 2,
+            title: "Les Trois Marchands",
+            theme: "Économie et stratégie",
+            competences: ["Finances", "Investissement", "Gestion des risques"],
+            content: `
+                <div class="story">
+                    Dans la cité d'Argos, trois jeunes marchands reçurent chacun cent pièces d'or de leur père. Ils avaient dix-huit ans, les mêmes ressources, les mêmes opportunités. Dix ans plus tard, leurs fortunes étaient radicalement différentes. Leurs chemins offrent une leçon sur la manière dont les décisions, les habitudes et la vision façonnent le destin.
+                </div>
+
+                <p><strong>Le premier marchand, Lucius,</strong> dépensa son argent rapidement. Il acheta des vêtements luxueux, des esclaves, et se fit construire une maison. Il pensait que le succès viendrait de son apparence et de ses relations. Il fit des affaires, mais toujours à court terme, toujours dans l'urgence. Ses affaires déclinèrent, et il passa le reste de sa vie à travailler pour les autres.</p>
+
+                <p><strong>Le second marchand, Marcus,</strong> prit des risques. Il investit dans un navire qui partait pour une terre lointaine. L'affaire était risquée, mais les bénéfices potentiels étaient énormes. Le navire coula dans une tempête. Marcus perdit tout. Il ne pouvait pas se permettre de réessayer.</p>
+
+                <p><strong>Le troisième marchand, Titus,</strong> prit son temps. Il observa. Il apprit. Il investit cent pièces dans des épices qu'il vendit à profit. Il réinvestit. Il ne dépensait pas ce qu'il gagnait, il le faisait fructifier. Il diversifia ses investissements, apprit à gérer ses risques, et au bout de dix ans, il possédait une flotte de navires et une fortune immense.</p>
+
+                <p>Lucius avait été imprévoyant. Marcus avait été imprudent. Titus avait été patient et stratégique.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse des trois stratégies</h5>
+                    <p><strong>Lucius</strong> a confondu <strong>richesse et apparence</strong>. Il a privilégié la consommation immédiate sur l'investissement à long terme. C'est l'erreur du "court-termisme".</p>
+                    <p><strong>Marcus</strong> a fait le pari inverse : tout risquer sur une seule opportunité. C'est l'erreur du "tout ou rien". Sans diversification, la moindre défaillance est fatale.</p>
+                    <p><strong>Titus</strong> a combiné <strong>patience, apprentissage et diversification</strong>. Il a compris que la richesse ne se crée pas par un coup de chance, mais par une accumulation de bonnes décisions.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Entre les trois approches, laquelle vous semble la plus naturelle ? Comment trouver le bon équilibre entre consommation, risque et épargne ?</p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Titus a-t-il réussi là où les deux autres ont échoué ?</li>
+                    <li>Quelle est la différence entre prendre un risque et être imprudent ?</li>
+                    <li>Comment les habitudes quotidiennes influencent-elles notre situation financière ?</li>
+                    <li>Que feriez-vous si vous receviez 100 euros aujourd'hui ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Économie :</strong> L'effet boule de neige des intérêts composés.</li>
+                    <li><strong>Psychologie :</strong> La gratification différée est un indicateur de succès.</li>
+                    <li><strong>Gestion des risques :</strong> La diversification est le seul "repas gratuit" en finance.</li>
+                </ul>
+            `
+        }, {
+            id: 3,
+            title: "L'Architecte Invisible",
+            theme: "Vision à long terme",
+            competences: ["Planification", "Durabilité", "Responsabilité"],
+            content: `
+                <div class="story">
+                    Le grand architecte Kael avait été convié à la cour du roi pour concevoir une nouvelle ville. Il avait les plans, les calculs, les matériaux. Mais il demanda un délai supplémentaire de six mois. Les courtisans se moquèrent. "Il est vieux, il est lent, il n'a plus le talent d'autrefois."
+                </div>
+
+                <p>Six mois plus tard, Kael revint avec des plans qui semblaient simples, trop simples. Le roi fut déçu. Mais Kael expliqua : "J'ai conçu chaque rue pour qu'elle soit traversée par le vent, chaque fontaine pour qu'elle soit alimentée par des sources naturelles, chaque bâtiment pour qu'il puisse être agrandi sans être détruit. Cette ville n'est pas pour vous, Sire, ni pour moi. Elle est pour ceux qui viendront après nous."</p>
+
+                <p>Le roi, sceptique, lui donna l'autorisation de construire. Vingt ans plus tard, la ville prospérait. Les bâtiments étaient encore solides, les rues encore agréables. Cinquante ans plus tard, la ville était un modèle d'urbanisme. Cent ans plus tard, les historiens cherchaient encore le nom de son architecte.</p>
+
+                <p>Kael avait construit pour les générations futures, sans chercher la gloire immédiate.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de la vision de Kael</h5>
+                    <p>Kael a fait un choix fondamental : <strong>concevoir pour la durabilité plutôt que pour l'effet immédiat</strong>. Il a anticipé les besoins futurs, les extensions possibles, les défis climatiques. Il a construit non pas pour plaire à son roi, mais pour servir une communauté sur le long terme.</p>
+                    <p>Cette approche exige une <strong>résistance à la pression sociale</strong> (les courtisans le critiquaient) et une <strong>confiance en sa propre vision</strong> (il savait que les résultats ne seraient visibles que bien après sa mort).</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Dans un monde où l'on vous juge sur des résultats à court terme, comment pouvez-vous justifier des décisions dont les bénéfices ne seront visibles que dans vingt ou trente ans ?</p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Kael a-t-il pris le temps de concevoir une ville durable ?</li>
+                    <li>Qu'est-ce qui est plus important : la reconnaissance immédiate ou l'impact à long terme ?</li>
+                    <li>Dans quels domaines de votre vie pourriez-vous adopter une vision à long terme ?</li>
+                    <li>Comment résister à la pression des résultats immédiats ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Éthique :</strong> La responsabilité envers les générations futures.</li>
+                    <li><strong>Économie :</strong> La valeur des investissements à long terme.</li>
+                    <li><strong>Leadership :</strong> La capacité à résister à la pression du court-terme.</li>
+                </ul>
+            `
+        }, {
+            id: 4,
+            title: "Le Procès des Vérités",
+            theme: "Esprit critique",
+            competences: ["Analyse", "Logique", "Objectivité"],
+            content: `
+                <div class="story">
+                    Dans la ville de Veridia, un crime avait été commis. Un bijou de grande valeur avait disparu du palais du gouverneur. Cinq témoins furent convoqués. Chacun raconta une version différente. Le juge, un homme sage, décida de les écouter tous avant de rendre son verdict.
+                </div>
+
+                <p><strong>Le premier témoin</strong>, le gardien, affirma avoir vu un homme en noir s'enfuir par la fenêtre. <strong>Le second</strong>, une servante, jura que le voleur était une femme, car elle avait vu une jupe. <strong>Le troisième</strong>, un marchand, déclara avoir entendu deux voix. <strong>Le quatrième</strong>, un enfant, dit qu'il n'y avait personne. <strong>Le cinquième</strong>, un noble, accusa le gardien lui-même.</p>
+
+                <p>Le juge ne condamna personne sur-le-champ. Il demanda à chaque témoin de raconter l'histoire non pas une fois, mais trois fois. Il croisa les détails, chercha les incohérences, confronta les versions. Il découvrit que chacun avait vu une partie de la vérité, mais que leurs perceptions étaient déformées par leurs préjugés, leurs peurs, leurs intérêts.</p>
+
+                <p>Il reconstitua ce qui s'était réellement passé : un voleur expérimenté, assisté d'un complice, avait utilisé une diversion. Le bijou avait été emporté par un troisième complice, invisible pour tous.</p>
+
+                <p>Le juge déclara : "La vérité n'est pas ce qu'un seul témoin raconte. Elle est ce qui émerge quand on confronte les versions, quand on cherche les contradictions, quand on accepte que personne ne voit tout."</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse des versions</h5>
+                    <p>Chaque témoin a donné une version <strong>partiellement vraie</strong>, mais <strong>complètement déformée</strong> par son point de vue. Le gardien a vu un homme, mais il était de nuit. La servante a vu une jupe, mais c'était un complice déguisé. Le marchand a entendu deux voix, mais il a mal interprété la situation.</p>
+                    <p>Cette histoire illustre le <strong>phénomène des témoignages</strong> en psychologie : notre mémoire reconstruit les événements en fonction de nos attentes, de nos émotions et de nos croyances.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Comment savoir si une information est fiable ? Si plusieurs sources contradictoires existent, comment trancher ?</p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi les cinq témoins ont-ils donné des versions différentes ?</li>
+                    <li>Qu'est-ce qui influence notre perception des événements ?</li>
+                    <li>Comment vérifier la fiabilité d'une information ?</li>
+                    <li>Dans votre vie, avez-vous déjà découvert que "votre vérité" n'était que partielle ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Psychologie :</strong> Biais cognitifs, mémoire reconstructive.</li>
+                    <li><strong>Logique :</strong> La méthode du croisement des sources.</li>
+                    <li><strong>Éthique :</strong> La responsabilité de chercher la vérité plutôt que de croire ce qui nous arrange.</li>
+                </ul>
+            `
+        }, {
+            id: 5,
+            title: "Le Jardinier des Empires",
+            theme: "Patience et investissement à long terme",
+            competences: ["Vision", "Patience", "Investissement"],
+            content: `
+                <div class="story">
+                    Un vieil homme, nommé Silas, plantait des arbres sur une colline dénudée. Il avait soixante-dix ans. Il savait qu'il ne verrait jamais ces arbres devenir des forêts. "Pourquoi planter ce que vous ne verrez pas grandir ?" lui demandait-on.
+                </div>
+
+                <p>"Je ne plante pas pour moi, je plante pour ceux qui viendront après", répondait-il. Il planta des chênes, des noyers, des pins. Il arrosa, protégea, attendit. Les années passèrent. Un empire s'éleva, un autre tomba. La colline, lentement, se couvrit d'ombres.</p>
+
+                <p>Un jour, son arrière-petit-fils, devenu roi, se promena sur cette colline. Il demanda : "Qui a planté ces arbres ?" Personne ne savait. Mais Silas, dans une lettre qu'il avait laissée, avait écrit : "Ce que je plante aujourd'hui, vous le récolterez demain. Ne cherchez pas à tout posséder, cherchez à tout transmettre."</p>
+
+                <p>Le roi fit planter d'autres arbres sur d'autres collines. L'empire fut connu pour ses forêts, ses fruits, son bois. Le jardinier invisible avait nourri un empire.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de la vision de Silas</h5>
+                    <p>Silas a fait un acte <strong>désintéressé</strong> et <strong>futuriste</strong>. Il a planté des arbres non pas pour lui-même, mais pour les générations futures. C'est une leçon sur la <strong>transmission</strong> et la <strong>patience</strong>.</p>
+                    <p>L'histoire montre que les <strong>plus grands héritages</strong> sont souvent invisibles. Silas ne possédait rien, mais il a créé une richesse qui a duré des siècles.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Investissez-vous votre temps et votre énergie dans des choses qui porteront leurs fruits bien après votre départ ? Comment trouver l'équilibre entre votre propre bien-être et ce que vous transmettez ?</p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Silas plantait-il des arbres qu'il ne verrait jamais grandir ?</li>
+                    <li>Qu'est-ce que vous aimeriez transmettre aux générations futures ?</li>
+                    <li>Comment concilier le désir de résultats immédiats avec l'investissement à long terme ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Éthique :</strong> La responsabilité envers les générations futures.</li>
+                    <li><strong>Économie :</strong> Les investissements à très long terme.</li>
+                    <li><strong>Psychologie :</strong> La capacité à différer la gratification.</li>
+                </ul>
+            `
+        }, {
+            id: 6,
+            title: "Le Dernier Échiquier",
+            theme: "Stratégie et anticipation",
+            competences: ["Anticipation", "Réflexion stratégique", "Patience"],
+            content: `
+                <div class="story">
+                    Dans la cité de Sarnak, deux rivaux, le général Vorin et le stratège Kaelen, s'affrontaient depuis des années. Leur conflit ne se déroulait pas sur un champ de bataille, mais sur un échiquier. Chaque jour, ils jouaient une partie. Chaque partie durait des semaines.
+                </div>
+
+                <p>Vorin était impétueux. Il attaquait dès qu'il le pouvait, cherchant à écraser son adversaire en quelques coups. Kaelen était patient. Il observait, attendait, laissait Vorin s'épuiser. Il jouait non pas pour gagner le coup, mais pour gagner la position. Il savait qu'un échiquier, comme une bataille, se gagne par la préparation, pas par l'impulsion.</p>
+
+                <p>Un jour, après une partie qui avait duré trois mois, Vorin, frustré, jeta le plateau : "Tu ne gagnes jamais, tu ne fais que survivre !" Kaelen répondit : "J'ai gagné cette partie il y a trois semaines, quand tu as déplacé ton cavalier sans réfléchir à la suite. Le reste n'était que la conséquence."</p>
+
+                <p>Vorin comprit que la stratégie n'est pas une question de rapidité, mais d'anticipation. Il avait perdu non pas parce qu'il était moins intelligent, mais parce qu'il n'avait pas appris à voir trois coups plus loin.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse des deux approches</h5>
+                    <p>Vorin a confondu <strong>vitesse d'exécution</strong> et <strong>qualité de la décision</strong>. Il a privilégié l'action immédiate sur la réflexion préalable.</p>
+                    <p>Kaelen a adopté une <strong>approche systémique</strong>. Il ne regardait pas le coup présent, mais la structure de la position. Il savait que chaque décision crée un nouveau système de contraintes et d'opportunités.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Comment savoir quand agir vite et quand prendre le temps de réfléchir ? L'inaction peut-elle être une stratégie ?</p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Vorin a-t-il perdu ?</li>
+                    <li>Qu'est-ce que signifie "voir trois coups plus loin" dans la vie quotidienne ?</li>
+                    <li>Quand vaut-il mieux agir vite, et quand vaut-il mieux attendre ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Stratégie :</strong> La guerre des positions (Sun Tzu).</li>
+                    <li><strong>Psychologie :</strong> La patience comme forme d'intelligence.</li>
+                    <li><strong>Gestion :</strong> La décision stratégique vs. la décision tactique.</li>
+                </ul>
+            `
+        }, {
+            id: 7,
+            title: "La Bibliothèque des Oubliés",
+            theme: "Connaissance et apprentissage permanent",
+            competences: ["Curiosité", "Apprentissage", "Mémoire"],
+            content: `
+                <div class="story">
+                    Dans la Bibliothèque des Oubliés, des milliers de livres dormaient sur des étagères poussiéreuses. Personne ne les lisait, personne ne les connaissait. Mais chaque livre contenait une idée qui aurait pu changer le monde.
+                </div>
+
+                <p>Un jeune chercheur, Elara, découvrit cette bibliothèque par hasard. Elle ouvrit un livre sur les énergies renouvelables, écrit deux cents ans plus tôt. Les idées étaient brillantes, mais elles n'avaient jamais été appliquées. Elle en ouvrit un autre sur la communication entre les peuples, écrit au Moyen Âge. Encore une vision prophétique, ignorée.</p>
+
+                <p>Elara comprit que le savoir n'est utile que s'il est partagé et appliqué. Elle passa des années à restaurer les livres, à les numériser, à les diffuser. Elle créa une fondation pour enseigner ce qui avait été oublié.</p>
+
+                <p>Elle avait redonné vie à des idées qui avaient dormi trop longtemps.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de la découverte d'Elara</h5>
+                    <p>Elara a fait le lien entre <strong>connaissance et action</strong>. Elle a compris que le savoir n'a de valeur que s'il est utilisé. La bibliothèque des oubliés symbolise <strong>l'ignorance collective</strong> : des idées brillantes restent inexploitées par manque de transmission.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Si vous découvriez une idée qui pourrait changer le monde, mais que personne ne veut écouter, comment la feriez-vous connaître ?</p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi les idées de la bibliothèque ont-elles été oubliées ?</li>
+                    <li>Qu'est-ce qui rend une idée utile ?</li>
+                    <li>Comment cultiver sa curiosité dans un monde saturé d'informations ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Épistémologie :</strong> La connaissance comme bien commun.</li>
+                    <li><strong>Innovation :</strong> Les inventions non exploitées.</li>
+                    <li><strong>Éducation :</strong> L'importance de l'apprentissage permanent.</li>
+                </ul>
+            `
+        }, {
+            id: 8,
+            title: "Le Village qui Écoutait",
+            theme: "Communication et écoute active",
+            competences: ["Écoute active", "Empathie", "Résolution de conflits"],
+            content: `
+                <div class="story">
+                    Au cœur de la vallée, deux villages voisins étaient en conflit depuis des générations. Personne ne se souvenait de l'origine du différend, mais chacun était convaincu d'avoir raison. Leurs enfants ne se parlaient plus, leurs marchés étaient déserts.
+                </div>
+
+                <p>Un jour, une étrangère arriva. Elle s'appelait Lyra. Elle ne prit pas parti. Elle écouta. Pendant des semaines, elle écouta les anciens, les jeunes, les commerçants, les agriculteurs. Elle notait leurs peurs, leurs rancœurs, leurs espoirs. Puis elle organisa une réunion.</p>
+
+                <p>"Je ne vais pas vous donner une solution", dit-elle. "Je vais vous raconter ce que j'ai entendu." Elle décrivit chaque version avec une précision qui surprit tout le monde. Pour la première fois, chacun entendit la version de l'autre sans l'interrompre. Ils découvrirent que leurs peurs étaient semblables, que leurs espoirs étaient communs.</p>
+
+                <p>Ils décidèrent de ne pas rétablir les marchés, mais de créer un marché commun. L'écoute avait fait ce que des décennies de parole n'avaient pas réussi à faire.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de l'approche de Lyra</h5>
+                    <p>Lyra a utilisé l'écoute comme un <strong>acte de construction</strong>. Elle n'a pas imposé sa propre vision, elle a <strong>reflété</strong> ce qu'elle entendait. Cela a permis aux deux parties de se reconnaître dans le discours de l'autre, ce qui est la première étape de la résolution d'un conflit.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Dans un conflit, est-il possible d'écouter vraiment sans prendre parti ? L'écoute est-elle toujours une solution ?</p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi l'écoute a-t-elle fonctionné là où la parole avait échoué ?</li>
+                    <li>Qu'est-ce qui empêche les gens de s'écouter vraiment ?</li>
+                    <li>Comment pratiquer l'écoute active dans vos relations ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Psychologie :</strong> L'écoute active (Carl Rogers).</li>
+                    <li><strong>Communication :</strong> La reformulation comme outil de compréhension.</li>
+                    <li><strong>Gestion des conflits :</strong> La médiation.</li>
+                </ul>
+            `
+        }, {
+            id: 9,
+            title: "Les Sept Horloges",
+            theme: "Gestion du temps",
+            competences: ["Organisation", "Priorisation", "Efficacité"],
+            content: `
+                <div class="story">
+                    Dans la tour de l'horloge de la vieille ville, sept horloges marquaient sept heures différentes. Chacune représentait une façon de vivre sa journée. Les habitants étaient invités à choisir l'horloge qui leur correspondait.
+                </div>
+
+                <p>La première horloge était celle de <strong>l'urgent</strong> : on courait sans cesse d'une tâche à l'autre. La seconde était celle de <strong>l'important</strong> : on ne faisait qu'une chose à la fois, mais on la faisait bien. La troisième était celle de <strong>la distraction</strong> : on changeait d'activité toutes les cinq minutes. La quatrième était celle de <strong>la procrastination</strong> : on remettait tout à plus tard. La cinquième était celle de <strong>la réflexion</strong> : on prenait le temps de penser avant d'agir. La sixième était celle de <strong>la transmission</strong> : on passait du temps avec les autres. La septième était celle de <strong>l'équilibre</strong> : on alternait entre toutes les autres.</p>
+
+                <p>Un jeune homme, Léon, découvrit ces horloges. Il réalisa qu'il passait sa vie selon la première horloge : toujours pressé, jamais satisfait. Il décida de changer. Il commença par la cinquième horloge : il prit une heure par jour pour réfléchir à ses priorités. Puis il adopta la sixième : il consacra du temps à ses proches. Il choisit enfin la septième : il équilibra les différentes dimensions de sa vie.</p>
+
+                <p>Il comprit que la gestion du temps n'est pas une question de technique, mais de choix.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse des sept horloges</h5>
+                    <p>Les sept horloges représentent sept <strong>rapports au temps</strong> : l'urgence, l'importance, la distraction, la procrastination, la réflexion, la transmission et l'équilibre.</p>
+                    <p>Léon a fait un <strong>choix intentionnel</strong> de passer d'une horloge à une autre. Il a compris que le temps n'est pas une ressource que l'on gère, mais une <strong>dimension de la vie</strong> que l'on façonne.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Entre l'urgence et l'important, entre la réflexion et l'action, comment choisir ? Et si l'équilibre n'existait pas ?</p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Quelle horloge correspond à votre quotidien ?</li>
+                    <li>Que changeriez-vous dans votre gestion du temps ?</li>
+                    <li>Comment prioriser ce qui est vraiment important ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Gestion :</strong> La matrice d'Eisenhower (urgent/important).</li>
+                    <li><strong>Psychologie :</strong> La procrastination et ses causes.</li>
+                    <li><strong>Philosophie :</strong> Le temps comme dimension de l'existence.</li>
+                </ul>
+            `
+        }, {
+            id: 10,
+            title: "Le Banquier du Désert",
+            theme: "Valeur et discernement",
+            competences: ["Discernement", "Valeurs", "Éthique"],
+            content: `
+                <div class="story">
+                    Un banquier, nommé Darius, traversait le désert avec une caravane. Il était riche, puissant, respecté. Il emportait avec lui un coffre d'or, considéré comme sa plus grande richesse. Mais dans le désert, une tempête de sable l'isola du reste de la caravane.
+                </div>
+
+                <p>Il erra seul, avec son coffre, pendant des jours. L'or était lourd, il ralentissait sa marche. Mais il ne pouvait pas s'en séparer : c'était sa richesse, son identité, sa sécurité. Il continua de porter son coffre jusqu'à épuisement.</p>
+
+                <p>Il fut sauvé par un nomade qui lui offrit de l'eau. Le nomade regarda le coffre et dit : "Tu as transporté ton or à travers le désert, mais l'or ne t'a pas sauvé. L'eau m'a sauvé, et elle ne coûte rien."</p>
+
+                <p>Darius comprit que la valeur d'un bien n'est pas dans son prix, mais dans son utilité. Il laissa son or au nomade et retourna dans sa ville, transformé. Il avait découvert que certaines richesses ne s'achètent pas.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de la découverte de Darius</h5>
+                    <p>Darius a confondu <strong>valeur monétaire</strong> et <strong>valeur réelle</strong>. L'or était précieux dans la ville, mais inutile dans le désert. Cette expérience l'a obligé à redéfinir ce qui est vraiment important.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>L'argent est-il un moyen ou une fin ? Est-il possible de vivre sans attachement aux biens matériels ?</p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Darius a-t-il tenu à son coffre d'or ?</li>
+                    <li>Qu'est-ce qui a de la valeur dans votre vie ?</li>
+                    <li>Comment distinguer la valeur réelle de la valeur perçue ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Philosophie :</strong> Le détachement des biens matériels.</li>
+                    <li><strong>Économie :</strong> La différence entre prix et valeur.</li>
+                    <li><strong>Psychologie :</strong> L'attachement aux possessions.</li>
+                </ul>
+            `
+        }, {
+            id: 11,
+            title: "Le Conseil des Inventeurs",
+            theme: "Créativité et innovation",
+            competences: ["Innovation", "Résolution de problèmes", "Créativité"],
+            content: `
+                <div class="story">
+                    Dans la ville d'Ingénium, les meilleurs inventeurs du royaume se réunissaient chaque année pour résoudre les problèmes les plus ardus. Cette année, le défi était simple : trouver un moyen de transporter de l'eau sur de longues distances sans utiliser de technologie moderne.
+                </div>
+
+                <p>Les inventeurs proposèrent des solutions complexes : machines à vapeur, systèmes de pompage, canaux sophistiqués. Un seul, un vieil homme nommé Elias, ne parla pas. Il observa, réfléchit, puis demanda : "Pourquoi transporter l'eau ? Pourquoi ne pas transporter les plantes ?"</p>
+
+                <p>Il expliqua qu'il était plus efficace de faire pousser les cultures là où l'eau était disponible, plutôt que de transporter l'eau là où on voulait cultiver. Sa solution était simple, mais elle nécessitait de changer le problème plutôt que de le résoudre.</p>
+
+                <p>Les inventeurs comprirent que la créativité n'est pas toujours une question de solutions, mais parfois de questionnement du problème.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de la solution d'Elias</h5>
+                    <p>Elias a utilisé une <strong>approche de reframing</strong> : au lieu de chercher une solution au problème posé, il a <strong>re-défini le problème</strong>. C'est une technique classique de créativité : parfois, la meilleure solution est de changer le problème.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Est-il toujours préférable de résoudre le problème posé, ou faut-il parfois remettre en question la question elle-même ?</p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi les autres inventeurs n'ont-ils pas pensé à la solution d'Elias ?</li>
+                    <li>Comment peut-on apprendre à remettre en question un problème ?</li>
+                    <li>Dans votre vie, avez-vous déjà changé un problème plutôt que de le résoudre ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Innovation :</strong> Le reframing comme technique créative.</li>
+                    <li><strong>Psychologie :</strong> La fixité fonctionnelle.</li>
+                    <li><strong>Philosophie :</strong> La remise en question des évidences.</li>
+                </ul>
+            `
+        }, {
+            id: 12,
+            title: "La Montagne des Décisions",
+            theme: "Responsabilité et analyse des conséquences",
+            competences: ["Analyse", "Anticipation", "Responsabilité"],
+            content: `
+                <div class="story">
+                    Chaque choix ouvre un nouveau chemin. C'est ce que le vieux sage disait aux jeunes qui venaient le consulter. Il les emmenait au sommet de la Montagne des Décisions, d'où l'on pouvait voir toutes les routes de la vallée.
+                </div>
+
+                <p>"Chaque route que vous voyez est un choix que vous avez fait. Et chaque choix en entraîne d'autres." Il montrait du doigt un chemin étroit et sinueux : "Celui-ci a été choisi par un homme qui a menti pour obtenir ce qu'il voulait. Il pensait que le mensonge était plus court, mais il a passé des années à se cacher." Il montrait un autre chemin, large et droit : "Celui-ci a été choisi par une femme qui a dit la vérité, même quand c'était difficile. Elle a traversé des épreuves, mais sa vie est un chemin qui s'illumine."</p>
+
+                <p>Un jeune homme, Léandre, comprit que chaque décision est une porte qui s'ouvre ou se ferme. Il décida de ne plus prendre de décisions impulsives. Il apprit à regarder au-delà du premier pas.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de la métaphore</h5>
+                    <p>La Montagne des Décisions est une <strong>métaphore de la responsabilité</strong>. Chaque choix crée un enchaînement de conséquences, souvent invisibles au moment de la décision. Léandre a appris à <strong>anticiper les conséquences à long terme</strong> plutôt qu'à se laisser guider par l'immédiat.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Peut-on vraiment anticiper toutes les conséquences d'une décision ? Comment agir quand l'incertitude est totale ?</p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Quelle est la différence entre une décision impulsif et une décision réfléchie ?</li>
+                    <li>Avez-vous déjà pris une décision dont les conséquences se sont révélées bien après ?</li>
+                    <li>Comment développer sa capacité à anticiper ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Éthique :</strong> La responsabilité des conséquences.</li>
+                    <li><strong>Psychologie :</strong> Les biais de court-termisme.</li>
+                    <li><strong>Gestion :</strong> L'analyse des risques.</li>
+                </ul>
+            `
+        }, {
+            id: 13,
+            title: "Les Mille Questions",
+            theme: "Curiosité et autonomie intellectuelle",
+            competences: ["Raisonnement", "Autonomie", "Curiosité"],
+            content: `
+                <div class="story">
+                    Le maître Aris n'enseignait jamais directement. Il répondait toujours par une question. Quand un élève lui demandait : "Pourquoi le ciel est bleu ?", il répondait : "Pourquoi penses-tu que je le saurais mieux que toi ?" L'élève, frustré, partait chercher la réponse par lui-même.
+                </div>
+
+                <p>Certains élèves abandonnaient, d'autres persévéraient. Ceux qui persévéraient découvraient que la vraie réponse n'était pas une information, mais un chemin de réflexion. Aris disait : "Une réponse ferme l'esprit. Une question l'ouvre."</p>
+
+                <p>Un jeune homme, Orion, comprit que la véritable intelligence n'est pas dans la connaissance, mais dans la capacité à poser les bonnes questions. Il devint lui-même un enseignant qui ne donnait jamais de réponses, mais ouvrait des portes.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de la méthode d'Aris</h5>
+                    <p>Aris pratiquait la <strong>maïeutique socratique</strong> : l'art d'accoucher les esprits par le questionnement. Il ne transmettait pas de contenu, il <strong>développait l'autonomie intellectuelle</strong> de ses élèves.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>L'éducation doit-elle donner des réponses ou former à poser des questions ? Est-il possible d'apprendre sans guide ?</p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Aris ne répondait-il jamais directement ?</li>
+                    <li>Qu'est-ce qui est plus important : savoir ou savoir questionner ?</li>
+                    <li>Dans votre apprentissage, quelles questions devriez-vous poser plus souvent ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Philosophie :</strong> La maïeutique socratique.</li>
+                    <li><strong>Pédagogie :</strong> La méthode des questions-réponses.</li>
+                    <li><strong>Psychologie :</strong> L'importance de la curiosité pour l'apprentissage.</li>
+                </ul>
+            `
+        }, {
+            id: 14,
+            title: "Le Contrat Invisible",
+            theme: "Confiance et réputation",
+            competences: ["Éthique", "Confiance", "Réputation"],
+            content: `
+                <div class="story">
+                    La compagnie commerciale de Kael fonctionnait sur un principe unique : la parole donnée. Aucun contrat écrit, aucune signature. Les affaires se faisaient sur la confiance. Les concurrents se moquaient de cette naïveté. "Un jour, on vous volera tout", disaient-ils.
+                </div>
+
+                <p>Les années passèrent. La compagnie prospéra. Ses partenaires restaient fidèles, ses clients étaient satisfaits. La confiance était un investissement qui rapportait plus que n'importe quel contrat.</p>
+
+                <p>Un jour, un partenaire tenta de tricher. Il ne signa pas de contrat, pensant qu'il pourrait s'en sortir. Mais la nouvelle se répandit. Plus personne ne voulut travailler avec lui. Il perdit tout. Kael expliqua : "La confiance est un contrat invisible. Quand on le brise, on se brise soi-même."</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse du modèle de Kael</h5>
+                    <p>Kael a compris que la <strong>confiance est un actif</strong> qui se construit sur la durée. Dans un monde où tout le monde exige des garanties écrites, la confiance devient un différenciateur puissant.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Peut-on faire confiance sans contrat ? La confiance est-elle toujours justifiée ?</p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi les concurrents de Kael étaient-ils sceptiques ?</li>
+                    <li>Qu'est-ce que la confiance apporte de plus qu'un contrat ?</li>
+                    <li>Comment construire sa réputation ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Éthique :</strong> La parole donnée comme engagement.</li>
+                    <li><strong>Économie :</strong> La confiance comme réduction des coûts de transaction.</li>
+                    <li><strong>Psychologie :</strong> L'importance de la réputation.</li>
+                </ul>
+            `
+        }, {
+            id: 15,
+            title: "Le Cartographe du Futur",
+            theme: "Prospective et anticipation",
+            competences: ["Anticipation", "Scénarios", "Prévision"],
+            content: `
+                <div class="story">
+                    Un jeune cartographe, Léonard, ne dessinait pas les terres connues. Il dessinait les futurs possibles. Il voyait les tendances, les risques, les opportunités. Il traçait des routes que personne n'avait encore empruntées.
+                </div>
+
+                <p>Les rois se moquaient de lui. "Ce ne sont pas des cartes, ce sont des rêves", disaient-ils. Mais Léonard prévoyait les famines, les guerres, les nouvelles routes commerciales. Il n'était pas devin, il était observateur. Il lisait les signes que les autres ignoraient.</p>
+
+                <p>Un jour, un roi l'engagea pour préparer son royaume aux changements à venir. Grâce aux cartes de Léonard, il évita une guerre, anticipa une sécheresse et ouvrit une route commerciale qui enrichit son royaume. Léonard avait appris que le futur ne se subit pas, il se prépare.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de la méthode de Léonard</h5>
+                    <p>Léonard pratiquait la <strong>prospective</strong> : l'analyse des futurs possibles pour mieux se préparer. Il ne prédisait pas l'avenir, il <strong>explorait les scénarios</strong> pour aider les décideurs à anticiper.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Comment préparer l'avenir quand il est incertain ? La prévision est-elle une illusion ?</p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Léonard était-il plus lucide que les autres ?</li>
+                    <li>Comment anticiper les changements dans sa vie personnelle ?</li>
+                    <li>Quelle est la différence entre prévoir et imaginer ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Stratégie :</strong> La planification par scénarios.</li>
+                    <li><strong>Économie :</strong> L'anticipation des risques.</li>
+                    <li><strong>Psychologie :</strong> La pensée contrefactuelle.</li>
+                </ul>
+            `
+        }, {
+            id: 16,
+            title: "Les Cinq Erreurs",
+            theme: "Apprentissage par l'échec",
+            competences: ["Résilience", "Analyse des erreurs", "Apprentissage"],
+            content: `
+                <div class="story">
+                    Dans une école de stratèges, cinq étudiants échouèrent à leur examen final. Ils furent convoqués par le maître. "Vous avez échoué", dit-il. "Mais l'échec est une chance d'apprendre, à condition de comprendre pourquoi vous avez échoué."
+                </div>
+
+                <p><strong>Le premier</strong> avait manqué de préparation. Il avait cru que le talent suffisait. <strong>Le second</strong> avait manqué de concentration. Il avait été distrait par les autres. <strong>Le troisième</strong> avait manqué de courage. Il avait hésité au moment décisif. <strong>Le quatrième</strong> avait manqué d'écoute. Il avait refusé les conseils des autres. <strong>Le cinquième</strong> avait manqué d'adaptabilité. Il s'était obstiné sur une stratégie qui ne fonctionnait pas.</p>
+
+                <p>Chacun comprit que l'échec n'était pas une fatalité, mais un diagnostic. Ils corrigèrent leurs erreurs et, un an plus tard, ils furent parmi les meilleurs. Ils avaient appris que l'échec est un professeur, à condition de l'écouter.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse des cinq erreurs</h5>
+                    <p>Les cinq erreurs représentent des <strong>causes classiques d'échec</strong> : le manque de préparation, la distraction, le manque de courage, le refus de l'écoute, et l'obstination. Chacune peut être corrigée, à condition de <strong>reconnaître son propre type d'erreur</strong>.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Comment distinguer un échec qui enseigne d'un échec qui détruit ? Tous les échecs sont-ils utiles ?</p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Laquelle des cinq erreurs est la plus fréquente dans votre vie ?</li>
+                    <li>Comment transformer un échec en apprentissage ?</li>
+                    <li>Pourquoi certains échecs nous font-ils progresser et d'autres nous paralysent-ils ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Psychologie :</strong> Le growth mindset de Carol Dweck.</li>
+                    <li><strong>Éducation :</strong> L'apprentissage par l'erreur.</li>
+                    <li><strong>Gestion :</strong> La culture de l'échec dans les organisations.</li>
+                </ul>
+            `
+        }, {
+            id: 17,
+            title: "Le Marché des Idées",
+            theme: "Innovation et entrepreneuriat",
+            competences: ["Créativité", "Entrepreneuriat", "Valeur"],
+            content: `
+                <div class="story">
+                    Dans la ville d'Innovia, il n'y avait pas de marché pour les biens, mais pour les idées. Chaque jour, les inventeurs, les penseurs, les artistes se réunissaient pour échanger des concepts. Certaines idées valaient plus que l'or, d'autres étaient des échecs.
+                </div>
+
+                <p>Un jeune homme, Emeric, proposa une idée simple : un système de partage de connaissances entre les artisans. Personne ne la prit au sérieux. Mais un vieux marchand, qui avait vu des milliers d'idées naître et mourir, la acheta. Il la développa et devint immensément riche.</p>
+
+                <p>Emeric comprit qu'une idée ne vaut rien tant qu'elle n'est pas partagée, développée, appliquée. Il devint le conseiller du roi sur l'innovation. Il avait appris que les idées sont des semences, et que les semences ne poussent que dans un bon terrain.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de la découverte d'Emeric</h5>
+                    <p>Emeric a appris que <strong>l'innovation n'est pas seulement la création d'une idée, mais aussi sa mise en œuvre</strong>. Une idée sans exécution n'est qu'un rêve. Le vieux marchand a su voir le potentiel là où d'autres n'ont vu que de la naïveté.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Qu'est-ce qui est le plus important : l'idée elle-même ou la capacité à la réaliser ?</p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi les idées d'Emeric ont-elles été ignorées au début ?</li>
+                    <li>Qu'est-ce qui transforme une idée en succès ?</li>
+                    <li>Avez-vous une idée que vous n'avez pas encore partagée ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Innovation :</strong> La différence entre invention et innovation.</li>
+                    <li><strong>Entrepreneuriat :</strong> L'exécution comme clé du succès.</li>
+                    <li><strong>Économie :</strong> La valeur des idées.</li>
+                </ul>
+            `
+        }, {
+            id: 18,
+            title: "Les Gardiens du Silence",
+            theme: "Maîtrise de soi et intelligence émotionnelle",
+            competences: ["Intelligence émotionnelle", "Maîtrise de soi", "Communication"],
+            content: `
+                <div class="story">
+                    Dans un royaume où la parole était une arme, les Gardiens du Silence veillaient sur la parole. Ils n'intervenaient que lorsque les paroles devenaient dangereuses. Un jour, deux nobles s'affrontèrent en public, et leurs paroles enflammèrent les esprits.
+                </div>
+
+                <p>Un gardien s'approcha et leur demanda de se taire. "Pourquoi devrions-nous nous taire ?", demandèrent-ils. "Parce que vos paroles ne vous appartiennent plus", répondit-il. "Elles appartiennent à ceux qui les écoutent, et ils les transforment en actions. Parler sans réfléchir, c'est donner une arme à ceux qui ne sont pas prêts à l'utiliser."</p>
+
+                <p>Ils se turent. Un silence s'installa. Les esprits s'apaisèrent. Le gardien expliqua : "Parler au bon moment vaut mieux que parler tout le temps. Le silence est une forme de sagesse."</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse du rôle des gardiens</h5>
+                    <p>Les Gardiens du Silence représentent la <strong>maîtrise de soi</strong> et l'<strong>intelligence émotionnelle</strong>. Ils rappellent que les paroles ont un impact et qu'il faut les utiliser avec précaution. Le silence n'est pas une faiblesse, c'est une stratégie.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Quand faut-il parler et quand faut-il se taire ? Le silence est-il toujours une sagesse ?</p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi les paroles des nobles étaient-elles dangereuses ?</li>
+                    <li>Quand avez-vous utilisé le silence comme une stratégie ?</li>
+                    <li>Comment maîtriser l'impulsion de parler quand on est en colère ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Psychologie :</strong> L'intelligence émotionnelle (Daniel Goleman).</li>
+                    <li><strong>Communication :</strong> La parole comme acte.</li>
+                    <li><strong>Philosophie :</strong> Le silence dans la sagesse stoïcienne.</li>
+                </ul>
+            `
+        }, {
+            id: 19,
+            title: "Le Pont des Générations",
+            theme: "Transmission et coopération intergénérationnelle",
+            competences: ["Coopération", "Respect de l'expérience", "Transmission"],
+            content: `
+                <div class="story">
+                    La ville de Veridia était divisée. Les jeunes voulaient innover, les vieux voulaient préserver. Les conflits étaient quotidiens. Le maire décida de construire un pont entre les deux rives, mais un pont symbolique : une réunion où chaque génération devait écouter l'autre.
+                </div>
+
+                <p>Les jeunes expliquèrent leurs idées, leurs rêves. Les vieux expliquèrent leurs expériences, leurs peurs. Ils découvrirent que les jeunes avaient la vision, mais manquaient de perspective. Les vieux avaient la perspective, mais manquaient de vision. En collaborant, ils bâtirent un projet commun qui sauva leur ville.</p>
+
+                <p>Ils apprirent que l'innovation sans expérience est fragile, et que l'expérience sans innovation est stérile.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de la collaboration</h5>
+                    <p>L'histoire montre que les <strong>conflits intergénérationnels</strong> sont souvent des incompréhensions mutuelles. La coopération permet de combiner <strong>vision et expérience</strong>, créant des solutions plus solides que celles qui viennent d'une seule génération.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Comment concilier le désir d'innover des jeunes et la sagesse des anciens ? La transmission est-elle toujours bienveillante ?</p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi les deux générations étaient-elles en conflit ?</li>
+                    <li>Qu'est-ce que les jeunes apportent aux vieux, et inversement ?</li>
+                    <li>Comment pouvez-vous faciliter la transmission entre générations dans votre entourage ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Sociologie :</strong> Les relations intergénérationnelles.</li>
+                    <li><strong>Gestion :</strong> La diversité des âges comme atout.</li>
+                    <li><strong>Éthique :</strong> La transmission comme responsabilité.</li>
+                </ul>
+            `
+        }, {
+            id: 20,
+            title: "Le Dernier Héritage",
+            theme: "Sagesse et vision",
+            competences: ["Réflexion", "Vision", "Responsabilité"],
+            content: `
+                <div class="story">
+                    Le vieil homme, Elias, avait quatre-vingt-dix ans. Il avait vécu une vie pleine, il avait voyagé, il avait construit, il avait aimé. Mais il ne laissa aucune fortune à ses petits-enfants. Il leur laissa vingt lettres, chacune contenant une leçon de vie.
+                </div>
+
+                <p>La première lettre parlait de <strong>l'honnêteté</strong>. La seconde, du <strong>courage</strong>. La troisième, de la <strong>patience</strong>. La quatrième, de l'<strong>écoute</strong>. Chaque lettre était une graine de sagesse. Ses petits-enfants, d'abord déçus, découvrirent que ces lettres valaient plus que toutes les fortunes du monde.</p>
+
+                <p>L'un d'eux, Samuel, comprit que l'héritage le plus précieux est invisible. Il décida de transmettre à son tour ces lettres à ses enfants. Elias avait laissé une trace qui survivrait à toutes les fortunes.</p>
+
+                <div class="analyse">
+                    <h5>🔍 Analyse de l'héritage d'Elias</h5>
+                    <p>Elias a fait le choix de transmettre une <strong>richesse immatérielle</strong> plutôt qu'une richesse matérielle. Il a compris que les valeurs, les leçons, les réflexions sont ce qui perdure au-delà des générations.</p>
+                </div>
+
+                <div class="dilemme">
+                    <h5>⚖️ Dilemme</h5>
+                    <p>Si vous deviez laisser quelque chose à vos descendants, que laisseriez-vous ? Quel héritage est le plus précieux ?</p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi Elias n'a-t-il pas laissé de fortune ?</li>
+                    <li>Que valent les leçons de vie par rapport à l'argent ?</li>
+                    <li>Quelles leçons aimeriez-vous transmettre ?</li>
+                </ul>
+
+                <h4>📚 Liens avec des notions</h4>
+                <ul>
+                    <li><strong>Philosophie :</strong> La sagesse comme héritage.</li>
+                    <li><strong>Éthique :</strong> La transmission des valeurs.</li>
+                    <li><strong>Psychologie :</strong> Le sens de la vie dans la transmission.</li>
+                </ul>
+            `
+        }];
+
+        // ================================================================
+        //  CONSTRUCTION DE LA PAGE D'ACCUEIL
+        // ================================================================
+
+        const homeContent = document.getElementById('homeContent');
+
+        const grid = document.createElement('div');
+        grid.className = 'grid';
+
+        recits.forEach(h => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.setAttribute('data-id', h.id);
+            card.innerHTML = `
+                <div class="num">Récit ${String(h.id).padStart(2, '0')}</div>
+                <h3>${h.title}</h3>
+                <div class="theme">${h.theme}</div>
+                <div class="desc">${h.competences.slice(0, 3).join(' · ')}</div>
+                <div class="competences">${h.competences.map(c => `<span>${c}</span>`).join('')}</div>
+            `;
+            card.addEventListener('click', () => navigateToArticle(h.id));
+            grid.appendChild(card);
+        });
+
+        homeContent.appendChild(grid);
+
+        // ================================================================
+        //  ROUTING (Hash-based)
+        // ================================================================
+
+        const homePage = document.getElementById('homePage');
+        const articlePage = document.getElementById('articlePage');
+
+        function showHome() {
+            homePage.classList.remove('hidden');
+            articlePage.classList.remove('active');
+            window.location.hash = '';
+            document.title = '20 Récits initiatiques — Développer l\'intelligence';
+        }
+
+        function showArticle(id) {
+            homePage.classList.add('hidden');
+            articlePage.classList.add('active');
+            window.location.hash = `recit-${id}`;
+            renderArticle(id);
+        }
+
+        function renderArticle(id) {
+            const h = recits.find(e => e.id === id);
+            if (!h) {
+                showHome();
+                return;
+            }
+            document.getElementById('articleNum').textContent = `Récit ${String(h.id).padStart(2, '0')}`;
+            document.getElementById('articleTitle').textContent = h.title;
+            document.getElementById('articleTheme').textContent = h.theme;
+            document.getElementById('articleCompetences').innerHTML = h.competences.map(c => `<span>${c}</span>`).join('');
+            document.getElementById('articleContent').innerHTML = h.content;
+            document.title = `${h.title} — Récits initiatiques`;
+        }
+
+        function navigateToArticle(id) {
+            showArticle(id);
+        }
+
+        function handleHash() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#recit-')) {
+                const id = parseInt(hash.replace('#recit-', ''), 10);
+                if (recits.find(e => e.id === id)) {
+                    showArticle(id);
+                    return;
+                }
+            }
+            showHome();
+        }
+
+        document.getElementById('backToHomeLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+        document.getElementById('backHomeBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+
+        window.addEventListener('hashchange', handleHash);
+        window.addEventListener('load', handleHash);
+        window.addEventListener('popstate', handleHash);
+    </script>
+
+</body>
+</html>
