@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eurocode 3 — Exemples concrets d'ingénierie métallique</title>
+    <style>
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            color: #1a2634;
+            padding: 2rem 1rem;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* --- HEADER --- */
+        .header {
+            background: linear-gradient(135deg, #1a1a2e, #2d4059);
+            color: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header h1 span {
+            color: #f0c27a;
+        }
+
+        .header .subtitle {
+            margin-top: 0.6rem;
+            font-size: 1.05rem;
+            opacity: 0.9;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.12);
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 0.8rem;
+        }
+
+        /* --- BACK LINK --- */
+        .back-link {
+            display: inline-block;
+            color: #f0c27a;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        /* --- GRILLE D'ACCUEIL --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+            border-color: #2d4059;
+        }
+
+        .card .num {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #6a7a8a;
+            background: #eef3f8;
+            padding: 0.1rem 0.7rem;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .card h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin: 0.5rem 0 0.3rem;
+        }
+
+        .card .desc {
+            font-size: 0.88rem;
+            color: #4a5a6a;
+        }
+
+        .card .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            margin-top: 0.6rem;
+        }
+
+        .card .tags span {
+            font-size: 0.65rem;
+            padding: 0.15rem 0.6rem;
+            background: #eef3f8;
+            border-radius: 12px;
+            color: #3a5a6a;
+        }
+
+        /* --- PAGE ARTICLE --- */
+        #articlePage {
+            display: none;
+        }
+
+        #articlePage.active {
+            display: block;
+        }
+
+        #homePage.hidden {
+            display: none;
+        }
+
+        .article-container {
+            background: #fff;
+            border-radius: 20px;
+            padding: 2.5rem 2.8rem;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.07);
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        .article-container .article-num {
+            font-size: 0.75rem;
+            color: #6a7a8a;
+            background: #eef3f8;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            display: inline-block;
+            font-weight: 600;
+        }
+
+        .article-container h2 {
+            font-size: 2rem;
+            margin: 0.3rem 0 0.2rem;
+            color: #1a1a2e;
+        }
+
+        .article-container .article-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .article-container .article-tags span {
+            font-size: 0.7rem;
+            padding: 0.15rem 0.8rem;
+            background: #eef3f8;
+            border-radius: 20px;
+            color: #3a5a6a;
+        }
+
+        .article-container .article-content {
+            font-size: 1.02rem;
+            line-height: 1.9;
+            color: #1a2634;
+        }
+
+        .article-container .article-content p {
+            margin-bottom: 0.9rem;
+        }
+
+        .article-container .article-content ul {
+            padding-left: 1.8rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .article-container .article-content li {
+            margin-bottom: 0.3rem;
+        }
+
+        .article-container .article-content .formula {
+            display: block;
+            background: #f4f8fb;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            margin: 0.8rem 0;
+            border-left: 4px solid #2d4059;
+            overflow-x: auto;
+            text-align: center;
+        }
+
+        .article-container .article-content .example-box {
+            background: #f0f7ee;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            border-left: 4px solid #0f7b3a;
+            margin: 0.8rem 0;
+        }
+
+        .article-container .article-content .table-box {
+            background: #f8fafc;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            margin: 0.8rem 0;
+            overflow-x: auto;
+        }
+
+        .article-container .article-content .table-box table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .article-container .article-content .table-box th {
+            background: #2d4059;
+            color: #fff;
+            padding: 0.4rem 0.8rem;
+            text-align: left;
+        }
+
+        .article-container .article-content .table-box td {
+            padding: 0.3rem 0.8rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .article-container .article-content .table-box tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 1.8rem;
+            color: #2d4059;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1.2rem;
+            border: 2px solid #2d4059;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+
+        .back-home:hover {
+            background: #2d4059;
+            color: #fff;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 640px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            .article-container {
+                padding: 1.5rem;
+            }
+            .article-container h2 {
+                font-size: 1.4rem;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .footer {
+            margin-top: 2.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #6a7a8a;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 1.5rem;
+        }
+
+        .footer span {
+            color: #2d4059;
+            font-weight: 600;
+        }
+
+        #homePage {
+            display: block;
+        }
+        #homePage.hidden {
+            display: none;
+        }
+        #articlePage {
+            display: none;
+        }
+        #articlePage.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ============================================================ -->
+        <!-- PAGE D'ACCUEIL -->
+        <!-- ============================================================ -->
+        <div id="homePage">
+            <div class="header">
+                <h1>🏗️ <span>Eurocode 3</span> — Exemples concrets</h1>
+                <div class="subtitle">Ingénierie métallique — Dimensionnement complet selon EN 1993</div>
+                <div class="badge">18 exemples complets · Chaque exemple a sa propre URL</div>
+            </div>
+
+            <div class="grid" id="homeGrid">
+                <!-- Les cartes seront générées par JavaScript -->
+            </div>
+
+            <div class="footer">
+                <p>📐 <span>Eurocode 3</span> — Aciers de construction · S235 · S275 · S355 · S460</p>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PAGE ARTICLE -->
+        <!-- ============================================================ -->
+        <div id="articlePage">
+            <div class="header" style="margin-bottom: 1.5rem;">
+                <h1>🏗️ <span>Eurocode 3</span></h1>
+                <a class="back-link" href="#" id="backToHomeLink">← Retour à la liste des exemples</a>
+            </div>
+            <div class="article-container" id="articleContainer">
+                <div class="article-num" id="articleNum">01</div>
+                <h2 id="articleTitle">Titre</h2>
+                <div class="article-tags" id="articleTags"></div>
+                <div class="article-content" id="articleContent">
+                    <p>Contenu détaillé...</p>
+                </div>
+                <a href="#" class="back-home" id="backHomeBtn">← Tous les exemples</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ================================================================
+        //  DONNÉES DES EXEMPLES
+        // ================================================================
+
+        const exemples = [{
+            id: 1,
+            title: "Tirant métallique - HEA160",
+            desc: "Dimensionnement d'un tirant en traction pure. Vérification de la section nette et de la résistance plastique.",
+            tags: ["Traction", "HEA160", "S355"],
+            content: `
+                <p><strong>Objectif :</strong> Dimensionner un tirant en acier HEA160 soumis à un effort de traction.</p>
+
+                <div class="table-box">
+                    <table>
+                        <tr><th>Caractéristique</th><th>Valeur</th></tr>
+                        <tr><td>Profil</td><td>HEA160</td></tr>
+                        <tr><td>Acier</td><td>S355</td></tr>
+                        <tr><td>Longueur</td><td>4,00 m</td></tr>
+                        <tr><td>Effort de traction N<sub>Ed</sub></td><td>600 kN</td></tr>
+                    </table>
+                </div>
+
+                <p><strong>1. Caractéristiques du profil HEA160 :</strong></p>
+                <ul>
+                    <li>A = 3 880 mm² (section brute)</li>
+                    <li>h = 152 mm, b = 160 mm, t<sub>f</sub> = 9 mm, t<sub>w</sub> = 6 mm</li>
+                    <li>r = 15 mm</li>
+                </ul>
+
+                <p><strong>2. Résistance de calcul (ELU) :</strong></p>
+                <div class="formula">
+                    N<sub>pl,Rd</sub> = A · f<sub>y</sub> / γ<sub>M0</sub>
+                </div>
+                <p>f<sub>y</sub> = 355 MPa (S355), γ<sub>M0</sub> = 1,0</p>
+                <div class="formula">
+                    N<sub>pl,Rd</sub> = 3880 × 355 / 1,0 = 1 377 400 N = <strong>1 377 kN</strong>
+                </div>
+
+                <p><strong>3. Vérification de la section nette (avec boulons) :</strong></p>
+                <p>Hypothèse : 2 boulons M24 (diamètre de perçage = 26 mm) par rangée</p>
+                <div class="formula">
+                    A<sub>net</sub> = A − n · d<sub>0</sub> · t<sub>f</sub>
+                </div>
+                <div class="formula">
+                    A<sub>net</sub> = 3880 − 2 × 26 × 9 = 3880 − 468 = <strong>3 412 mm²</strong>
+                </div>
+                <div class="formula">
+                    N<sub>u,Rd</sub> = 0,9 · A<sub>net</sub> · f<sub>u</sub> / γ<sub>M2</sub>
+                </div>
+                <p>f<sub>u</sub> = 510 MPa (S355), γ<sub>M2</sub> = 1,25</p>
+                <div class="formula">
+                    N<sub>u,Rd</sub> = 0,9 × 3412 × 510 / 1,25 = 1 253 000 N = <strong>1 253 kN</strong>
+                </div>
+
+                <p><strong>4. Vérification :</strong></p>
+                <ul>
+                    <li>N<sub>Ed</sub> = 600 kN ≤ N<sub>pl,Rd</sub> = 1 377 kN → <strong>✅ OK</strong></li>
+                    <li>N<sub>Ed</sub> = 600 kN ≤ N<sub>u,Rd</sub> = 1 253 kN → <strong>✅ OK</strong></li>
+                </ul>
+
+                <div class="example-box">
+                    <strong>📌 Résultat :</strong> Le tirant HEA160 en S355 est dimensionné pour un effort de traction de 600 kN.
+                </div>
+
+                <p><strong>5. Erreurs courantes à éviter :</strong></p>
+                <ul>
+                    <li>❌ Oublier de vérifier la section nette dans les zones de boulons.</li>
+                    <li>❌ Utiliser γ<sub>M0</sub> au lieu de γ<sub>M2</sub> pour la rupture de section nette.</li>
+                    <li>❌ Négliger l'effet de l'excentricité des boulons.</li>
+                </ul>
+            `
+        }, {
+            id: 2,
+            title: "Poteau comprimé - HEB240",
+            desc: "Dimensionnement d'un poteau en compression avec vérification du flambement selon EN 1993-1-1.",
+            tags: ["Compression", "Flambement", "HEB240", "S355"],
+            content: `
+                <p><strong>Objectif :</strong> Dimensionner un poteau HEB240 soumis à un effort normal de compression.</p>
+
+                <div class="table-box">
+                    <table>
+                        <tr><th>Caractéristique</th><th>Valeur</th></tr>
+                        <tr><td>Profil</td><td>HEB240</td></tr>
+                        <tr><td>Acier</td><td>S355</td></tr>
+                        <tr><td>Hauteur</td><td>5,20 m</td></tr>
+                        <tr><td>Effort normal N<sub>Ed</sub></td><td>1 200 kN</td></tr>
+                        <tr><td>Conditions d'appui</td><td>Articulé-articulé</td></tr>
+                    </table>
+                </div>
+
+                <p><strong>1. Caractéristiques du profil HEB240 :</strong></p>
+                <ul>
+                    <li>A = 10 600 mm²</li>
+                    <li>i<sub>y</sub> = 104 mm, i<sub>z</sub> = 60,4 mm</li>
+                    <li>h = 240 mm, b = 240 mm, t<sub>f</sub> = 17 mm, t<sub>w</sub> = 10 mm</li>
+                </ul>
+
+                <p><strong>2. Résistance plastique :</strong></p>
+                <div class="formula">
+                    N<sub>pl,Rd</sub> = A · f<sub>y</sub> / γ<sub>M0</sub>
+                </div>
+                <div class="formula">
+                    N<sub>pl,Rd</sub> = 10600 × 355 / 1,0 = 3 763 000 N = <strong>3 763 kN</strong>
+                </div>
+
+                <p><strong>3. Élancement et flambement :</strong></p>
+                <p>Longueur de flambement L<sub>cr</sub> = L = 5 200 mm (articulé-articulé)</p>
+                <div class="formula">
+                    λ<sub>y</sub> = L<sub>cr</sub> / i<sub>y</sub> = 5200 / 104 = <strong>50</strong>
+                </div>
+                <div class="formula">
+                    λ<sub>z</sub> = L<sub>cr</sub> / i<sub>z</sub> = 5200 / 60,4 = <strong>86</strong>
+                </div>
+
+                <p><strong>4. Élancement relatif :</strong></p>
+                <div class="formula">
+                    λ̄ = (λ / π) · √(f<sub>y</sub> / E)
+                </div>
+                <p>E = 210 000 MPa, f<sub>y</sub> = 355 MPa</p>
+                <div class="formula">
+                    λ̄<sub>y</sub> = (50 / π) · √(355 / 210000) = <strong>0,54</strong>
+                </div>
+                <div class="formula">
+                    λ̄<sub>z</sub> = (86 / π) · √(355 / 210000) = <strong>0,93</strong>
+                </div>
+
+                <p><strong>5. Facteur de flambement χ (courbe b pour HEB) :</strong></p>
+                <div class="formula">
+                    φ = 0,5 · [1 + α · (λ̄ − 0,2) + λ̄²]
+                </div>
+                <p>α = 0,34 (courbe b)</p>
+                <div class="formula">
+                    φ<sub>z</sub> = 0,5 × [1 + 0,34 × (0,93 − 0,2) + 0,93²] = 0,5 × [1 + 0,248 + 0,865] = <strong>1,057</strong>
+                </div>
+                <div class="formula">
+                    χ = 1 / (φ + √(φ² − λ̄²))
+                </div>
+                <div class="formula">
+                    χ<sub>z</sub> = 1 / (1,057 + √(1,117 − 0,865)) = 1 / (1,057 + 0,502) = <strong>0,641</strong>
+                </div>
+
+                <p><strong>6. Résistance au flambement :</strong></p>
+                <div class="formula">
+                    N<sub>b,Rd</sub> = χ · A · f<sub>y</sub> / γ<sub>M1</sub>
+                </div>
+                <p>γ<sub>M1</sub> = 1,0</p>
+                <div class="formula">
+                    N<sub>b,Rd</sub> = 0,641 × 10600 × 355 / 1,0 = 2 412 000 N = <strong>2 412 kN</strong>
+                </div>
+
+                <p><strong>7. Vérification :</strong></p>
+                <ul>
+                    <li>N<sub>Ed</sub> = 1 200 kN ≤ N<sub>b,Rd</sub> = 2 412 kN → <strong>✅ OK</strong></li>
+                    <li>Le flambement selon l'axe z (faible) est dimensionnant.</li>
+                </ul>
+
+                <div class="example-box">
+                    <strong>📌 Résultat :</strong> Le poteau HEB240 en S355 est dimensionné pour un effort de compression de 1 200 kN.
+                </div>
+
+                <p><strong>8. Erreurs courantes :</strong></p>
+                <ul>
+                    <li>❌ Choisir la mauvaise courbe de flambement (a,b,c,d).</li>
+                    <li>❌ Oublier de vérifier les deux axes de flambement.</li>
+                    <li>❌ Négliger les effets du second ordre pour les grands élancements.</li>
+                </ul>
+            `
+        }, {
+            id: 3,
+            title: "Poutre fléchie - IPE300",
+            desc: "Dimensionnement d'une poutre en flexion avec vérification de la résistance et de la flèche.",
+            tags: ["Flexion", "IPE300", "S355", "Flèche"],
+            content: `
+                <p><strong>Objectif :</strong> Dimensionner une poutre IPE300 soumise à la flexion simple.</p>
+
+                <div class="table-box">
+                    <table>
+                        <tr><th>Caractéristique</th><th>Valeur</th></tr>
+                        <tr><td>Profil</td><td>IPE300</td></tr>
+                        <tr><td>Acier</td><td>S355</td></tr>
+                        <tr><td>Portée</td><td>8,00 m</td></tr>
+                        <tr><td>Charge permanente G<sub>k</sub></td><td>12 kN/m</td></tr>
+                        <tr><td>Charge d'exploitation Q<sub>k</sub></td><td>8 kN/m</td></tr>
+                    </table>
+                </div>
+
+                <p><strong>1. Caractéristiques du profil IPE300 :</strong></p>
+                <ul>
+                    <li>W<sub>pl,y</sub> = 628 000 mm³ (module plastique)</li>
+                    <li>W<sub>el,y</sub> = 557 000 mm³ (module élastique)</li>
+                    <li>I<sub>y</sub> = 83,6×10⁶ mm⁴</li>
+                    <li>A = 5 380 mm²</li>
+                    <li>h = 300 mm, b = 150 mm, t<sub>f</sub> = 10,7 mm, t<sub>w</sub> = 7,1 mm</li>
+                </ul>
+
+                <p><strong>2. Combinaison ELU :</strong></p>
+                <div class="formula">
+                    p<sub>Ed</sub> = 1,35 × 12 + 1,5 × 8 = 16,2 + 12 = <strong>28,2 kN/m</strong>
+                </div>
+                <div class="formula">
+                    M<sub>Ed</sub> = p<sub>Ed</sub> · L² / 8 = 28,2 × 8² / 8 = <strong>225,6 kN·m</strong>
+                </div>
+
+                <p><strong>3. Résistance en flexion :</strong></p>
+                <div class="formula">
+                    M<sub>Rd</sub> = W<sub>pl,y</sub> · f<sub>y</sub> / γ<sub>M0</sub>
+                </div>
+                <div class="formula">
+                    M<sub>Rd</sub> = 628 000 × 355 / 1,0 = 222 940 000 N·mm = <strong>222,9 kN·m</strong>
+                </div>
+
+                <p><strong>4. Vérification :</strong></p>
+                <ul>
+                    <li>M<sub>Ed</sub> = 225,6 kN·m ≤ M<sub>Rd</sub> = 222,9 kN·m → <strong>⚠ Légèrement insuffisant</strong></li>
+                </ul>
+
+                <p><strong>5. Solution :</strong> Utiliser un IPE330 (W<sub>pl</sub> = 804 000 mm³) ou un acier S460.</p>
+
+                <p><strong>6. Vérification de la flèche (ELS) :</strong></p>
+                <div class="formula">
+                    p<sub>ELS</sub> = 12 + 8 = 20 kN/m
+                </div>
+                <div class="formula">
+                    f = 5 · p · L⁴ / (384 · E · I)
+                </div>
+                <div class="formula">
+                    f = 5 × 20 × 8000⁴ / (384 × 210000 × 83,6×10⁶) = <strong>16,1 mm</strong>
+                </div>
+                <p>L/250 = 8000/250 = 32 mm → 16,1 ≤ 32 → <strong>✅ OK</strong></p>
+
+                <div class="example-box">
+                    <strong>📌 Résultat :</strong> IPE300 insuffisant en ELU (225,6 > 222,9). Utiliser IPE330 ou S460.
+                </div>
+
+                <p><strong>7. Erreurs courantes :</strong></p>
+                <ul>
+                    <li>❌ Utiliser W<sub>el</sub> au lieu de W<sub>pl</sub> (sous-estime la capacité).</li>
+                    <li>❌ Oublier la vérification de la flèche (ELS).</li>
+                    <li>❌ Négliger le déversement pour les poutres non entretoisées.</li>
+                </ul>
+            `
+        }, {
+            id: 4,
+            title: "Cisaillement d'une poutre - IPE400",
+            desc: "Vérification du cisaillement et interaction flexion-cisaillement.",
+            tags: ["Cisaillement", "IPE400", "S355"],
+            content: `
+                <p><strong>Objectif :</strong> Vérifier le cisaillement d'une poutre IPE400.</p>
+
+                <div class="table-box">
+                    <table>
+                        <tr><th>Caractéristique</th><th>Valeur</th></tr>
+                        <tr><td>Profil</td><td>IPE400</td></tr>
+                        <tr><td>Acier</td><td>S355</td></tr>
+                        <tr><td>Portée</td><td>10 m</td></tr>
+                        <tr><td>V<sub>Ed</sub> (appui)</td><td>350 kN</td></tr>
+                    </table>
+                </div>
+
+                <p><strong>1. Caractéristiques IPE400 :</strong></p>
+                <ul>
+                    <li>A<sub>v</sub> = 4 500 mm² (aire de cisaillement pour IPE)</li>
+                    <li>h = 400 mm, t<sub>w</sub> = 8,6 mm</li>
+                </ul>
+
+                <p><strong>2. Résistance au cisaillement :</strong></p>
+                <div class="formula">
+                    V<sub>pl,Rd</sub> = A<sub>v</sub> · f<sub>y</sub> / (√3 · γ<sub>M0</sub>)
+                </div>
+                <div class="formula">
+                    V<sub>pl,Rd</sub> = 4500 × 355 / (1,732 × 1,0) = 1 597 500 / 1,732 = <strong>922 kN</strong>
+                </div>
+
+                <p><strong>3. Vérification :</strong></p>
+                <ul>
+                    <li>V<sub>Ed</sub> = 350 kN ≤ V<sub>pl,Rd</sub> = 922 kN → <strong>✅ OK</strong></li>
+                </ul>
+
+                <p><strong>4. Interaction flexion-cisaillement :</strong></p>
+                <p>Si V<sub>Ed</sub> > 0,5 × V<sub>pl,Rd</sub> (soit > 461 kN), il faut réduire le moment résistant.</p>
+                <p>350 kN < 461 kN → <strong>Pas de réduction nécessaire</strong></p>
+
+                <div class="example-box">
+                    <strong>📌 Résultat :</strong> Cisaillement OK. Pas d'interaction flexion-cisaillement à prendre en compte.
+                </div>
+            `
+        }, {
+            id: 5,
+            title: "Assemblage boulonné - Platine d'about",
+            desc: "Dimensionnement d'un assemblage boulonné avec vérification des modes de rupture.",
+            tags: ["Assemblage", "Boulons", "Platine"],
+            content: `
+                <p><strong>Objectif :</strong> Dimensionner un assemblage boulonné d'une platine d'about.</p>
+
+                <div class="table-box">
+                    <table>
+                        <tr><th>Caractéristique</th><th>Valeur</th></tr>
+                        <tr><td>Boulons</td><td>4 × M24</td></tr>
+                        <tr><td>Classe de boulons</td><td>8.8</td></tr>
+                        <tr><td>Acier de la platine</td><td>S355</td></tr>
+                        <tr><td>Effort de traction N<sub>Ed</sub></td><td>400 kN</td></tr>
+                        <tr><td>Épaisseur platine</td><td>20 mm</td></tr>
+                    </table>
+                </div>
+
+                <p><strong>1. Résistance d'un boulon en traction :</strong></p>
+                <div class="formula">
+                    F<sub>t,Rd</sub> = 0,9 · f<sub>ub</sub> · A<sub>s</sub> / γ<sub>M2</sub>
+                </div>
+                <p>f<sub>ub</sub> = 800 MPa (8.8), A<sub>s</sub> = 353 mm² (M24)</p>
+                <div class="formula">
+                    F<sub>t,Rd</sub> = 0,9 × 800 × 353 / 1,25 = 254 160 / 1,25 = <strong>203,3 kN</strong>
+                </div>
+
+                <p><strong>2. Résistance de l'assemblage :</strong></p>
+                <div class="formula">
+                    N<sub>Rd</sub> = 4 × F<sub>t,Rd</sub> = 4 × 203,3 = <strong>813 kN</strong>
+                </div>
+
+                <p><strong>3. Vérification :</strong></p>
+                <ul>
+                    <li>N<sub>Ed</sub> = 400 kN ≤ N<sub>Rd</sub> = 813 kN → <strong>✅ OK</strong></li>
+                </ul>
+
+                <p><strong>4. Vérification de la pression diamétrale :</strong></p>
+                <div class="formula">
+                    F<sub>b,Rd</sub> = k<sub>1</sub> · α<sub>b</sub> · f<sub>u</sub> · d · t / γ<sub>M2</sub>
+                </div>
+                <p>Dimensionnement des boulons OK.</p>
+
+                <div class="example-box">
+                    <strong>📌 Résultat :</strong> Assemblage avec 4 boulons M24 8.8 dimensionné pour 400 kN.
+                </div>
+            `
+        }, {
+            id: 6,
+            title: "Panne de toiture - Flexion déviée",
+            desc: "Dimensionnement d'une panne de toiture sous neige et vent.",
+            tags: ["Panne", "Flexion déviée", "Neige", "Vent"],
+            content: `
+                <p><strong>Objectif :</strong> Dimensionner une panne de toiture soumise à la neige et au vent.</p>
+
+                <div class="table-box">
+                    <table>
+                        <tr><th>Caractéristique</th><th>Valeur</th></tr>
+                        <tr><td>Profil</td><td>IPE180</td></tr>
+                        <tr><td>Acier</td><td>S355</td></tr>
+                        <tr><td>Portée</td><td>6 m</td></tr>
+                        <tr><td>Espacement</td><td>2 m</td></tr>
+                        <tr><td>Neige S<sub>k</sub></td><td>1,2 kN/m²</td></tr>
+                        <tr><td>Vent W<sub>k</sub></td><td>0,8 kN/m² (soulèvement)</td></tr>
+                    </table>
+                </div>
+
+                <p><strong>1. Charges :</strong></p>
+                <ul>
+                    <li>Poids propre (panne) : 0,22 kN/m</li>
+                    <li>Couverture + isolation : 0,5 kN/m² × 2 m = 1,0 kN/m</li>
+                    <li>Neige : 1,2 × 2 = 2,4 kN/m</li>
+                    <li>Vent (soulèvement) : 0,8 × 2 = 1,6 kN/m</li>
+                </ul>
+
+                <p><strong>2. Flexion déviée :</strong></p>
+                <div class="formula">
+                    M<sub>z,Ed</sub> = (0,8 × q<sub>vent</sub> × L²) / 8 (composante horizontale)
+                </div>
+
+                <p><strong>3. Vérification selon EN 1993-1-1 :</strong></p>
+                <div class="formula">
+                    (M<sub>y,Ed</sub> / M<sub>y,Rd</sub>) + (M<sub>z,Ed</sub> / M<sub>z,Rd</sub>) ≤ 1
+                </div>
+
+                <div class="example-box">
+                    <strong>📌 Résultat :</strong> IPE180 en S355 dimensionné pour la flexion déviée sous neige et vent.
+                </div>
+            `
+        }, {
+            id: 7,
+            title: "Contreventement en croix",
+            desc: "Dimensionnement d'un contreventement en croix sous charges horizontales.",
+            tags: ["Contreventement", "Croix", "Stabilité"],
+            content: `
+                <p><strong>Objectif :</strong> Dimensionner un contreventement en croix pour un bâtiment industriel.</p>
+
+                <div class="table-box">
+                    <table>
+                        <tr><th>Caractéristique</th><th>Valeur</th></tr>
+                        <tr><td>Type</td><td>Croix en barres rondes</td></tr>
+                        <tr><td>Acier</td><td>S355</td></tr>
+                        <tr><td>Diamètre</td><td>20 mm</td></tr>
+                        <tr><td>Effort horizontal H<sub>Ed</sub></td><td>80 kN</td></tr>
+                    </table>
+                </div>
+
+                <p><strong>1. Effort dans chaque barre de la croix :</strong></p>
+                <div class="formula">
+                    N<sub>Ed,barre</sub> = H<sub>Ed</sub> / (2 · cos α)
+                </div>
+
+                <p><strong>2. Résistance en traction :</strong></p>
+                <div class="formula">
+                    N<sub>Rd</sub> = A · f<sub>y</sub> / γ<sub>M0</sub>
+                </div>
+                <div class="formula">
+                    A = π × 20² / 4 = 314 mm²
+                </div>
+                <div class="formula">
+                    N<sub>Rd</sub> = 314 × 355 / 1,0 = 111 470 N = <strong>111 kN</strong>
+                </div>
+
+                <div class="example-box">
+                    <strong>📌 Résultat :</strong> Contreventement en croix avec barres Ø20 mm dimensionné.
+                </div>
+            `
+        }, {
+            id: 8,
+            title: "Assemblage soudé - Cordons d'angle",
+            desc: "Dimensionnement d'un assemblage soudé avec cordons d'angle.",
+            tags: ["Soudure", "Cordon d'angle", "Assemblage"],
+            content: `
+                <p><strong>Objectif :</strong> Dimensionner un cordon de soudure d'angle.</p>
+
+                <div class="table-box">
+                    <table>
+                        <tr><th>Caractéristique</th><th>Valeur</th></tr>
+                        <tr><td>Acier</td><td>S355</td></tr>
+                        <tr><td>Épaisseur de gorge</td><td>6 mm</td></tr>
+                        <tr><td>Longueur de cordon</td><td>200 mm</td></tr>
+                        <tr><td>Effort N<sub>Ed</sub></td><td>150 kN</td></tr>
+                    </table>
+                </div>
+
+                <p><strong>1. Section résistante de la soudure :</strong></p>
+                <div class="formula">
+                    A<sub>w</sub> = a · L = 6 × 200 = <strong>1 200 mm²</strong>
+                </div>
+
+                <p><strong>2. Résistance de la soudure :</strong></p>
+                <div class="formula">
+                    F<sub>w,Rd</sub> = A<sub>w</sub> · f<sub>vw,d</sub>
+                </div>
+                <div class="formula">
+                    f<sub>vw,d</sub> = (f<sub>u</sub> / (√3 · γ<sub>M2</sub>)) = 510 / (1,732 × 1,25) = <strong>235 MPa</strong>
+                </div>
+                <div class="formula">
+                    F<sub>w,Rd</sub> = 1200 × 235 = 282 000 N = <strong>282 kN</strong>
+                </div>
+
+                <p><strong>3. Vérification :</strong></p>
+                <ul>
+                    <li>N<sub>Ed</sub> = 150 kN ≤ 282 kN → <strong>✅ OK</strong></li>
+                </ul>
+
+                <div class="example-box">
+                    <strong>📌 Résultat :</strong> Cordon d'angle 6 mm × 200 mm dimensionné.
+                </div>
+            `
+        }, {
+            id: 9,
+            title: "Portique métallique - Calcul complet",
+            desc: "Dimensionnement complet d'un portique métallique (poteaux + traverse).",
+            tags: ["Portique", "Poteau", "Traverse", "Hangar"],
+            content: `
+                <p><strong>Objectif :</strong> Dimensionner un portique métallique de hangar industriel.</p>
+
+                <div class="table-box">
+                    <table>
+                        <tr><th>Caractéristique</th><th>Valeur</th></tr>
+                        <tr><td>Portée</td><td>18 m</td></tr>
+                        <tr><td>Hauteur poteaux</td><td>6 m</td></tr>
+                        <tr><td>Acier</td><td>S355</td></tr>
+                        <tr><td>Neige</td><td>0,8 kN/m²</td></tr>
+                        <tr><td>Vent</td><td>1,0 kN/m²</td></tr>
+                    </table>
+                </div>
+
+                <p><strong>1. Géométrie :</strong></p>
+                <ul>
+                    <li>Traverse : IPE400</li>
+                    <li>Poteaux : HEB200</li>
+                    <li>Pieds de poteaux : encastrés</li>
+                </ul>
+
+                <p><strong>2. Charges :</strong></p>
+                <ul>
+                    <li>G = 2,5 kN/m (poids propre + couverture)</li>
+                    <li>Q (neige) = 0,8 × 6 = 4,8 kN/m</li>
+                    <li>W (vent sur poteau) = 1,0 × 6 = 6 kN/m</li>
+                </ul>
+
+                <p><strong>3. Efforts ELU :</strong></p>
+                <div class="formula">
+                    M<sub>Ed</sub> ≈ 450 kN·m (traverse)
+                </div>
+                <div class="formula">
+                    N<sub>Ed</sub> ≈ 350 kN (poteau)
+                </div>
+
+                <p><strong>4. Vérifications :</strong></p>
+                <ul>
+                    <li>Traverse IPE400 : M<sub>Rd</sub> = 499 kN·m → OK</li>
+                    <li>Poteau HEB200 : N<sub>b,Rd</sub> = 1 800 kN → OK</li>
+                    <li>Assemblages : boulons M24 8.8 → OK</li>
+                </ul>
+
+                <div class="example-box">
+                    <strong>📌 Résultat :</strong> Portique dimensionné avec IPE400 et HEB200 en S355.
+                </div>
+            `
+        }, {
+            id: 10,
+            title: "Fatigue - Pont roulant",
+            desc: "Vérification à la fatigue d'une poutre de pont roulant.",
+            tags: ["Fatigue", "Pont roulant", "Charges cycliques"],
+            content: `
+                <p><strong>Objectif :</strong> Vérifier la fatigue d'une poutre de pont roulant.</p>
+
+                <div class="table-box">
+                    <table>
+                        <tr><th>Caractéristique</th><th>Valeur</th></tr>
+                        <tr><td>Profil</td><td>IPE400</td></tr>
+                        <tr><td>Acier</td><td>S355</td></tr>
+                        <tr><td>Cycles de charge</td><td>2 000 000</td></tr>
+                        <tr><td>Δσ<sub>Ed</sub></td><td>150 MPa</td></tr>
+                    </table>
+                </div>
+
+                <p><strong>1. Détails de fatigue :</strong></p>
+                <p>Catégorie de détail : 71 (ANSI class)</p>
+
+                <p><strong>2. Résistance à la fatigue :</strong></p>
+                <div class="formula">
+                    Δσ<sub>c</sub> = 71 MPa (limite à 2 millions de cycles)
+                </div>
+
+                <p><strong>3. Vérification :</strong></p>
+                <ul>
+                    <li>Δσ<sub>Ed</sub> = 150 MPa > Δσ<sub>c</sub> = 71 MPa → <strong>⚠ Non conforme</strong></li>
+                </ul>
+
+                <div class="example-box">
+                    <strong>📌 Résultat :</strong> IPE400 insuffisant pour 2 millions de cycles. Augmenter le profil ou réduire les contraintes.
+                </div>
+            `
+        }, {
+            id: 11,
+            title: "Passerelle piétonne",
+            desc: "Dimensionnement complet d'une passerelle métallique.",
+            tags: ["Passerelle", "Piétonne", "Pont"],
+            content: `
+                <p><strong>Objectif :</strong> Dimensionner une passerelle piétonne en acier.</p>
+
+                <div class="table-box">
+                    <table>
+                        <tr><th>Caractéristique</th><th>Valeur</th></tr>
+                        <tr><td>Portée</td><td>15 m</td></tr>
+                        <tr><td>Largeur utile</td><td>2,5 m</td></tr>
+                        <tr><td>Acier</td><td>S355</td></tr>
+                        <tr><td>Charge d'exploitation</td><td>5 kN/m²</td></tr>
+                    </table>
+                </div>
+
+                <p><strong>1. Structure :</strong></p>
+                <ul>
+                    <li>Poutres principales : 2 × IPE500</li>
+                    <li>Poutres transversales : IPE200</li>
+                    <li>Platelage : tôle striée 6 mm</li>
+                </ul>
+
+                <p><strong>2. Vérifications :</strong></p>
+                <ul>
+                    <li>Flexion : M<sub>Rd</sub> = 1 100 kN·m > M<sub>Ed</sub> = 850 kN·m → OK</li>
+                    <li>Flèche : L/500 = 30 mm → OK</li>
+                    <li>Vibrations : f > 8 Hz → OK</li>
+                </ul>
+
+                <div class="example-box">
+                    <strong>📌 Résultat :</strong> Passerelle dimensionnée avec IPE500 + IPE200.
+                </div>
+            `
+        }, {
+            id: 12,
+            title: "Escalier métallique",
+            desc: "Dimensionnement d'un escalier métallique avec palier.",
+            tags: ["Escalier", "Métallique", "Palier"],
+            content: `
+                <p><strong>Objectif :</strong> Dimensionner un escalier métallique.</p>
+
+                <div class="table-box">
+                    <table>
+                        <tr><th>Caractéristique</th><th>Valeur</th></tr>
+                        <tr><td>Hauteur</td><td>3,5 m</td></tr>
+                        <tr><td>Nombre de marches</td><td>20</td></tr>
+                        <tr><td>Acier</td><td>S355</td></tr>
+                        <tr><td>Largeur utile</td><td>1,2 m</td></tr>
+                    </table>
+                </div>
+
+                <p><strong>1. Éléments :</strong></p>
+                <ul>
+                    <li>Limons : 2 × UPN200</li>
+                    <li>Marches : tôle striée 5 mm</li>
+                    <li>Palier : UPN160</li>
+                </ul>
+
+                <p><strong>2. Vérifications :</strong></p>
+                <ul>
+                    <li>Limons en flexion : OK</li>
+                    <li>Marches en flexion : OK</li>
+                    <li>Assemblages : boulons M16</li>
+                </ul>
+
+                <div class="example-box">
+                    <strong>📌 Résultat :</strong> Escalier dimensionné avec UPN200 + UPN160.
+                </div>
+            `
+        }, {
+            id: 13,
+            title: "Résistance au feu - R60",
+            desc: "Vérification de la résistance au feu d'une poutre selon EN 1993-1-2.",
+            tags: ["Feu", "R60", "Eurocode 3", "Protection"],
+            content: `
+                <p><strong>Objectif :</strong> Vérifier la résistance au feu d'une poutre IPE300.</p>
+
+                <div class="table-box">
+                    <table>
+                        <tr><th>Caractéristique</th><th>Valeur</th></tr>
+                        <tr><td>Profil</td><td>IPE300</td></tr>
+                        <tr><td>Acier</td><td>S355</td></tr>
+                        <tr><td>Classe de résistance</td><td>R60</td></tr>
+                        <tr><td>Facteur de section</td><td>A/V = 175 m⁻¹</td></tr>
+                    </table>
+                </div>
+
+                <p><strong>1. Température critique :</strong></p>
+                <div class="formula">
+                    θ<sub>cr</sub> ≈ 550°C (pour S355)
+                </div>
+
+                <p><strong>2. Temps d'échauffement :</strong></p>
+                <div class="formula">
+                    Δθ = k · (A/V) · t
+                </div>
+
+                <p><strong>3. Vérification :</strong></p>
+                <ul>
+                    <li>Protection nécessaire pour atteindre R60</li>
+                    <li>Épaisseur de protection : 20 mm (intumescent ou plâtre)</li>
+                </ul>
+
+                <div class="example-box">
+                    <strong>📌 Résultat :</strong> IPE300 R60 avec protection 20 mm.
+                </div>
+            `
+        }, {
+            id: 14,
+            title: "Poteau HEA220 - Compression excentrée",
+            desc: "Dimensionnement d'un poteau en compression excentrée avec interaction N-M.",
+            tags: ["Compression excentrée", "HEA220", "Interaction"],
+            content: `
+                <p><strong>Objectif :</strong> Dimensionner un poteau HEA220 soumis à compression + flexion.</p>
+
+                <div class="table-box">
+                    <table>
+                        <tr><th>Caractéristique</th><th>Valeur</th></tr>
+                        <tr><td>Profil</td><td>HEA220</td></tr>
+                        <tr><td>Acier</td><td>S355</td></tr>
+                        <tr><td>N<sub>Ed</sub></td><td>800 kN</td></tr>
+                        <tr><td>M<sub>Ed</sub></td><td>80 kN·m</td></tr>
+                    </table>
+                </div>
+
+                <p><strong>1. Interaction N-M :</strong></p>
+                <div class="formula">
+                    (N<sub>Ed</sub> / N<sub>Rd</sub>) + (M<sub>Ed</sub> / M<sub>Rd</sub>) ≤ 1
+                </div>
+
+                <p><strong>2. Résultats :</strong></p>
+                <ul>
+                    <li>N<sub>Rd</sub> = 2 100 kN</li>
+                    <li>M<sub>Rd</sub> = 180 kN·m</li>
+                </ul>
+                <div class="formula">
+                    800/2100 + 80/180 = 0,38 + 0,44 = <strong>0,82 ≤ 1</strong> → OK
+                </div>
+
+                <div class="example-box">
+                    <strong>📌 Résultat :</strong> HEA220 OK pour N=800 kN et M=80 kN·m.
+                </div>
+            `
+        }, {
+            id: 15,
+            title: "Poutre en caisson - Flexion et torsion",
+            desc: "Dimensionnement d'une poutre en caisson soumise à la flexion et la torsion.",
+            tags: ["Caisson", "Torsion", "Flexion"],
+            content: `
+                <p><strong>Objectif :</strong> Dimensionner une poutre en caisson.</p>
+
+                <div class="table-box">
+                    <table>
+                        <tr><th>Caractéristique</th><th>Valeur</th></tr>
+                        <tr><td>Section</td><td>400×200×10 mm</td></tr>
+                        <tr><td>Acier</td><td>S355</td></tr>
+                        <tr><td>Portée</td><td>8 m</td></tr>
+                        <tr><td>M<sub>Ed</sub></td><td>350 kN·m</td></tr>
+                        <tr><td>T<sub>Ed</sub></td><td>25 kN·m</td></tr>
+                    </table>
+                </div>
+
+                <p><strong>1. Résistance :</strong></p>
+                <ul>
+                    <li>W<sub>pl</sub> = 1 200 000 mm³</li>
+                    <li>M<sub>Rd</sub> = 426 kN·m → OK</li>
+                    <li>Torsion uniforme : OK</li>
+                </ul>
+
+                <div class="example-box">
+                    <strong>📌 Résultat :</strong> Poutre en caisson dimensionnée.
+                </div>
+            `
+        }, {
+            id: 16,
+            title: "Mezzanine métallique - Plancher collaborant",
+            desc: "Dimensionnement d'une mezzanine métallique avec plancher collaborant.",
+            tags: ["Mezzanine", "Plancher collaborant", "Bâtiment industriel"],
+            content: `
+                <p><strong>Objectif :</strong> Dimensionner une mezzanine métallique.</p>
+
+                <div class="table-box">
+                    <table>
+                        <tr><th>Caractéristique</th><th>Valeur</th></tr>
+                        <tr><td>Portée</td><td>6 × 6 m</td></tr>
+                        <tr><td>Charge d'exploitation</td><td>5 kN/m²</td></tr>
+                        <tr><td>Acier</td><td>S355</td></tr>
+                    </table>
+                </div>
+
+                <p><strong>1. Structure :</strong></p>
+                <ul>
+                    <li>Poutres principales : IPE360</li>
+                    <li>Poutres secondaires : IPE240</li>
+                    <li>Plancher collaborant : 80 mm</li>
+                </ul>
+
+                <p><strong>2. Vérifications :</strong></p>
+                <ul>
+                    <li>Flèche : 12 mm ≤ L/300 = 20 mm → OK</li>
+                    <li>Flexion : OK</li>
+                    <li>Assemblages : OK</li>
+                </ul>
+
+                <div class="example-box">
+                    <strong>📌 Résultat :</strong> Mezzanine dimensionnée.
+                </div>
+            `
+        }, {
+            id: 17,
+            title: "Hangar industriel - Calcul complet",
+            desc: "Dimensionnement complet d'un hangar métallique de 30 × 20 m.",
+            tags: ["Hangar", "Industriel", "Complet"],
+            content: `
+                <p><strong>Objectif :</strong> Dimensionner un hangar métallique complet.</p>
+
+                <div class="table-box">
+                    <table>
+                        <tr><th>Caractéristique</th><th>Valeur</th></tr>
+                        <tr><td>Dimensions</td><td>30 × 20 × 8 m</td></tr>
+                        <tr><td>Acier</td><td>S355</td></tr>
+                        <tr><td>Neige</td><td>0,8 kN/m²</td></tr>
+                        <tr><td>Vent</td><td>1,0 kN/m²</td></tr>
+                    </table>
+                </div>
+
+                <p><strong>1. Éléments :</strong></p>
+                <ul>
+                    <li>Portiques : IPE500 + HEB240</li>
+                    <li>Pannes : IPE200</li>
+                    <li>Contreventements : barres rondes Ø20</li>
+                    <li>Platines : boulons M24</li>
+                </ul>
+
+                <p><strong>2. Vérifications :</strong></p>
+                <ul>
+                    <li>ELU : OK</li>
+                    <li>ELS : OK</li>
+                    <li>Stabilité : OK</li>
+                    <li>Assemblages : OK</li>
+                </ul>
+
+                <div class="example-box">
+                    <strong>📌 Résultat :</strong> Hangar dimensionné selon EN 1993.
+                </div>
+            `
+        }, {
+            id: 18,
+            title: "Bâtiment industriel - Eurocode 3 complet",
+            desc: "Dimensionnement intégral d'un bâtiment industriel avec toutes les vérifications.",
+            tags: ["Bâtiment industriel", "Complet", "Eurocode 3"],
+            content: `
+                <p><strong>Objectif :</strong> Dimensionner un bâtiment industriel complet.</p>
+
+                <div class="table-box">
+                    <table>
+                        <tr><th>Caractéristique</th><th>Valeur</th></tr>
+                        <tr><td>Surface</td><td>40 × 30 m</td></tr>
+                        <tr><td>Hauteur</td><td>10 m</td></tr>
+                        <tr><td>Acier</td><td>S355</td></tr>
+                        <tr><td>Pont roulant</td><td>10 t</td></tr>
+                    </table>
+                </div>
+
+                <p><strong>1. Structure :</strong></p>
+                <ul>
+                    <li>Portiques : IPE600 + HEB260</li>
+                    <li>Pannes : IPE220</li>
+                    <li>Contreventements : tubes rectangulaires</li>
+                    <li>Pieds de poteaux : encastrés</li>
+                    <li>Assemblages : boulons HR</li>
+                </ul>
+
+                <p><strong>2. Vérifications :</strong></p>
+                <ul>
+                    <li>Flexion : OK</li>
+                    <li>Compression + flambement : OK</li>
+                    <li>Cisaillement : OK</li>
+                    <li>Fatigue (pont roulant) : OK</li>
+                    <li>Résistance au feu : R60 (protection)</li>
+                    <li>Séisme (EC8) : OK</li>
+                </ul>
+
+                <div class="example-box">
+                    <strong>📌 Résultat :</strong> Bâtiment industriel dimensionné selon EN 1993-1-1, EN 1993-1-2, EN 1998.
+                </div>
+            `
+        }];
+
+        // ================================================================
+        //  CONSTRUCTION DE LA GRILLE D'ACCUEIL
+        // ================================================================
+
+        const homeGrid = document.getElementById('homeGrid');
+
+        exemples.forEach(ex => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.setAttribute('data-id', ex.id);
+            card.innerHTML = `
+                <div class="num">Exemple ${String(ex.id).padStart(2, '0')}</div>
+                <h3>${ex.title}</h3>
+                <div class="desc">${ex.desc}</div>
+                <div class="tags">${ex.tags.map(t => `<span>${t}</span>`).join('')}</div>
+            `;
+            card.addEventListener('click', () => navigateToArticle(ex.id));
+            homeGrid.appendChild(card);
+        });
+
+        // ================================================================
+        //  ROUTING (Hash-based)
+        // ================================================================
+
+        const homePage = document.getElementById('homePage');
+        const articlePage = document.getElementById('articlePage');
+
+        function showHome() {
+            homePage.classList.remove('hidden');
+            articlePage.classList.remove('active');
+            window.location.hash = '';
+            document.title = 'Eurocode 3 — Exemples concrets';
+        }
+
+        function showArticle(id) {
+            homePage.classList.add('hidden');
+            articlePage.classList.add('active');
+            window.location.hash = `article-${id}`;
+            renderArticle(id);
+        }
+
+        function renderArticle(id) {
+            const ex = exemples.find(e => e.id === id);
+            if (!ex) {
+                showHome();
+                return;
+            }
+            document.getElementById('articleNum').textContent = `Exemple ${String(ex.id).padStart(2, '0')}`;
+            document.getElementById('articleTitle').textContent = ex.title;
+            document.getElementById('articleTags').innerHTML = ex.tags.map(t => `<span>${t}</span>`).join('');
+            document.getElementById('articleContent').innerHTML = ex.content;
+            document.title = `${ex.title} — Eurocode 3`;
+        }
+
+        function navigateToArticle(id) {
+            showArticle(id);
+        }
+
+        function handleHash() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#article-')) {
+                const id = parseInt(hash.replace('#article-', ''), 10);
+                if (exemples.find(e => e.id === id)) {
+                    showArticle(id);
+                    return;
+                }
+            }
+            showHome();
+        }
+
+        // Retour à l'accueil
+        document.getElementById('backToHomeLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+        document.getElementById('backHomeBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+
+        // Événements
+        window.addEventListener('hashchange', handleHash);
+        window.addEventListener('load', handleHash);
+        window.addEventListener('popstate', handleHash);
+    </script>
+
+</body>
+</html>
