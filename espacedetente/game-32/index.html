@@ -1,0 +1,1910 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Grand Livre de la Culture Générale</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f5f2ed;
+            color: #1a1a2e;
+            padding: 2rem 1rem;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* --- HEADER --- */
+        .header {
+            background: linear-gradient(135deg, #0d1b2a, #1a3a5c);
+            color: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(240, 194, 122, 0.07) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header h1 span {
+            color: #f0c27a;
+        }
+
+        .header .subtitle {
+            margin-top: 0.4rem;
+            font-size: 1.05rem;
+            opacity: 0.85;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: rgba(240, 194, 122, 0.15);
+            color: #f0c27a;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-top: 0.6rem;
+            border: 1px solid rgba(240, 194, 122, 0.2);
+            letter-spacing: 0.05em;
+        }
+
+        .header .meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 0.8rem;
+            flex-wrap: wrap;
+            font-size: 0.8rem;
+            opacity: 0.75;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #f0c27a;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        /* --- SOMMAIRE --- */
+        .sommaire {
+            background: #fff;
+            border-radius: 16px;
+            padding: 1.8rem 2rem;
+            border: 1px solid #e2d8cc;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .sommaire h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 1rem;
+        }
+
+        .sommaire .partie {
+            margin-bottom: 1.2rem;
+        }
+
+        .sommaire .partie-title {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #1a3a5c;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.3rem;
+            border-bottom: 1px solid #f0ece6;
+            padding-bottom: 0.3rem;
+        }
+
+        .sommaire-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.3rem;
+        }
+
+        .sommaire-grid a {
+            display: block;
+            padding: 0.2rem 0.5rem;
+            color: #2a3a5a;
+            text-decoration: none;
+            font-size: 0.82rem;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .sommaire-grid a:hover {
+            background: #f5ede4;
+            color: #1a3a5c;
+        }
+
+        .sommaire-grid .ch-num {
+            font-weight: 600;
+            color: #8a7a6a;
+            margin-right: 0.3rem;
+        }
+
+        /* --- CARTES DE LA GRILLE D'ACCUEIL --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 1.2rem 1.4rem;
+            border: 1px solid #e2d8cc;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+            border-color: #1a3a5c;
+        }
+
+        .card .num {
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: #8a7a6a;
+            background: #f5ede4;
+            padding: 0.1rem 0.7rem;
+            border-radius: 12px;
+            display: inline-block;
+            letter-spacing: 0.05em;
+        }
+
+        .card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin: 0.3rem 0 0.2rem;
+        }
+
+        .card .part {
+            font-size: 0.65rem;
+            color: #1a3a5c;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .card .desc {
+            font-size: 0.82rem;
+            color: #4a3a3a;
+            margin-top: 0.2rem;
+        }
+
+        /* --- PAGE CHAPITRE --- */
+        #articlePage {
+            display: none;
+        }
+
+        #articlePage.active {
+            display: block;
+        }
+
+        #homePage.hidden {
+            display: none;
+        }
+
+        .chapter-container {
+            background: #fff;
+            border-radius: 20px;
+            padding: 2.8rem 3.2rem;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.07);
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .chapter-container .chapter-num {
+            font-size: 0.7rem;
+            color: #8a7a6a;
+            background: #f5ede4;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            display: inline-block;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .chapter-container h2 {
+            font-size: 2rem;
+            margin: 0.3rem 0 0.1rem;
+            color: #1a1a2e;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .chapter-container .chapter-part {
+            font-size: 0.7rem;
+            color: #1a3a5c;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.5rem;
+        }
+
+        .chapter-container .chapter-content {
+            font-size: 1.02rem;
+            line-height: 1.9;
+            color: #2a2a3a;
+        }
+
+        .chapter-container .chapter-content h4 {
+            color: #1a1a2e;
+            margin: 1.2rem 0 0.3rem;
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .chapter-container .chapter-content p {
+            margin-bottom: 0.9rem;
+        }
+
+        .chapter-container .chapter-content ul {
+            padding-left: 1.5rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .chapter-container .chapter-content ul li {
+            margin-bottom: 0.3rem;
+        }
+
+        .chapter-container .chapter-content .encadre {
+            background: #faf6f0;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            border-left: 4px solid #f0c27a;
+            margin: 0.8rem 0;
+        }
+
+        .chapter-container .chapter-content .encadre strong {
+            color: #1a3a5c;
+        }
+
+        .chapter-container .chapter-content .quiz {
+            background: #f0f4f8;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #1a3a5c;
+            margin: 1rem 0;
+        }
+
+        .chapter-container .chapter-content .quiz strong {
+            color: #1a3a5c;
+        }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 2rem;
+            color: #1a3a5c;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.6rem 1.4rem;
+            border: 2px solid #1a3a5c;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+
+        .back-home:hover {
+            background: #1a3a5c;
+            color: #fff;
+        }
+
+        .nav-chapitres {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-chapitres a {
+            color: #1a3a5c;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.4rem 1rem;
+            border: 1px solid #e2d8cc;
+            border-radius: 30px;
+            transition: 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .nav-chapitres a:hover {
+            background: #1a3a5c;
+            color: #fff;
+            border-color: #1a3a5c;
+        }
+
+        @media (max-width: 640px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            .chapter-container {
+                padding: 1.5rem;
+            }
+            .chapter-container h2 {
+                font-size: 1.4rem;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .sommaire-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .header .meta {
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+        }
+
+        .footer {
+            margin-top: 2.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #8a7a6a;
+            border-top: 1px solid #e2d8cc;
+            padding-top: 1.5rem;
+        }
+
+        .footer span {
+            color: #1a3a5c;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ============================================================ -->
+        <!-- PAGE D'ACCUEIL -->
+        <!-- ============================================================ -->
+        <div id="homePage">
+            <div class="header">
+                <h1>📚 <span>Le Grand Livre de la Culture Générale</span></h1>
+                <div class="subtitle">Comprendre le monde — Histoire · Sciences · Société · Économie · Technologie · Culture</div>
+                <div class="badge">14–25 ans · 25 chapitres · Chaque chapitre a sa propre URL</div>
+                <div class="meta">
+                    <span>🧠 7 parties</span>
+                    <span>📖 25 chapitres</span>
+                    <span>🌍 Comprendre le monde</span>
+                </div>
+            </div>
+
+            <!-- Sommaire -->
+            <div class="sommaire">
+                <h2>📋 Sommaire</h2>
+                <div class="partie">
+                    <div class="partie-title">Partie 1 — Les grandes civilisations et l'Histoire</div>
+                    <div class="sommaire-grid">
+                        <a href="#" data-ch="1"><span class="ch-num">1.</span> L'origine de l'humanité</a>
+                        <a href="#" data-ch="2"><span class="ch-num">2.</span> Les grandes civilisations antiques</a>
+                        <a href="#" data-ch="3"><span class="ch-num">3.</span> Le Moyen Âge</a>
+                        <a href="#" data-ch="4"><span class="ch-num">4.</span> La Renaissance</a>
+                        <a href="#" data-ch="5"><span class="ch-num">5.</span> Les révolutions qui ont changé le monde</a>
+                    </div>
+                </div>
+                <div class="partie">
+                    <div class="partie-title">Partie 2 — Sciences et compréhension du monde</div>
+                    <div class="sommaire-grid">
+                        <a href="#" data-ch="6"><span class="ch-num">6.</span> L'Univers</a>
+                        <a href="#" data-ch="7"><span class="ch-num">7.</span> La physique</a>
+                        <a href="#" data-ch="8"><span class="ch-num">8.</span> La chimie</a>
+                        <a href="#" data-ch="9"><span class="ch-num">9.</span> La biologie</a>
+                        <a href="#" data-ch="10"><span class="ch-num">10.</span> La Terre</a>
+                    </div>
+                </div>
+                <div class="partie">
+                    <div class="partie-title">Partie 3 — Société et intelligence humaine</div>
+                    <div class="sommaire-grid">
+                        <a href="#" data-ch="11"><span class="ch-num">11.</span> La psychologie humaine</a>
+                        <a href="#" data-ch="12"><span class="ch-num">12.</span> La communication</a>
+                        <a href="#" data-ch="13"><span class="ch-num">13.</span> La philosophie</a>
+                    </div>
+                </div>
+                <div class="partie">
+                    <div class="partie-title">Partie 4 — Économie et monde professionnel</div>
+                    <div class="sommaire-grid">
+                        <a href="#" data-ch="14"><span class="ch-num">14.</span> Comprendre l'économie</a>
+                        <a href="#" data-ch="15"><span class="ch-num">15.</span> L'entreprise</a>
+                        <a href="#" data-ch="16"><span class="ch-num">16.</span> Les finances personnelles</a>
+                    </div>
+                </div>
+                <div class="partie">
+                    <div class="partie-title">Partie 5 — Technologie et futur</div>
+                    <div class="sommaire-grid">
+                        <a href="#" data-ch="17"><span class="ch-num">17.</span> L'informatique</a>
+                        <a href="#" data-ch="18"><span class="ch-num">18.</span> Intelligence artificielle</a>
+                        <a href="#" data-ch="19"><span class="ch-num">19.</span> Les grandes innovations</a>
+                    </div>
+                </div>
+                <div class="partie">
+                    <div class="partie-title">Partie 6 — Culture humaine</div>
+                    <div class="sommaire-grid">
+                        <a href="#" data-ch="20"><span class="ch-num">20.</span> Les arts</a>
+                        <a href="#" data-ch="21"><span class="ch-num">21.</span> Les grandes œuvres à connaître</a>
+                        <a href="#" data-ch="22"><span class="ch-num">22.</span> Géographie mondiale</a>
+                        <a href="#" data-ch="23"><span class="ch-num">23.</span> Les grands enjeux actuels</a>
+                    </div>
+                </div>
+                <div class="partie">
+                    <div class="partie-title">Partie 7 — Développer son intelligence</div>
+                    <div class="sommaire-grid">
+                        <a href="#" data-ch="24"><span class="ch-num">24.</span> Apprendre efficacement</a>
+                        <a href="#" data-ch="25"><span class="ch-num">25.</span> Devenir une personne cultivée</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="homeContent"></div>
+
+            <div class="footer">
+                <p>📚 <span>Le Grand Livre de la Culture Générale</span> — Comprendre le monde, une page à la fois.</p>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PAGE CHAPITRE -->
+        <!-- ============================================================ -->
+        <div id="articlePage">
+            <div class="header" style="margin-bottom: 1.5rem;">
+                <h1>📚 <span>Le Grand Livre de la Culture Générale</span></h1>
+                <a class="back-link" href="#" id="backToHomeLink">← Retour au sommaire</a>
+            </div>
+            <div class="chapter-container" id="chapterContainer">
+                <div class="chapter-num" id="chapterNum">Chapitre 1</div>
+                <h2 id="chapterTitle">Titre</h2>
+                <div class="chapter-part" id="chapterPart">Partie 1</div>
+                <div class="chapter-content" id="chapterContent">
+                    <p>Contenu...</p>
+                </div>
+                <div class="nav-chapitres" id="navChapitres">
+                    <a href="#" id="prevChapter">← Chapitre précédent</a>
+                    <a href="#" id="nextChapter">Chapitre suivant →</a>
+                </div>
+                <a href="#" class="back-home" id="backHomeBtn">← Sommaire</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ================================================================
+        //  DONNÉES DES 25 CHAPITRES
+        // ================================================================
+
+        const chapitres = [{
+            id: 1,
+            part: "Partie 1 — Les grandes civilisations et l'Histoire",
+            titre: "L'origine de l'humanité",
+            contenu: `
+                <p>L'histoire de l'humanité commence il y a environ 7 millions d'années, avec l'apparition des premiers hominidés en Afrique. <strong>Homo sapiens</strong>, notre espèce, est apparu il y a environ 300 000 ans.</p>
+
+                <h4>📅 Dates clés</h4>
+                <ul>
+                    <li><strong>−7 millions d'années</strong> : apparition des premiers hominidés.</li>
+                    <li><strong>−2,5 millions d'années</strong> : premiers outils en pierre (industrie lithique).</li>
+                    <li><strong>−300 000 ans</strong> : apparition d'Homo sapiens.</li>
+                    <li><strong>−12 000 ans</strong> : révolution néolithique (agriculture).</li>
+                </ul>
+
+                <h4>👤 Personnages clés</h4>
+                <ul>
+                    <li><strong>Lucy</strong> (australopithèque), découverte en 1974 en Éthiopie, âgée de 3,2 millions d'années.</li>
+                    <li><strong>Homo habilis</strong> : premier à fabriquer des outils.</li>
+                    <li><strong>Homo erectus</strong> : premier à sortir d'Afrique, à maîtriser le feu.</li>
+                    <li><strong>Homo neanderthalensis</strong> : cousin de l'homme moderne, a vécu en Europe.</li>
+                </ul>
+
+                <h4>💡 Concepts à retenir</h4>
+                <ul>
+                    <li><strong>Évolution</strong> : l'humanité est le fruit d'une longue évolution, pas d'une création soudaine.</li>
+                    <li><strong>Agriculture</strong> : la domestication des plantes et des animaux a permis la sédentarisation.</li>
+                    <li><strong>Premières villes</strong> : Mésopotamie, Égypte, Indus, Chine, Mésoamérique.</li>
+                </ul>
+
+                <div class="encadre">
+                    <strong>📌 Anecdote</strong><br>
+                    Les premières villes sont apparues il y a environ 6 000 ans en Mésopotamie, en même temps que l'écriture. L'agriculture avait permis de produire des surplus alimentaires, ce qui a libéré du temps pour d'autres activités.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Quelle espèce humaine a fabriqué les premiers outils ?<br>
+                    <em>Réponse : Homo habilis.</em></p>
+                    <p>2. Quand l'agriculture est-elle apparue ?<br>
+                    <em>Réponse : vers −12 000 ans (Néolithique).</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi l'agriculture a-t-elle été une révolution pour l'humanité ?</li>
+                    <li>En quoi notre évolution nous rend-elle uniques parmi les espèces ?</li>
+                </ul>
+            `
+        }, {
+            id: 2,
+            part: "Partie 1 — Les grandes civilisations et l'Histoire",
+            titre: "Les grandes civilisations antiques",
+            contenu: `
+                <p>Les civilisations antiques ont jeté les bases de notre monde : écriture, droit, philosophie, sciences, architecture.</p>
+
+                <h4>🏛️ Égypte ancienne</h4>
+                <ul>
+                    <li>Apparition vers 3150 av. J.-C., unification de la Haute et Basse-Égypte.</li>
+                    <li><strong>Pyramides</strong> : tombeaux des pharaons (Kheops, vers 2560 av. J.-C.).</li>
+                    <li><strong>Écriture</strong> : hiéroglyphes, déchiffrés grâce à la pierre de Rosette (1799).</li>
+                    <li><strong>Pharaons célèbres</strong> : Ramsès II, Cléopâtre, Toutânkhamon.</li>
+                </ul>
+
+                <h4>🌾 Mésopotamie</h4>
+                <ul>
+                    <li>"Entre deux fleuves" (Tigre et Euphrate).</li>
+                    <li><strong>Invention de l'écriture</strong> (cunéiforme) vers 3500 av. J.-C.</li>
+                    <li><strong>Code d'Hammurabi</strong> (vers 1750 av. J.-C.) : premier code de lois écrit.</li>
+                    <li>Villes : Ur, Babylone, Ninive.</li>
+                </ul>
+
+                <h4>🏺 Grèce antique</h4>
+                <ul>
+                    <li><strong>Démocratie athénienne</strong> (Ve siècle av. J.-C.).</li>
+                    <li><strong>Philosophie</strong> : Socrate, Platon, Aristote.</li>
+                    <li><strong>Sciences</strong> : mathématiques (Pythagore, Euclide), médecine (Hippocrate).</li>
+                    <li><strong>Guerres médiques</strong> et <strong>conquêtes d'Alexandre le Grand</strong>.</li>
+                </ul>
+
+                <h4>🏛️ Rome</h4>
+                <ul>
+                    <li>Fondation légendaire en 753 av. J.-C.</li>
+                    <li><strong>République</strong> puis <strong>Empire</strong> (27 av. J.-C. avec Auguste).</li>
+                    <li><strong>Droit romain</strong> : base de nombreux systèmes juridiques modernes.</li>
+                    <li><strong>Ingénierie</strong> : routes, aqueducs, amphithéâtres (Colisée).</li>
+                    <li>Disparition de l'Empire romain d'Occident en 476 ap. J.-C.</li>
+                </ul>
+
+                <div class="encadre">
+                    <strong>📌 Anecdote</strong><br>
+                    La Grèce antique n'était pas un pays unifié, mais une collection de cités-États (Athènes, Sparte, Thèbes, Corinthe). Chacune avait ses propres lois, son armée et son gouvernement.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Quel peuple a inventé l'écriture cunéiforme ?<br>
+                    <em>Réponse : les Mésopotamiens (Sumer).</em></p>
+                    <p>2. Qui a unifié la Haute et la Basse-Égypte ?<br>
+                    <em>Réponse : Narmer (Ménès) vers 3150 av. J.-C.</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi les civilisations antiques ont-elles inventé l'écriture ?</li>
+                    <li>En quoi les idées grecques et romaines influencent-elles encore notre monde ?</li>
+                </ul>
+            `
+        }, {
+            id: 3,
+            part: "Partie 1 — Les grandes civilisations et l'Histoire",
+            titre: "Le Moyen Âge",
+            contenu: `
+                <p>Le Moyen Âge (Ve-XVe siècles) est souvent appelé "l'âge des ténèbres", mais c'est aussi une période de grands changements : féodalité, châteaux, chevalerie, et transmission du savoir.</p>
+
+                <h4>🏰 Féodalité</h4>
+                <ul>
+                    <li>Organisation sociale basée sur la terre et la loyauté.</li>
+                    <li>Roi → seigneurs → vassaux → chevaliers → paysans.</li>
+                    <li>Le seigneur protège ses vassaux, qui lui doivent service militaire et impôts.</li>
+                </ul>
+
+                <h4>⛪ Religions et échanges</h4>
+                <ul>
+                    <li><strong>Christianisme</strong> : l'Église est la plus grande institution, elle détient le savoir.</li>
+                    <li><strong>Islam</strong> : expansion rapide à partir du VIIe siècle, grands centres intellectuels (Bagdad, Cordoue).</li>
+                    <li><strong>Croisades</strong> : guerres religieuses entre chrétiens et musulmans (XIe-XIIIe siècles).</li>
+                </ul>
+
+                <h4>📚 Savoir et universités</h4>
+                <ul>
+                    <li>Les premières universités apparaissent au XIIe siècle (Bologne, Paris, Oxford).</li>
+                    <li>Transmission du savoir grec et arabe en Europe.</li>
+                    <li><strong>Thomas d'Aquin</strong> : synthèse entre foi et raison.</li>
+                </ul>
+
+                <div class="encadre">
+                    <strong>📌 Anecdote</strong><br>
+                    Les cathédrales gothiques (Notre-Dame de Paris, Chartres) étaient les plus hauts bâtiments du monde avant la construction des gratte-ciel. Elles témoignent du génie architectural et de la foi de cette époque.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Qu'est-ce que la féodalité ?<br>
+                    <em>Réponse : un système social et politique basé sur la possession de terres et la loyauté.</em></p>
+                    <p>2. Où sont nées les premières universités ?<br>
+                    <em>Réponse : à Bologne, Paris et Oxford au XIIe siècle.</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi le Moyen Âge est-il souvent mal compris ?</li>
+                    <li>Comment les échanges entre civilisations ont-ils enrichi le savoir ?</li>
+                </ul>
+            `
+        }, {
+            id: 4,
+            part: "Partie 1 — Les grandes civilisations et l'Histoire",
+            titre: "La Renaissance",
+            contenu: `
+                <p>La Renaissance (XVe-XVIe siècles) est une période de renouveau artistique, scientifique et intellectuel en Europe. Elle marque la transition entre le Moyen Âge et l'époque moderne.</p>
+
+                <h4>🎨 Arts</h4>
+                <ul>
+                    <li>Retour aux modèles antiques (grecs et romains).</li>
+                    <li><strong>Réalisme</strong>, <strong>perspective</strong>, <strong>huile sur toile</strong>.</li>
+                    <li><strong>Léonard de Vinci</strong> (1452-1519) : peintre (La Joconde, La Cène), inventeur, scientifique.</li>
+                    <li><strong>Michel-Ange</strong> (1475-1564) : sculpteur (David), peintre (plafond de la Sixtine).</li>
+                    <li><strong>Raphaël</strong> (1483-1520) : fresques, madones.</li>
+                </ul>
+
+                <h4>🔬 Sciences</h4>
+                <ul>
+                    <li><strong>Copernic</strong> (1473-1543) : héliocentrisme (la Terre tourne autour du Soleil).</li>
+                    <li><strong>Galilée</strong> (1564-1642) : observations astronomiques, loi de la chute des corps.</li>
+                    <li><strong>Vésale</strong> (1514-1564) : anatomie humaine.</li>
+                </ul>
+
+                <h4>🌍 Grandes découvertes</h4>
+                <ul>
+                    <li><strong>Christophe Colomb</strong> (1492) : découverte de l'Amérique.</li>
+                    <li><strong>Vasco de Gama</strong> (1498) : route maritime vers l'Inde.</li>
+                    <li><strong>Magellan</strong> (1519-1522) : premier tour du monde.</li>
+                </ul>
+
+                <div class="encadre">
+                    <strong>📌 Anecdote</strong><br>
+                    Léonard de Vinci écrivait de droite à gauche (en miroir) pour que ses notes soient plus difficiles à lire. Il était aussi ambidextre.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Qui a peint La Joconde ?<br>
+                    <em>Réponse : Léonard de Vinci.</em></p>
+                    <p>2. Quelle découverte majeure Copernic a-t-il proposée ?<br>
+                    <em>Réponse : le modèle héliocentrique (la Terre tourne autour du Soleil).</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi la Renaissance est-elle considérée comme une "renaissance" ?</li>
+                    <li>Comment les découvertes géographiques ont-elles changé le monde ?</li>
+                </ul>
+            `
+        }, {
+            id: 5,
+            part: "Partie 1 — Les grandes civilisations et l'Histoire",
+            titre: "Les révolutions qui ont changé le monde",
+            contenu: `
+                <p>L'histoire de l'humanité est marquée par des révolutions : scientifiques, industrielles, politiques et numériques.</p>
+
+                <h4>🔬 Révolution scientifique (XVIe-XVIIe siècles)</h4>
+                <ul>
+                    <li>Galilée, Kepler, Newton, Descartes.</li>
+                    <li>Méthode scientifique : observation, hypothèse, expérience.</li>
+                    <li>Newton : loi de la gravitation universelle, mécanique classique.</li>
+                </ul>
+
+                <h4>⚙️ Révolution industrielle (XVIIIe-XIXe siècles)</h4>
+                <ul>
+                    <li>Machine à vapeur (Watt, 1769).</li>
+                    <li>Industrialisation, urbanisation, chemins de fer.</li>
+                    <li>Transformation des sociétés : travail en usine, nouvelles classes sociales.</li>
+                </ul>
+
+                <h4>🗳️ Révolutions politiques</h4>
+                <ul>
+                    <li><strong>Révolution américaine</strong> (1776) : indépendance des États-Unis.</li>
+                    <li><strong>Révolution française</strong> (1789) : Liberté, Égalité, Fraternité.</li>
+                    <li><strong>Révolutions de 1848</strong> : vagues démocratiques en Europe.</li>
+                </ul>
+
+                <h4>💻 Révolution numérique (XXe-XXIe siècles)</h4>
+                <ul>
+                    <li>Ordinateurs (ENIAC, 1946), Internet (années 1990).</li>
+                    <li>Smartphones, réseaux sociaux, IA.</li>
+                    <li>Transformation de la communication, du travail, des loisirs.</li>
+                </ul>
+
+                <div class="encadre">
+                    <strong>📌 Anecdote</strong><br>
+                    La première révolution industrielle a commencé en Angleterre grâce au charbon, au fer et aux textiles. Elle a changé le monde en moins d'un siècle.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Quelle invention symbolise la révolution industrielle ?<br>
+                    <em>Réponse : la machine à vapeur (James Watt).</em></p>
+                    <p>2. Quelle révolution a proclamé "Liberté, Égalité, Fraternité" ?<br>
+                    <em>Réponse : la Révolution française (1789).</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Quelle révolution a eu le plus grand impact sur votre vie ?</li>
+                    <li>Comment les révolutions politiques ont-elles façonné le monde moderne ?</li>
+                </ul>
+            `
+        }, {
+            id: 6,
+            part: "Partie 2 — Sciences et compréhension du monde",
+            titre: "L'Univers",
+            contenu: `
+                <p>L'Univers est immense, mystérieux et fascinant. Il est né il y a environ 13,8 milliards d'années avec le Big Bang.</p>
+
+                <h4>🌌 Le Big Bang</h4>
+                <ul>
+                    <li>Il y a 13,8 milliards d'années, tout l'Univers était concentré en un point infiniment dense.</li>
+                    <li>Une expansion soudaine a créé l'espace, le temps et la matière.</li>
+                    <li>Les premières particules, les atomes, puis les étoiles se sont formés.</li>
+                </ul>
+
+                <h4>⭐ Galaxies et étoiles</h4>
+                <ul>
+                    <li><strong>Galaxies</strong> : des milliards d'étoiles regroupées (ex: Voie lactée).</li>
+                    <li><strong>Étoiles</strong> : boules de gaz (hydrogène, hélium) qui produisent de l'énergie par fusion nucléaire.</li>
+                    <li><strong>Trou noir</strong> : région de l'espace où la gravité est si forte que rien ne peut s'en échapper.</li>
+                </ul>
+
+                <h4>🪐 Planètes</h4>
+                <ul>
+                    <li>Système solaire : 8 planètes, dont la Terre.</li>
+                    <li>Conditions pour la vie : eau, atmosphère, distance adaptée au Soleil.</li>
+                    <li>Exoplanètes : des planètes en dehors de notre système solaire.</li>
+                </ul>
+
+                <div class="encadre">
+                    <strong>📌 Anecdote</strong><br>
+                    La lumière du soleil met environ 8 minutes à nous parvenir. La lumière des étoiles lointaines peut mettre des millions d'années à nous arriver.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Quel est le nom de la théorie de l'origine de l'Univers ?<br>
+                    <em>Réponse : le Big Bang.</em></p>
+                    <p>2. Combien de planètes compte notre système solaire ?<br>
+                    <em>Réponse : 8.</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi les humains sont-ils fascinés par l'espace ?</li>
+                    <li>Pensez-vous qu'il existe d'autres formes de vie dans l'Univers ?</li>
+                </ul>
+            `
+        }, {
+            id: 7,
+            part: "Partie 2 — Sciences et compréhension du monde",
+            titre: "La physique",
+            contenu: `
+                <p>La physique étudie les lois qui régissent l'Univers, des plus petites particules aux galaxies.</p>
+
+                <h4>🔋 Forces fondamentales</h4>
+                <ul>
+                    <li><strong>Gravitation</strong> : attraction entre les masses.</li>
+                    <li><strong>Électromagnétisme</strong> : interactions entre charges électriques.</li>
+                    <li><strong>Force nucléaire forte</strong> : maintient les noyaux atomiques.</li>
+                    <li><strong>Force nucléaire faible</strong> : responsable de la radioactivité.</li>
+                </ul>
+
+                <h4>⚡ Énergie</h4>
+                <ul>
+                    <li>Énergie cinétique, potentielle, thermique, électrique.</li>
+                    <li>Conservation de l'énergie : l'énergie ne se crée ni ne se détruit.</li>
+                    <li>Énergie renouvelable : solaire, éolienne, hydraulique.</li>
+                </ul>
+
+                <h4>🧠 Physique moderne</h4>
+                <ul>
+                    <li><strong>Relativité restreinte (Einstein, 1905)</strong> : E = mc², la vitesse de la lumière est constante.</li>
+                    <li><strong>Relativité générale (1915)</strong> : la gravité est une courbure de l'espace-temps.</li>
+                    <li><strong>Physique quantique</strong> : comportement des particules à très petite échelle.</li>
+                </ul>
+
+                <div class="encadre">
+                    <strong>📌 Anecdote</strong><br>
+                    Einstein a été inspiré par la chute d'une pomme pour développer sa théorie de la gravitation. Il se demandait pourquoi la pombe tombe vers le bas alors que la Terre l'attire.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Quelle est la célèbre formule d'Einstein ?<br>
+                    <em>Réponse : E = mc².</em></p>
+                    <p>2. Quelles sont les 4 forces fondamentales ?<br>
+                    <em>Réponse : gravitation, électromagnétisme, force nucléaire forte, force nucléaire faible.</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Pourquoi la physique est-elle la science fondamentale ?</li>
+                    <li>Comment la physique quantique remet-elle en question notre perception de la réalité ?</li>
+                </ul>
+            `
+        }, {
+            id: 8,
+            part: "Partie 2 — Sciences et compréhension du monde",
+            titre: "La chimie",
+            contenu: `
+                <p>La chimie étudie la composition, la structure et les transformations de la matière. Elle est au cœur de notre vie quotidienne.</p>
+
+                <h4>⚛️ Atomes et molécules</h4>
+                <ul>
+                    <li><strong>Atome</strong> : plus petite particule d'un élément chimique.</li>
+                    <li>Atome composé de protons, neutrons, électrons.</li>
+                    <li><strong>Molécule</strong> : ensemble d'atomes liés entre eux.</li>
+                </ul>
+
+                <h4>📊 Tableau périodique</h4>
+                <ul>
+                    <li>Élaboré par Mendeleïev en 1869, il classe les éléments chimiques.</li>
+                    <li>Il y a 118 éléments connus, dont 94 présents naturellement sur Terre.</li>
+                    <li>Les éléments sont organisés par numéro atomique et par propriétés chimiques.</li>
+                </ul>
+
+                <h4>🔬 Matériaux modernes</h4>
+                <ul>
+                    <li><strong>Plastiques</strong> : polymères synthétiques.</li>
+                    <li><strong>Composites</strong> : matériaux hybrides (ex: carbone + résine).</li>
+                    <li><strong>Nanomatériaux</strong> : structures à l'échelle du nanomètre.</li>
+                </ul>
+
+                <div class="encadre">
+                    <strong>📌 Anecdote</strong><br>
+                    Le tableau périodique a été conçu par Dmitri Mendeleïev, qui a laissé des cases vides pour des éléments qu'il n'avait pas encore découverts. Il a prédit leurs propriétés avec précision.
+                </div>
+
+                <div class="quiz">
+                    <strong>🧠 Quiz</strong><br>
+                    <p>1. Combien d'éléments chimiques sont connus ?<br>
+                    <em>Réponse : 118.</em></p>
+                    <p>2. Qu'est-ce qu'une molécule ?<br>
+                    <em>Réponse : un ensemble d'atomes liés entre eux.</em></p>
+                </div>
+
+                <h4>❓ Questions de réflexion</h4>
+                <ul>
+                    <li>Comment la chimie a-t-elle révolutionné notre vie quotidienne ?</li>
+                    <li>Quels sont les défis éthiques posés par la chimie moderne ?</li>
+                </ul>
+            `
+        }, {
+            id: 9,
+            part: "Partie 2 — Sciences et compréhension du monde",
+            titre: "La biologie",
+            contenu: `
+                <p>La biologie est la science du vivant. Elle étudie les êtres vivants, leur structure, leur fonctionnement, leur évolution et leurs interactions.</p>
+
+                <h4>🧬 La vie au niveau cellulaire</h4>
+                <ul>
+                    <li><strong>Cellule</strong> : unité de base du vivant.</li>
+                    <li><strong>ADN</strong> : support de l'information génétique.</li>
+                    <li><strong>Évolution</strong> : les espèces changent au fil des générations par sélection naturelle (Darwin).</li>
+                </ul>
+
+                <h4>🧠 Corps humain</h4>
+                <ul>
+                    <li>Le corps humain est composé de <strong>systèmes</strong> : respiratoire, circulatoire, digestif, nerveux.</li>
+                    <li><strong>Cerveau</strong> : organe le plus complexe, responsable de la pensée, des émotions, des mouvements.</li>
+                    <li><strong>Immunité</strong> : le système immunitaire protège contre les infections.</li>
+                </ul>
+
+                <h4>💊 Médecine</h4>
+                <ul>
+                    <li><strong>Vaccins</strong> : stimulent le système immunitaire pour prévenir les maladies.</li>
+                    <li><strong>Antibiotiques</strong> : luttent contre les infections bactériennes (pénicilline, 1928).</li>
+                    <li><strong>Chirurgie</strong> : techniques de plus en plus précises (robotique, imagerie).</li>
+                </ul>
+
+                <div class="encadre">
+                    <strong>📌 Anecdote</strong><br>
+                        L'ADN humain est composé d'environ 3 milliards de paires de bases. Si on le déroulait complètement, il mesurerait environ 2 mètres de long !
+                    </div>
+
+                    <div class="quiz">
+                        <strong>🧠 Quiz</strong><br>
+                        <p>1. Qui a proposé la théorie de l'évolution par sélection naturelle ?<br>
+                        <em>Réponse : Charles Darwin (1859).</em></p>
+                        <p>2. Quelle molécule contient l'information génétique ?<br>
+                        <em>Réponse : l'ADN.</em></p>
+                    </div>
+
+                    <h4>❓ Questions de réflexion</h4>
+                    <ul>
+                        <li>Pourquoi la biologie est-elle essentielle pour comprendre l'humain ?</li>
+                        <li>Quelles sont les découvertes biologiques les plus marquantes du XXe siècle ?</li>
+                    </ul>
+                `
+            }, {
+                id: 10,
+                part: "Partie 2 — Sciences et compréhension du monde",
+                titre: "La Terre",
+                contenu: `
+                    <p>La Terre est notre planète, âgée de 4,5 milliards d'années. Elle est unique dans le système solaire grâce à l'eau liquide, à une atmosphère et à une vie abondante.</p>
+
+                    <h4>🌍 Formation</h4>
+                    <ul>
+                        <li>Formée à partir du disque protoplanétaire du Soleil.</li>
+                        <li>Un impact avec une planète de la taille de Mars a créé la Lune.</li>
+                        <li>L'atmosphère primitive était composée de dioxyde de carbone, de vapeur d'eau et d'azote.</li>
+                    </ul>
+
+                    <h4>🌋 Structure interne</h4>
+                    <ul>
+                        <li><strong>Noyau</strong> : fer et nickel, solide et liquide.</li>
+                        <li><strong>Manteau</strong> : roche en fusion, responsable de la tectonique des plaques.</li>
+                        <li><strong>Croûte</strong> : fine couche externe, continentale et océanique.</li>
+                    </ul>
+
+                    <h4>🌦️ Climat et océans</h4>
+                    <ul>
+                        <li>Le <strong>climat</strong> est influencé par l'atmosphère, les océans, les courants marins et la position du Soleil.</li>
+                        <li>Les <strong>océans</strong> couvrent 71% de la surface de la Terre et jouent un rôle majeur dans la régulation du climat.</li>
+                        <li><strong>Changement climatique</strong> : réchauffement global dû aux activités humaines (émissions de gaz à effet de serre).</li>
+                    </ul>
+
+                    <div class="encadre">
+                        <strong>📌 Anecdote</strong><br>
+                        La Terre est la seule planète connue où il y a des plaques tectoniques actives. Elles provoquent les séismes et les volcans, mais elles sont aussi à l'origine de la formation des montagnes.
+                    </div>
+
+                    <div class="quiz">
+                        <strong>🧠 Quiz</strong><br>
+                        <p>1. Quel est le pourcentage de la surface de la Terre couverte par les océans ?<br>
+                        <em>Réponse : 71%.</em></p>
+                        <p>2. Quel est le principal gaz à effet de serre émis par les humains ?<br>
+                        <em>Réponse : le dioxyde de carbone (CO₂).</em></p>
+                    </div>
+
+                    <h4>❓ Questions de réflexion</h4>
+                    <ul>
+                        <li>Pourquoi la Terre est-elle habitable ?</li>
+                        <li>Comment pouvons-nous protéger notre planète ?</li>
+                    </ul>
+                `
+            }, {
+                id: 11,
+                part: "Partie 3 — Société et intelligence humaine",
+                titre: "La psychologie humaine",
+                contenu: `
+                    <p>La psychologie est l'étude du comportement humain et des processus mentaux. Elle nous aide à comprendre pourquoi nous pensons, ressentons et agissons comme nous le faisons.</p>
+
+                    <h4>🧠 Mémoire</h4>
+                    <ul>
+                        <li><strong>Mémoire à court terme</strong> : capacité limitée (environ 7 éléments).</li>
+                        <li><strong>Mémoire à long terme</strong> : stockage permanent des souvenirs.</li>
+                        <li><strong>Mémoire de travail</strong> : manipulation active des informations.</li>
+                    </ul>
+
+                    <h4>❤️ Émotions</h4>
+                    <ul>
+                        <li>Les émotions fondamentales : joie, tristesse, peur, colère, surprise, dégoût.</li>
+                        <li><strong>Intelligence émotionnelle</strong> : capacité à reconnaître, comprendre et gérer ses émotions.</li>
+                        <li>Les émotions influencent nos décisions et nos relations.</li>
+                    </ul>
+
+                    <h4>🤔 Motivation</h4>
+                    <ul>
+                        <li><strong>Motivation intrinsèque</strong> : motivation venant de l'intérieur.</li>
+                        <li><strong>Motivation extrinsèque</strong> : motivation venant de récompenses externes.</li>
+                        <li><strong>Auto-détermination</strong> : besoin d'autonomie, de compétence, de relation.</li>
+                    </ul>
+
+                    <h4>⚠️ Biais cognitifs</h4>
+                    <ul>
+                        <li><strong>Biais de confirmation</strong> : tendance à chercher des informations qui confirment nos croyances.</li>
+                        <li><strong>Biais d'optimisme</strong> : tendance à surestimer les chances de succès.</li>
+                        <li><strong>Effet de halo</strong> : influence d'une première impression.</li>
+                    </ul>
+
+                    <div class="encadre">
+                        <strong>📌 Anecdote</strong><br>
+                        La mémoire humaine est reconstructive. Nous ne nous souvenons pas des événements exactement comme ils se sont produits, mais nous les recomposons à partir de nos expériences et de nos émotions.
+                    </div>
+
+                    <div class="quiz">
+                        <strong>🧠 Quiz</strong><br>
+                        <p>1. Quelles sont les émotions fondamentales ?<br>
+                        <em>Réponse : joie, tristesse, peur, colère, surprise, dégoût.</em></p>
+                        <p>2. Qu'est-ce que l'intelligence émotionnelle ?<br>
+                        <em>Réponse : la capacité à reconnaître, comprendre et gérer ses émotions.</em></p>
+                    </div>
+
+                    <h4>❓ Questions de réflexion</h4>
+                    <ul>
+                        <li>Pourquoi avons-nous des biais cognitifs ?</li>
+                        <li>Comment développer son intelligence émotionnelle ?</li>
+                    </ul>
+                `
+            }, {
+                id: 12,
+                part: "Partie 3 — Société et intelligence humaine",
+                titre: "La communication",
+                contenu: `
+                    <p>La communication est au cœur des relations humaines. Savoir communiquer, c'est savoir se faire comprendre et comprendre les autres.</p>
+
+                    <h4>🗣️ Langage</h4>
+                    <ul>
+                        <li>Le langage est une capacité unique à l'espèce humaine.</li>
+                        <li>Il y a environ 7 000 langues dans le monde.</li>
+                        <li><strong>Communication non-verbale</strong> : gestes, expressions faciales, posture.</li>
+                    </ul>
+
+                    <h4>🧠 Influence</h4>
+                    <ul>
+                        <li><strong>Persuasion</strong> : techniques pour influencer les autres (logos, pathos, ethos).</li>
+                        <li><strong>Manipulation</strong> : influence trompeuse, à distinguer de la persuasion éthique.</li>
+                        <li><strong>Écoute active</strong> : reformuler, poser des questions, montrer de l'empathie.</li>
+                    </ul>
+
+                    <h4>🤝 Négociation</h4>
+                    <ul>
+                        <li><strong>Approche gagnant-gagnant</strong> : trouver des solutions satisfaisantes pour tous.</li>
+                        <li><strong>Technique du "non"</strong> : répondre par des questions pour clarifier les positions.</li>
+                        <li><strong>Intelligence émotionnelle</strong> dans la négociation.</li>
+                    </ul>
+
+                    <div class="encadre">
+                        <strong>📌 Anecdote</strong><br>
+                        La communication non-verbale représente plus de 70% de la communication humaine. Notre langage corporel en dit souvent plus que nos mots.
+                    </div>
+
+                    <div class="quiz">
+                        <strong>🧠 Quiz</strong><br>
+                        <p>1. Combien de langues sont parlées dans le monde ?<br>
+                        <em>Réponse : environ 7 000.</em></p>
+                        <p>2. Quels sont les trois piliers de la persuasion selon Aristote ?<br>
+                        <em>Réponse : logos (raison), pathos (émotion), ethos (caractère).</em></p>
+                    </div>
+
+                    <h4>❓ Questions de réflexion</h4>
+                    <ul>
+                        <li>Pourquoi la communication non-verbale est-elle si importante ?</li>
+                        <li>Comment améliorer son écoute active ?</li>
+                    </ul>
+                `
+            }, {
+                id: 13,
+                part: "Partie 3 — Société et intelligence humaine",
+                titre: "La philosophie",
+                contenu: `
+                    <p>La philosophie est l'amour de la sagesse. Elle pose les grandes questions : Qui sommes-nous ? Qu'est-ce que la vérité ? Qu'est-ce qu'une vie réussie ?</p>
+
+                    <h4>🔍 Les grandes questions</h4>
+                    <ul>
+                        <li><strong>Pourquoi existons-nous ?</strong> : question métaphysique sur le sens de la vie.</li>
+                        <li><strong>Qu'est-ce que la vérité ?</strong> : question épistémologique sur la connaissance.</li>
+                        <li><strong>Qu'est-ce qu'une vie réussie ?</strong> : question éthique sur le bien-vivre.</li>
+                    </ul>
+
+                    <h4>📖 Les grands philosophes</h4>
+                    <ul>
+                        <li><strong>Socrate</strong> (Grèce, Ve siècle av. J.-C.) : "Connais-toi toi-même."</li>
+                        <li><strong>Platon</strong> : théorie des Idées, la République.</li>
+                        <li><strong>Aristote</strong> : logique, éthique, politique.</li>
+                        <li><strong>Descartes</strong> (France, XVIIe) : "Je pense, donc je suis."</li>
+                        <li><strong>Kant</strong> (Allemagne, XVIIIe) : l'impératif catégorique.</li>
+                        <li><strong>Nietzsche</strong> (Allemagne, XIXe) : la volonté de puissance, le surhomme.</li>
+                    </ul>
+
+                    <div class="encadre">
+                        <strong>📌 Anecdote</strong><br>
+                        Socrate n'a jamais écrit. Ce que nous savons de lui vient des dialogues de son élève Platon. Il préférait la conversation orale, qu'il considérait comme plus vivante.
+                    </div>
+
+                    <div class="quiz">
+                        <strong>🧠 Quiz</strong><br>
+                        <p>1. Quelle est la célèbre formule de Descartes ?<br>
+                        <em>Réponse : "Je pense, donc je suis." (Cogito ergo sum).</em></p>
+                        <p>2. Quel philosophe a écrit "La République" ?<br>
+                        <em>Réponse : Platon.</em></p>
+                    </div>
+
+                    <h4>❓ Questions de réflexion</h4>
+                    <ul>
+                        <li>Quelle est la question philosophique qui vous intéresse le plus ?</li>
+                        <li>Pourquoi la philosophie est-elle encore utile aujourd'hui ?</li>
+                    </ul>
+                `
+            }, {
+                id: 14,
+                part: "Partie 4 — Économie et monde professionnel",
+                titre: "Comprendre l'économie",
+                contenu: `
+                    <p>L'économie est la science qui étudie la production, la distribution et la consommation des biens et services. Elle est au cœur de notre vie quotidienne.</p>
+
+                    <h4>📈 Offre et demande</h4>
+                    <ul>
+                        <li><strong>Offre</strong> : quantité de biens proposés par les producteurs.</li>
+                        <li><strong>Demande</strong> : quantité de biens demandés par les consommateurs.</li>
+                        <li><strong>Loi de l'offre et de la demande</strong> : quand la demande est forte, les prix augmentent.</li>
+                    </ul>
+
+                    <h4>💰 Monnaie et banque</h4>
+                    <ul>
+                        <li><strong>Monnaie</strong> : moyen d'échange universel.</li>
+                        <li><strong>Banque</strong> : institution qui gère l'argent, octroie des prêts.</li>
+                        <li><strong>Inflation</strong> : augmentation générale des prix, diminution du pouvoir d'achat.</li>
+                    </ul>
+
+                    <h4>📉 Crises économiques</h4>
+                    <ul>
+                        <li>La grande dépression (1929), la crise de 2008.</li>
+                        <li>Causes : spéculation, bulles immobilières, endettement excessif.</li>
+                        <li>Conséquences : chômage, faillites, récession.</li>
+                    </ul>
+
+                    <div class="encadre">
+                        <strong>📌 Anecdote</strong><br>
+                        La banque centrale (ex: BCE, Fed) a pour mission de contrôler l'inflation et de stabiliser l'économie. Elle peut modifier les taux d'intérêt pour influencer la croissance.
+                    </div>
+
+                    <div class="quiz">
+                        <strong>🧠 Quiz</strong><br>
+                        <p>1. Qu'est-ce que l'inflation ?<br>
+                        <em>Réponse : l'augmentation générale des prix.</em></p>
+                        <p>2. Quand a eu lieu la grande dépression ?<br>
+                        <em>Réponse : en 1929.</em></p>
+                    </div>
+
+                    <h4>❓ Questions de réflexion</h4>
+                    <ul>
+                        <li>Comment l'économie influence-t-elle votre vie quotidienne ?</li>
+                        <li>Pourquoi y a-t-il des crises économiques ?</li>
+                    </ul>
+                `
+            }, {
+                id: 15,
+                part: "Partie 4 — Économie et monde professionnel",
+                titre: "L'entreprise",
+                contenu: `
+                    <p>L'entreprise est l'organisation de base de l'économie. Elle crée de la valeur, emploie des personnes et innove.</p>
+
+                    <h4>💡 Création d'entreprise</h4>
+                    <ul>
+                        <li>Une idée, un marché, un plan d'affaires.</li>
+                        <li>Statut juridique : auto-entrepreneur, SARL, SAS, etc.</li>
+                        <li>Financement : fonds propres, emprunts, investisseurs.</li>
+                    </ul>
+
+                    <h4>📊 Management</h4>
+                    <ul>
+                        <li><strong>Gestion</strong> : organiser, planifier, contrôler.</li>
+                        <li><strong>Leadership</strong> : inspirer, motiver, fédérer.</li>
+                        <li><strong>Culture d'entreprise</strong> : valeurs, normes, comportements partagés.</li>
+                    </ul>
+
+                    <h4>🚀 Innovation</h4>
+                    <ul>
+                        <li><strong>Innovation de produit</strong> : créer de nouveaux produits.</li>
+                        <li><strong>Innovation de procédé</strong> : améliorer les méthodes de production.</li>
+                        <li><strong>Innovation de modèle économique</strong> : changer la manière de créer de la valeur.</li>
+                    </ul>
+
+                    <div class="encadre">
+                        <strong>📌 Anecdote</strong><br>
+                        Les grandes entreprises comme Google ou Apple sont nées dans des garages. Le succès est souvent le fruit d'une idée simple et d'une grande persévérance.
+                    </div>
+
+                    <div class="quiz">
+                        <strong>🧠 Quiz</strong><br>
+                        <p>1. Qu'est-ce qu'une culture d'entreprise ?<br>
+                        <em>Réponse : les valeurs, normes et comportements partagés dans l'entreprise.</em></p>
+                        <p>2. Quel est le rôle du leadership ?<br>
+                        <em>Réponse : inspirer, motiver et fédérer les équipes.</em></p>
+                    </div>
+
+                    <h4>❓ Questions de réflexion</h4>
+                    <ul>
+                        <li>Quelles qualités sont nécessaires pour créer une entreprise ?</li>
+                        <li>Comment l'innovation peut-elle changer le monde ?</li>
+                    </ul>
+                `
+            }, {
+                id: 16,
+                part: "Partie 4 — Économie et monde professionnel",
+                titre: "Les finances personnelles",
+                contenu: `
+                    <p>Gérer ses finances personnelles est une compétence essentielle pour vivre en toute liberté. Budget, épargne, investissement, risque.</p>
+
+                    <h4>💰 Budget</h4>
+                    <ul>
+                        <li><strong>Revenus</strong> : salaires, aides, revenus passifs.</li>
+                        <li><strong>Dépenses</strong> : charges fixes, dépenses variables.</li>
+                        <li><strong>Équilibre budgétaire</strong> : revenus ≥ dépenses.</li>
+                    </ul>
+
+                    <h4>📈 Épargne et investissement</h4>
+                    <ul>
+                        <li><strong>Épargne de précaution</strong> : 3 à 6 mois de dépenses.</li>
+                        <li><strong>Investissement</strong> : actions, obligations, immobilier.</li>
+                        <li><strong>Intérêts composés</strong> : l'argent qui fructifie.</li>
+                    </ul>
+
+                    <h4>⚠️ Risque et endettement</h4>
+                    <ul>
+                        <li><strong>Risque</strong> : toute décision financière comporte des risques.</li>
+                        <li><strong>Diversification</strong> : ne pas mettre tous ses œufs dans le même panier.</li>
+                        <li><strong>Endettement raisonnable</strong> : capacité de remboursement.</li>
+                    </ul>
+
+                    <div class="encadre">
+                        <strong>📌 Anecdote</strong><br>
+                        Albert Einstein aurait dit que les intérêts composés sont la "huitième merveille du monde". Investir tôt permet de multiplier son argent sur le long terme.
+                    </div>
+
+                    <div class="quiz">
+                        <strong>🧠 Quiz</strong><br>
+                        <p>1. Qu'est-ce que l'épargne de précaution ?<br>
+                        <em>Réponse : 3 à 6 mois de dépenses pour faire face aux imprévus.</em></p>
+                        <p>2. Pourquoi diversifier ses investissements ?<br>
+                        <em>Réponse : pour réduire le risque.</em></p>
+                    </div>
+
+                    <h4>❓ Questions de réflexion</h4>
+                    <ul>
+                        <li>Pourquoi est-il important de savoir gérer son budget ?</li>
+                        <li>Comment les intérêts composés peuvent-ils créer de la richesse ?</li>
+                    </ul>
+                `
+            }, {
+                id: 17,
+                part: "Partie 5 — Technologie et futur",
+                titre: "L'informatique",
+                contenu: `
+                    <p>L'informatique a transformé notre monde en quelques décennies. Des premiers ordinateurs aux smartphones, elle est partout.</p>
+
+                    <h4>🖥️ Histoire</h4>
+                    <ul>
+                        <li>Premiers ordinateurs : ENIAC (1946), UNIVAC (1951).</li>
+                        <li><strong>Microprocesseur</strong> (1971) : ordinateur personnel.</li>
+                        <li><strong>Internet</strong> (années 1990) : révolution de la communication.</li>
+                    </ul>
+
+                    <h4>🌐 Internet</h4>
+                    <ul>
+                        <li>Réseau mondial de communication.</li>
+                        <li>Protocoles TCP/IP, World Wide Web (Tim Berners-Lee, 1989).</li>
+                        <li>Réseaux sociaux, commerce en ligne, cloud computing.</li>
+                    </ul>
+
+                    <h4>💻 Programmation</h4>
+                    <ul>
+                        <li><strong>Langages</strong> : Python, Java, C++, JavaScript, etc.</li>
+                        <li><strong>Algorithmes</strong> : résolution de problèmes informatiques.</li>
+                        <li><strong>Développement</strong> : applications, sites web, logiciels.</li>
+                    </ul>
+
+                    <h4>🔒 Cybersécurité</h4>
+                    <ul>
+                        <li>Protection des données et des systèmes contre les attaques.</li>
+                        <li><strong>Chiffrement</strong> : codage des informations.</li>
+                        <li><strong>Hacking éthique</strong> : tester les systèmes pour les protéger.</li>
+                    </ul>
+
+                    <div class="encadre">
+                        <strong>📌 Anecdote</strong><br>
+                        Le premier ordinateur (ENIAC) pesait 27 tonnes et occupait une salle entière. Aujourd'hui, un smartphone moderne est des millions de fois plus puissant.
+                    </div>
+
+                    <div class="quiz">
+                        <strong>🧠 Quiz</strong><br>
+                        <p>1. En quelle année le premier microprocesseur a-t-il été inventé ?<br>
+                        <em>Réponse : 1971.</em></p>
+                        <p>2. Qui a inventé le World Wide Web ?<br>
+                        <em>Réponse : Tim Berners-Lee (1989).</em></p>
+                    </div>
+
+                    <h4>❓ Questions de réflexion</h4>
+                    <ul>
+                        <li>Comment l'informatique a-t-elle changé notre façon de travailler ?</li>
+                        <li>Quels sont les enjeux de la cybersécurité ?</li>
+                    </ul>
+                `
+            }, {
+                id: 18,
+                part: "Partie 5 — Technologie et futur",
+                titre: "Intelligence artificielle",
+                contenu: `
+                    <p>L'intelligence artificielle (IA) est une technologie qui permet aux machines d'imiter l'intelligence humaine. Elle est en train de révolutionner notre monde.</p>
+
+                    <h4>🧠 Fonctionnement</h4>
+                    <ul>
+                        <li><strong>Apprentissage automatique</strong> : les machines apprennent à partir de données.</li>
+                        <li><strong>Réseaux de neurones</strong> : imitent le fonctionnement du cerveau humain.</li>
+                        <li><strong>Deep learning</strong> : réseaux de neurones profonds.</li>
+                    </ul>
+
+                    <h4>🚀 Opportunités</h4>
+                    <ul>
+                        <li><strong>Santé</strong> : diagnostic médical, recherche.</li>
+                        <li><strong>Transport</strong> : voitures autonomes.</li>
+                        <li><strong>Éducation</strong> : tutorat personnalisé.</li>
+                        <li><strong>Industrie</strong> : automatisation, optimisation.</li>
+                    </ul>
+
+                    <h4>⚠️ Risques</h4>
+                    <ul>
+                        <li><strong>Suppression d'emplois</strong> : automatisation de nombreuses tâches.</li>
+                        <li><strong>Désinformation</strong> : deepfakes, algorithmes de recommandation.</li>
+                        <li><strong>Biais</strong> : les algorithmes peuvent reproduire les discriminations humaines.</li>
+                    </ul>
+
+                    <div class="encadre">
+                        <strong>📌 Anecdote</strong><br>
+                        L'IA a battu le champion du monde de jeu de Go en 2016. Le jeu de Go est considéré comme plus complexe que les échecs, avec plus de combinaisons possibles que d'atomes dans l'Univers.
+                    </div>
+
+                    <div class="quiz">
+                        <strong>🧠 Quiz</strong><br>
+                        <p>1. Qu'est-ce que l'apprentissage automatique ?<br>
+                        <em>Réponse : les machines apprennent à partir de données.</em></p>
+                        <p>2. Quels sont les principaux risques de l'IA ?<br>
+                        <em>Réponse : suppression d'emplois, désinformation, biais.</em></p>
+                    </div>
+
+                    <h4>❓ Questions de réflexion</h4>
+                    <ul>
+                        <li>Comment l'IA va-t-elle transformer votre futur métier ?</li>
+                        <li>Comment réguler l'IA pour maximiser ses bénéfices et minimiser ses risques ?</li>
+                    </ul>
+                `
+            }, {
+                id: 19,
+                part: "Partie 5 — Technologie et futur",
+                titre: "Les grandes innovations",
+                contenu: `
+                    <p>Les grandes innovations ont façonné notre civilisation. De l'électricité à la robotique, elles ont transformé notre quotidien.</p>
+
+                    <h4>💡 Électricité</h4>
+                    <ul>
+                        <li>Découverte fondamentale : Faraday, Volta, Edison.</li>
+                        <li>Application : éclairage, moteurs, télécommunications.</li>
+                    </ul>
+
+                    <h4>🚗 Automobile</h4>
+                    <ul>
+                        <li>Première voiture : Carl Benz (1886).</li>
+                        <li>Révolution des transports, de l'urbanisme.</li>
+                        <li>Véhicules électriques (Tesla, 2008).</li>
+                    </ul>
+
+                    <h4>✈️ Aviation</h4>
+                    <ul>
+                        <li>Premier vol : Wright Brothers (1903).</li>
+                        <li>Aviation commerciale, transport de personnes et de marchandises.</li>
+                        <li>Conquête spatiale (Apollo 11, 1969).</li>
+                    </ul>
+
+                    <h4>🌐 Internet</h4>
+                    <ul>
+                        <li>Révolution de la communication, de l'information.</li>
+                        <li>Commerce en ligne, réseaux sociaux, cloud.</li>
+                    </ul>
+
+                    <h4>🤖 Robotique</h4>
+                    <ul>
+                        <li>Robots industriels, robots de service, humanoïdes.</li>
+                        <li>Applications : santé, exploration, fabrication.</li>
+                    </ul>
+
+                    <div class="encadre">
+                        <strong>📌 Anecdote</strong><br>
+                        Le premier avion des Wright Brothers a volé pendant 12 secondes sur une distance de 37 mètres. C'était le début de l'aviation moderne.
+                    </div>
+
+                    <div class="quiz">
+                        <strong>🧠 Quiz</strong><br>
+                        <p>1. Qui a inventé la première voiture ?<br>
+                        <em>Réponse : Carl Benz (1886).</em></p>
+                        <p>2. Quelle mission a envoyé l'homme sur la Lune ?<br>
+                        <em>Réponse : Apollo 11 (1969).</em></p>
+                    </div>
+
+                    <h4>❓ Questions de réflexion</h4>
+                    <ul>
+                        <li>Quelle innovation a eu le plus d'impact sur votre vie ?</li>
+                        <li>Quelles seront les prochaines grandes innovations ?</li>
+                    </ul>
+                `
+            }, {
+                id: 20,
+                part: "Partie 6 — Culture humaine",
+                titre: "Les arts",
+                contenu: `
+                    <p>Les arts sont l'expression de la créativité humaine. Ils prennent des formes variées : peinture, architecture, musique, cinéma, littérature.</p>
+
+                    <h4>🎨 Peinture</h4>
+                    <ul>
+                        <li><strong>Renaissance</strong> : Léonard de Vinci, Michel-Ange, Raphaël.</li>
+                        <li><strong>Impressionnisme</strong> : Monet, Renoir, Degas.</li>
+                        <li><strong>Art moderne</strong> : Picasso, Kandinsky, Pollock.</li>
+                    </ul>
+
+                    <h4>🏛️ Architecture</h4>
+                    <ul>
+                        <li><strong>Architecture antique</strong> : temples grecs, romains.</li>
+                        <li><strong>Gothique</strong> : cathédrales (Notre-Dame de Paris).</li>
+                        <li><strong>Moderne</strong> : Le Corbusier, Gaudi, Frank Gehry.</li>
+                    </ul>
+
+                    <h4>🎵 Musique</h4>
+                    <ul>
+                        <li><strong>Classique</strong> : Bach, Mozart, Beethoven.</li>
+                        <li><strong>Jazz</strong> : Miles Davis, Louis Armstrong.</li>
+                        <li><strong>Rock</strong> : Beatles, Rolling Stones.</li>
+                        <li><strong>Électro</strong> : Daft Punk, Jean-Michel Jarre.</li>
+                    </ul>
+
+                    <h4>🎬 Cinéma</h4>
+                    <ul>
+                        <li>Cinéma muet : Chaplin, Keaton.</li>
+                        <li>Cinéma classique : Hitchcock, Kubrick.</li>
+                        <li>Cinéma moderne : Spielberg, Tarantino, Nolan.</li>
+                    </ul>
+
+                    <h4>📚 Littérature</h4>
+                    <ul>
+                        <li><strong>Classiques</strong> : Victor Hugo, Shakespeare, Proust.</li>
+                        <li><strong>Moderne</strong> : Camus, Orwell, Hemingway.</li>
+                        <li><strong>Contemporain</strong> : Houellebecq, Amélie Nothomb.</li>
+                    </ul>
+
+                    <div class="encadre">
+                        <strong>📌 Anecdote</strong><br>
+                        La Joconde de Léonard de Vinci est le tableau le plus célèbre du monde. Elle est exposée au Louvre, à Paris, et attire des millions de visiteurs chaque année.
+                    </div>
+
+                    <div class="quiz">
+                        <strong>🧠 Quiz</strong><br>
+                        <p>1. Quels sont les trois grands peintres de la Renaissance ?<br>
+                        <em>Réponse : Léonard de Vinci, Michel-Ange, Raphaël.</em></p>
+                        <p>2. Quel compositeur est surnommé le "génie de la musique baroque" ?<br>
+                        <em>Réponse : Jean-Sébastien Bach.</em></p>
+                    </div>
+
+                    <h4>❓ Questions de réflexion</h4>
+                    <ul>
+                        <li>Pourquoi l'art est-il important dans une société ?</li>
+                        <li>Quelle œuvre d'art vous a le plus marqué ?</li>
+                    </ul>
+                `
+            }, {
+                id: 21,
+                part: "Partie 6 — Culture humaine",
+                titre: "Les grandes œuvres à connaître",
+                contenu: `
+                    <p>Certaines œuvres ont marqué l'histoire de l'humanité. Les connaître, c'est comprendre notre patrimoine culturel commun.</p>
+
+                    <h4>📖 Romans</h4>
+                    <ul>
+                        <li><strong>Les Misérables</strong> — Victor Hugo</li>
+                        <li><strong>1984</strong> — George Orwell</li>
+                        <li><strong>Le Petit Prince</strong> — Antoine de Saint-Exupéry</li>
+                        <li><strong>Cent ans de solitude</strong> — Gabriel García Márquez</li>
+                    </ul>
+
+                    <h4>🎬 Films</h4>
+                    <ul>
+                        <li><strong>Citizen Kane</strong> — Orson Welles (1941)</li>
+                        <li><strong>2001, l'Odyssée de l'espace</strong> — Stanley Kubrick (1968)</li>
+                        <li><strong>Star Wars</strong> — George Lucas (1977)</li>
+                        <li><strong>La Liste de Schindler</strong> — Steven Spielberg (1993)</li>
+                    </ul>
+
+                    <h4>🔬 Découvertes</h4>
+                    <ul>
+                        <li><strong>Théorie de la relativité</strong> — Albert Einstein (1905-1915)</li>
+                        <li><strong>Structure de l'ADN</strong> — Watson et Crick (1953)</li>
+                        <li><strong>Découverte de la pénicilline</strong> — Alexander Fleming (1928)</li>
+                        <li><strong>Premier pas sur la Lune</strong> — Apollo 11 (1969)</li>
+                    </ul>
+
+                    <div class="encadre">
+                        <strong>📌 Anecdote</strong><br>
+                        "1984" de George Orwell a popularisé le concept du "Big Brother", qui désigne une surveillance omniprésente. Le roman reste très actuel à l'ère du numérique.
+                    </div>
+
+                    <div class="quiz">
+                        <strong>🧠 Quiz</strong><br>
+                        <p>1. Qui a écrit "Les Misérables" ?<br>
+                        <em>Réponse : Victor Hugo.</em></p>
+                        <p>2. Quelle découverte a été faite par Watson et Crick en 1953 ?<br>
+                        <em>Réponse : la structure de l'ADN.</em></p>
+                    </div>
+
+                    <h4>❓ Questions de réflexion</h4>
+                    <ul>
+                        <li>Pourquoi certaines œuvres résistent-elles au temps ?</li>
+                        <li>Qu'est-ce qui fait une "grande œuvre" ?</li>
+                    </ul>
+                `
+            }, {
+                id: 22,
+                part: "Partie 6 — Culture humaine",
+                titre: "Géographie mondiale",
+                contenu: `
+                    <p>La géographie est l'étude de la Terre et de ses habitants. Elle nous aide à comprendre les interactions entre les sociétés et leur environnement.</p>
+
+                    <h4>🌍 Continents</h4>
+                    <ul>
+                        <li>7 continents : Afrique, Amérique du Nord, Amérique du Sud, Asie, Europe, Océanie, Antarctique.</li>
+                        <li>Asie : le plus grand continent, avec 60% de la population mondiale.</li>
+                        <li>Antarctique : continent inhabité, entièrement recouvert de glace.</li>
+                    </ul>
+
+                    <h4>🏛️ Pays influents</h4>
+                    <ul>
+                        <li><strong>Chine</strong> : population (1,4 milliard), puissance économique.</li>
+                        <li><strong>Inde</strong> : population (1,4 milliard), démocratie, croissance rapide.</li>
+                        <li><strong>États-Unis</strong> : puissance économique, militaire, culturelle.</li>
+                        <li><strong>Russie</strong> : plus grand pays du monde (surface).</li>
+                        <li><strong>Brésil</strong> : géant de l'Amérique du Sud.</li>
+                    </ul>
+
+                    <h4>🌿 Ressources et enjeux</h4>
+                    <ul>
+                        <li><strong>Pétrole</strong> : énergie fossile, réserves concentrées au Moyen-Orient.</li>
+                        <li><strong>Eau</strong> : ressource rare dans de nombreuses régions.</li>
+                        <li><strong>Biodiversité</strong> : les forêts tropicales, les océans.</li>
+                    </ul>
+
+                    <div class="encadre">
+                        <strong>📌 Anecdote</strong><br>
+                        L'île de la Réunion (France) est située dans l'océan Indien, à plus de 9 000 km de Paris. C'est un territoire d'outre-mer.
+                    </div>
+
+                    <div class="quiz">
+                        <strong>🧠 Quiz</strong><br>
+                        <p>1. Combien y a-t-il de continents ?<br>
+                        <em>Réponse : 7.</em></p>
+                        <p>2. Quel est le pays le plus peuplé du monde ?<br>
+                        <em>Réponse : la Chine (et l'Inde en 2023).</em></p>
+                    </div>
+
+                    <h4>❓ Questions de réflexion</h4>
+                    <ul>
+                        <li>Pourquoi la géographie est-elle importante pour comprendre les enjeux mondiaux ?</li>
+                        <li>Quels sont les défis géopolitiques actuels ?</li>
+                    </ul>
+                `
+            }, {
+                id: 23,
+                part: "Partie 6 — Culture humaine",
+                titre: "Les grands enjeux actuels",
+                contenu: `
+                    <p>Le monde fait face à des défis majeurs qui façonneront notre avenir : climat, énergie, démographie, intelligence artificielle, exploration spatiale.</p>
+
+                    <h4>🌡️ Changement climatique</h4>
+                    <ul>
+                        <li>Réchauffement global dû aux émissions de gaz à effet de serre.</li>
+                        <li>Conséquences : montée des eaux, événements extrêmes, perte de biodiversité.</li>
+                        <li>Solutions : énergies renouvelables, efficacité énergétique, reforestation.</li>
+                    </ul>
+
+                    <h4>⚡ Énergie</h4>
+                    <ul>
+                        <li>Transition énergétique : passage des énergies fossiles aux énergies propres.</li>
+                        <li>Énergies renouvelables : solaire, éolien, hydraulique, géothermie.</li>
+                        <li>Fusion nucléaire : promesse d'une énergie illimitée.</li>
+                    </ul>
+
+                    <h4>👥 Démographie</h4>
+                    <ul>
+                        <li>Population mondiale : 8 milliards en 2022, 10 milliards attendus en 2050.</li>
+                        <li>Vieillissement des populations en Europe et en Asie.</li>
+                        <li>Migrations : déplacements de populations pour des raisons économiques, politiques ou climatiques.</li>
+                    </ul>
+
+                    <h4>🚀 Exploration spatiale</h4>
+                    <ul>
+                        <li>Retour sur la Lune, missions vers Mars.</li>
+                        <li>Nouveaux acteurs : SpaceX, Chine, Inde.</li>
+                        <li>Colonisation spatiale : futur ou utopie ?</li>
+                    </ul>
+
+                    <div class="encadre">
+                        <strong>📌 Anecdote</strong><br>
+                        La population mondiale a triplé en moins de 100 ans (2 milliards en 1920, 8 milliards en 2022). Cette croissance pose des défis énormes en termes de ressources et d'environnement.
+                    </div>
+
+                    <div class="quiz">
+                        <strong>🧠 Quiz</strong><br>
+                        <p>1. Quelle est la population mondiale actuelle ?<br>
+                        <em>Réponse : environ 8 milliards (2024).</em></p>
+                        <p>2. Quelles sont les principales énergies renouvelables ?<br>
+                        <em>Réponse : solaire, éolien, hydraulique, géothermie.</em></p>
+                    </div>
+
+                    <h4>❓ Questions de réflexion</h4>
+                    <ul>
+                        <li>Quel est le plus grand défi de notre époque ?</li>
+                        <li>Que pouvons-nous faire, individuellement, pour y contribuer ?</li>
+                    </ul>
+                `
+            }, {
+                id: 24,
+                part: "Partie 7 — Développer son intelligence",
+                titre: "Apprendre efficacement",
+                contenu: `
+                    <p>Apprendre est une compétence qui peut être améliorée. Avec les bonnes méthodes, on peut apprendre plus vite et mieux retenir.</p>
+
+                    <h4>🧠 Méthodes de mémorisation</h4>
+                    <ul>
+                        <li><strong>Répétition espacée</strong> : réviser à intervalles réguliers.</li>
+                        <li><strong>Moyens mnémotechniques</strong> : associer des informations à des images mentales.</li>
+                        <li><strong>Cartes mentales</strong> : visualiser les liens entre les concepts.</li>
+                    </ul>
+
+                    <h4>📖 Lecture rapide</h4>
+                    <ul>
+                        <li>Technique : éviter la subvocalisation, lire par groupes de mots.</li>
+                        <li>Entraînement : augmenter progressivement la vitesse.</li>
+                        <li>Lire en diagonale pour repérer les informations clés.</li>
+                    </ul>
+
+                    <h4>🔍 Esprit critique</h4>
+                    <ul>
+                        <li>Questionner les sources, les arguments, les preuves.</li>
+                        <li>Détecter les biais et les manipulations.</li>
+                        <li>Formuler des arguments solides et bien structurés.</li>
+                    </ul>
+
+                    <h4>🧩 Résolution de problèmes</h4>
+                    <ul>
+                        <li>Définir le problème, rechercher des solutions, tester, ajuster.</li>
+                        <li>Utiliser la pensée latérale : sortir des sentiers battus.</li>
+                        <li>Apprendre de ses erreurs.</li>
+                    </ul>
+
+                    <div class="encadre">
+                        <strong>📌 Anecdote</strong><br>
+                        La technique de la répétition espacée a été popularisée par le psychologue Hermann Ebbinghaus au XIXe siècle. Il a montré que l'oubli est plus rapide juste après l'apprentissage, et qu'il est bénéfique de réviser à intervalles croissants.
+                    </div>
+
+                    <div class="quiz">
+                        <strong>🧠 Quiz</strong><br>
+                        <p>1. Qu'est-ce que la répétition espacée ?<br>
+                        <em>Réponse : réviser à intervalles réguliers pour améliorer la mémorisation.</em></p>
+                        <p>2. Pourquoi l'esprit critique est-il important ?<br>
+                        <em>Réponse : pour évaluer les informations et éviter les manipulations.</em></p>
+                    </div>
+
+                    <h4>❓ Questions de réflexion</h4>
+                    <ul>
+                        <li>Quelles méthodes d'apprentissage fonctionnent le mieux pour vous ?</li>
+                        <li>Comment développer votre esprit critique au quotidien ?</li>
+                    </ul>
+                `
+            }, {
+                id: 25,
+                part: "Partie 7 — Développer son intelligence",
+                titre: "Devenir une personne cultivée",
+                contenu: `
+                    <p>Une personne cultivée ne sait pas tout. Elle sait poser les bonnes questions, comprendre plusieurs points de vue et relier les connaissances entre elles.</p>
+
+                    <h4>❓ Poser de bonnes questions</h4>
+                    <ul>
+                        <li>La qualité d'une réponse dépend de la qualité de la question.</li>
+                        <li>Poser des questions ouvertes, des questions de fond.</li>
+                        <li>Questionner ses propres certitudes.</li>
+                    </ul>
+
+                    <h4>👁️ Comprendre plusieurs points de vue</h4>
+                    <ul>
+                        <li>Lire des sources variées, y compris celles qui contredisent nos opinions.</li>
+                        <li>Développer l'empathie intellectuelle.</li>
+                        <li>Remettre en question ses préjugés.</li>
+                    </ul>
+
+                    <h4>🔗 Relier les connaissances</h4>
+                    <ul>
+                        <li>La culture générale est un réseau d'idées.</li>
+                        <li>Faire des liens entre l'histoire, la science, l'art, la philosophie.</li>
+                        <li>Comprendre les causes et les conséquences.</li>
+                    </ul>
+
+                    <h4>🌍 Une vision du monde</h4>
+                    <ul>
+                        <li>Comprendre le monde, c'est comprendre sa complexité.</li>
+                        <li>Accepter l'incertitude et l'ambiguïté.</li>
+                        <li>Choisir ses valeurs et ses engagements.</li>
+                    </ul>
+
+                    <div class="encadre">
+                        <strong>📌 Anecdote</strong><br>
+                        Les personnes les plus cultivées ne sont pas celles qui ont la plus grande mémoire, mais celles qui savent poser les bonnes questions et qui sont capables de relier des idées de domaines différents.
+                    </div>
+
+                    <div class="quiz">
+                        <strong>🧠 Quiz</strong><br>
+                        <p>1. Qu'est-ce qui caractérise une personne cultivée ?<br>
+                        <em>Réponse : savoir poser de bonnes questions, comprendre plusieurs points de vue et relier les connaissances.</em></p>
+                        <p>2. Pourquoi est-il important de lire des sources variées ?<br>
+                        <em>Réponse : pour développer l'empathie intellectuelle et remettre en question ses préjugés.</em></p>
+                    </div>
+
+                    <h4>❓ Questions de réflexion</h4>
+                    <ul>
+                        <li>Qu'est-ce que la culture générale pour vous ?</li>
+                        <li>Comment comptez-vous continuer à cultiver votre intelligence ?</li>
+                    </ul>
+
+                    <p style="text-align:center;font-style:italic;color:#6a5a4a;margin-top:1.5rem;">
+                        « La culture générale n'est pas connaître toutes les réponses.<br>
+                        C'est savoir quelles questions poser. »
+                    </p>
+                `
+            }];
+
+        // ================================================================
+        //  CONSTRUCTION DE LA PAGE D'ACCUEIL
+        // ================================================================
+
+        const homeContent = document.getElementById('homeContent');
+
+        const grid = document.createElement('div');
+        grid.className = 'grid';
+
+        chapitres.forEach(ch => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.setAttribute('data-id', ch.id);
+            const partNum = ch.part.split(' ')[1].replace('—', '').trim();
+            card.innerHTML = `
+                <div class="num">Chapitre ${ch.id}</div>
+                <div class="part">${ch.part.substring(0, 30)}</div>
+                <h3>${ch.titre}</h3>
+                <div class="desc">${ch.contenu.substring(0, 80)}...</div>
+            `;
+            card.addEventListener('click', () => navigateToChapter(ch.id));
+            grid.appendChild(card);
+        });
+
+        homeContent.appendChild(grid);
+
+        // ================================================================
+        //  ROUTING (Hash-based) + Navigation
+        // ================================================================
+
+        const homePage = document.getElementById('homePage');
+        const articlePage = document.getElementById('articlePage');
+
+        function showHome() {
+            homePage.classList.remove('hidden');
+            articlePage.classList.remove('active');
+            window.location.hash = '';
+            document.title = 'Le Grand Livre de la Culture Générale';
+        }
+
+        function showChapter(id) {
+            homePage.classList.add('hidden');
+            articlePage.classList.add('active');
+            window.location.hash = `chapitre-${id}`;
+            renderChapter(id);
+        }
+
+        function renderChapter(id) {
+            const ch = chapitres.find(c => c.id === id);
+            if (!ch) {
+                showHome();
+                return;
+            }
+            document.getElementById('chapterNum').textContent = `Chapitre ${ch.id}`;
+            document.getElementById('chapterTitle').textContent = ch.titre;
+            document.getElementById('chapterPart').textContent = ch.part;
+            document.getElementById('chapterContent').innerHTML = ch.contenu;
+
+            const prev = chapitres.find(c => c.id === id - 1);
+            const next = chapitres.find(c => c.id === id + 1);
+
+            const prevLink = document.getElementById('prevChapter');
+            const nextLink = document.getElementById('nextChapter');
+
+            if (prev) {
+                prevLink.style.display = 'inline-block';
+                prevLink.href = '#';
+                prevLink.onclick = (e) => { e.preventDefault();
+                    navigateToChapter(prev.id); };
+            } else {
+                prevLink.style.display = 'none';
+            }
+
+            if (next) {
+                nextLink.style.display = 'inline-block';
+                nextLink.href = '#';
+                nextLink.onclick = (e) => { e.preventDefault();
+                    navigateToChapter(next.id); };
+            } else {
+                nextLink.style.display = 'none';
+            }
+
+            document.title = `${ch.titre} — Le Grand Livre de la Culture Générale`;
+        }
+
+        function navigateToChapter(id) {
+            showChapter(id);
+        }
+
+        function handleHash() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#chapitre-')) {
+                const id = parseInt(hash.replace('#chapitre-', ''), 10);
+                if (chapitres.find(c => c.id === id)) {
+                    showChapter(id);
+                    return;
+                }
+            }
+            showHome();
+        }
+
+        // Liens du sommaire
+        document.querySelectorAll('.sommaire-grid a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const chNum = parseInt(link.getAttribute('data-ch'), 10);
+                if (chNum) navigateToChapter(chNum);
+            });
+        });
+
+        document.getElementById('backToHomeLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+        document.getElementById('backHomeBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+
+        window.addEventListener('hashchange', handleHash);
+        window.addEventListener('load', handleHash);
+        window.addEventListener('popstate', handleHash);
+    </script>
+
+</body>
+</html>
