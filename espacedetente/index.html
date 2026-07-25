@@ -1,23 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-  <title>Game Hub Ultra Console</title>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Game Hub · Ultra Console</title>
   <style>
+    /* ========== RESET & ROOT ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     :root {
       --bg1: #05070a;
       --text: #fff;
       --card: rgba(255,255,255,0.06);
       --border: rgba(255,255,255,0.12);
       --glow: #00ffcc;
+      --shadow: 0 0 25px #00ffcc55;
+      --radius: 16px;
     }
 
     body.light {
       --bg1: #eef3ff;
       --text: #111;
-      --card: rgba(0,0,0,0.05);
+      --card: rgba(0,0,0,0.04);
       --border: rgba(0,0,0,0.15);
       --glow: #0077ff;
+      --shadow: 0 0 30px #0077ff44;
     }
 
     body.neon {
@@ -26,24 +37,24 @@
       --card: rgba(255,255,255,0.04);
       --border: #ff00ff;
       --glow: #ff00ff;
+      --shadow: 0 0 35px #ff00ff77;
     }
 
     body {
       margin: 0;
-      font-family: monospace;
+      font-family: 'Segoe UI', 'Fira Code', monospace;
       overflow: hidden;
       color: var(--text);
       background: var(--bg1);
-      transition: 0.4s;
+      transition: background 0.3s ease, color 0.2s;
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
+      position: relative;
     }
 
-    /* ======================
-       🌊 BACKGROUND WAVES
-    ====================== */
+    /* ========== WAVES ========== */
     .waves {
       position: fixed;
       width: 100%;
@@ -51,385 +62,483 @@
       top: 0;
       left: 0;
       z-index: 0;
-      opacity: 0.6;
+      pointer-events: none;
+      opacity: 0.5;
     }
 
     .wave {
       position: absolute;
       width: 200%;
       height: 200%;
-      background: radial-gradient(circle at 30% 30%, rgba(0,255,204,0.25), transparent 60%);
-      animation: moveWave 12s linear infinite;
-      filter: blur(40px);
+      background: radial-gradient(circle at 30% 30%, rgba(0,255,204,0.2), transparent 60%);
+      animation: moveWave 14s linear infinite;
+      filter: blur(50px);
+      will-change: transform;
     }
 
     .wave:nth-child(2) {
-      animation-duration: 18s;
-      opacity: 0.5;
+      animation-duration: 22s;
+      opacity: 0.4;
+      background: radial-gradient(circle at 70% 60%, rgba(255,0,200,0.15), transparent 60%);
     }
 
     .wave:nth-child(3) {
-      animation-duration: 25s;
-      opacity: 0.3;
+      animation-duration: 30s;
+      opacity: 0.25;
+      background: radial-gradient(circle at 10% 80%, rgba(0,150,255,0.2), transparent 60%);
     }
 
     @keyframes moveWave {
-      0% { transform: translate(-20%, -20%) rotate(0deg); }
-      50% { transform: translate(20%, 10%) rotate(180deg); }
-      100% { transform: translate(-20%, -20%) rotate(360deg); }
+      0% { transform: translate(-20%, -20%) rotate(0deg) scale(1); }
+      50% { transform: translate(20%, 10%) rotate(180deg) scale(1.1); }
+      100% { transform: translate(-20%, -20%) rotate(360deg) scale(1); }
     }
 
-    /* ======================
-       ✨ PARTICLES CANVAS
-    ====================== */
-    canvas {
+    /* ========== PARTICLES CANVAS ========== */
+    #particlesCanvas {
       position: fixed;
       top: 0;
       left: 0;
       z-index: 1;
+      pointer-events: none;
+      width: 100vw;
+      height: 100vh;
     }
 
-    /* ======================
-       BOOT SCREEN
-    ====================== */
+    /* ========== BOOT SCREEN ========== */
     #boot {
       position: fixed;
       inset: 0;
-      background: black;
+      background: #05070a;
       z-index: 999;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      transition: opacity 0.8s ease;
+      backdrop-filter: blur(2px);
     }
 
-    #boot h1 {
-      letter-spacing: 8px;
+    #boot h2 {
+      letter-spacing: 6px;
+      font-weight: 300;
       opacity: 0;
-      animation: fadeIn 1.5s forwards;
+      animation: fadeIn 1.2s forwards;
+      font-size: 1.6rem;
+      text-shadow: 0 0 20px #00ffcc55;
     }
 
-    .bar {
+    #boot .bar {
       width: 220px;
       height: 2px;
-      background: #222;
-      margin-top: 20px;
+      background: #1f2a36;
+      margin-top: 28px;
+      border-radius: 4px;
       overflow: hidden;
+      box-shadow: 0 0 12px #00ffcc22;
     }
 
-    .bar::after {
-      content: "";
-      width: 40%;
-      height: 100%;
-      background: white;
+    #boot .bar::after {
+      content: '';
       display: block;
-      animation: load 1.2s infinite;
+      width: 45%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, #00ffcc, transparent);
+      animation: load 1.4s infinite ease-in-out;
     }
 
     @keyframes load {
-      0% { transform: translateX(-120%); }
-      100% { transform: translateX(320%); }
+      0% { transform: translateX(-150%); }
+      100% { transform: translateX(280%); }
     }
 
     @keyframes fadeIn {
       to { opacity: 1; }
     }
 
-    /* ======================
-       UI MENU
-    ====================== */
-
+    /* ========== UI CONTAINER ========== */
     .container {
       position: relative;
       z-index: 2;
       width: 460px;
+      max-width: 94vw;
+      padding: 6px 0;
     }
 
     .title {
       text-align: center;
-      margin-bottom: 20px;
-      letter-spacing: 4px;
-      opacity: 0.8;
+      margin-bottom: 24px;
+      letter-spacing: 6px;
+      font-weight: 300;
+      font-size: 1.2rem;
+      opacity: 0.7;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+      backdrop-filter: blur(4px);
     }
 
     .menu {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
+      max-height: 68vh;
+      overflow-y: auto;
+      padding-right: 4px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--glow) transparent;
+    }
+
+    .menu::-webkit-scrollbar {
+      width: 5px;
+    }
+    .menu::-webkit-scrollbar-thumb {
+      background: var(--glow);
+      border-radius: 10px;
     }
 
     .item {
-      padding: 16px;
+      padding: 14px 18px;
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: var(--radius);
       cursor: pointer;
       display: flex;
       justify-content: space-between;
-      transition: 0.15s;
-      backdrop-filter: blur(10px);
+      align-items: center;
+      transition: 0.15s ease;
+      backdrop-filter: blur(12px);
+      font-weight: 400;
+      letter-spacing: 0.3px;
+      user-select: none;
+    }
+
+    .item span {
+      opacity: 0.5;
+      font-size: 0.9rem;
+      transition: 0.2s;
     }
 
     .item.selected {
       border: 1px solid var(--glow);
-      box-shadow: 0 0 25px var(--glow);
-      transform: scale(1.04);
+      box-shadow: var(--shadow);
+      transform: scale(1.02);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .item:hover {
+      background: rgba(255,255,255,0.08);
     }
 
     .hint {
-      margin-top: 15px;
+      margin-top: 18px;
       text-align: center;
       font-size: 11px;
-      opacity: 0.6;
+      opacity: 0.45;
+      letter-spacing: 1.5px;
+      font-weight: 300;
     }
 
-    /* ===== THEME BUTTON ICON ===== */
+    /* ===== THEME TOGGLE ===== */
     .theme-btn {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      width: 42px;
-      height: 42px;
+      position: fixed;
+      top: 18px;
+      right: 20px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       border: 1px solid var(--border);
       background: var(--card);
+      backdrop-filter: blur(8px);
       cursor: pointer;
-      z-index: 3;
-      font-size: 18px;
+      z-index: 10;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text);
+      transition: 0.2s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .theme-btn:hover {
+      transform: scale(1.08);
+      border-color: var(--glow);
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 500px) {
+      .container { width: 98vw; }
+      .title { font-size: 1rem; letter-spacing: 3px; }
+      .item { padding: 12px 14px; font-size: 0.9rem; }
+      .theme-btn { width: 40px; height: 40px; font-size: 1.2rem; top: 12px; right: 12px; }
     }
   </style>
 </head>
-
 <body>
 
 <!-- 🌊 WAVES -->
-<div class="waves">
+<div class="waves" aria-hidden="true">
   <div class="wave"></div>
   <div class="wave"></div>
   <div class="wave"></div>
 </div>
 
 <!-- ✨ PARTICLES -->
-<canvas id="particles"></canvas>
+<canvas id="particlesCanvas"></canvas>
 
 <!-- BOOT -->
 <div id="boot">
-  <h2>Bienvenue dans votre Espace détente</h2>
+  <h2>⚡ Bienvenue dans votre Espace détente</h2>
   <div class="bar"></div>
 </div>
 
-<!-- THEME -->
-<button class="theme-btn" onclick="cycleTheme()">☀</button>
+<!-- THEME TOGGLE -->
+<button class="theme-btn" id="themeToggle" aria-label="Changer de thème">☀</button>
 
 <!-- MENU -->
 <div class="container">
-  <div class="title">GAME HUB // CONSOLE</div>
+  <div class="title">🕹️ GAME HUB // CONSOLE</div>
 
-  <div class="menu">
+  <div class="menu" id="menuContainer">
+    <!-- Les éléments sont générés par JavaScript pour maintenir la propreté -->
+  </div>
 
-    <div class="item selected" onclick="go('/espacedetente/game-balls')">
-      🎮 Game 1 Balls <span>▶</span>
-    </div>
-
-    <div class="item" onclick="go('/espacedetente/game-2')">
-      🧩 Game 2 Your name <span>▶</span>
-    </div>
-
-    <div class="item" onclick="go('/espacedetente/game-3')">
-      🚀 Game 3 Earth <span>▶</span>
-    </div>
-
-    <div class="item" onclick="go('/espacedetente/game-4')">
-      🧱 Game 4 Beam Iso <span>▶</span>
-    </div>
-
-    <div class="item" onclick="go('/espacedetente/game-5')">
-      🏗 Game 5 Modele diagramme <span>En cours</span>
-    </div>
-
-    <div class="item" onclick="go('/espacedetente/game-6')">
-      🎮 Game 6 <span>En cours</span>
-    </div>
-
-    <div class="item" onclick="go('/espacedetente/game-7')">
-      🎮 Game 7 <span>En cours</span>
-    </div>
-
-    <div class="item" onclick="go('/espacedetente/game-8')">
-      🎮 Game 8 <span>En cours</span>
-    </div>
-
-    <div class="item" onclick="go('/espacedetente/game-9')">
-      🔢 Calculatrice <span>En cours</span>
-    </div>
-
-    <div class="item" onclick="go('/espacedetente/game-10')">
-      📈 Calcul des dérivées et intégrales <span>En cours</span>
-    </div>
-    <div class="item" onclick="go('/espacedetente/game-11')">
-      📖60 sujets incontournables liés au génie civil<span>En cours</span>
-    </div>
-<div class="item" onclick="go('/espacedetente/game-12')">
-  📐Langages de Programmation<span>En cours</span>
-</div>
-
-<div class="item" onclick="go('/espacedetente/game-13')">
-  🏗️Scientifiques et Physiciens <span>En cours</span>
-</div>
-
-<div class="item" onclick="go('/espacedetente/game-14')">
-  🌊Mécanique des fluides<span>En cours</span>
-</div>
-
-<div class="item" onclick="go('/espacedetente/game-15')">
-  ⚙️Langage c++<span>En cours</span>
-</div>
-
-<div class="item" onclick="go('/espacedetente/game-16')">
-  🌉Langage Python<span>En cours</span>
-</div>
-
-<div class="item" onclick="go('/espacedetente/game-17')">
-  🏢Développement, meilleures pratiques<span>En cours</span>
-</div>
-
-<div class="item" onclick="go('/espacedetente/game-18')">
-  📊Analyse des charges permanentes et variables<span>En cours</span>
-</div>
-
-<div class="item" onclick="go('/espacedetente/game-19')">
-  🌍Eurocode 8 : conception parasismique<span>En cours</span>
-</div>
-
-<div class="item" onclick="go('/espacedetente/game-20')">
-  🔬Matériaux innovants et durabilité des structures<span>En cours</span>
-</div>
-</div>
-  <div class="hint">↑ ↓ navigate • ENTER select</div>
+  <div class="hint">↑ ↓ navigation • ENTER sélection</div>
 </div>
 
 <script>
-/* ======================
-   🔊 SOUND ENGINE
-====================== */
-let audioCtx;
+  (function() {
+    'use strict';
 
-function beep(f, d, t="sine", v=0.05){
-  if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
-  const o = audioCtx.createOscillator();
-  const g = audioCtx.createGain();
-  o.type=t; o.frequency.value=f;
-  g.gain.value=v;
-  o.connect(g); g.connect(audioCtx.destination);
-  o.start(); o.stop(audioCtx.currentTime+d);
-}
+    // =============================================
+    //  1. DONNÉES DU MENU
+    // =============================================
+    const menuItems = [
+      { label: '🎮 Game 1 Balls', url: '/espacedetente/game-balls', status: '▶' },
+      { label: '🧩 Game 2 Your name', url: '/espacedetente/game-2', status: '▶' },
+      { label: '🚀 Game 3 Earth', url: '/espacedetente/game-3', status: '▶' },
+      { label: '🧱 Game 4 Beam Iso', url: '/espacedetente/game-4', status: '▶' },
+      { label: '🏗 Game 5 Modele diagramme', url: '/espacedetente/game-5', status: 'En cours' },
+      { label: '🎮 Game 6', url: '/espacedetente/game-6', status: 'En cours' },
+      { label: '🎮 Game 7', url: '/espacedetente/game-7', status: 'En cours' },
+      { label: '🎮 Game 8', url: '/espacedetente/game-8', status: 'En cours' },
+      { label: '🔢 Calculatrice', url: '/espacedetente/game-9', status: 'En cours' },
+      { label: '📈 Calcul dérivées & intégrales', url: '/espacedetente/game-10', status: 'En cours' },
+      { label: '📖 60 sujets génie civil', url: '/espacedetente/game-11', status: 'En cours' },
+      { label: '📐 Langages de Programmation', url: '/espacedetente/game-12', status: 'En cours' },
+      { label: '🏗️ Scientifiques & Physiciens', url: '/espacedetente/game-13', status: 'En cours' },
+      { label: '🌊 Mécanique des fluides', url: '/espacedetente/game-14', status: 'En cours' },
+      { label: '⚙️ Langage C++', url: '/espacedetente/game-15', status: 'En cours' },
+      { label: '🌉 Langage Python', url: '/espacedetente/game-16', status: 'En cours' },
+      { label: '🏢 Développement & pratiques', url: '/espacedetente/game-17', status: 'En cours' },
+      { label: '📊 Charges permanentes & variables', url: '/espacedetente/game-18', status: 'En cours' },
+      { label: '🌍 Eurocode 8 : parasismique', url: '/espacedetente/game-19', status: 'En cours' },
+      { label: '🔬 Matériaux innovants & durabilité', url: '/espacedetente/game-20', status: 'En cours' }
+    ];
 
-function moveSound(){ beep(420,0.05); }
-function selectSound(){ beep(820,0.08,"triangle",0.06); }
+    // =============================================
+    //  2. RENDU DU MENU
+    // =============================================
+    const menuContainer = document.getElementById('menuContainer');
 
-/* BOOT SOUND */
-setTimeout(()=>beep(200,0.2),200);
-setTimeout(()=>beep(350,0.2),500);
+    menuItems.forEach((item, idx) => {
+      const div = document.createElement('div');
+      div.className = 'item';
+      if (idx === 0) div.classList.add('selected'); // premier sélectionné
+      div.setAttribute('data-index', idx);
+      div.innerHTML = `${item.label} <span>${item.status}</span>`;
+      div.addEventListener('click', () => {
+        selectSound();
+        setTimeout(() => {
+          window.location.href = item.url;
+        }, 130);
+      });
+      menuContainer.appendChild(div);
+    });
 
-/* BOOT REMOVE */
-setTimeout(()=>{
-  document.getElementById("boot").style.opacity="0";
-  setTimeout(()=>document.getElementById("boot").remove(),800);
-},2200);
+    // =============================================
+    //  3. NAVIGATION CLAVIER
+    // =============================================
+    const items = document.querySelectorAll('.item');
+    let currentIndex = 0;
 
-/* ======================
-   MENU
-====================== */
-const items=document.querySelectorAll(".item");
-let index=0;
+    function updateSelection() {
+      items.forEach((el, i) => {
+        el.classList.toggle('selected', i === currentIndex);
+      });
+      // scroll dans la vue
+      items[currentIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
 
-function update(){
-  items.forEach(i=>i.classList.remove("selected"));
-  items[index].classList.add("selected");
-}
+    function move(direction) {
+      const len = items.length;
+      currentIndex = (currentIndex + direction + len) % len;
+      updateSelection();
+      moveSound();
+    }
 
-function go(url){
-  selectSound();
-  setTimeout(()=>location.href=url,120);
-}
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        move(1);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        move(-1);
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const selected = items[currentIndex];
+        if (selected) {
+          selectSound();
+          setTimeout(() => {
+            const url = menuItems[currentIndex]?.url;
+            if (url) window.location.href = url;
+          }, 120);
+        }
+      }
+    });
 
-document.addEventListener("keydown",(e)=>{
-  if(e.key==="ArrowDown"){
-    index=(index+1)%items.length;
-    update(); moveSound();
-  }
-  if(e.key==="ArrowUp"){
-    index=(index-1+items.length)%items.length;
-    update(); moveSound();
-  }
-  if(e.key==="Enter") items[index].click();
-});
+    // clic sur item déjà géré
 
-/* ======================
-   THEME
-====================== */
-const themes=["default","light","neon"];
-let t=0;
+    // =============================================
+    //  4. SON (WEB AUDIO)
+    // =============================================
+    let audioCtx = null;
 
-function cycleTheme(){
-  document.body.classList.remove("light","neon");
-  t=(t+1)%themes.length;
-  if(themes[t]==="light") document.body.classList.add("light");
-  if(themes[t]==="neon") document.body.classList.add("neon");
-  moveSound();
-  localStorage.setItem("theme",themes[t]);
-}
+    function getAudioCtx() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      return audioCtx;
+    }
 
-const saved=localStorage.getItem("theme");
-if(saved==="light") document.body.classList.add("light");
-if(saved==="neon") document.body.classList.add("neon");
+    function playTone(freq, duration = 0.06, type = 'sine', volume = 0.05) {
+      try {
+        const ctx = getAudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type;
+        osc.frequency.value = freq;
+        gain.gain.value = volume;
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + duration);
+      } catch (_) { /* fallback silencieux */ }
+    }
 
-/* ======================
-   ✨ PARTICLES SYSTEM
-====================== */
-const canvas=document.getElementById("particles");
-const ctx=canvas.getContext("2d");
+    function moveSound() { playTone(440, 0.04, 'sine', 0.04); }
+    function selectSound() { playTone(880, 0.09, 'triangle', 0.06); }
 
-canvas.width=innerWidth;
-canvas.height=innerHeight;
+    // petit boot sonore
+    setTimeout(() => playTone(200, 0.2, 'sine', 0.06), 220);
+    setTimeout(() => playTone(360, 0.2, 'sine', 0.05), 520);
 
-let particles=[];
+    // =============================================
+    //  5. BOOT DISPARITION
+    // =============================================
+    setTimeout(() => {
+      const boot = document.getElementById('boot');
+      boot.style.opacity = '0';
+      setTimeout(() => {
+        if (boot.parentNode) boot.remove();
+      }, 700);
+    }, 2200);
 
-for(let i=0;i<60;i++){
-  particles.push({
-    x:Math.random()*canvas.width,
-    y:Math.random()*canvas.height,
-    r:Math.random()*2+1,
-    dx:(Math.random()-0.5)*0.3,
-    dy:(Math.random()-0.5)*0.3
-  });
-}
+    // =============================================
+    //  6. THÈME (localStorage + toggle)
+    // =============================================
+    const themes = ['default', 'light', 'neon'];
+    let themeIndex = 0;
+    const themeBtn = document.getElementById('themeToggle');
 
-function animate(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
+    function applyTheme(themeName) {
+      document.body.classList.remove('light', 'neon');
+      if (themeName === 'light') document.body.classList.add('light');
+      if (themeName === 'neon') document.body.classList.add('neon');
+      localStorage.setItem('theme', themeName);
+      // icon
+      if (themeName === 'light') themeBtn.textContent = '🌙';
+      else if (themeName === 'neon') themeBtn.textContent = '🌈';
+      else themeBtn.textContent = '☀';
+    }
 
-  for(let p of particles){
-    p.x+=p.dx;
-    p.y+=p.dy;
+    function cycleTheme() {
+      const saved = localStorage.getItem('theme') || 'default';
+      let idx = themes.indexOf(saved);
+      if (idx === -1) idx = 0;
+      idx = (idx + 1) % themes.length;
+      applyTheme(themes[idx]);
+      moveSound();
+    }
 
-    if(p.x<0||p.x>canvas.width) p.dx*=-1;
-    if(p.y<0||p.y>canvas.height) p.dy*=-1;
+    // restore
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme && themes.includes(savedTheme)) {
+      applyTheme(savedTheme);
+    } else {
+      applyTheme('default');
+    }
 
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fillStyle="rgba(255,255,255,0.5)";
-    ctx.fill();
-  }
+    themeBtn.addEventListener('click', cycleTheme);
 
-  requestAnimationFrame(animate);
-}
+    // =============================================
+    //  7. PARTICULES (Canvas)
+    // =============================================
+    const canvas = document.getElementById('particlesCanvas');
+    const ctx = canvas.getContext('2d');
 
-animate();
+    let width, height;
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    }
+    window.addEventListener('resize', resize);
+    resize();
 
-window.addEventListener("resize",()=>{
-  canvas.width=innerWidth;
-  canvas.height=innerHeight;
-});
+    const particles = [];
+    const COUNT = 70;
+
+    for (let i = 0; i < COUNT; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        r: Math.random() * 2.2 + 0.8,
+        dx: (Math.random() - 0.5) * 0.35,
+        dy: (Math.random() - 0.5) * 0.35,
+      });
+    }
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, width, height);
+
+      for (const p of particles) {
+        p.x += p.dx;
+        p.y += p.dy;
+
+        if (p.x < 0 || p.x > width) p.dx *= -1;
+        if (p.y < 0 || p.y > height) p.dy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        ctx.fill();
+      }
+
+      requestAnimationFrame(drawParticles);
+    }
+
+    drawParticles();
+
+    // =============================================
+    //  8. RÉSILIENCE : clic sur item (déjà fait)
+    // =============================================
+    // Petit correctif : si l'utilisateur clique sur un item, le son est déjà géré
+
+    console.log('🚀 Game Hub Ultra Console prêt');
+  })();
 </script>
 
 </body>
