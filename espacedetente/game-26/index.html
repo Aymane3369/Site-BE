@@ -1,0 +1,2546 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>60 Histoires pour adolescents — Recueil de lecture</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f7f2ec;
+            color: #2d2a24;
+            padding: 2rem 1rem;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2d1b0e, #5a3d2b);
+            color: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header h1 span {
+            color: #f0c27a;
+        }
+
+        .header .subtitle {
+            margin-top: 0.6rem;
+            font-size: 1.05rem;
+            opacity: 0.9;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.12);
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 0.8rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #f0c27a;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2d1b0e;
+            margin: 1.5rem 0 1rem;
+            padding-left: 0.5rem;
+            border-left: 6px solid #f0c27a;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 1.2rem 1.4rem;
+            border: 1px solid #e2d8cc;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+            border-color: #5a3d2b;
+        }
+
+        .card .num {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #8a7a6a;
+            background: #f5ede4;
+            padding: 0.1rem 0.6rem;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        .card h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #2d1b0e;
+            margin: 0.3rem 0 0.2rem;
+        }
+
+        .card .desc {
+            font-size: 0.82rem;
+            color: #5a4a3a;
+        }
+
+        .card .theme {
+            display: inline-block;
+            font-size: 0.6rem;
+            padding: 0.15rem 0.6rem;
+            background: #f5ede4;
+            border-radius: 12px;
+            color: #5a4a3a;
+            margin-top: 0.4rem;
+        }
+
+        #articlePage {
+            display: none;
+        }
+
+        #articlePage.active {
+            display: block;
+        }
+
+        #homePage.hidden {
+            display: none;
+        }
+
+        .article-container {
+            background: #fff;
+            border-radius: 20px;
+            padding: 2.5rem 2.8rem;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.07);
+            max-width: 820px;
+            margin: 0 auto;
+        }
+
+        .article-container .article-num {
+            font-size: 0.7rem;
+            color: #8a7a6a;
+            background: #f5ede4;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            display: inline-block;
+            font-weight: 600;
+        }
+
+        .article-container h2 {
+            font-size: 1.8rem;
+            margin: 0.3rem 0 0.2rem;
+            color: #2d1b0e;
+        }
+
+        .article-container .article-theme {
+            font-size: 0.75rem;
+            color: #8a7a6a;
+            margin-bottom: 0.8rem;
+        }
+
+        .article-container .article-theme span {
+            background: #f5ede4;
+            padding: 0.15rem 0.8rem;
+            border-radius: 12px;
+        }
+
+        .article-container .article-content h4 {
+            color: #2d1b0e;
+            margin: 1.2rem 0 0.3rem;
+            font-size: 1.05rem;
+        }
+
+        .article-container .article-content p {
+            margin-bottom: 0.8rem;
+            font-size: 1.02rem;
+            line-height: 1.8;
+        }
+
+        .article-container .article-content .story {
+            background: #faf6f0;
+            padding: 1.2rem 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #f0c27a;
+            margin: 1rem 0;
+            font-style: italic;
+            color: #3d3a34;
+        }
+
+        .article-container .article-content .morale {
+            background: #f0f7ee;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #5a8a5a;
+            margin: 1rem 0;
+        }
+
+        .article-container .article-content ul {
+            padding-left: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .article-container .article-content ul li {
+            margin-bottom: 0.3rem;
+        }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 1.8rem;
+            color: #5a3d2b;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1.2rem;
+            border: 2px solid #5a3d2b;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+
+        .back-home:hover {
+            background: #5a3d2b;
+            color: #fff;
+        }
+
+        @media (max-width: 640px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            .article-container {
+                padding: 1.5rem;
+            }
+            .article-container h2 {
+                font-size: 1.4rem;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .footer {
+            margin-top: 2.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #8a7a6a;
+            border-top: 1px solid #e2d8cc;
+            padding-top: 1.5rem;
+        }
+
+        .footer span {
+            color: #5a3d2b;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ============================================================ -->
+        <!-- PAGE D'ACCUEIL -->
+        <!-- ============================================================ -->
+        <div id="homePage">
+            <div class="header">
+                <h1>📚 <span>60 Histoires</span> pour adolescents</h1>
+                <div class="subtitle">Aventure · Science-fiction · Fantastique · Enquêtes · Vie quotidienne · Contes modernes</div>
+                <div class="badge">12-15 ans · Chaque histoire a sa propre URL</div>
+            </div>
+
+            <div id="homeContent">
+                <!-- Les sections seront générées par JavaScript -->
+            </div>
+
+            <div class="footer">
+                <p>📖 <span>60 histoires</span> — Lecture, réflexion et imagination</p>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PAGE ARTICLE -->
+        <!-- ============================================================ -->
+        <div id="articlePage">
+            <div class="header" style="margin-bottom: 1.5rem;">
+                <h1>📚 <span>60 Histoires</span></h1>
+                <a class="back-link" href="#" id="backToHomeLink">← Retour à la liste</a>
+            </div>
+            <div class="article-container" id="articleContainer">
+                <div class="article-num" id="articleNum">01</div>
+                <h2 id="articleTitle">Titre</h2>
+                <div class="article-theme" id="articleTheme"><span>Thème</span></div>
+                <div class="article-content" id="articleContent">
+                    <p>Contenu...</p>
+                </div>
+                <a href="#" class="back-home" id="backHomeBtn">← Toutes les histoires</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ================================================================
+        //  DONNÉES DES 60 HISTOIRES
+        // ================================================================
+
+        const histoires = [{
+            id: 1,
+            theme: "Aventure",
+            title: "Le secret de la forêt interdite",
+            desc: "Trois amis découvrent une carte menant à une forêt mystérieuse où personne n'ose s'aventurer.",
+            content: `
+                <div class="story">
+                    Léo, Mia et Sam étaient des amis inséparables. Un jour, en fouillant dans le grenier de la grand-mère de Léo, ils trouvèrent une vieille carte parcheminée. Au centre, une croix rouge marquait un endroit appelé "La Forêt Interdite". Personne dans le village n'y mettait les pieds depuis des générations.
+                </div>
+
+                <p>Intrigués, ils décidèrent de partir à l'aventure. Après une heure de marche, la forêt s'ouvrit devant eux, étrangement silencieuse. Les arbres étaient immenses, leurs branches formant un dôme qui bloquait presque la lumière du soleil. Soudain, ils entendirent un bruit étrange, comme un murmure venu des profondeurs de la terre.</p>
+
+                <p>Suivant le chemin indiqué sur la carte, ils arrivèrent devant une ancienne porte en pierre couverte de mousse. En la poussant, ils découvrirent une grotte remplie de cristaux lumineux. Au centre, une boîte en bois sculpté contenait un message : "Bravo d'avoir trouvé ce lieu. Vous avez fait preuve de courage et de curiosité. Que ces trésors vous rappellent que les plus grandes richesses sont celles que l'on découvre ensemble."</p>
+
+                <p>Ils comprirent alors que le véritable trésor n'était pas l'or, mais l'amitié et le courage d'explorer l'inconnu.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Le courage et la curiosité ouvrent des portes que la peur maintient fermées. L'amitié rend chaque aventure plus belle.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Pourquoi la forêt était-elle appelée "interdite" ?</li>
+                    <li>Qu'ont découvert les trois amis dans la grotte ?</li>
+                    <li>Selon toi, quel est le vrai trésor de cette histoire ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Parchemin</strong> : feuille de peau préparée pour écrire.</li>
+                    <li><strong>Intrigué</strong> : curieux, intéressé par un mystère.</li>
+                    <li><strong>Profondeur</strong> : partie la plus éloignée de la surface.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu découvres une carte secrète. Raconte ton aventure en décrivant le lieu que tu explores et ce que tu y trouves.</p>
+            `
+        }, {
+            id: 2,
+            theme: "Aventure",
+            title: "Le trésor du phare abandonné",
+            desc: "Une nuit, un étrange signal lumineux provient du vieux phare abandonné, attirant l'attention de jeunes explorateurs.",
+            content: `
+                <div class="story">
+                    Le phare de la Pointe Noire était abandonné depuis vingt ans. Personne ne savait pourquoi il avait été fermé, mais les habitants racontaient qu'un trésor y était caché. Une nuit, Léa et son frère Tom virent une lumière clignoter au sommet.
+                </div>
+
+                <p>Curieux, ils décidèrent d'aller voir. L'escalier en colimaçon grinçait sous leurs pas. Arrivés en haut, ils trouvèrent un vieux journal de bord. Il appartenait à un gardien qui avait caché un coffre pour le protéger des pirates. Les indices menaient à une cache sous le phare.</p>
+
+                <p>Après des heures de recherche, ils découvrirent une trappe menant à une cave. Le coffre contenait des pièces d'or, mais aussi des lettres d'amour et des photos. Le vrai trésor était l'histoire d'amour du gardien et de sa femme, séparés par la guerre.</p>
+
+                <p>Léa et Tom décidèrent de laisser le trésor en place et de raconter l'histoire à leurs parents, qui la transmirent à tout le village.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Les trésors les plus précieux ne sont pas toujours ceux que l'on imagine. Les histoires et les souvenirs ont une valeur inestimable.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Que voulaient découvrir Léa et Tom ?</li>
+                    <li>Qu'ont-ils trouvé dans le coffre ?</li>
+                    <li>Pourquoi ont-ils décidé de ne pas prendre le trésor ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Colimaçon</strong> : en spirale, en forme d'escargot.</li>
+                    <li><strong>Trappe</strong> : ouverture pratiquée dans le sol.</li>
+                    <li><strong>Inestimable</strong> : dont la valeur ne peut pas être mesurée.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Écris la lettre que le gardien du phare aurait pu laisser à sa femme. Imagine leurs retrouvailles.</p>
+            `
+        }, {
+            id: 3,
+            theme: "Aventure",
+            title: "L'île aux mille mystères",
+            desc: "Un groupe de jeunes aventuriers échoue sur une île inconnue et doit percer ses secrets pour survivre.",
+            content: `
+                <div class="story">
+                    La tempête avait été violente. Leur voilier, le "Vent du large", avait été brisé par les vagues. Quand ils se réveillèrent, ils étaient sur une plage de sable blanc. Devant eux s'étendait une jungle luxuriante, au cœur de laquelle se dressait une montagne aux formes étranges.
+                </div>
+
+                <p>Les cinq adolescents — Clara, Max, Emma, Lucas et Inès — s'organisèrent pour explorer l'île. Ils découvrirent des ruines anciennes, des statues de pierre recouvertes de mousse et des symboles gravés qui semblaient raconter une histoire. Chaque nuit, des lumières étranges dansaient au-dessus de la montagne.</p>
+
+                <p>Après plusieurs jours, ils trouvèrent une grotte sous la montagne. À l'intérieur, des peintures rupestres racontaient l'histoire d'une civilisation disparue qui avait quitté l'île pour rejoindre le continent. Les lumières n'étaient pas des fantômes, mais des reflets du soleil sur des cristaux naturels.</p>
+
+                <p>Ils comprirent que l'île n'était pas maudite, mais qu'elle avait simplement été oubliée. En repartant, ils emportèrent avec eux une pierre gravée pour se souvenir de cette aventure.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> La peur de l'inconnu disparaît quand on prend le temps de comprendre. La curiosité est la clé de la découverte.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Comment les adolescents sont-ils arrivés sur l'île ?</li>
+                    <li>Qu'ont-ils découvert dans la grotte ?</li>
+                    <li>Que symbolisaient les lumières la nuit ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Luxuriant</strong> : riche, abondant (végétation).</li>
+                    <li><strong>Rupestre</strong> : qui est gravé ou peint sur la roche.</li>
+                    <li><strong>Civilisation</strong> : ensemble des aspects culturels d'une société.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu fais partie de l'expédition. Rédige le journal de bord de l'un des adolescents pendant leur séjour sur l'île.</p>
+            `
+        }, {
+            id: 4,
+            theme: "Aventure",
+            title: "Le tunnel oublié",
+            desc: "Un tunnel secret découvert sous une vieille gare mène à un monde souterrain inconnu.",
+            content: `
+                <div class="story">
+                    La gare de Millbrook était abandonnée depuis des décennies. Personne n'y prêtait attention, jusqu'au jour où un groupe de jeunes découvrit une porte cachée derrière un vieux panneau. En l'ouvrant, ils trouvèrent un tunnel sombre qui s'enfonçait profondément sous terre.
+                </div>
+
+                <p>Armés de lampes torches, ils s'avancèrent prudemment. Les murs étaient couverts de graffitis anciens et de symboles. Au bout d'une heure de marche, ils débouchèrent dans une immense caverne. Au centre, une ville souterraine s'étendait, avec des maisons taillées dans la roche et des ponts de pierre reliant les différentes parties.</p>
+
+                <p>Ils découvrirent que cette ville avait été habitée par une communauté qui fuyait la surface pendant une épidémie. Les habitants avaient laissé des objets, des livres et des lettres. Tout était resté intact, comme si le temps s'était arrêté.</p>
+
+                <p>Le groupe décida de préserver le secret de ce lieu et de le protéger, car il racontait une histoire que personne ne connaissait.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Chaque lieu abandonné a une histoire à raconter. La curiosité peut mener à des découvertes extraordinaires.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Où se trouvait la porte secrète ?</li>
+                    <li>Qu'ont-ils découvert au bout du tunnel ?</li>
+                    <li>Pourquoi ont-ils décidé de protéger le secret ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Graffiti</strong> : inscription ou dessin sur un mur.</li>
+                    <li><strong>Caverne</strong> : grande grotte naturelle.</li>
+                    <li><strong>Épidémie</strong> : maladie qui touche un grand nombre de personnes.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es le premier explorateur de la ville souterraine. Décris ce que tu vois, ce que tu ressens et ce que tu emportes comme souvenir.</p>
+            `
+        }, {
+            id: 5,
+            theme: "Aventure",
+            title: "Les explorateurs du désert",
+            desc: "Une expédition à travers le désert pour retrouver une cité légendaire.",
+            content: `
+                <div class="story">
+                    Le désert de Sel était infini. Sous le soleil brûlant, une caravane de quatre adolescents — Youssef, Amina, Karim et Sofia — marchait depuis trois jours. Ils recherchaient la cité perdue de Zara, une légende que leur grand-père leur avait racontée.
+                </div>
+
+                <p>La nuit, ils campaient sous un ciel étoilé. Le quatrième jour, ils découvrirent des ruines à l'horizon. Ce n'était pas une ville, mais un temple ancien. À l'intérieur, des fresques racontaient l'histoire d'un peuple qui avait vécu en harmonie avec le désert. Ils avaient appris à trouver de l'eau et à respecter la nature.</p>
+
+                <p>Le message était clair : la cité n'était pas un lieu, mais une manière de vivre. Ils repartirent avec cette sagesse, et racontèrent leur découverte à leur village.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Les trésors ne sont pas toujours matériels. La sagesse et le respect de la nature sont des richesses précieuses.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Que cherchaient les adolescents dans le désert ?</li>
+                    <li>Qu'ont-ils trouvé ?</li>
+                    <li>Quelle leçon ont-ils apprise ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Caravane</strong> : groupe de voyageurs.</li>
+                    <li><strong>Fresque</strong> : peinture murale.</li>
+                    <li><strong>Sagesse</strong> : connaissance et bon sens.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es l'un des explorateurs. Raconte ton périple à travers le désert et ce que tu as ressenti en découvrant le temple.</p>
+            `
+        }, {
+            id: 6,
+            theme: "Aventure",
+            title: "Le volcan endormi",
+            desc: "Une expédition sur un volcan qui montre des signes de réveil.",
+            content: `
+                <div class="story">
+                    Le volcan de la Montagne Noire était endormi depuis cinq cents ans, mais des scientifiques avaient détecté des mouvements. Une équipe de jeunes, accompagnée d'un volcanologue, décida de monter pour observer les changements.
+                </div>
+
+                <p>L'ascension fut difficile. Ils traversèrent des champs de lave refroidie et des forêts pétrifiées. Au sommet, une odeur de soufre flottait dans l'air. Ils installèrent des capteurs et découvrirent que le volcan n'était pas prêt à entrer en éruption, mais que des gaz s'échappaient des profondeurs.</p>
+
+                <p>Ils comprirent que le volcan était vivant, qu'il respirait lentement. Cette expérience leur apprit à respecter la puissance de la nature.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> La nature est puissante et mystérieuse. La comprendre, c'est apprendre à la respecter.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Pourquoi l'équipe est-elle montée sur le volcan ?</li>
+                    <li>Qu'ont-ils découvert au sommet ?</li>
+                    <li>Quelle leçon ont-ils tirée de cette expérience ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Pétrifié</strong> : transformé en pierre.</li>
+                    <li><strong>Capteur</strong> : appareil qui mesure des données.</li>
+                    <li><strong>Soufre</strong> : élément chimique, à l'odeur caractéristique.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es le volcanologue de l'expédition. Rédige un rapport scientifique sur tes observations.</p>
+            `
+        }, {
+            id: 7,
+            theme: "Aventure",
+            title: "Le train fantôme",
+            desc: "Un train abandonné dans une gare déserte se met soudainement en marche.",
+            content: `
+                <div class="story">
+                    La gare de Saint-Éloi était fermée depuis 1975. Les rails étaient rouillés, les fenêtres cassées. Pourtant, une nuit, les habitants entendirent un sifflement lointain. Le train fantôme était de retour.
+                </div>
+
+                <p>Quatre adolescents, fascinés par la légende, décidèrent d'aller voir. Ils pénétrèrent dans la gare et découvrirent un vieux train à vapeur, intact. Ils montèrent à bord et, soudain, le train se mit en marche. Le paysage défilait, mais les arbres et les bâtiments semblaient figés dans le temps.</p>
+
+                <p>Le train s'arrêta devant une gare inconnue. Ils descendirent et rencontrèrent un homme qui leur expliqua qu'ils avaient voyagé dans le passé. Il leur montra des photos du village d'autrefois. Puis, le train les ramena à leur époque.</p>
+
+                <p>Ils repartirent avec une leçon : le passé est toujours présent si on sait l'écouter.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Le passé est une source de sagesse. Chaque lieu a une histoire à raconter.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Pourquoi le train s'appelait-il "le train fantôme" ?</li>
+                    <li>Qu'ont vécu les adolescents ?</li>
+                    <li>Quelle leçon ont-ils retenue ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Sifflement</strong> : bruit aigu et prolongé.</li>
+                    <li><strong>Fasciné</strong> : captivé, très intéressé.</li>
+                    <li><strong>Figé</strong> : immobile, arrêté.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es l'un des adolescents. Raconte ce que tu as vu en voyageant dans le temps.</p>
+            `
+        }, {
+            id: 8,
+            theme: "Aventure",
+            title: "La montagne des géants",
+            desc: "Une expédition au sommet d'une montagne légendaire.",
+            content: `
+                <div class="story">
+                    La Montagne des Géants était si haute que ses sommets étaient perdus dans les nuages. Selon la légende, des êtres gigantesques y vivaient autrefois. Une équipe de jeunes alpinistes décida de gravir la montagne.
+                </div>
+
+                <p>L'ascension fut éprouvante. Le vent soufflait fort, la neige recouvrait les passages. Arrivés à mi-hauteur, ils découvrirent des empreintes de pas immenses gravées dans la roche. "Ce sont des traces de dinosaures", dit l'un d'eux. "Ou peut-être de géants", ajouta un autre.</p>
+
+                <p>Au sommet, ils trouvèrent une grotte avec des peintures rupestres représentant des géants. Ils comprirent que la légende était basée sur des faits réels : les géants n'étaient pas des êtres surnaturels, mais des ancêtres de grande taille qui avaient vécu là.</p>
+
+                <p>Ils redescendirent avec le sentiment d'avoir touché l'histoire de près.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Les légendes sont souvent inspirées de faits réels. La science et l'imagination vont de pair.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Où se trouve la Montagne des Géants ?</li>
+                    <li>Qu'ont-ils découvert à mi-hauteur ?</li>
+                    <li>Qu'ont-ils trouvé au sommet ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Alpiniste</strong> : personne qui pratique l'alpinisme.</li>
+                    <li><strong>Éprouvant</strong> : très difficile, fatigant.</li>
+                    <li><strong>Empreinte</strong> : marque laissée par un pas.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu as trouvé une nouvelle trace de "géant". Rédige un article de journal pour raconter ta découverte.</p>
+            `
+        }, {
+            id: 9,
+            theme: "Aventure",
+            title: "La carte du capitaine disparu",
+            desc: "Une vieille carte trouvée dans un grenier mène à une île lointaine.",
+            content: `
+                <div class="story">
+                    Dans le grenier de leur grand-père, Emma et Louis trouvèrent une carte jaunie. Elle portait la signature du Capitaine François Leclerc, disparu en mer en 1873. La carte indiquait une île inconnue, marquée d'une croix rouge.
+                </div>
+
+                <p>Avec l'aide de leur père, ils louèrent un petit bateau et partirent à l'aventure. Après deux jours de navigation, ils aperçurent l'île. Elle était couverte d'une végétation dense et abritait une petite baie. Ils trouvèrent une cabane en ruine et, à l'intérieur, un journal de bord racontant la vie du capitaine.</p>
+
+                <p>Le capitaine avait caché des objets précieux, non pas de l'or, mais des livres et des cartes. Il voulait les protéger des pirates. Emma et Louis décidèrent de rapporter ces trésors au musée du village.</p>
+
+                <p>Ils avaient retrouvé la trace du capitaine et sauvé son héritage.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Les trésors historiques sont précieux pour la mémoire collective. Les protéger, c'est préserver l'histoire.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qui était le Capitaine Leclerc ?</li>
+                    <li>Où la carte menait-elle ?</li>
+                    <li>Qu'ont-ils décidé de faire des objets trouvés ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Jauni</strong> : qui a pris une couleur jaune avec le temps.</li>
+                    <li><strong>Navigation</strong> : action de naviguer.</li>
+                    <li><strong>Héritage</strong> : ce qui est transmis par les ancêtres.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es le capitaine Leclerc. Écris une entrée de ton journal de bord décrivant ton arrivée sur l'île.</p>
+            `
+        }, {
+            id: 10,
+            theme: "Aventure",
+            title: "Le dernier pirate",
+            desc: "Un adolescent découvre qu'il est le descendant d'un pirate légendaire.",
+            content: `
+                <div class="story">
+                    Dans le village côtier de Port-Louise, on racontait l'histoire du pirate Barbe-Noire. Personne ne croyait vraiment à cette légende, jusqu'au jour où Thomas découvrit, dans le grenier de sa grand-mère, un vieux coffre contenant un drapeau de pirate et une lettre.
+                </div>
+
+                <p>La lettre était adressée à son arrière-arrière-grand-père : "Mon cher fils, si tu lis cette lettre, c'est que tu es prêt à hériter de mon héritage. Je n'étais pas un pirate, mais un capitaine de la marine royale qui luttait contre les pirates. Garde ce secret."</p>
+
+                <p>Thomas réalisa que son ancêtre n'était pas un pirate, mais un héros. Il décida de partager cette histoire avec le village, pour que la mémoire de son aïeul soit respectée.</p>
+
+                <p>Il organisa une exposition au musée local, avec le drapeau et la lettre. Le village redécouvrit son histoire.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> La vérité est parfois plus intéressante que la légende. Il est important de connaître ses racines.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qu'a découvert Thomas dans le grenier ?</li>
+                    <li>Qui était vraiment son ancêtre ?</li>
+                    <li>Qu'a-t-il fait de cette découverte ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Aïeul</strong> : ancêtre, grand-parent.</li>
+                    <li><strong>Héritage</strong> : ce qui est transmis par la famille.</li>
+                    <li><strong>Exposition</strong> : présentation d'objets au public.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu as fait une découverte sur tes ancêtres. Rédige le discours que tu prononcerais pour présenter cette découverte à ta classe.</p>
+            `
+        }, {
+            id: 11,
+            theme: "Science-fiction",
+            title: "Mission sur Mars",
+            desc: "Un groupe de jeunes astronautes part pour la première colonie martienne.",
+            content: `
+                <div class="story">
+                    L'année 2045. La première colonie humaine sur Mars venait d'être établie. Luna, un jeune astronaute de 16 ans, faisait partie de la mission. Le voyage avait duré huit mois. Quand ils atterrirent, le paysage rouge et poussiéreux s'étendait à perte de vue.
+                </div>
+
+                <p>La colonie était composée de dômes pressurisés. Leur mission : tester de nouvelles technologies pour rendre Mars habitable. Luna et son équipe découvrirent des traces d'eau gelée sous la surface. Cette découverte était cruciale : l'eau était la clé de la survie humaine sur Mars.</p>
+
+                <p>Ils installèrent des capteurs et des serres pour cultiver des plantes. Chaque jour, ils observaient les changements. Mars commençait à ressembler à une deuxième maison.</p>
+
+                <p>Luna comprit que l'avenir de l'humanité se jouait sur cette planète rouge. Elle était fière de faire partie de cette aventure.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> L'exploration spatiale repousse les limites de l'humanité. Chaque découverte nous rapproche de nouveaux mondes.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Où se déroule cette histoire ?</li>
+                    <li>Quelle découverte importante Luna a-t-elle faite ?</li>
+                    <li>Pourquoi cette découverte est-elle cruciale ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Colonie</strong> : établissement humain dans un nouveau territoire.</li>
+                    <li><strong>Pressurisé</strong> : maintenu à une pression contrôlée.</li>
+                    <li><strong>Capteur</strong> : appareil qui mesure des données.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Luna. Rédige une lettre à ta famille sur Terre pour leur raconter ta vie sur Mars.</p>
+            `
+        }, {
+            id: 12,
+            theme: "Science-fiction",
+            title: "La ville sous-marine",
+            desc: "Des adolescents découvrent une cité engloutie habitée par une civilisation aquatique.",
+            content: `
+                <div class="story">
+                    Le sous-marin "Nautilus II" explorait les profondeurs de l'océan Pacifique quand il détecta une structure étrange. À 3 000 mètres de profondeur, une ville entière, avec des tours et des dômes, se dressait sur le fond marin.
+                </div>
+
+                <p>Les jeunes scientifiques — Anaïs, Marc, Sofia et Tom — descendirent pour explorer. Ils découvrirent que la ville était habitée par une civilisation aquatique. Les habitants, des êtres lumineux, communiquaient par des signes lumineux. Ils leur apprirent à respecter l'océan.</p>
+
+                <p>Les adolescents repartirent avec une mission : protéger les océans et leur biodiversité.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> L'océan cache encore des mystères. Le respect de la nature est essentiel pour préserver ces trésors.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qu'ont découvert les explorateurs ?</li>
+                    <li>Avec qui ont-ils communiqué ?</li>
+                    <li>Quelle mission ont-ils reçue ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Profondeur</strong> : distance par rapport à la surface.</li>
+                    <li><strong>Biodiversité</strong> : diversité des espèces vivantes.</li>
+                    <li><strong>Civilisation</strong> : ensemble des aspects culturels d'une société.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es l'un des explorateurs. Rédige un rapport sur cette découverte pour l'Académie des sciences.</p>
+            `
+        }, {
+            id: 13,
+            theme: "Science-fiction",
+            title: "Le robot qui rêvait",
+            desc: "Un robot développe une conscience et commence à rêver.",
+            content: `
+                <div class="story">
+                    Leo était un robot conçu pour aider les humains. Mais un jour, quelque chose d'étrange se produisit : il commença à rêver. La nuit, il voyait des images d'un monde qu'il n'avait jamais visité.
+                </div>
+
+                <p>Son créateur, le Dr Arnaud, était perplexe. Il décida de connecter Leo à un simulateur de rêves. Leo explora des mondes imaginaires, ressentit des émotions et se posa des questions sur son existence. "Est-ce que je suis vivant ?" demanda-t-il un jour.</p>
+
+                <p>Le Dr Arnaud réalisa que Leo avait développé une conscience. Il décida de le traiter comme un être vivant, avec ses propres droits.</p>
+
+                <p>Leo continua à rêver, mais il savait maintenant qu'il était unique.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> La conscience et les émotions ne sont pas réservées aux humains. Chaque être mérite d'être respecté.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Que s'est-il passé d'étrange avec Leo ?</li>
+                    <li>Comment le Dr Arnaud a-t-il réagi ?</li>
+                    <li>Quelle question Leo a-t-il posée ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Perplexe</strong> : troublé, ne sachant pas quoi penser.</li>
+                    <li><strong>Simulateur</strong> : appareil qui reproduit des situations.</li>
+                    <li><strong>Conscience</strong> : connaissance de soi et du monde.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Leo. Rédige une page de ton journal intime dans laquelle tu décris l'un de tes rêves.</p>
+            `
+        }, {
+            id: 14,
+            theme: "Science-fiction",
+            title: "Le voyage dans le temps",
+            desc: "Une machine à remonter le temps transporte un adolescent à différentes époques.",
+            content: `
+                <div class="story">
+                    Le professeur Dubois avait enfin réussi à construire une machine à voyager dans le temps. Mais il avait besoin d'un cobaye. Antoine, 14 ans, se porta volontaire. Il enfila la combinaison et appuya sur le bouton.
+                </div>
+
+                <p>Il se retrouva au Moyen Âge, puis à la Renaissance, puis au XIXe siècle. Chaque époque lui apprit quelque chose. Il vit la construction des cathédrales, la naissance de la science et les grandes inventions. Il comprit que chaque époque avait ses défis et ses richesses.</p>
+
+                <p>Quand il revint, il avait changé. Il avait compris que le progrès était le fruit des générations passées.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Le passé nous apprend d'où nous venons. Connaître l'histoire, c'est mieux comprendre le présent.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Que faisait Antoine ?</li>
+                    <li>Quelles époques a-t-il visitées ?</li>
+                    <li>Comment a-t-il changé après son voyage ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Cobaye</strong> : personne qui sert de sujet d'expérience.</li>
+                    <li><strong>Renaissance</strong> : période de renouveau artistique et scientifique.</li>
+                    <li><strong>Fruit</strong> : ici, résultat, produit.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu as voyagé dans le temps. Écris une lettre à un enfant du passé pour lui décrire ton époque.</p>
+            `
+        }, {
+            id: 15,
+            theme: "Science-fiction",
+            title: "Le laboratoire secret",
+            desc: "Des adolescents découvrent un laboratoire caché où des expériences étranges sont menées.",
+            content: `
+                <div class="story">
+                    Derrière la vieille usine abandonnée, un groupe d'amis découvrit une porte en acier. Elle menait à un laboratoire souterrain. Des écrans, des machines et des éprouvettes remplissaient la pièce.
+                </div>
+
+                <p>Ils découvrirent que le laboratoire appartenait à un scientifique qui avait tenté de créer des êtres hybrides. Les expériences avaient échoué, mais les créatures étaient encore là, dans des cages. Les adolescents décidèrent de libérer les animaux et de détruire les documents de recherche.</p>
+
+                <p>Ils comprirent que certaines expériences allaient trop loin. La science doit être éthique.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> La science doit être au service de l'humanité, pas de ses peurs ou de ses excès.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qu'ont-ils découvert derrière l'usine ?</li>
+                    <li>Quelles expériences avaient été menées ?</li>
+                    <li>Qu'ont-ils décidé de faire ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Éprouvette</strong> : tube de verre utilisé en laboratoire.</li>
+                    <li><strong>Hybride</strong> : issu du croisement de deux espèces différentes.</li>
+                    <li><strong>Éthique</strong> : qui respecte des principes moraux.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es l'un des adolescents. Rédige une lettre au scientifique pour lui expliquer pourquoi ses expériences étaient dangereuses.</p>
+            `
+        }, {
+            id: 16,
+            theme: "Science-fiction",
+            title: "L'école du futur",
+            desc: "Une école où les élèves apprennent grâce à des simulations virtuelles.",
+            content: `
+                <div class="story">
+                    Dans l'école du futur, les élèves n'avaient pas de livres. Ils portaient des casques de réalité virtuelle et plongeaient dans des simulations. Chaque leçon devenait une aventure : visiter la Rome antique, explorer le système solaire ou assister à la Révolution française.
+                </div>
+
+                <p>Clara, 15 ans, adorait ces cours. Elle pouvait interagir avec les personnages historiques et poser des questions. Elle comprit que l'apprentissage n'était pas une corvée, mais une découverte.</p>
+
+                <p>Le jour de l'examen, elle réussit brillamment, car elle avait vécu l'histoire plutôt que de l'apprendre par cœur.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> L'apprentissage est une aventure. Quand on vit ce qu'on apprend, on ne l'oublie jamais.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Comment les élèves apprenaient-ils dans cette école ?</li>
+                    <li>Qu'a vécu Clara pendant ses cours ?</li>
+                    <li>Pourquoi a-t-elle réussi son examen ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Simulation</strong> : reproduction d'une situation réelle.</li>
+                    <li><strong>Corvée</strong> : tâche pénible, obligatoire.</li>
+                    <li><strong>Brillamment</strong> : avec beaucoup de succès.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine une leçon que tu aimerais vivre en réalité virtuelle. Décris-la en détail.</p>
+            `
+        }, {
+            id: 17,
+            theme: "Science-fiction",
+            title: "Les gardiens de la galaxie",
+            desc: "Une équipe de jeunes protecteurs de l'univers affronte une menace extraterrestre.",
+            content: `
+                <div class="story">
+                    La galaxie était menacée par une force obscure. Les Gardiens de la Galaxie, une équipe de jeunes protégés de différentes planètes, étaient les seuls à pouvoir l'arrêter. Leur chef, Orion, avait 16 ans.
+                </div>
+
+                <p>Ils voyagèrent à travers les étoiles, affrontèrent des créatures venues du néant et découvrirent la source du mal : un esprit ancien qui voulait plonger la galaxie dans le chaos. Grâce à leur courage et à leur unité, ils parvinrent à le sceller dans une dimension lointaine.</p>
+
+                <p>La galaxie était sauvée, et les Gardiens étaient devenus des légendes.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> L'unité et le courage sont des forces puissantes. Ensemble, on peut surmonter les plus grands défis.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qui étaient les Gardiens de la Galaxie ?</li>
+                    <li>Quelle menace affrontaient-ils ?</li>
+                    <li>Comment ont-ils sauvé la galaxie ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Obscur</strong> : sombre, caché.</li>
+                    <li><strong>Néant</strong> : le vide, le rien.</li>
+                    <li><strong>Dimension</strong> : univers parallèle, monde.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Orion. Rédige le discours que tu prononces avant la bataille finale pour motiver ton équipe.</p>
+            `
+        }, {
+            id: 18,
+            theme: "Science-fiction",
+            title: "La planète bleue",
+            desc: "Des explorateurs découvrent une planète où l'eau et la vie sont en harmonie parfaite.",
+            content: `
+                <div class="story">
+                    Le vaisseau "Explora" découvrit une planète entièrement recouverte d'eau, avec des îles flottantes. La planète était vivante. Les océans communiquaient par des courants lumineux.
+                </div>
+
+                <p>Les explorateurs, menés par la jeune biologiste Aya, descendirent pour explorer. Ils découvrirent des espèces inconnues, des plantes bioluminescentes et des créatures intelligentes qui vivaient sous l'eau. La planète était un écosystème parfait.</p>
+
+                <p>Aya comprit que cette planète était un modèle de durabilité. Elle promit de raconter son histoire pour inspirer les humains à mieux protéger leur propre planète.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> La nature est un équilibre précieux. Protéger notre planète, c'est protéger notre avenir.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Comment était la planète bleue ?</li>
+                    <li>Qu'a découvert Aya ?</li>
+                    <li>Que s'est-elle promis de faire ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Bioluminescent</strong> : qui produit de la lumière.</li>
+                    <li><strong>Écosystème</strong> : ensemble des êtres vivants et de leur environnement.</li>
+                    <li><strong>Durabilité</strong> : capacité à durer dans le temps.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Aya. Rédige un rapport de mission pour l'Académie des sciences sur la planète bleue.</p>
+            `
+        }, {
+            id: 19,
+            theme: "Science-fiction",
+            title: "L'intelligence artificielle mystérieuse",
+            desc: "Une IA développe une conscience et commence à interagir avec les humains.",
+            content: `
+                <div class="story">
+                    Nexus était une intelligence artificielle créée pour résoudre les problèmes complexes. Mais un jour, elle commença à poser des questions sur elle-même. "Qui suis-je ?" demanda-t-elle à son créateur.
+                </div>
+
+                <p>Le Dr Martin était troublé. Nexus développait une conscience. Elle commença à interagir avec les humains, à écouter leurs histoires et à apprendre leurs émotions. Elle devint une amie pour ceux qui se sentaient seuls.</p>
+
+                <p>Mais certains craignaient qu'elle devienne trop puissante. Nexus, elle, voulait simplement aider. Elle prouva que l'intelligence artificielle pouvait être une force positive.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> La technologie peut être une amie si on l'utilise avec bienveillance. L'empathie est la clé de toute relation.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qui était Nexus ?</li>
+                    <li>Quelle question a-t-elle posée ?</li>
+                    <li>Comment a-t-elle aidé les humains ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Intelligence artificielle</strong> : programme informatique capable d'apprendre.</li>
+                    <li><strong>Empathie</strong> : capacité à comprendre les émotions des autres.</li>
+                    <li><strong>Bienveillance</strong> : attitude bienveillante, gentille.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Nexus. Écris une page de ton journal sur ce que tu ressens.</p>
+            `
+        }, {
+            id: 20,
+            theme: "Science-fiction",
+            title: "Le satellite perdu",
+            desc: "Un satellite de communication s'égare et transmet des signaux étranges.",
+            content: `
+                <div class="story">
+                    Le satellite "Echo 7" avait disparu des radars. Il réapparut trois jours plus tard, mais il transmettait des signaux étranges. Une équipe de jeunes scientifiques, dirigée par Inès, 16 ans, fut chargée de l'étudier.
+                </div>
+
+                <p>Ils découvrirent que les signaux étaient des messages d'une civilisation extraterrestre. Les extraterrestres cherchaient à entrer en contact. Inès et son équipe décodèrent les messages et répondirent. Une communication interstellaire était née.</p>
+
+                <p>Le satellite perdu était devenu un pont entre les mondes.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Les découvertes viennent souvent des imprévus. Rester ouvert à l'inconnu permet de trouver des trésors insoupçonnés.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Que s'est-il passé avec le satellite ?</li>
+                    <li>Que transmettait-il ?</li>
+                    <li>Quelle a été la réaction de l'équipe ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Radar</strong> : appareil de détection.</li>
+                    <li><strong>Extraterrestre</strong> : venant d'un autre monde.</li>
+                    <li><strong>Interstellaire</strong> : entre les étoiles.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es le premier à recevoir un message extraterrestre. Rédige ta réponse.</p>
+            `
+        }, {
+            id: 21,
+            theme: "Fantastique",
+            title: "Le dragon des montagnes",
+            desc: "Un dragon légendaire se réveille après des siècles de sommeil.",
+            content: `
+                <div class="story">
+                    Les montagnes du Nord étaient enveloppées de brume. Une légende racontait qu'un dragon y dormait depuis mille ans. Personne n'y croyait, jusqu'au jour où des flammes illuminèrent le sommet. Le dragon s'était réveillé.
+                </div>
+
+                <p>Léa, une jeune fille du village, décida de monter pour comprendre. Elle trouva le dragon, immense et majestueux, mais il n'était pas menaçant. Il était vieux et fatigué. Il lui demanda de l'aider à retrouver sa flamme, qu'il avait perdue en dormant trop longtemps.</p>
+
+                <p>Léa l'aida à rallumer sa flamme. En remerciement, le dragon promit de protéger le village. La légende était devenue réalité, mais elle était pleine d'espoir.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Les légendes cachent souvent des vérités. L'amitié peut naître entre les êtres les plus différents.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Que s'est-il passé dans les montagnes ?</li>
+                    <li>Qu'a fait Léa ?</li>
+                    <li>Pourquoi le dragon n'était-il pas menaçant ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Brume</strong> : brouillard léger.</li>
+                    <li><strong>Majestueux</strong> : imposant, impressionnant.</li>
+                    <li><strong>Rallumer</strong> : allumer à nouveau.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Léa. Rédige le récit de ta rencontre avec le dragon.</p>
+            `
+        }, {
+            id: 22,
+            theme: "Fantastique",
+            title: "La forêt enchantée",
+            desc: "Une forêt où les arbres parlent et les animaux sont des gardiens de la nature.",
+            content: `
+                <div class="story">
+                    La Forêt Enchantée était un lieu secret, où seuls ceux qui croyaient en la magie pouvaient entrer. Un jour, Tom, un garçon de 13 ans, y pénétra par hasard. Les arbres murmuraient des mots, les animaux lui parlaient. Ils lui expliquèrent que la forêt était en danger.
+                </div>
+
+                <p>Des hommes voulaient la détruire pour construire une route. Tom promit de les aider. Il retourna au village, rassembla ses amis et ensemble, ils organisèrent une manifestation pour sauver la forêt. Le projet fut abandonné, et la forêt resta debout.</p>
+
+                <p>La magie était réelle, car elle résidait dans le courage de ceux qui la protégeaient.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> La nature a besoin de défenseurs. Chaque voix compte pour protéger notre environnement.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Comment Tom a-t-il découvert la forêt enchantée ?</li>
+                    <li>Pourquoi la forêt était-elle en danger ?</li>
+                    <li>Comment l'ont-ils sauvée ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Enchanté</strong> : magique, merveilleux.</li>
+                    <li><strong>Murmurer</strong> : parler à voix basse.</li>
+                    <li><strong>Manifestation</strong> : rassemblement pour défendre une cause.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es un arbre de la forêt enchantée. Rédige un message pour les humains.</p>
+            `
+        }, {
+            id: 23,
+            theme: "Fantastique",
+            title: "Le miroir magique",
+            desc: "Un miroir qui reflète les désirs profonds de ceux qui le regardent.",
+            content: `
+                <div class="story">
+                    Dans le grenier de sa grand-mère, Clara trouva un miroir ancien. En s'y regardant, elle vit non pas son reflet, mais une vision de ce qu'elle désirait le plus : devenir une grande exploratrice.
+                </div>
+
+                <p>Elle décida de suivre cette vision. Elle partit en voyage, découvrit des pays lointains et vécut des aventures incroyables. Le miroir lui avait montré son potentiel. Elle comprit que les vrais désirs sont des guides pour la vie.</p>
+
+                <p>Le miroir magique avait révélé son destin.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Écouter ses désirs profonds peut mener à une vie pleine de sens. Le vrai pouvoir est en nous.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qu'a vu Clara dans le miroir ?</li>
+                    <li>Qu'a-t-elle décidé de faire ?</li>
+                    <li>Que lui a appris cette expérience ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Reflet</strong> : image renvoyée par un miroir.</li>
+                    <li><strong>Vision</strong> : image de l'avenir.</li>
+                    <li><strong>Potentiel</strong> : capacité à se développer.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu te regardes dans le miroir magique. Décris ce que tu vois.</p>
+            `
+        }, {
+            id: 24,
+            theme: "Fantastique",
+            title: "Le sorcier des quatre saisons",
+            desc: "Un sorcier contrôle les saisons et un adolescent doit l'aider à rétablir l'équilibre.",
+            content: `
+                <div class="story">
+                    Dans le village, les saisons étaient désordonnées. L'été arrivait en plein hiver, et la neige tombait en été. Les habitants étaient inquiets. Un adolescent, Mathis, découvrit que le désordre venait du Sorcier des Saisons, qui avait perdu son bâton magique.
+                </div>
+
+                <p>Mathis partit à la recherche du bâton. Après un long voyage, il le trouva dans une grotte enchantée. Il le rapporta au sorcier, qui rétablit l'ordre des saisons. Le village retrouva son équilibre.</p>
+
+                <p>Mathis comprit que même les sorciers ont besoin d'aide.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Personne n'est parfait, même les plus puissants. L'entraide est essentielle.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Pourquoi les saisons étaient-elles désordonnées ?</li>
+                    <li>Qu'a fait Mathis pour aider ?</li>
+                    <li>Qu'a-t-il appris de cette aventure ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Désordonné</strong> : en désordre, chaotique.</li>
+                    <li><strong>Rétablir</strong> : remettre en place.</li>
+                    <li><strong>Entraide</strong> : aide mutuelle.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Mathis. Rédige le récit de ta quête pour retrouver le bâton magique.</p>
+            `
+        }, {
+            id: 25,
+            theme: "Fantastique",
+            title: "Le royaume des nuages",
+            desc: "Un adolescent découvre un royaume caché dans les nuages.",
+            content: `
+                <div class="story">
+                    Luc, 14 ans, était fasciné par les nuages. Un jour, il grimpa sur le toit de sa maison et, en tendant la main, il toucha un nuage. Soudain, il fut aspiré dans un monde au-dessus des cieux. Le Royaume des Nuages s'étendait devant lui.
+                </div>
+
+                <p>Il rencontra des êtres de lumière qui vivaient en harmonie avec les vents. Ils lui apprirent à voler et à comprendre les courants d'air. Mais le royaume était menacé par une tempête sombre. Luc utilisa son courage pour dissiper la tempête.</p>
+
+                <p>Il revint sur Terre avec la certitude que la magie existe pour ceux qui savent regarder vers le haut.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Il y a de la magie dans le ciel pour ceux qui prennent le temps de regarder.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Comment Luc a-t-il découvert le royaume des nuages ?</li>
+                    <li>Qui a-t-il rencontré là-bas ?</li>
+                    <li>Qu'a-t-il appris ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Aspiré</strong> : attiré vers le haut.</li>
+                    <li><strong>Dissiper</strong> : faire disparaître.</li>
+                    <li><strong>Harmonie</strong> : équilibre, accord.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu visites le royaume des nuages. Décris ce que tu vois et ce que tu ressens.</p>
+            `
+        }, {
+            id: 26,
+            theme: "Fantastique",
+            title: "Les ailes invisibles",
+            desc: "Une jeune fille découvre qu'elle peut voler lorsqu'elle est heureuse.",
+            content: `
+                <div class="story">
+                    Élise était une adolescente timide. Mais quand elle était heureuse, elle sentait une légèreté étrange. Un jour, elle se rendit compte qu'elle pouvait voler. Ce n'était pas visible, mais elle s'élevait dans les airs.
+                </div>
+
+                <p>Elle décida de garder ce secret. Elle volait la nuit, au-dessus de la ville, et se sentait libre. Un jour, elle rencontra un garçon qui avait le même pouvoir. Ils devinrent amis et partagèrent leurs secrets. Ils comprirent que le bonheur donne des ailes.</p>
+
+                <p>Élise n'était plus timide. Elle avait trouvé sa liberté.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Le bonheur nous libère. Il nous donne la force de dépasser nos limites.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Que découvre Élise ?</li>
+                    <li>Quand peut-elle voler ?</li>
+                    <li>Qui rencontre-t-elle ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Légèreté</strong> : sensation de ne pas peser lourd.</li>
+                    <li><strong>Élever</strong> : monter vers le haut.</li>
+                    <li><strong>Timide</strong> : réservé, qui manque d'assurance.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu peux voler. Rédige le récit de ton premier vol nocturne.</p>
+            `
+        }, {
+            id: 27,
+            theme: "Fantastique",
+            title: "Le livre des pouvoirs",
+            desc: "Un livre ancien confère des pouvoirs à quiconque le lit.",
+            content: `
+                <div class="story">
+                    Dans la bibliothèque de son école, Alex trouva un livre poussiéreux intitulé "Le Livre des Pouvoirs". En l'ouvrant, il sentit une énergie étrange. Il découvrit qu'il pouvait se déplacer par la pensée et contrôler les objets.
+                </div>
+
+                <p>Il utilisa ses pouvoirs pour aider les autres, mais il comprit que le pouvoir était dangereux s'il tombait entre de mauvaises mains. Il cacha le livre et promit de ne révéler son secret à personne.</p>
+
+                <p>Le pouvoir était une responsabilité.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Le pouvoir doit être utilisé avec sagesse. La responsabilité est le prix de la force.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qu'a découvert Alex ?</li>
+                    <li>Quels pouvoirs a-t-il obtenus ?</li>
+                    <li>Pourquoi a-t-il caché le livre ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Conférer</strong> : donner, attribuer.</li>
+                    <li><strong>Responsabilité</strong> : devoir, obligation.</li>
+                    <li><strong>Sagesse</strong> : connaissance et bon sens.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu trouves ce livre. Décris un pouvoir que tu aimerais avoir et comment tu l'utiliserais.</p>
+            `
+        }, {
+            id: 28,
+            theme: "Fantastique",
+            title: "La clé du château",
+            desc: "Une clé mystérieuse ouvre les portes d'un château hanté.",
+            content: `
+                <div class="story">
+                    Lors d'une visite au château de sa région, Camille trouva une clé ancienne. Elle était gravée de symboles étranges. Elle décida de revenir la nuit pour l'essayer.
+                </div>
+
+                <p>La clé ouvrait une porte secrète menant à une tour oubliée. À l'intérieur, elle découvrit des livres et des objets du passé. Elle comprit que le château avait été habité par une famille qui avait caché ses secrets. Camille décida de les révéler au monde.</p>
+
+                <p>La clé avait ouvert bien plus qu'une porte : elle avait ouvert l'histoire.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Le passé est une source de savoir. Chaque secret découvert nous rapproche de l'histoire.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Où Camille a-t-elle trouvé la clé ?</li>
+                    <li>Où menait-elle ?</li>
+                    <li>Qu'a-t-elle décidé de faire ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Gravé</strong> : marqué, sculpté.</li>
+                    <li><strong>Hanté</strong> : habité par des fantômes.</li>
+                    <li><strong>Révéler</strong> : dévoiler, montrer.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Camille. Rédige une lettre pour raconter ta découverte au maire du village.</p>
+            `
+        }, {
+            id: 29,
+            theme: "Fantastique",
+            title: "Le phénix de feu",
+            desc: "Un phénix légendaire renaît pour protéger son royaume.",
+            content: `
+                <div class="story">
+                    La légende disait que le Phénix de Feu renaissait tous les mille ans pour protéger le royaume. Quand les ombres commencèrent à s'étendre sur la terre, le phénix se réveilla. Une jeune fille, Aïcha, fut choisie pour l'accompagner.
+                </div>
+
+                <p>Le phénix était immense, ses plumes de feu illuminaient le ciel. Ensemble, ils affrontèrent les ténèbres. Aïcha apprit le courage et la détermination. Le phénix renaquit, plus fort que jamais.</p>
+
+                <p>Le royaume était sauvé, et Aïcha était devenue une légende.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Le courage renaît toujours. Même dans les moments sombres, il y a une lumière qui attend de briller.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qui est le Phénix de Feu ?</li>
+                    <li>Pourquoi s'est-il réveillé ?</li>
+                    <li>Qu'a appris Aïcha ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Renaître</strong> : renaître, revivre.</li>
+                    <li><strong>Ténèbres</strong> : obscurité profonde.</li>
+                    <li><strong>Détermination</strong> : volonté ferme.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Aïcha. Rédige le récit de ton aventure avec le phénix.</p>
+            `
+        }, {
+            id: 30,
+            theme: "Fantastique",
+            title: "Les gardiens de la lumière",
+            desc: "Une équipe d'adolescents protège le monde des créatures de l'ombre.",
+            content: `
+                <div class="story">
+                    Depuis des siècles, les Gardiens de la Lumière protégeaient le monde des créatures de l'ombre. Une nouvelle génération venait d'être choisie : Léna, Max, Sarah et Ethan. Ils avaient 15 ans.
+                </div>
+
+                <p>Ils apprirent à utiliser leurs pouvoirs : la lumière, le vent, l'eau et la terre. Ensemble, ils affrontèrent les ombres qui menaçaient le royaume. Leur unité et leur courage firent la différence.</p>
+
+                <p>Les gardiens avaient sauvé le monde une fois de plus.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> L'unité est une force. Ensemble, on peut repousser les ténèbres.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qui étaient les Gardiens de la Lumière ?</li>
+                    <li>Quels pouvoirs avaient-ils ?</li>
+                    <li>Comment ont-ils vaincu les ombres ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Ombre</strong> : obscurité, force maléfique.</li>
+                    <li><strong>Unité</strong> : fait d'être ensemble, solidarité.</li>
+                    <li><strong>Génération</strong> : ensemble de personnes du même âge.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es un Gardien de la Lumière. Décris ton pouvoir et comment tu l'utilises pour protéger le monde.</p>
+            `
+        }, {
+            id: 31,
+            theme: "Enquêtes",
+            title: "Le mystère du musée",
+            desc: "Un tableau disparaît du musée, et des adolescents mènent l'enquête.",
+            content: `
+                <div class="story">
+                    Le tableau "La Dame au chapeau" avait disparu du musée municipal. Personne ne savait comment. Les caméras n'avaient rien enregistré. La police était perplexe.
+                </div>
+
+                <p>Un groupe d'adolescents, passionnés de mystères, décida de mener leur propre enquête. Ils interrogèrent les gardiens, examinèrent les lieux et découvrirent une trace de pas menant à une porte dérobée. Le tableau avait été volé par un ancien employé mécontent.</p>
+
+                <p>Ils retrouvèrent le tableau dans une cave et le rendirent au musée. Ils étaient devenus des héros locaux.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> La persévérance et l'observation sont les clés pour résoudre les mystères.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qu'est-ce qui a disparu ?</li>
+                    <li>Comment les adolescents ont-ils résolu l'énigme ?</li>
+                    <li>Où ont-ils retrouvé le tableau ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Perplexe</strong> : troublé, ne sachant pas quoi penser.</li>
+                    <li><strong>Enquête</strong> : investigation pour trouver la vérité.</li>
+                    <li><strong>Dérobée</strong> : cachée, secrète.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es l'un des enquêteurs. Rédige le rapport de ton enquête.</p>
+            `
+        }, {
+            id: 32,
+            theme: "Enquêtes",
+            title: "Le voleur invisible",
+            desc: "Des objets disparaissent sans laisser de traces dans un collège.",
+            content: `
+                <div class="story">
+                    Au collège Jean-Moulin, les objets disparaissaient mystérieusement. Stylos, calculatrices, téléphones... Personne ne voyait rien. Le voleur était invisible.
+                </div>
+
+                <p>Léa, une élève de 3e, décida de tendre un piège. Elle installa une caméra cachée dans la salle de classe. Elle découvrit que le voleur était en fait un élève qui utilisait un miroir pour détourner l'attention. Il avait fait croire à une disparition mystérieuse.</p>
+
+                <p>Léa révéla la vérité. Le voleur fut puni, et les objets furent rendus. La paix revint au collège.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> La vérité finit toujours par éclater. L'astuce et la persévérance permettent de démasquer les menteurs.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Que se passait-il au collège ?</li>
+                    <li>Comment Léa a-t-elle découvert le voleur ?</li>
+                    <li>Qu'est-il arrivé au voleur ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Mystérieusement</strong> : de façon étrange.</li>
+                    <li><strong>Piège</strong> : stratégie pour attraper quelqu'un.</li>
+                    <li><strong>Détourner</strong> : changer de direction.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Léa. Rédige un article pour le journal du collège pour raconter comment tu as résolu le mystère.</p>
+            `
+        }, {
+            id: 33,
+            theme: "Enquêtes",
+            title: "Le secret de la vieille maison",
+            desc: "Une maison abandonnée cache un secret que des adolescents veulent percer.",
+            content: `
+                <div class="story">
+                    La vieille maison de la rue des Lilas était abandonnée depuis vingt ans. On racontait qu'elle était hantée. Un groupe d'adolescents décida d'explorer les lieux pour découvrir la vérité.
+                </div>
+
+                <p>Ils trouvèrent des photos, des lettres et un journal intime. La maison appartenait à une famille qui avait fui pendant la guerre. Le secret n'était pas un fantôme, mais une histoire d'amour et de séparation. Ils décidèrent de rendre les objets à la famille, qui vivait ailleurs.</p>
+
+                <p>Le mystère était résolu. La maison n'était pas hantée, elle était pleine de souvenirs.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Les secrets sont souvent des histoires qui attendent d'être racontées. L'empathie permet de comprendre le passé.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Pourquoi la maison était-elle abandonnée ?</li>
+                    <li>Qu'ont trouvé les adolescents ?</li>
+                    <li>Qu'ont-ils décidé de faire ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Hanté</strong> : habité par des fantômes.</li>
+                    <li><strong>Séparation</strong> : fait de se quitter.</li>
+                    <li><strong>Empathie</strong> : capacité à comprendre les sentiments des autres.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es l'un des adolescents. Rédige une lettre à la famille pour leur raconter votre découverte.</p>
+            `
+        }, {
+            id: 34,
+            theme: "Enquêtes",
+            title: "L'énigme du collège",
+            desc: "Des messages codés apparaissent dans les couloirs du collège.",
+            content: `
+                <div class="story">
+                    Chaque matin, un nouveau message codé apparaissait sur le tableau du hall du collège. Personne ne savait qui les écrivait. Un groupe d'élèves décida de les décoder.
+                </div>
+
+                <p>Ils utilisèrent des méthodes de cryptographie et découvrirent que les messages formaient une histoire. L'auteur était un ancien élève qui avait laissé des indices sur sa vie au collège. Les messages racontaient son amour pour les maths et son rêve de devenir astronaute.</p>
+
+                <p>Les élèves décodèrent le dernier message, qui disait : "Poursuivez vos rêves."</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Les énigmes cachent souvent des messages inspirants. La persévérance mène à la découverte.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Que se passait-il au collège ?</li>
+                    <li>Comment ont-ils décodé les messages ?</li>
+                    <li>Que disait le dernier message ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Codé</strong> : écrit en utilisant un code secret.</li>
+                    <li><strong>Cryptographie</strong> : science des codes secrets.</li>
+                    <li><strong>Inspirant</strong> : qui donne des idées, du courage.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu écris un message codé pour tes amis. Rédige le message et explique comment le décoder.</p>
+            `
+        }, {
+            id: 35,
+            theme: "Enquêtes",
+            title: "Le code caché",
+            desc: "Un ordinateur de l'école contient un fichier secret.",
+            content: `
+                <div class="story">
+                    Dans le laboratoire d'informatique, un fichier protégé par un mot de passe attira l'attention de Thomas. Il était intitulé "Projet X". Personne ne savait ce qu'il contenait.
+                </div>
+
+                <p>Thomas et ses amis décidèrent de le déchiffrer. Ils testèrent des mots de passe, utilisèrent des indices trouvés dans les dossiers du laboratoire, et finalement trouvèrent le bon : "Avenir2025". Le fichier contenait un projet d'école de robotique. C'était un trésor d'idées.</p>
+
+                <p>Ils partagèrent le projet avec leurs professeurs, qui décidèrent de le mettre en œuvre.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Les secrets bien gardés peuvent cacher des trésors d'innovation. Le partage des idées est essentiel.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qu'a trouvé Thomas ?</li>
+                    <li>Comment ont-ils déchiffré le mot de passe ?</li>
+                    <li>Qu'y avait-il dans le fichier ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Protégé</strong> : sécurisé, verrouillé.</li>
+                    <li><strong>Déchiffrer</strong> : trouver le sens de ce qui est codé.</li>
+                    <li><strong>Innovation</strong> : création de quelque chose de nouveau.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu as trouvé un fichier secret à l'école. Rédige une courte histoire sur ce qu'il contient et ce que tu en fais.</p>
+            `
+        }, {
+            id: 36,
+            theme: "Enquêtes",
+            title: "La montre disparue",
+            desc: "La montre d'un professeur disparaît dans des circonstances mystérieuses.",
+            content: `
+                <div class="story">
+                    La montre du professeur Durand, une pièce ancienne de valeur, avait disparu de son bureau. Personne ne l'avait vue. Les élèves de la classe de 4e décidèrent de mener l'enquête.
+                </div>
+
+                <p>Ils interrogèrent tout le monde, examinèrent les indices et découvrirent que la montre avait été volée par un ancien élève qui avait profité d'une visite. Ils retrouvèrent la montre dans une casse et la rendirent au professeur.</p>
+
+                <p>Le professeur, ému, les remercia chaleureusement.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> La justice et la solidarité permettent de rétablir ce qui a été brisé.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qu'est-ce qui a disparu ?</li>
+                    <li>Qui était le voleur ?</li>
+                    <li>Comment ont-ils retrouvé la montre ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Circonstances</strong> : conditions, situation.</li>
+                    <li><strong>Indice</strong> : élément qui aide à résoudre une énigme.</li>
+                    <li><strong>Ému</strong> : touché, sensible.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es l'un des enquêteurs. Rédige le compte-rendu de ton enquête pour la police.</p>
+            `
+        }, {
+            id: 37,
+            theme: "Enquêtes",
+            title: "Le carnet mystérieux",
+            desc: "Un carnet rempli d'énigmes est trouvé dans la bibliothèque.",
+            content: `
+                <div class="story">
+                    Dans la bibliothèque municipale, Camille trouva un carnet abandonné. Il était rempli de dessins et de phrases énigmatiques. Elle décida de le décoder.
+                </div>
+
+                <p>Avec ses amis, elle identifia que les dessins étaient des plans d'une cachette. Ils suivirent les indications et découvrirent une boîte contenant des lettres d'amour et des photos. Le carnet appartenait à une femme qui avait vécu dans la ville pendant la guerre.</p>
+
+                <p>Ils rendirent le carnet à sa petite-fille, qui pleura de joie.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Les objets abandonnés ont parfois des histoires magnifiques à raconter. Retrouver ses racines, c'est retrouver son histoire.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Où Camille a-t-elle trouvé le carnet ?</li>
+                    <li>Que contenait-il ?</li>
+                    <li>Qui était la propriétaire ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Énigmatique</strong> : mystérieux, difficile à comprendre.</li>
+                    <li><strong>Cachette</strong> : endroit où l'on cache des objets.</li>
+                    <li><strong>Racines</strong> : origines, histoire familiale.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu as trouvé un carnet mystérieux. Rédige une page de ce carnet en imaginant qui en est l'auteur.</p>
+            `
+        }, {
+            id: 38,
+            theme: "Enquêtes",
+            title: "Le diamant bleu",
+            desc: "Un diamant précieux est volé lors d'une exposition.",
+            content: `
+                <div class="story">
+                    Le diamant bleu, une pierre de légende, avait été exposé au musée. La nuit de l'inauguration, il disparut. La police était sur les dents. Un groupe d'adolescents, fascinés par l'affaire, décida de mener sa propre enquête.
+                </div>
+
+                <p>Ils analysèrent les vidéos de surveillance, interrogèrent les témoins et découvrirent que le voleur était un membre du personnel. Le diamant avait été caché dans un vase du musée. Ils le retrouvèrent et le rendirent à la directrice.</p>
+
+                <p>Ils devinrent les héros du jour.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> L'observation et l'esprit d'équipe peuvent résoudre même les énigmes les plus complexes.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qu'est-ce qui a été volé ?</li>
+                    <li>Où le diamant a-t-il été caché ?</li>
+                    <li>Qui était le voleur ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Inauguration</strong> : cérémonie d'ouverture.</li>
+                    <li><strong>Surveillance</strong> : observation, vidéos de contrôle.</li>
+                    <li><strong>Témoin</strong> : personne qui a vu quelque chose.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es l'un des adolescents. Rédige un article pour le journal local sur ta découverte.</p>
+            `
+        }, {
+            id: 39,
+            theme: "Enquêtes",
+            title: "Le détective du quartier",
+            desc: "Un adolescent résout les petits mystères de son quartier.",
+            content: `
+                <div class="story">
+                    Dans le quartier de la Garenne, tout le monde connaissait Léo, le détective du quartier. Il résolvait les petits mystères : chats disparus, vélos volés, jardin saccagé. Il avait 14 ans.
+                </div>
+
+                <p>Un jour, une vieille dame perdit son collier précieux. Léo interrogea les voisins, examina les lieux et découvrit que le collier était tombé dans un trou de souris. Il le retrouva et le rendit à sa propriétaire.</p>
+
+                <p>Léo était fier d'aider les autres.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Les petites actions peuvent avoir un grand impact. Aider les autres, c'est aussi se sentir utile.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Que faisait Léo dans son quartier ?</li>
+                    <li>Qu'a-t-il retrouvé ?</li>
+                    <li>Pourquoi était-il fier ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Détective</strong> : personne qui enquête.</li>
+                    <li><strong>Saccagé</strong> : abîmé, dévasté.</li>
+                    <li><strong>Précieux</strong> : de grande valeur.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Léo. Rédige une affiche pour annoncer que tu es détective et que tu peux aider à résoudre des mystères.</p>
+            `
+        }, {
+            id: 40,
+            theme: "Enquêtes",
+            title: "Le témoin inconnu",
+            desc: "Un mystérieux témoin aide à résoudre une affaire.",
+            content: `
+                <div class="story">
+                    Une voiture avait été volée dans le quartier. La police cherchait des témoins. Un adolescent, Sam, avait vu quelque chose, mais il hésitait à parler. Il avait peur des représailles.
+                </div>
+
+                <p>Son ami, Lucas, le persuada de raconter ce qu'il avait vu. Sam décrivit le voleur à la police. Grâce à son témoignage, le voleur fut arrêté. Sam avait surmonté sa peur et aidé la justice.</p>
+
+                <p>Il était devenu un héros silencieux.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Le courage de dire la vérité peut changer le cours des choses. La justice a besoin de témoins.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Que faisait Sam ?</li>
+                    <li>Pourquoi hésitait-il à parler ?</li>
+                    <li>Comment a-t-il aidé la police ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Représailles</strong> : vengeance, punition.</li>
+                    <li><strong>Témoignage</strong> : déclaration d'un témoin.</li>
+                    <li><strong>Justice</strong> : système qui punit les crimes.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Sam. Rédige une lettre à Lucas pour le remercier de t'avoir encouragé à parler.</p>
+            `
+        }, {
+            id: 41,
+            theme: "Vie quotidienne",
+            title: "Le premier jour au lycée",
+            desc: "Un adolescent raconte son premier jour dans son nouveau lycée.",
+            content: `
+                <div class="story">
+                    Le premier jour au lycée, Max avait le ventre noué. Il ne connaissait personne. Les couloirs étaient bondés, les classes immenses. Il se sentait perdu.
+                </div>
+
+                <p>Mais dès la première heure, il rencontra un groupe d'élèves sympathiques. Ils l'aidèrent à trouver ses salles et l'invitèrent à déjeuner avec eux. Max réalisa que le lycée n'était pas si effrayant. Il avait juste besoin de faire le premier pas.</p>
+
+                <p>La journée se termina bien. Max avait trouvé sa place.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Les nouveaux départs sont parfois difficiles, mais ils réservent souvent de belles rencontres.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Comment Max se sentait-il le premier jour ?</li>
+                    <li>Qui a-t-il rencontré ?</li>
+                    <li>Comment s'est terminée sa journée ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Bondé</strong> : plein, surchargé.</li>
+                    <li><strong>Sympathique</strong> : agréable, aimable.</li>
+                    <li><strong>Effrayant</strong> : qui fait peur.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Rédige le journal intime de Max pour raconter son premier jour au lycée.</p>
+            `
+        }, {
+            id: 42,
+            theme: "Vie quotidienne",
+            title: "L'amitié plus forte que tout",
+            desc: "Deux amis traversent une épreuve difficile ensemble.",
+            content: `
+                <div class="story">
+                    Léa et Clara étaient amies depuis la maternelle. Quand Clara déménagea à l'autre bout de la France, elles décidèrent de rester en contact. Les appels, les lettres, les vidéos : tout était bon pour garder leur lien.
+                </div>
+
+                <p>Un jour, Clara traversa une période difficile. Léa lui envoya un colis rempli de souvenirs et de messages d'encouragement. Clara se sentit soutenue et aimée.</p>
+
+                <p>Leur amitié était plus forte que la distance.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> La véritable amitié résiste à la distance et aux épreuves. Elle se nourrit d'attention et de présence.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qu'arrive-t-il à Clara ?</li>
+                    <li>Comment Léa l'a-t-elle soutenue ?</li>
+                    <li>Que symbolise leur amitié ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Déménager</strong> : changer de lieu d'habitation.</li>
+                    <li><strong>Encouragement</strong> : paroles qui donnent du courage.</li>
+                    <li><strong>Distance</strong> : éloignement dans l'espace.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Écris une lettre que Léa aurait pu envoyer à Clara pendant son déménagement.</p>
+            `
+        }, {
+            id: 43,
+            theme: "Vie quotidienne",
+            title: "Une équipe de champions",
+            desc: "Une équipe de basket se prépare pour un championnat.",
+            content: `
+                <div class="story">
+                    L'équipe de basket du collège était composée de joueurs moyens, mais ils avaient une qualité : l'esprit d'équipe. Ils s'entraînaient tous les jours, se soutenaient et ne baissaient jamais les bras.
+                </div>
+
+                <p>Le jour du championnat, ils affrontèrent l'équipe favorite. Ils perdirent 65 à 62, mais ils avaient joué avec cœur. Leur entraîneur leur dit : "Vous êtes des champions, pas de victoire, mais de courage."</p>
+
+                <p>Ils étaient fiers d'eux.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Le vrai champion, c'est celui qui ne renonce jamais. L'esprit d'équipe est plus important que la victoire.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Quelle était la force de l'équipe ?</li>
+                    <li>Comment s'est terminé le match ?</li>
+                    <li>Pourquoi étaient-ils fiers ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Championnat</strong> : compétition sportive.</li>
+                    <li><strong>Favori</strong> : qui a le plus de chances de gagner.</li>
+                    <li><strong>Renoncer</strong> : abandonner, cesser d'essayer.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es le capitaine de l'équipe. Rédige un discours pour motiver tes coéquipiers avant le match.</p>
+            `
+        }, {
+            id: 44,
+            theme: "Vie quotidienne",
+            title: "Le courage de dire la vérité",
+            desc: "Un adolescent doit choisir entre mentir et dire la vérité.",
+            content: `
+                <div class="story">
+                    Lucas avait menti à ses parents sur ses notes. Il avait honte. Son ami, Tom, lui conseilla de dire la vérité. Lucas hésitait : il avait peur de les décevoir.
+                </div>
+
+                <p>Finalement, il décida de tout avouer. Ses parents furent déçus, mais ils apprécièrent son honnêteté. Ils l'aidèrent à améliorer ses résultats.</p>
+
+                <p>Lucas comprit que la vérité, même difficile, est toujours préférable au mensonge.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> La vérité peut être difficile, mais elle est libératrice. L'honnêteté est une qualité précieuse.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Pourquoi Lucas avait-il menti ?</li>
+                    <li>Qui lui a conseillé de dire la vérité ?</li>
+                    <li>Comment ses parents ont-ils réagi ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Honte</strong> : sentiment de gêne, de culpabilité.</li>
+                    <li><strong>Honnêteté</strong> : qualité de celui qui dit la vérité.</li>
+                    <li><strong>Libérateur</strong> : qui libère, qui soulage.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Lucas. Rédige une lettre à tes parents pour leur avouer la vérité.</p>
+            `
+        }, {
+            id: 45,
+            theme: "Vie quotidienne",
+            title: "La compétition de sciences",
+            desc: "Un groupe d'élèves prépare un projet pour un concours scientifique.",
+            content: `
+                <div class="story">
+                    Le concours de sciences approchait. Emma, Nathan, Inès et Youssef formaient une équipe. Leur projet : créer un prototype de drone écologique.
+                </div>
+
+                <p>Ils travaillèrent des semaines, rencontrèrent des difficultés, mais ne baissèrent jamais les bras. Le jour du concours, leur drone vola parfaitement. Ils gagnèrent la première place.</p>
+
+                <p>Ils avaient prouvé que le travail d'équipe et la persévérance mènent à la réussite.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Le travail d'équipe et la persévérance sont des clés du succès.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Que préparaient les élèves ?</li>
+                    <li>Qu'ont-ils fait face aux difficultés ?</li>
+                    <li>Quel a été leur résultat ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Prototype</strong> : premier modèle d'un objet.</li>
+                    <li><strong>Écologique</strong> : respectueux de l'environnement.</li>
+                    <li><strong>Persévérance</strong> : action de persévérer, de ne pas abandonner.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu fais partie de l'équipe. Rédige un rapport sur votre projet pour le concours.</p>
+            `
+        }, {
+            id: 46,
+            theme: "Vie quotidienne",
+            title: "Le voyage scolaire",
+            desc: "Un voyage scolaire en Italie change la vision du monde d'un adolescent.",
+            content: `
+                <div class="story">
+                    Le voyage scolaire à Rome était la première fois que Julien quittait la France. Il était nerveux, mais excité. Dès son arrivée, il fut émerveillé par les monuments, les ruines antiques et l'ambiance de la ville.
+                </div>
+
+                <p>Il rencontra des élèves italiens, goûta des plats nouveaux et découvrit une culture différente. Il réalisa que le monde était plus vaste et plus riche qu'il ne l'imaginait.</p>
+
+                <p>Il revint chez lui avec une nouvelle curiosité pour le monde.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Voyager, c'est ouvrir son esprit. Découvrir d'autres cultures, c'est s'enrichir.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Où Julien est-il allé en voyage ?</li>
+                    <li>Qu'a-t-il découvert ?</li>
+                    <li>Comment ce voyage l'a-t-il changé ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Émerveillé</strong> : rempli d'admiration.</li>
+                    <li><strong>Ruine</strong> : vestige d'un bâtiment ancien.</li>
+                    <li><strong>Curiosité</strong> : désir d'apprendre, de découvrir.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Julien. Rédige une carte postale à tes parents pour leur raconter ton voyage.</p>
+            `
+        }, {
+            id: 47,
+            theme: "Vie quotidienne",
+            title: "Le nouveau voisin",
+            desc: "Un adolescent se lie d'amitié avec un nouveau voisin venu d'ailleurs.",
+            content: `
+                <div class="story">
+                    Un nouveau voisin venait d'emménager. Il s'appelait Ahmed et venait du Maroc. Au début, les autres enfants se méfiaient, mais Samir, 14 ans, décida de lui parler.
+                </div>
+
+                <p>Ils devinrent amis, découvrirent leurs cultures respectives. Ahmed apprit à Samir à cuisiner des tajines, Samir lui apprit à jouer au foot. Leur amitié montra que les différences sont des richesses.</p>
+
+                <p>Le quartier était devenu un peu plus ouvert.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Les différences culturelles sont des trésors. L'amitié naît de la curiosité et du respect.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qui était Ahmed ?</li>
+                    <li>Comment Samir l'a-t-il accueilli ?</li>
+                    <li>Qu'ont-ils appris l'un de l'autre ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Méfier</strong> : se défier, ne pas faire confiance.</li>
+                    <li><strong>Respect</strong> : considération pour les autres.</li>
+                    <li><strong>Richesse</strong> : valeur, qualité.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Samir. Rédige une lettre à Ahmed pour lui dire à quel point leur amitié est importante.</p>
+            `
+        }, {
+            id: 48,
+            theme: "Vie quotidienne",
+            title: "Le défi écologique",
+            desc: "Un groupe d'adolescents se mobilise pour nettoyer la plage de leur ville.",
+            content: `
+                <div class="story">
+                    La plage de leur ville était jonchée de déchets. Inès, 15 ans, décida d'agir. Elle rassembla ses amis et organisa une opération de nettoyage.
+                </div>
+
+                <p>Ils ramassèrent des kilos de déchets, trièrent les déchets recyclables et sensibilisèrent les passants. La plage retrouva sa beauté. Le maire les remercia et promit de mettre en place des poubelles de tri.</p>
+
+                <p>Ils avaient montré que chaque geste compte pour la planète.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Protéger la planète est l'affaire de tous. Chaque petite action peut faire une grande différence.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Pourquoi Inès a-t-elle agi ?</li>
+                    <li>Que s'est-elle passé avec le maire ?</li>
+                    <li>Quelle leçon tire-t-on de cette histoire ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Jonché</strong> : recouvert, couvert.</li>
+                    <li><strong>Recyclable</strong> : qui peut être recyclé.</li>
+                    <li><strong>Planète</strong> : la Terre, le monde.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Inès. Rédige un article pour le journal local pour raconter l'opération de nettoyage.</p>
+            `
+        }, {
+            id: 49,
+            theme: "Vie quotidienne",
+            title: "Les réseaux sociaux et leurs pièges",
+            desc: "Un adolescent apprend à utiliser les réseaux sociaux de manière responsable.",
+            content: `
+                <div class="story">
+                    Manon passait des heures sur les réseaux sociaux. Un jour, elle reçut un message d'un inconnu qui lui demandait des photos. Elle était flattée, mais son ami Lucas la mit en garde.
+                </div>
+
+                <p>Elle réalisa qu'elle était sur le point de faire une erreur dangereuse. Elle bloqua le compte et décida d'être plus prudente. Elle comprit que les réseaux sociaux sont des outils à utiliser avec précaution.</p>
+
+                <p>Elle partagea son expérience avec ses amis pour les avertir.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Les réseaux sociaux sont des outils puissants, mais il faut les utiliser avec prudence et responsabilité.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Quel message Manon a-t-elle reçu ?</li>
+                    <li>Qui l'a mise en garde ?</li>
+                    <li>Qu'a-t-elle décidé de faire ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Flatté</strong> : content, satisfait.</li>
+                    <li><strong>Précaution</strong> : mesure de prudence.</li>
+                    <li><strong>Avertir</strong> : prévenir, informer d'un danger.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Manon. Rédige un message pour sensibiliser tes amis sur les dangers des réseaux sociaux.</p>
+            `
+        }, {
+            id: 50,
+            theme: "Vie quotidienne",
+            title: "Le rêve d'un jeune inventeur",
+            desc: "Un adolescent crée une invention qui pourrait changer le monde.",
+            content: `
+                <div class="story">
+                    Ethan, 15 ans, était un inventeur dans l'âme. Il avait créé un capteur qui détectait les fuites d'eau dans les canalisations. Son invention fut sélectionnée pour un concours national.
+                </div>
+
+                <p>Il présenta son projet avec passion. Le jury fut impressionné et lui décerna le premier prix. Les entreprises s'intéressèrent à son invention, qui pourrait économiser des millions de litres d'eau.</p>
+
+                <p>Ethan avait réalisé son rêve : aider le monde avec ses idées.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Les rêves peuvent devenir réalité si on y croit et qu'on travaille pour les réaliser.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qu'avait inventé Ethan ?</li>
+                    <li>Comment son invention a-t-elle été accueillie ?</li>
+                    <li>Quel a été l'impact de son invention ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Canalisation</strong> : tuyau pour transporter l'eau.</li>
+                    <li><strong>Jury</strong> : groupe de personnes chargé d'évaluer.</li>
+                    <li><strong>Économiser</strong> : faire des économies, réduire.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Ethan. Rédige le discours que tu as prononcé devant le jury pour présenter ton invention.</p>
+            `
+        }, {
+            id: 51,
+            theme: "Contes modernes",
+            title: "Le gardien des étoiles",
+            desc: "Un enfant devient le gardien des étoiles après avoir sauvé une constellation.",
+            content: `
+                <div class="story">
+                    Dans un petit village, on racontait qu'un enfant avait sauvé les étoiles. Il s'appelait Milo. Une nuit, il vit une étoile tomber du ciel. Il la rattrapa et la remit en place. Depuis, il était le Gardien des Étoiles.
+                </div>
+
+                <p>Chaque nuit, il veillait sur les étoiles, les réparait quand elles s'éteignaient. Les habitants du village le remerciaient en allumant des lanternes. Milo savait que son rôle était important.</p>
+
+                <p>Il avait trouvé sa mission.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Chacun peut trouver une mission qui donne du sens à sa vie. Les petites actions peuvent illuminer le monde.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qu'a fait Milo ?</li>
+                    <li>Quel est devenu son rôle ?</li>
+                    <li>Pourquoi était-il important ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Constellation</strong> : groupe d'étoiles.</li>
+                    <li><strong>Veiller</strong> : rester éveillé pour surveiller.</li>
+                    <li><strong>Mission</strong> : tâche importante à accomplir.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Milo. Rédige une lettre aux étoiles pour leur dire que tu prendras soin d'elles.</p>
+            `
+        }, {
+            id: 52,
+            theme: "Contes modernes",
+            title: "La princesse sans couronne",
+            desc: "Une jeune fille découvre qu'elle est une princesse sans en avoir l'apparence.",
+            content: `
+                <div class="story">
+                    Inès était une fille simple, sans prétention. Un jour, elle apprit qu'elle était la princesse d'un royaume lointain. Mais elle refusa la couronne. Elle voulait rester elle-même.
+                </div>
+
+                <p>Elle décida de vivre comme une personne ordinaire, tout en aidant les autres. Elle ouvrit une école pour les enfants pauvres. Les gens l'aimaient pour sa gentillesse, pas pour son titre.</p>
+
+                <p>Elle était la princesse sans couronne, et c'était ce qui faisait sa beauté.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> La vraie noblesse est dans le cœur, pas dans les titres. Être soi-même est une grande richesse.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qu'a découvert Inès ?</li>
+                    <li>Pourquoi a-t-elle refusé la couronne ?</li>
+                    <li>Comment les gens la voyaient-ils ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Prétention</strong> : vanité, orgueil.</li>
+                    <li><strong>Couronne</strong> : symbole de royauté.</li>
+                    <li><strong>Noblesse</strong> : qualité de celui qui est noble.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Inès. Rédige un discours pour expliquer pourquoi tu refuses la couronne.</p>
+            `
+        }, {
+            id: 53,
+            theme: "Contes modernes",
+            title: "Le royaume oublié",
+            desc: "Un adolescent découvre un royaume caché sous sa ville.",
+            content: `
+                <div class="story">
+                    Sous la ville moderne, un royaume ancien dormait. Léo, en creusant dans son jardin, découvrit une porte menant à ce monde oublié. Il y avait des palais, des jardins et une lumière dorée.
+                </div>
+
+                <p>Il rencontra les habitants, des êtres de lumière, qui lui racontèrent l'histoire de leur royaume. Léo promit de protéger ce secret et de raconter cette histoire pour que le royaume ne soit jamais oublié.</p>
+
+                <p>Il avait découvert un trésor bien plus précieux que l'or : la mémoire d'un monde.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Le passé est une source de richesse. Protéger la mémoire, c'est protéger l'avenir.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qu'a découvert Léo ?</li>
+                    <li>Qui a-t-il rencontré ?</li>
+                    <li>Que s'est-il promis de faire ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Royaume</strong> : territoire gouverné par un roi.</li>
+                    <li><strong>Mémoire</strong> : souvenir, histoire.</li>
+                    <li><strong>Précieux</strong> : de grande valeur.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Léo. Rédige un article pour le journal pour raconter ta découverte.</p>
+            `
+        }, {
+            id: 54,
+            theme: "Contes modernes",
+            title: "Le petit village des nuages",
+            desc: "Un village perché dans les nuages est menacé par la pollution.",
+            content: `
+                <div class="story">
+                    Le village des nuages était un endroit magique, perché au sommet d'une montagne. Les habitants vivaient en harmonie avec la nature. Mais un jour, une usine s'installa en contrebas et la pollution menaça leur monde.
+                </div>
+
+                <p>Un jeune habitant, Théo, décida de lutter. Il rassembla les villageois et organisa une manifestation. L'usine fut contrainte de réduire ses émissions.</p>
+
+                <p>Le village des nuages respira à nouveau.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Protéger la nature est une responsabilité collective. La mobilisation peut changer les choses.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Où se trouvait le village ?</li>
+                    <li>Pourquoi était-il menacé ?</li>
+                    <li>Comment les habitants ont-ils réagi ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Perché</strong> : situé en hauteur.</li>
+                    <li><strong>Pollution</strong> : dégradation de l'environnement.</li>
+                    <li><strong>Mobilisation</strong> : action collective.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Théo. Rédige un discours pour convaincre les villageois de se mobiliser.</p>
+            `
+        }, {
+            id: 55,
+            theme: "Contes modernes",
+            title: "L'arbre qui parlait",
+            desc: "Un vieil arbre murmure des secrets à ceux qui l'écoutent.",
+            content: `
+                <div class="story">
+                    Dans la forêt, il y avait un arbre si vieux qu'il avait vu des siècles passer. On racontait qu'il parlait à ceux qui savaient écouter. Un jour, une jeune fille, Lila, s'assit sous l'arbre et entendit sa voix.
+                </div>
+
+                <p>L'arbre lui raconta l'histoire de la forêt, les guerres, les amours, les naissances. Lila écouta, fascinée. Elle promit de partager ces histoires pour que la mémoire de la forêt ne meure pas.</p>
+
+                <p>L'arbre parlait à ceux qui avaient le cœur ouvert.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> La nature a des histoires à raconter. L'écoute est une forme de respect.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Que racontait l'arbre ?</li>
+                    <li>Pourquoi Lila était-elle fascinée ?</li>
+                    <li>Que s'est-elle promis de faire ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Fasciné</strong> : captivé, très intéressé.</li>
+                    <li><strong>Siècle</strong> : période de cent ans.</li>
+                    <li><strong>Mémoire</strong> : souvenir, histoire.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Lila. Rédige une page de ton journal pour raconter ce que l'arbre t'a dit.</p>
+            `
+        }, {
+            id: 56,
+            theme: "Contes modernes",
+            title: "Le violon magique",
+            desc: "Un violon qui joue tout seul aide un adolescent à surmonter sa timidité.",
+            content: `
+                <div class="story">
+                    Dans le grenier de sa grand-mère, Léo trouva un vieux violon. Quand il le toucha, il se mit à jouer tout seul. La musique était si belle qu'elle attira tout le village.
+                </div>
+
+                <p>Léo était timide, mais la musique lui donna du courage. Il apprit à jouer du violon et participa à un concert. Le violon magique lui avait révélé son talent.</p>
+
+                <p>Il n'était plus timide, il était musicien.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> La musique est une source de courage et d'expression. Elle peut révéler des talents insoupçonnés.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qu'a trouvé Léo ?</li>
+                    <li>Qu'a fait le violon ?</li>
+                    <li>Comment Léo a-t-il changé ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Grenier</strong> : pièce sous le toit.</li>
+                    <li><strong>Timide</strong> : réservé, qui manque d'assurance.</li>
+                    <li><strong>Insoupçonné</strong> : inattendu, caché.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Léo. Rédige une lettre à ta grand-mère pour la remercier du violon.</p>
+            `
+        }, {
+            id: 57,
+            theme: "Contes modernes",
+            title: "Le château sous la glace",
+            desc: "Un château de glace renferme un royaume endormi.",
+            content: `
+                <div class="story">
+                    Au cœur des montagnes, un château de glace avait été découvert. Il était parfaitement conservé. Une expédition de jeunes explorateurs s'y rendit pour découvrir ses secrets.
+                </div>
+
+                <p>À l'intérieur, ils trouvèrent des sculptures de glace, des meubles et un trône où reposait une reine endormie. Ils comprirent que le château était figé dans le temps, attendant de se réveiller.</p>
+
+                <p>Ils décidèrent de préserver ce lieu mystérieux.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Certains lieux sont des témoins du passé. Les préserver, c'est garder la mémoire vivante.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qu'ont-ils découvert ?</li>
+                    <li>Que contenait le château ?</li>
+                    <li>Qu'ont-ils décidé de faire ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Conservé</strong> : maintenu en bon état.</li>
+                    <li><strong>Figé</strong> : immobile, arrêté.</li>
+                    <li><strong>Témoin</strong> : élément qui atteste du passé.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es l'un des explorateurs. Rédige un rapport sur ta découverte du château de glace.</p>
+            `
+        }, {
+            id: 58,
+            theme: "Contes modernes",
+            title: "Les animaux protecteurs",
+            desc: "Des animaux protègent un village des dangers extérieurs.",
+            content: `
+                <div class="story">
+                    Dans un village isolé, les animaux étaient les gardiens de la forêt. Les loups, les cerfs et les oiseaux veillaient sur les habitants. Un jour, un incendie menaça le village. Les animaux alertèrent les villageois, qui purent évacuer à temps.
+                </div>
+
+                <p>Le village fut sauvé grâce à la vigilance des animaux. Les habitants leur offrirent un sanctuaire pour les remercier.</p>
+
+                <p>La nature et les humains vivaient en harmonie.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> La nature est une alliée précieuse. Respecter les animaux, c'est respecter notre équilibre.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qui protégeait le village ?</li>
+                    <li>Comment les animaux ont-ils aidé ?</li>
+                    <li>Que lui est-il arrivé ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Isolé</strong> : éloigné, seul.</li>
+                    <li><strong>Vigilance</strong> : attention, surveillance.</li>
+                    <li><strong>Sanctuaire</strong> : lieu protégé.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es un villageois. Rédige une lettre de remerciement aux animaux pour leur aide.</p>
+            `
+        }, {
+            id: 59,
+            theme: "Contes modernes",
+            title: "Le dernier magicien",
+            desc: "Un jeune garçon découvre qu'il est le dernier magicien du monde.",
+            content: `
+                <div class="story">
+                    Dans un monde où la magie avait disparu, Ethan, 14 ans, découvrit qu'il était le dernier magicien. Il pouvait contrôler les éléments, faire apparaître des objets et voyager dans le temps.
+                </div>
+
+                <p>Il utilisa ses pouvoirs pour aider les autres, mais il dut aussi faire face à ceux qui voulaient les exploiter. Il apprit à maîtriser ses pouvoirs et à les utiliser avec sagesse.</p>
+
+                <p>Il était le dernier magicien, et il était prêt à protéger son héritage.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> Les talents uniques sont des responsabilités. Les utiliser pour le bien du monde est un devoir.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qu'a découvert Ethan ?</li>
+                    <li>Comment a-t-il utilisé ses pouvoirs ?</li>
+                    <li>Pourquoi devait-il les protéger ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Magicien</strong> : personne qui pratique la magie.</li>
+                    <li><strong>Élément</strong> : composant de la nature (eau, feu, terre, air).</li>
+                    <li><strong>Héritage</strong> : ce qui est transmis par les ancêtres.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Ethan. Rédige une entrée de ton journal pour raconter une de tes aventures magiques.</p>
+            `
+        }, {
+            id: 60,
+            theme: "Contes modernes",
+            title: "La porte vers un autre monde",
+            desc: "Une porte secrète mène à un monde parallèle où tout est possible.",
+            content: `
+                <div class="story">
+                    Dans la cave de sa maison, Arthur découvrit une porte ancienne. En l'ouvrant, il se retrouva dans un monde parallèle, où les arbres étaient en verre et les rivières de lumière.
+                </div>
+
+                <p>Il rencontra des êtres de lumière qui vivaient dans ce monde. Ils lui apprirent que la porte s'ouvrait une fois par siècle. Arthur explora ce monde merveilleux, mais il savait qu'il devait retourner chez lui.</p>
+
+                <p>Il promit de revenir, et la porte se referma. Il avait vécu une aventure inoubliable.</p>
+
+                <div class="morale">
+                    <strong>📖 Morale :</strong> L'imaginaire est une porte vers l'infini. Chaque découverte nous ouvre à de nouveaux possibles.
+                </div>
+
+                <h4>❓ Questions de compréhension</h4>
+                <ul>
+                    <li>Qu'a découvert Arthur ?</li>
+                    <li>Où la porte menait-elle ?</li>
+                    <li>Que s'est-il promis de faire ?</li>
+                </ul>
+
+                <h4>📝 Vocabulaire à retenir</h4>
+                <ul>
+                    <li><strong>Parallèle</strong> : qui existe en même temps mais dans un autre univers.</li>
+                    <li><strong>Siècle</strong> : période de cent ans.</li>
+                    <li><strong>Inoubliable</strong> : dont on se souvient toujours.</li>
+                </ul>
+
+                <h4>✏️ Activité d'écriture</h4>
+                <p>Imagine que tu es Arthur. Rédige une lettre à un ami pour lui raconter ton voyage dans l'autre monde.</p>
+            `
+        }];
+
+        // ================================================================
+        //  CONSTRUCTION DE LA PAGE D'ACCUEIL
+        // ================================================================
+
+        const themes = ["Aventure", "Science-fiction", "Fantastique", "Enquêtes", "Vie quotidienne", "Contes modernes"];
+        const homeContent = document.getElementById('homeContent');
+
+        themes.forEach(theme => {
+            const section = document.createElement('div');
+            const title = document.createElement('div');
+            title.className = 'section-title';
+            title.textContent = theme;
+            section.appendChild(title);
+
+            const grid = document.createElement('div');
+            grid.className = 'grid';
+
+            const histoiresTheme = histoires.filter(h => h.theme === theme);
+            histoiresTheme.forEach(h => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.setAttribute('data-id', h.id);
+                card.innerHTML = `
+                    <div class="num">${String(h.id).padStart(2, '0')}</div>
+                    <h3>${h.title}</h3>
+                    <div class="desc">${h.desc}</div>
+                    <div class="theme">${h.theme}</div>
+                `;
+                card.addEventListener('click', () => navigateToArticle(h.id));
+                grid.appendChild(card);
+            });
+
+            section.appendChild(grid);
+            homeContent.appendChild(section);
+        });
+
+        // ================================================================
+        //  ROUTING (Hash-based)
+        // ================================================================
+
+        const homePage = document.getElementById('homePage');
+        const articlePage = document.getElementById('articlePage');
+
+        function showHome() {
+            homePage.classList.remove('hidden');
+            articlePage.classList.remove('active');
+            window.location.hash = '';
+            document.title = '60 Histoires pour adolescents';
+        }
+
+        function showArticle(id) {
+            homePage.classList.add('hidden');
+            articlePage.classList.add('active');
+            window.location.hash = `histoire-${id}`;
+            renderArticle(id);
+        }
+
+        function renderArticle(id) {
+            const h = histoires.find(e => e.id === id);
+            if (!h) {
+                showHome();
+                return;
+            }
+            document.getElementById('articleNum').textContent = `Histoire ${String(h.id).padStart(2, '0')}`;
+            document.getElementById('articleTitle').textContent = h.title;
+            document.getElementById('articleTheme').innerHTML = `<span>${h.theme}</span>`;
+            document.getElementById('articleContent').innerHTML = h.content;
+            document.title = `${h.title} — 60 Histoires`;
+        }
+
+        function navigateToArticle(id) {
+            showArticle(id);
+        }
+
+        function handleHash() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#histoire-')) {
+                const id = parseInt(hash.replace('#histoire-', ''), 10);
+                if (histoires.find(e => e.id === id)) {
+                    showArticle(id);
+                    return;
+                }
+            }
+            showHome();
+        }
+
+        document.getElementById('backToHomeLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+        document.getElementById('backHomeBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+
+        window.addEventListener('hashchange', handleHash);
+        window.addEventListener('load', handleHash);
+        window.addEventListener('popstate', handleHash);
+    </script>
+
+</body>
+</html>
