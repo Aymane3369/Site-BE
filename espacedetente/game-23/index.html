@@ -1,1 +1,850 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check-list ELU et ELS — Béton Armé selon Eurocodes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            color: #1a2634;
+            padding: 2rem 1rem;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* --- HEADER --- */
+        .header {
+            background: linear-gradient(135deg, #0d2b45, #1a5a8a);
+            color: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header h1 span {
+            color: #7fc8ff;
+        }
+
+        .header .subtitle {
+            margin-top: 0.6rem;
+            font-size: 1.05rem;
+            opacity: 0.9;
+            max-width: 750px;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.12);
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 0.8rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .stats .item {
+            font-size: 0.85rem;
+            opacity: 0.85;
+        }
+
+        .stats .item strong {
+            opacity: 1;
+            font-weight: 700;
+        }
+
+        /* --- CARD --- */
+        .card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 1.5rem 1.8rem;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            transition: border-color 0.2s;
+        }
+
+        .card:hover {
+            border-color: #b0c4d8;
+        }
+
+        .card .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0d2b45;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .card .section-desc {
+            color: #4a6a7a;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .card .section-desc .exemple {
+            display: block;
+            margin-top: 0.4rem;
+            font-size: 0.85rem;
+            color: #1a5a8a;
+            background: #f0f7fc;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+        }
+
+        /* --- VERIF GRID --- */
+        .verif-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+
+        .verif-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .verif-item:hover {
+            border-color: #1a5a8a;
+            background: #f0f7fc;
+        }
+
+        .verif-item .v-title {
+            font-weight: 600;
+            font-size: 0.92rem;
+            color: #0d2b45;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .verif-item .v-title .tag {
+            font-size: 0.55rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 0.1rem 0.5rem;
+            border-radius: 12px;
+        }
+
+        .tag-elu {
+            background: rgba(239, 68, 68, 0.12);
+            color: #b91c5c;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .tag-els {
+            background: rgba(16, 185, 129, 0.12);
+            color: #0f7b3a;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .tag-both {
+            background: rgba(245, 158, 11, 0.12);
+            color: #b8882f;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .verif-item .v-desc {
+            font-size: 0.78rem;
+            color: #4a6a7a;
+            margin-top: 0.2rem;
+        }
+
+        .verif-item .v-formula {
+            font-family: 'Courier New', monospace;
+            font-size: 0.78rem;
+            color: #1a5a8a;
+            background: #eef3f8;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 0.2rem;
+        }
+
+        .verif-item .v-exemple {
+            font-size: 0.72rem;
+            color: #6a8a9a;
+            margin-top: 0.3rem;
+            padding: 0.2rem 0.6rem;
+            background: #f8fafc;
+            border-radius: 4px;
+            border-left: 3px solid #1a5a8a;
+        }
+
+        .verif-item .v-exemple strong {
+            color: #0d2b45;
+        }
+
+        .verif-item .v-check {
+            margin-top: 0.3rem;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+        .v-check .ok {
+            color: #0f7b3a;
+        }
+        .v-check .ko {
+            color: #b91c5c;
+        }
+
+        /* --- CHECK-LIST GLOBALE --- */
+        .global-check {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 0.5rem;
+            margin-top: 0.8rem;
+        }
+
+        .global-check .gc-item {
+            font-size: 0.82rem;
+            padding: 0.3rem 0.6rem;
+            background: #f8fafc;
+            border-radius: 6px;
+            border-left: 3px solid #1a5a8a;
+        }
+
+        .global-check .gc-item .gc-tag {
+            font-size: 0.55rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-left: 0.4rem;
+        }
+
+        /* --- EXEMPLES CONCRETS --- */
+        .exemple-complet {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            margin-top: 0.8rem;
+        }
+
+        .exemple-complet .ex-title {
+            font-weight: 700;
+            color: #0d2b45;
+            font-size: 0.95rem;
+        }
+
+        .exemple-complet .ex-details {
+            font-size: 0.85rem;
+            color: #4a6a7a;
+            margin-top: 0.3rem;
+        }
+
+        .exemple-complet .ex-checks {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.5rem;
+        }
+
+        .exemple-complet .ex-checks span {
+            font-size: 0.75rem;
+            padding: 0.15rem 0.6rem;
+            background: #eef3f8;
+            border-radius: 12px;
+            color: #1a5a8a;
+        }
+
+        .exemple-complet .ex-checks .done {
+            background: rgba(16, 185, 129, 0.12);
+            color: #0f7b3a;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .verif-grid {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            .global-check {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .global-check {
+                grid-template-columns: 1fr;
+            }
+            .stats {
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+        }
+
+        .footer {
+            margin-top: 2.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #6a8a9a;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 1.5rem;
+        }
+
+        .footer span {
+            color: #1a5a8a;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ============================================================ -->
+        <!-- HEADER -->
+        <!-- ============================================================ -->
+        <div class="header">
+            <h1>🏗️ <span>Check-list ELU &amp; ELS</span></h1>
+            <div class="subtitle">Vérifications complètes des éléments en béton armé selon les Eurocodes<br>EN 1990 · EN 1991 · EN 1992-1-1</div>
+            <div class="badge">Bureau d'études — Note de calcul professionnelle</div>
+            <div class="stats">
+                <div class="item"><strong>6</strong> Éléments structuraux</div>
+                <div class="item"><strong>35+</strong> Vérifications</div>
+                <div class="item"><strong>ELU</strong> · <strong>ELS</strong></div>
+                <div class="item"><strong>4</strong> Exemples concrets</div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 1. POUTRES EN BÉTON ARMÉ -->
+        <!-- ============================================================ -->
+        <div class="card">
+            <div class="section-title">📐 1. Poutres en béton armé</div>
+            <div class="section-desc">
+                Vérifications complètes pour une poutre soumise à la flexion, au cisaillement, à la torsion et aux ancrages.
+                <span class="exemple">📌 Exemple : Poutre de 6 m supportant une dalle d'habitation — Section 30×60 cm</span>
+            </div>
+
+            <div class="verif-grid">
+                <!-- ELU -->
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Flexion</div>
+                    <div class="v-desc">Vérification de la résistance en flexion simple</div>
+                    <div class="v-formula">M<sub>Ed</sub> ≤ M<sub>Rd</sub> · A<sub>s</sub> = M<sub>Ed</sub> / (z · f<sub>yd</sub>)</div>
+                    <div class="v-exemple"><strong>Exemple :</strong> M<sub>Ed</sub> = 120 kN·m → A<sub>s</sub> = 120×10⁶ / (0,9×540×434,8) = <strong>567 mm²</strong> → 3 HA16</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Effort tranchant</div>
+                    <div class="v-desc">Vérification du cisaillement et dimensionnement des étriers</div>
+                    <div class="v-formula">V<sub>Ed</sub> ≤ V<sub>Rd,c</sub> · V<sub>Rd,s</sub> = (A<sub>sw</sub>/s) · z · f<sub>ywd</sub> · cot θ</div>
+                    <div class="v-exemple"><strong>Exemple :</strong> V<sub>Ed</sub> = 180 kN → HA8 espacés de <strong>150 mm</strong> en zone critique</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Torsion</div>
+                    <div class="v-desc">Vérification de la torsion (poutres de rive, balcons)</div>
+                    <div class="v-formula">T<sub>Ed</sub> ≤ T<sub>Rd</sub> · A<sub>sw</sub>/s = T<sub>Ed</sub> / (2·A<sub>k</sub>·f<sub>ywd</sub>·cot θ)</div>
+                    <div class="v-exemple"><strong>Exemple :</strong> T<sub>Ed</sub> = 15 kN·m → cadres fermés HA8 espacés de <strong>200 mm</strong></div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Ancrage des armatures</div>
+                    <div class="v-desc">Vérification des longueurs d'ancrage et recouvrements</div>
+                    <div class="v-formula">l<sub>bd</sub> = α·l<sub>b,rqd</sub> ≥ l<sub>b,min</sub> · l<sub>0</sub> = α·l<sub>b,rqd</sub></div>
+                    <div class="v-exemple"><strong>Exemple :</strong> HA20 en appui → l<sub>bd</sub> = <strong>45 φ = 900 mm</strong></div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Zones nodales</div>
+                    <div class="v-desc">Vérification des bielles comprimées aux appuis</div>
+                    <div class="v-formula">σ<sub>c</sub> = V<sub>Ed</sub> / (b·a) ≤ f<sub>cd</sub></div>
+                    <div class="v-exemple"><strong>Exemple :</strong> Appui sur poteau 30×30 cm → σ<sub>c</sub> = 180×10³ / (300×300) = <strong>2,0 MPa</strong> ≤ 14,17 MPa → OK</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-els">ELS</span> Ouverture des fissures</div>
+                    <div class="v-desc">Vérification de la largeur des fissures</div>
+                    <div class="v-formula">w<sub>k</sub> = S<sub>r,max</sub> · (ε<sub>sm</sub> − ε<sub>cm</sub>) ≤ w<sub>max</sub></div>
+                    <div class="v-exemple"><strong>Exemple :</strong> Parking couvert → w<sub>max</sub> = <strong>0,3 mm</strong> → OK</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-els">ELS</span> Flèche instantanée</div>
+                    <div class="v-desc">Vérification de la flèche sous charges de service</div>
+                    <div class="v-formula">f<sub>inst</sub> = (5·M·L²)/(48·E·I) ≤ L/250</div>
+                    <div class="v-exemple"><strong>Exemple :</strong> Poutre 8 m → f<sub>inst</sub> = <strong>18 mm</strong> ≤ 32 mm → OK</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-els">ELS</span> Flèche différée</div>
+                    <div class="v-desc">Prise en compte du fluage et du retrait</div>
+                    <div class="v-formula">f<sub>diff</sub> = f<sub>inst</sub> · (1 + φ<sub>∞</sub>)</div>
+                    <div class="v-exemple"><strong>Exemple :</strong> φ<sub>∞</sub> = 2,0 → f<sub>diff</sub> = 18 × 3 = <strong>54 mm</strong> → Vérifier L/250</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 2. POTEAUX -->
+        <!-- ============================================================ -->
+        <div class="card">
+            <div class="section-title">📏 2. Poteaux</div>
+            <div class="section-desc">
+                Vérifications complètes pour les poteaux soumis à la compression, à la flexion composée et au flambement.
+                <span class="exemple">📌 Exemple : Poteau 40×40 cm d'un immeuble R+5 — Béton C30/37</span>
+            </div>
+
+            <div class="verif-grid">
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Compression simple</div>
+                    <div class="v-desc">Vérification de la résistance en compression centrée</div>
+                    <div class="v-formula">N<sub>Ed</sub> ≤ N<sub>Rd</sub> = A<sub>c</sub>·f<sub>cd</sub> + A<sub>s</sub>·f<sub>yd</sub></div>
+                    <div class="v-exemple"><strong>Exemple :</strong> N<sub>Ed</sub> = 1600 kN → N<sub>Rd</sub> = <strong>2 628 kN</strong> → OK</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Compression excentrée</div>
+                    <div class="v-desc">Vérification de l'interaction N-M (très fréquent)</div>
+                    <div class="v-formula">Courbes d'interaction · M<sub>Ed</sub> ≤ M<sub>Rd</sub>(N<sub>Ed</sub>)</div>
+                    <div class="v-exemple"><strong>Exemple :</strong> N<sub>Ed</sub> = 1600 kN, M<sub>Ed</sub> = 95 kN·m → <strong>4 HA20</strong> nécessaires</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Flambement</div>
+                    <div class="v-desc">Vérification de l'élancement et des effets du second ordre</div>
+                    <div class="v-formula">λ = L<sub>0</sub>/i · λ ≤ λ<sub>lim</sub> · M<sub>2</sub> = N<sub>Ed</sub>·e<sub>2</sub></div>
+                    <div class="v-exemple"><strong>Exemple :</strong> λ = 40 > λ<sub>lim</sub> = 25 → <strong>effets du second ordre</strong> à prendre en compte</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Cisaillement</div>
+                    <div class="v-desc">Vérification du cisaillement (zones sismiques)</div>
+                    <div class="v-formula">V<sub>Ed</sub> ≤ V<sub>Rd</sub></div>
+                    <div class="v-exemple"><strong>Exemple :</strong> V<sub>Ed</sub> = 50 kN → <strong>cadres HA8</strong> espacés de 150 mm</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Confinement</div>
+                    <div class="v-desc">Dimensionnement des cadres pour le confinement du béton</div>
+                    <div class="v-formula">ω<sub>wd</sub> ≥ 0,12 · (1 + λ<sub>φ</sub>)</div>
+                    <div class="v-exemple"><strong>Exemple :</strong> DCM → cadres <strong>HA10</strong> espacés de <strong>100 mm</strong> en zones critiques</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-els">ELS</span> Fissuration</div>
+                    <div class="v-desc">Contrôle des fissures longitudinales</div>
+                    <div class="v-formula">w<sub>k</sub> ≤ w<sub>max</sub></div>
+                    <div class="v-exemple"><strong>Exemple :</strong> w<sub>max</sub> = 0,3 mm → <strong>OK</strong> avec enrobage 30 mm</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-els">ELS</span> Déformations</div>
+                    <div class="v-desc">Contrôle des déplacements horizontaux</div>
+                    <div class="v-formula">d<sub>max</sub> ≤ h/250</div>
+                    <div class="v-exemple"><strong>Exemple :</strong> d<sub>max</sub> = 12 mm ≤ 3600/250 = <strong>14,4 mm</strong> → OK</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 3. DALLE À UN SENS -->
+        <!-- ============================================================ -->
+        <div class="card">
+            <div class="section-title">📊 3. Dalle à un sens</div>
+            <div class="section-desc">
+                Vérifications pour les dalles portant dans une seule direction.
+                <span class="exemple">📌 Exemple : Dalle de logement portée de 4 m — Épaisseur 18 cm</span>
+            </div>
+
+            <div class="verif-grid">
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Flexion</div>
+                    <div class="v-desc">Calcul des moments et armatures principales</div>
+                    <div class="v-formula">M<sub>Ed</sub> = p·L²/8 · A<sub>s</sub> = M<sub>Ed</sub> / (0,9·d·f<sub>yd</sub>)</div>
+                    <div class="v-exemple"><strong>Exemple :</strong> M<sub>Ed</sub> = 15 kN·m/m → A<sub>s</sub> = <strong>230 mm²/m</strong> → HA10 tous les 30 cm</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Cisaillement</div>
+                    <div class="v-desc">Vérification près des appuis</div>
+                    <div class="v-formula">V<sub>Ed</sub> = p·L/2 ≤ V<sub>Rd,c</sub></div>
+                    <div class="v-exemple"><strong>Exemple :</strong> V<sub>Ed</sub> = 20 kN/m ≤ V<sub>Rd,c</sub> = <strong>35 kN/m</strong> → OK</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Poinçonnement</div>
+                    <div class="v-desc">Si appui sur poteau (vérification locale)</div>
+                    <div class="v-formula">v<sub>Ed</sub> = V<sub>Ed</sub> / (u<sub>1</sub>·d) ≤ v<sub>Rd,c</sub></div>
+                    <div class="v-exemple"><strong>Exemple :</strong> Poteau 30×30 cm → v<sub>Ed</sub> = 0,45 MPa ≤ <strong>0,41 MPa</strong> → armatures de poinçonnement</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-els">ELS</span> Flèche</div>
+                    <div class="v-desc">Vérification de la flèche sous charges de service</div>
+                    <div class="v-formula">f = (5·p·L⁴)/(384·E·I) ≤ L/250</div>
+                    <div class="v-exemple"><strong>Exemple :</strong> f = <strong>12 mm</strong> ≤ 4000/250 = 16 mm → OK</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-els">ELS</span> Fissuration</div>
+                    <div class="v-desc">Contrôle de l'ouverture des fissures</div>
+                    <div class="v-formula">w<sub>k</sub> ≤ w<sub>max</sub></div>
+                    <div class="v-exemple"><strong>Exemple :</strong> Habitation → w<sub>max</sub> = <strong>0,3 mm</strong> → OK</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 4. DALLE À DEUX SENS -->
+        <!-- ============================================================ -->
+        <div class="card">
+            <div class="section-title">📊 4. Dalle à deux sens</div>
+            <div class="section-desc">
+                Vérifications pour les dalles portant dans deux directions.
+                <span class="exemple">📌 Exemple : Dalle 6×6 m — Épaisseur 20 cm</span>
+            </div>
+
+            <div class="verif-grid">
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Flexion (x et y)</div>
+                    <div class="v-desc">Calcul des moments selon les deux directions</div>
+                    <div class="v-formula">M<sub>x</sub> = α<sub>x</sub>·p·L<sub>x</sub>² · M<sub>y</sub> = α<sub>y</sub>·p·L<sub>y</sub>²</div>
+                    <div class="v-exemple"><strong>Exemple :</strong> α = 0,083 → M<sub>x</sub> = M<sub>y</sub> = <strong>29,9 kN·m/m</strong> → HA10 tous les 15 cm</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Poinçonnement</div>
+                    <div class="v-desc">Autour des poteaux</div>
+                    <div class="v-formula">v<sub>Ed</sub> = V<sub>Ed</sub> / (u<sub>1</sub>·d) ≤ v<sub>Rd,c</sub></div>
+                    <div class="v-exemple"><strong>Exemple :</strong> V<sub>Ed</sub> = 400 kN → v<sub>Ed</sub> = 0,71 MPa > 0,41 MPa → <strong>armatures de poinçonnement</strong></div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Cisaillement</div>
+                    <div class="v-desc">Aux appuis</div>
+                    <div class="v-formula">V<sub>Ed</sub> ≤ V<sub>Rd,c</sub></div>
+                    <div class="v-exemple"><strong>Exemple :</strong> V<sub>Ed</sub> = 30 kN/m ≤ <strong>45 kN/m</strong> → OK</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-els">ELS</span> Flèches</div>
+                    <div class="v-desc">Dans les deux directions</div>
+                    <div class="v-formula">f<sub>x</sub> ≤ L<sub>x</sub>/250 · f<sub>y</sub> ≤ L<sub>y</sub>/250</div>
+                    <div class="v-exemple"><strong>Exemple :</strong> f = <strong>8 mm</strong> ≤ 6000/250 = 24 mm → OK</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-els">ELS</span> Fissuration</div>
+                    <div class="v-desc">Deux nappes d'armatures</div>
+                    <div class="v-formula">w<sub>k</sub> ≤ w<sub>max</sub></div>
+                    <div class="v-exemple"><strong>Exemple :</strong> w<sub>max</sub> = 0,3 mm → <strong>OK</strong> avec enrobage 25 mm</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 5. SEMELLE ISOLÉE -->
+        <!-- ============================================================ -->
+        <div class="card">
+            <div class="section-title">🏗️ 5. Semelle isolée</div>
+            <div class="section-desc">
+                Vérifications complètes pour les semelles sous poteaux.
+                <span class="exemple">📌 Exemple : Poteau 40×40 cm — Charge 900 kN — σ<sub>adm</sub> = 0,25 MPa</span>
+            </div>
+
+            <div class="verif-grid">
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Portance du sol</div>
+                    <div class="v-desc">Vérification de la pression sous la semelle</div>
+                    <div class="v-formula">σ = N/A ≤ σ<sub>adm</sub> · A = N/σ<sub>adm</sub></div>
+                    <div class="v-exemple"><strong>Exemple :</strong> A = 900/250 = 3,6 m² → <strong>semelle 1,9×1,9 m</strong></div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Flexion</div>
+                    <div class="v-desc">Calcul des armatures dans les deux sens</div>
+                    <div class="v-formula">M<sub>Ed</sub> = σ·(B−b)²/8 · A<sub>s</sub> = M<sub>Ed</sub> / (0,9·d·f<sub>yd</sub>)</div>
+                    <div class="v-exemple"><strong>Exemple :</strong> M<sub>Ed</sub> = 42 kN·m → A<sub>s</sub> = <strong>320 mm²/m</strong> → HA12 tous les 20 cm</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Poinçonnement</div>
+                    <div class="v-desc">Autour du poteau</div>
+                    <div class="v-formula">v<sub>Ed</sub> = V<sub>Ed</sub> / (u<sub>1</sub>·d) ≤ v<sub>Rd,c</sub></div>
+                    <div class="v-exemple"><strong>Exemple :</strong> v<sub>Ed</sub> = 0,52 MPa ≤ <strong>0,41 MPa</strong> → armatures de poinçonnement</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Cisaillement</div>
+                    <div class="v-desc">Dans les deux directions</div>
+                    <div class="v-formula">V<sub>Ed</sub> ≤ V<sub>Rd,c</sub></div>
+                    <div class="v-exemple"><strong>Exemple :</strong> V<sub>Ed</sub> = 150 kN ≤ <strong>185 kN</strong> → OK</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Renversement</div>
+                    <div class="v-desc">Si excentricité des charges</div>
+                    <div class="v-formula">e = M/N ≤ B/6</div>
+                    <div class="v-exemple"><strong>Exemple :</strong> e = 0,15 m ≤ 1,9/6 = <strong>0,32 m</strong> → OK</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Glissement</div>
+                    <div class="v-desc">Sous efforts horizontaux</div>
+                    <div class="v-formula">F<sub>gl</sub> = (ΣV·tan φ) / H<sub>Ed</sub> ≥ 1,5</div>
+                    <div class="v-exemple"><strong>Exemple :</strong> F<sub>gl</sub> = 2,1 ≥ 1,5 → <strong>OK</strong></div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-els">ELS</span> Tassement</div>
+                    <div class="v-desc">Vérification du tassement absolu et différentiel</div>
+                    <div class="v-formula">s ≤ s<sub>adm</sub> · Δs ≤ s<sub>diff,adm</sub></div>
+                    <div class="v-exemple"><strong>Exemple :</strong> s = <strong>8 mm</strong> ≤ 25 mm → OK</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 6. SEMELLE FILANTE -->
+        <!-- ============================================================ -->
+        <div class="card">
+            <div class="section-title">🏗️ 6. Semelle filante</div>
+            <div class="section-desc">
+                Vérifications pour les semelles continues sous murs ou rangées de poteaux.
+            </div>
+
+            <div class="verif-grid">
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Pression sous semelle</div>
+                    <div class="v-desc">Vérification de la portance</div>
+                    <div class="v-formula">σ = (N + G<sub>semelle</sub>) / A ≤ σ<sub>adm</sub></div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Flexion longitudinale</div>
+                    <div class="v-desc">Armatures longitudinales</div>
+                    <div class="v-formula">M<sub>Ed</sub> = σ·B·L²/8</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Flexion transversale</div>
+                    <div class="v-desc">Armatures transversales</div>
+                    <div class="v-formula">M<sub>Ed,t</sub> = σ·(B−b)²/8</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Cisaillement</div>
+                    <div class="v-desc">V<sub>Ed</sub> ≤ V<sub>Rd,c</sub></div>
+                    <div class="v-formula">V<sub>Ed</sub> = σ·(B−b)/2</div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-elu">ELU</span> Poinçonnement</div>
+                    <div class="v-desc">Aux poteaux éventuels</div>
+                    <div class="v-formula">v<sub>Ed</sub> ≤ v<sub>Rd,c</sub></div>
+                </div>
+
+                <div class="verif-item">
+                    <div class="v-title"><span class="tag tag-els">ELS</span> Tassement</div>
+                    <div class="v-desc">Tassement absolu et différentiel</div>
+                    <div class="v-formula">s ≤ s<sub>adm</sub> · Δs ≤ s<sub>diff,adm</sub></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- SYNTHÈSE GLOBALE -->
+        <!-- ============================================================ -->
+        <div class="card">
+            <div class="section-title">📋 Synthèse des vérifications par élément</div>
+            <div class="section-desc">
+                Récapitulatif des vérifications ELU et ELS attendues dans une note de calcul professionnelle.
+            </div>
+
+            <div style="overflow-x:auto;">
+                <table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
+                    <thead>
+                        <tr style="background:#0d2b45;color:#fff;">
+                            <th style="padding:0.6rem 0.8rem;text-align:left;">Élément</th>
+                            <th style="padding:0.6rem 0.8rem;text-align:left;">Vérifications ELU</th>
+                            <th style="padding:0.6rem 0.8rem;text-align:left;">Vérifications ELS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom:1px solid #e2e8f0;">
+                            <td style="padding:0.6rem 0.8rem;font-weight:600;">Poutre</td>
+                            <td style="padding:0.6rem 0.8rem;">Flexion, cisaillement, torsion, ancrage, zones nodales</td>
+                            <td style="padding:0.6rem 0.8rem;">Fissuration, flèche instantanée, flèche différée</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #e2e8f0;background:#f8fafc;">
+                            <td style="padding:0.6rem 0.8rem;font-weight:600;">Poteau</td>
+                            <td style="padding:0.6rem 0.8rem;">Compression, flexion composée, flambement, cisaillement, confinement</td>
+                            <td style="padding:0.6rem 0.8rem;">Fissuration, déformations</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #e2e8f0;">
+                            <td style="padding:0.6rem 0.8rem;font-weight:600;">Dalle 1 sens</td>
+                            <td style="padding:0.6rem 0.8rem;">Flexion, cisaillement, poinçonnement</td>
+                            <td style="padding:0.6rem 0.8rem;">Flèche, fissuration</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #e2e8f0;background:#f8fafc;">
+                            <td style="padding:0.6rem 0.8rem;font-weight:600;">Dalle 2 sens</td>
+                            <td style="padding:0.6rem 0.8rem;">Flexion (2 directions), cisaillement, poinçonnement</td>
+                            <td style="padding:0.6rem 0.8rem;">Flèche (2 directions), fissuration</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #e2e8f0;">
+                            <td style="padding:0.6rem 0.8rem;font-weight:600;">Semelle isolée</td>
+                            <td style="padding:0.6rem 0.8rem;">Portance, flexion, cisaillement, poinçonnement, glissement, renversement</td>
+                            <td style="padding:0.6rem 0.8rem;">Tassements</td>
+                        </tr>
+                        <tr style="background:#f8fafc;">
+                            <td style="padding:0.6rem 0.8rem;font-weight:600;">Semelle filante</td>
+                            <td style="padding:0.6rem 0.8rem;">Portance, flexion (longitudinale/transversale), cisaillement, glissement, renversement</td>
+                            <td style="padding:0.6rem 0.8rem;">Tassements</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="margin-top:1rem;font-size:0.85rem;color:#4a6a7a;background:#f8fafc;padding:0.8rem 1rem;border-radius:8px;border:1px solid #e2e8f0;">
+                <strong>📌 Note :</strong> Selon le projet, d'autres vérifications peuvent s'ajouter :
+                <span style="display:inline-block;margin:0.2rem 0.3rem;padding:0.1rem 0.6rem;background:#eef3f8;border-radius:12px;font-size:0.75rem;">Séisme (Eurocode 8)</span>
+                <span style="display:inline-block;margin:0.2rem 0.3rem;padding:0.1rem 0.6rem;background:#eef3f8;border-radius:12px;font-size:0.75rem;">Résistance au feu</span>
+                <span style="display:inline-block;margin:0.2rem 0.3rem;padding:0.1rem 0.6rem;background:#eef3f8;border-radius:12px;font-size:0.75rem;">Fatigue</span>
+                <span style="display:inline-block;margin:0.2rem 0.3rem;padding:0.1rem 0.6rem;background:#eef3f8;border-radius:12px;font-size:0.75rem;">Effets thermiques</span>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- EXEMPLES CONCRETS -->
+        <!-- ============================================================ -->
+        <div class="card">
+            <div class="section-title">📝 Exemples concrets complets</div>
+            <div class="section-desc">
+                Applications pratiques des vérifications sur des cas réels de bureau d'études.
+            </div>
+
+            <!-- Exemple 1 -->
+            <div class="exemple-complet">
+                <div class="ex-title">🏗️ Exemple n°1 — Poutre d'un immeuble d'habitation</div>
+                <div class="ex-details">
+                    <strong>Données :</strong> Portée 6,00 m · Section 30×60 cm · G = 18 kN/m · Q = 12 kN/m
+                </div>
+                <div class="ex-checks">
+                    <span class="done">✅ Combinaison ELU</span>
+                    <span class="done">✅ Moment fléchissant</span>
+                    <span class="done">✅ Armatures longitudinales</span>
+                    <span class="done">✅ Effort tranchant</span>
+                    <span class="done">✅ Étriers</span>
+                    <span class="done">✅ Ancrages</span>
+                    <span class="done">✅ Fissuration</span>
+                    <span class="done">✅ Flèche instantanée</span>
+                    <span class="done">✅ Flèche différée</span>
+                </div>
+                <div style="margin-top:0.5rem;font-size:0.8rem;color:#4a6a7a;">
+                    <strong>Résultat :</strong> Poutre dimensionnée avec <strong>3 HA16</strong> en travée, <strong>3 HA14</strong> sur appuis, cadres HA8 espacés de 150 mm en zone critique.
+                </div>
+            </div>
+
+            <!-- Exemple 2 -->
+            <div class="exemple-complet">
+                <div class="ex-title">🏗️ Exemple n°2 — Poteau d'un bâtiment R+5</div>
+                <div class="ex-details">
+                    <strong>Données :</strong> Section 40×40 cm · Béton C30/37 · Acier B500B · N<sub>Ed</sub> = 1 600 kN · M<sub>Ed</sub> = 95 kN·m
+                </div>
+                <div class="ex-checks">
+                    <span class="done">✅ Compression</span>
+                    <span class="done">✅ Interaction N-M</span>
+                    <span class="done">✅ Flambement</span>
+                    <span class="done">✅ Armatures longitudinales</span>
+                    <span class="done">✅ Cadres</span>
+                    <span class="done">✅ Confinement</span>
+                    <span class="done">✅ Fissuration</span>
+                </div>
+                <div style="margin-top:0.5rem;font-size:0.8rem;color:#4a6a7a;">
+                    <strong>Résultat :</strong> Poteau dimensionné avec <strong>4 HA20</strong> (1 256 mm²), cadres HA10 espacés de 100 mm en zones critiques.
+                </div>
+            </div>
+
+            <!-- Exemple 3 -->
+            <div class="exemple-complet">
+                <div class="ex-title">🏗️ Exemple n°3 — Dalle pleine d'habitation</div>
+                <div class="ex-details">
+                    <strong>Données :</strong> Épaisseur 20 cm · Portée 5,00 m · G = 6,5 kN/m² · Q = 2,0 kN/m²
+                </div>
+                <div class="ex-checks">
+                    <span class="done">✅ Flexion</span>
+                    <span class="done">✅ Cisaillement</span>
+                    <span class="done">✅ Poinçonnement</span>
+                    <span class="done">✅ Flèche</span>
+                    <span class="done">✅ Fissuration</span>
+                    <span class="done">✅ Armatures de répartition</span>
+                </div>
+                <div style="margin-top:0.5rem;font-size:0.8rem;color:#4a6a7a;">
+                    <strong>Résultat :</strong> Dalle armée avec <strong>HA10 espacés de 20 cm</strong> en sens principal, HA8 espacés de 30 cm en sens secondaire.
+                </div>
+            </div>
+
+            <!-- Exemple 4 -->
+            <div class="exemple-complet">
+                <div class="ex-title">🏗️ Exemple n°4 — Semelle isolée</div>
+                <div class="ex-details">
+                    <strong>Données :</strong> Poteau 40×40 cm · Charge 900 kN · σ<sub>adm</sub> = 0,25 MPa
+                </div>
+                <div class="ex-checks">
+                    <span class="done">✅ Surface minimale</span>
+                    <span class="done">✅ Pression du sol</span>
+                    <span class="done">✅ Excentricité</span>
+                    <span class="done">✅ Flexion</span>
+                    <span class="done">✅ Poinçonnement</span>
+                    <span class="done">✅ Cisaillement</span>
+                    <span class="done">✅ Ferraillage inférieur</span>
+                    <span class="done">✅ Enrobage</span>
+                    <span class="done">✅ Tassement</span>
+                </div>
+                <div style="margin-top:0.5rem;font-size:0.8rem;color:#4a6a7a;">
+                    <strong>Résultat :</strong> Semelle <strong>1,9×1,9 m</strong> armée avec <strong>HA12 espacés de 20 cm</strong> dans les deux sens.
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- FOOTER -->
+        <!-- ============================================================ -->
+        <div class="footer">
+            <p>📋 Check-list ELU et ELS — <span>Eurocodes</span> (EN 1990 · EN 1991 · EN 1992-1-1)<br>
+            Bureau d'études — Note de calcul professionnelle — Béton armé</p>
+        </div>
+
+    </div>
+
+</body>
+</html>
