@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Voyageur des Mille Savoirs — Roman de culture générale</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: #f5f0eb;
+            color: #1a1a2e;
+            padding: 2rem 1rem;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* --- HEADER --- */
+        .header {
+            background: linear-gradient(135deg, #0d1b2a, #1a3a5c);
+            color: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(240, 194, 122, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            font-family: 'Georgia', serif;
+        }
+
+        .header h1 span {
+            color: #f0c27a;
+        }
+
+        .header .subtitle {
+            margin-top: 0.4rem;
+            font-size: 1rem;
+            opacity: 0.85;
+            font-style: italic;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: rgba(240, 194, 122, 0.15);
+            color: #f0c27a;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-top: 0.6rem;
+            border: 1px solid rgba(240, 194, 122, 0.2);
+            letter-spacing: 0.05em;
+        }
+
+        .header .meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 0.8rem;
+            flex-wrap: wrap;
+            font-size: 0.8rem;
+            opacity: 0.75;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #f0c27a;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        /* --- GRILLE D'ACCUEIL --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 1.4rem 1.6rem;
+            border: 1px solid #e2d8cc;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+            border-color: #1a3a5c;
+        }
+
+        .card .num {
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: #8a7a6a;
+            background: #f5ede4;
+            padding: 0.1rem 0.7rem;
+            border-radius: 12px;
+            display: inline-block;
+            letter-spacing: 0.05em;
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin: 0.4rem 0 0.2rem;
+            font-family: 'Georgia', serif;
+        }
+
+        .card .desc {
+            font-size: 0.85rem;
+            color: #4a3a3a;
+            margin-top: 0.3rem;
+        }
+
+        .card .themes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            margin-top: 0.5rem;
+        }
+
+        .card .themes span {
+            font-size: 0.6rem;
+            padding: 0.15rem 0.6rem;
+            background: #f0ece6;
+            border-radius: 12px;
+            color: #4a3a3a;
+        }
+
+        /* --- PAGE CHAPITRE --- */
+        #articlePage {
+            display: none;
+        }
+
+        #articlePage.active {
+            display: block;
+        }
+
+        #homePage.hidden {
+            display: none;
+        }
+
+        .chapter-container {
+            background: #fff;
+            border-radius: 20px;
+            padding: 2.8rem 3.2rem;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.07);
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .chapter-container .chapter-num {
+            font-size: 0.7rem;
+            color: #8a7a6a;
+            background: #f5ede4;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            display: inline-block;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .chapter-container h2 {
+            font-size: 2rem;
+            margin: 0.4rem 0 0.2rem;
+            color: #1a1a2e;
+            font-weight: 700;
+            line-height: 1.2;
+            font-family: 'Georgia', serif;
+        }
+
+        .chapter-container .chapter-meta {
+            font-size: 0.8rem;
+            color: #6a5a4a;
+            margin-bottom: 1.2rem;
+            font-style: italic;
+        }
+
+        .chapter-container .chapter-content {
+            font-size: 1.05rem;
+            line-height: 1.9;
+            color: #2a2a3a;
+        }
+
+        .chapter-container .chapter-content p {
+            margin-bottom: 1.2rem;
+            text-indent: 2em;
+        }
+
+        .chapter-container .chapter-content .dialogue {
+            margin-left: 2em;
+            font-style: italic;
+            color: #1a1a2e;
+        }
+
+        .chapter-container .chapter-content .dialogue strong {
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        .chapter-container .chapter-content .action {
+            font-weight: 500;
+            color: #1a3a5c;
+        }
+
+        .chapter-container .chapter-content hr {
+            border: none;
+            border-top: 1px solid #e2d8cc;
+            margin: 1.5rem 0;
+        }
+
+        .chapter-container .chapter-content .citation {
+            font-style: italic;
+            color: #1a3a5c;
+            padding: 0.5rem 1.5rem;
+            border-left: 3px solid #f0c27a;
+            margin: 1rem 0;
+            background: #faf6f0;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.95rem;
+        }
+
+        .chapter-container .chapter-content .savoir-box {
+            background: #f0f4f8;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #1a3a5c;
+            margin: 1rem 0;
+        }
+
+        .chapter-container .chapter-content .savoir-box strong {
+            color: #1a3a5c;
+        }
+
+        .chapter-container .chapter-content .fin-chapitre {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #8a7a6a;
+            margin-top: 2rem;
+            font-style: italic;
+        }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 2rem;
+            color: #1a3a5c;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.6rem 1.4rem;
+            border: 2px solid #1a3a5c;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+
+        .back-home:hover {
+            background: #1a3a5c;
+            color: #fff;
+        }
+
+        .nav-chapitres {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-chapitres a {
+            color: #1a3a5c;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.4rem 1rem;
+            border: 1px solid #e2d8cc;
+            border-radius: 30px;
+            transition: 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .nav-chapitres a:hover {
+            background: #1a3a5c;
+            color: #fff;
+            border-color: #1a3a5c;
+        }
+
+        @media (max-width: 640px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            .chapter-container {
+                padding: 1.5rem;
+            }
+            .chapter-container h2 {
+                font-size: 1.4rem;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .chapter-container .chapter-content p {
+                text-indent: 1.5em;
+            }
+            .header .meta {
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+        }
+
+        .footer {
+            margin-top: 2.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #8a7a6a;
+            border-top: 1px solid #e2d8cc;
+            padding-top: 1.5rem;
+        }
+
+        .footer span {
+            color: #1a3a5c;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ============================================================ -->
+        <!-- PAGE D'ACCUEIL -->
+        <!-- ============================================================ -->
+        <div id="homePage">
+            <div class="header">
+                <h1>🌍 <span>Le Voyageur des Mille Savoirs</span></h1>
+                <div class="subtitle">Un roman de culture générale · Aventure · Histoire · Sciences · Civilisations</div>
+                <div class="badge">13–18 ans · 5 chapitres · Chaque chapitre a sa propre URL</div>
+                <div class="meta">
+                    <span>👤 Adam, 15 ans</span>
+                    <span>📚 Histoire · Sciences · Philosophie</span>
+                    <span>🗺️ Une carte · Une quête · Une révélation</span>
+                </div>
+            </div>
+
+            <div id="homeContent"></div>
+
+            <div class="footer">
+                <p>📖 <span>« Celui qui connaît le passé comprend le présent et construit le futur. »</span></p>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PAGE CHAPITRE -->
+        <!-- ============================================================ -->
+        <div id="articlePage">
+            <div class="header" style="margin-bottom: 1.5rem;">
+                <h1>🌍 <span>Le Voyageur des Mille Savoirs</span></h1>
+                <a class="back-link" href="#" id="backToHomeLink">← Retour au sommaire</a>
+            </div>
+            <div class="chapter-container" id="chapterContainer">
+                <div class="chapter-num" id="chapterNum">Chapitre 1</div>
+                <h2 id="chapterTitle">Titre</h2>
+                <div class="chapter-meta" id="chapterMeta">Thèmes</div>
+                <div class="chapter-content" id="chapterContent">
+                    <p>Contenu...</p>
+                </div>
+                <div class="nav-chapitres" id="navChapitres">
+                    <a href="#" id="prevChapter">← Chapitre précédent</a>
+                    <a href="#" id="nextChapter">Chapitre suivant →</a>
+                </div>
+                <a href="#" class="back-home" id="backHomeBtn">← Sommaire</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ================================================================
+        //  DONNÉES DES 5 CHAPITRES
+        // ================================================================
+
+        const chapitres = [{
+            id: 1,
+            titre: "La Bibliothèque oubliée",
+            meta: "Civilisations · Écriture · Mathématiques · Philosophie · Architecture",
+            content: `
+                <p>Adam n'avait jamais aimé la culture générale. Pour lui, c'était une matière scolaire comme une autre : des dates à apprendre, des noms à retenir, des quiz à réussir. Il ne comprenait pas pourquoi ses professeurs insistaient autant sur "l'importance de savoir d'où l'on vient".</p>
+
+                <p>— "À quoi ça sert de savoir qui a inventé la roue ?", avait-il demandé un jour à son professeur d'histoire. "On est au XXIe siècle, on a des voitures !"</p>
+
+                <p>Son professeur avait souri, sans répondre.</p>
+
+                <p>Mais ce jour-là, tout changea. Adam était dans le grenier de la maison de son arrière-grand-père, récemment décédé. Il triait des cartons poussiéreux quand il tomba sur une vieille enveloppe jaunie. À l'intérieur : une carte.</p>
+
+                <p>Une carte du monde, mais pas comme celles qu'il connaissait. Elle était couverte de symboles, de routes et de notes manuscrites. Au dos, une phrase écrite à l'encre :</p>
+
+                <p><span class="citation">"Celui qui connaît le passé comprend le présent et construit le futur."</span></p>
+
+                <p>Adam reconnut l'écriture de son arrière-grand-père. Un homme qu'il avait toujours admiré, mais qui n'avait jamais voulu parler de son passé. Il avait été explorateur, disait-on. Mais personne ne savait vraiment ce qu'il avait découvert.</p>
+
+                <p>Adam décida de suivre la carte.</p>
+
+                <p>La première destination était marquée d'une petite étoile : une vieille maison familiale, dans la vallée. Il s'y rendit le lendemain.</p>
+
+                <p>La maison était immense, remplie de livres. Des milliers de livres, empilés du sol au plafond. Une bibliothèque privée que personne n'avait visitée depuis des décennies. Adam s'y enfonça, intrigué.</p>
+
+                <p>Il découvrit une salle secrète, dissimulée derrière une étagère. Au centre, une table ronde. Autour, des livres posés, ouverts à des pages précises. Chaque livre représentait une civilisation.</p>
+
+                <p>Il y avait un livre sur l'<strong>Égypte antique</strong>, ouvert à la page des hiéroglyphes. Un autre sur la <strong>Grèce antique</strong>, à la page des mathématiques. Un troisième sur la <strong>Rome antique</strong>, à la page des aqueducs. Un livre sur la <strong>Chine</strong>, à la page de la poudre à canon. Un livre sur le <strong>monde arabe</strong>, à la page de l'algèbre. Un livre sur les <strong>civilisations d'Afrique</strong>, à la page des grandes cités.</p>
+
+                <p>Adam s'assit. Il ouvrit le livre grec. Il découvrit que les Grecs avaient posé les bases des mathématiques, de la philosophie et de la médecine. Il lut le nom d'<strong>Euclide</strong>, de <strong>Socrate</strong>, d'<strong>Hippocrate</strong>.</p>
+
+                <p>Il ouvrit le livre chinois. Il découvrit que les Chinois avaient inventé le papier, l'imprimerie, la boussole et la poudre à canon. Des inventions qui avaient changé le monde.</p>
+
+                <p>Il ouvrit le livre arabe. Il découvrit que les savants arabes avaient préservé et développé les connaissances grecques et indiennes. Ils avaient inventé l'algèbre, les chiffres que nous utilisons encore aujourd'hui, et les bases de la chimie.</p>
+
+                <p>Heure après heure, Adam dévora les livres. Il comprit que chaque civilisation avait apporté quelque chose d'unique. L'Égypte avait apporté l'écriture et l'architecture. La Grèce, la pensée rationnelle. Rome, le droit et l'ingénierie. La Chine, la technologie. Le monde arabe, les sciences.</p>
+
+                <p>Mais au centre de la table, il y avait un emplacement vide. Un livre manquait.</p>
+
+                <p>Il s'appelait <span class="citation">"Le Livre des Origines"</span>. Une inscription sur la table indiquait :</p>
+
+                <p><span class="citation">"Ce livre contient la clé de toutes les autres connaissances. Celui qui le trouve comprendra pourquoi le monde est ce qu'il est."</span></p>
+
+                <p>Adam savait maintenant ce qu'il devait faire. Il devait retrouver ce livre. Sa quête venait de commencer.</p>
+
+                <div class="savoir-box">
+                    <strong>📚 Le savais-tu ?</strong><br>
+                    L'écriture a été inventée indépendamment dans au moins quatre civilisations : la Mésopotamie (vers 3500 av. J.-C.), l'Égypte, la Chine (vers 1200 av. J.-C.) et les civilisations mésoaméricaines (vers 600 av. J.-C.). Chaque système d'écriture a permis à l'humanité de transmettre ses connaissances au-delà des générations.
+                </div>
+
+                <div class="fin-chapitre">— Fin du chapitre 1 —</div>
+            `
+        }, {
+            id: 2,
+            titre: "Les Secrets des Inventeurs",
+            meta: "Inventions · Progrès · Électricité · Communication · Internet",
+            content: `
+                <p>La carte menait Adam vers un nouveau lieu : un musée des sciences et des techniques, situé dans une grande ville. Il y arriva en fin d'après-midi, fatigué mais excité. Il savait que le Livre des Origines n'était pas là, mais que des indices l'attendaient.</p>
+
+                <p>Le musée était immense. Des machines, des prototypes, des inventions de toutes les époques. Adam commença sa visite par le hall principal, où une grande frise chronologique retraçait les grandes inventions de l'humanité.</p>
+
+                <p>Il s'arrêta devant la <strong>roue</strong>. La première roue connue datait de 3500 av. J.-C., en Mésopotamie. Elle avait révolutionné le transport, l'agriculture et l'industrie. Adam réalisa que cette invention si simple avait changé le cours de l'histoire.</p>
+
+                <p>Il continua sa visite et découvrit <strong>l'imprimerie</strong> de Gutenberg, au XVe siècle. Avant elle, les livres étaient copiés à la main. L'imprimerie avait permis de diffuser les connaissances à grande échelle, de rendre le savoir accessible à tous.</p>
+
+                <p>Il s'arrêta devant une vitrine consacrée à l'<strong>électricité</strong>. Il lut les noms de <strong>Volta</strong>, de <strong>Faraday</strong>, de <strong>Edison</strong> et de <strong>Tesla</strong>. Il comprit que l'électricité n'était pas une invention, mais une série de découvertes qui avaient transformé le monde : l'éclairage, les transports, les communications, la médecine.</p>
+
+                <p>Puis il arriva devant l'invention qui le fascinait le plus : le <strong>téléphone</strong>. Alexander Graham Bell l'avait inventé en 1876. Depuis, les communications n'avaient cessé de s'accélérer. Le téléphone, puis la radio, la télévision, Internet.</p>
+
+                <p>Il s'assit devant un écran interactif qui racontait l'histoire de <strong>l'informatique</strong>. Il découvrit que les premiers ordinateurs étaient énormes et coûteux. Il lut le nom d'<strong>Alan Turing</strong>, qui avait posé les bases de l'informatique moderne. Il découvrit que le premier microprocesseur, inventé en 1971, avait ouvert la voie aux ordinateurs personnels, puis aux smartphones.</p>
+
+                <p>Il arriva enfin devant une salle consacrée à <strong>Internet</strong>. Il apprit que le réseau mondial était né d'un projet militaire américain, ARPANET, dans les années 1960. Il avait grandi, s'était ouvert au public, et était devenu ce qu'il était aujourd'hui : un outil qui connectait le monde entier.</p>
+
+                <p>Adam s'arrêta, pensif. Il réalisa que chaque invention était née d'une question : "Comment faire mieux ?". La roue était née de la question : "Comment transporter plus lourd ?". L'imprimerie : "Comment diffuser le savoir plus vite ?". L'électricité : "Comment éclairer la nuit ?". Internet : "Comment connecter le monde ?".</p>
+
+                <p>Il sortit un carnet et écrivit :</p>
+
+                <p><span class="citation">"Chaque invention est la réponse à un problème. Le progrès n'est pas une fin, c'est un chemin."</span></p>
+
+                <p>Un guide du musée s'approcha de lui. C'était une jeune femme, souriante.</p>
+
+                <p>— "Tu sembles fasciné par les inventions. La plupart des jeunes de ton âge passent vite devant."</p>
+
+                <p>— "Je comprends pourquoi elles sont importantes", répondit Adam. "Sans elles, on n'aurait rien de tout ça."</p>
+
+                <p>La guide sourit.</p>
+
+                <p>— "Les inventions ne sont pas que des objets. Ce sont des idées. Des idées que des gens ont eues, souvent après avoir échoué des dizaines de fois. Thomas Edison a échoué des milliers de fois avant d'inventer l'ampoule. Il disait que l'échec était une source de connaissances."</p>
+
+                <p>Adam regarda autour de lui. Toutes ces inventions, ces objets, ces machines. Il comprit que le progrès n'était pas un cadeau tombé du ciel. C'était le fruit du travail, de la persévérance, et de la volonté de résoudre des problèmes.</p>
+
+                <p>Il se souvint de la phrase de son arrière-grand-père : <span class="citation">"Celui qui connaît le passé comprend le présent et construit le futur."</span></p>
+
+                <p>Il était temps de continuer sa quête.</p>
+
+                <div class="savoir-box">
+                    <strong>💡 Le savais-tu ?</strong><br>
+                        L'invention la plus partagée au monde est la roue, mais elle a été réinventée indépendamment dans plusieurs civilisations. Les Incas, par exemple, utilisaient des roues sur les jouets, mais pas sur les véhicules, car leur terrain montagneux rendait la roue moins utile que les lamas pour le transport.
+                    </div>
+
+                    <div class="fin-chapitre">— Fin du chapitre 2 —</div>
+                `
+            }, {
+                id: 3,
+                titre: "Les Empires et les Grandes Décisions",
+                meta: "Empires · Civilisations · Dirigeants · Économie · Guerres · Paix",
+                content: `
+                    <p>La troisième étape de la carte menait Adam à une ancienne cité médiévale, perchée sur une colline. Il y arriva au lever du soleil. Les rues étaient étroites, pavées, bordées de maisons en pierre. Au centre, une vieille tour abritait des archives historiques.</p>
+
+                    <p>Adam y passa la journée à lire des récits d'empires et de civilisations. Il découvrit pourquoi certains empires étaient devenus puissants, et pourquoi d'autres s'étaient effondrés.</p>
+
+                    <p>Il lut d'abord sur l'<strong>Empire romain</strong>. À son apogée, il s'étendait de l'Angleterre à l'Égypte. Les Romains étaient des bâtisseurs : des routes, des aqueducs, des amphithéâtres. Ils avaient aussi un droit écrit, une armée organisée, et une administration efficace. Mais l'empire s'était effondré, rongé par la corruption, les invasions et les divisions internes.</p>
+
+                    <p>Il lut sur l'<strong>Empire mongol</strong>, le plus grand empire contigu de l'histoire. Sous la direction de Gengis Khan, les Mongols avaient conquis un territoire immense. Mais ils n'avaient pas imposé leur culture. Ils avaient favorisé le commerce et les échanges. Leur empire s'était effondré après la mort de leurs grands dirigeants.</p>
+
+                    <p>Il lut sur l'<strong>Empire britannique</strong>, qui avait dominé le monde au XIXe siècle. La puissance britannique reposait sur la révolution industrielle, la marine et le commerce. Mais l'empire s'était dissous après les guerres mondiales, laissant place à des nations indépendantes.</p>
+
+                    <p>Il lut sur l'<strong>Empire ottoman</strong>, qui avait duré six siècles. Sa force venait de sa diversité culturelle et de sa capacité à intégrer les peuples conquis. Mais il s'était affaibli face aux nationalisme et aux réformes tardives.</p>
+
+                    <p>Adam réalisa que tous les empires avaient des points communs : ils avaient tous connu une phase d'expansion, une période de stabilité, puis un déclin. Les causes du déclin étaient souvent les mêmes : la corruption, l'injustice, les inégalités, les guerres coûteuses, et l'incapacité à s'adapter aux changements.</p>
+
+                    <p>Il lut aussi sur des figures qui avaient marqué l'histoire par leurs décisions. Il lut sur <strong>Alexandre le Grand</strong>, qui avait conquis un immense territoire en quelques années, mais dont l'empire s'était dispersé après sa mort. Il lut sur <strong>Jules César</strong>, qui avait transformé Rome, mais qui avait été assassiné pour son ambition. Il lut sur <strong>Saladin</strong>, qui avait reconquis Jérusalem, mais qui était resté célèbre pour sa clémence.</p>
+
+                    <p>Il lut sur des décisions qui avaient changé le monde. La décision de <strong>Christophe Colomb</strong> de traverser l'Atlantique. La décision de <strong>Napoléon</strong> de vendre la Louisiane aux États-Unis. La décision de <strong>Gandhi</strong> de résister par la non-violence. La décision de <strong>Nelson Mandela</strong> de pardonner pour réconcilier son pays.</p>
+
+                    <p>Adam comprit que les empires ne sont pas éternels. Ils s'élèvent, ils brillent, ils disparaissent. Ce qui reste, ce sont les idées, les lois, les inventions, les œuvres d'art. Ce qui reste, c'est ce que les hommes ont construit avec leurs mains et leur esprit.</p>
+
+                    <p>Il sortit son carnet et écrivit :</p>
+
+                    <p><span class="citation">"Les empires passent, mais les idées demeurent. Les grandes décisions ne sont pas celles que l'on prend pour soi, mais celles qui servent les générations futures."</span></p>
+
+                    <p>Il se leva. Il savait que sa quête était plus grande que lui. Il cherchait le Livre des Origines, mais il découvrait l'histoire de l'humanité.</p>
+
+                    <div class="savoir-box">
+                        <strong>🏛️ Le savais-tu ?</strong><br>
+                        L'Empire romain a duré plus de 1000 ans (de 27 av. J.-C. à 476 ap. J.-C. pour l'ouest). Mais sa langue, le latin, a survécu et a donné naissance aux langues romanes : français, italien, espagnol, portugais, roumain. L'empire a peut-être disparu, mais sa culture vit encore.
+                    </div>
+
+                    <div class="fin-chapitre">— Fin du chapitre 3 —</div>
+                `
+            }, {
+                id: 4,
+                titre: "Le Laboratoire du Futur",
+                meta: "IA · Climat · Espace · Énergies · Médecine · Défis du XXIe siècle",
+                content: `
+                    <p>La carte menait Adam à un endroit inattendu : un centre de recherche ultramoderne, perché dans les montagnes. Des bâtiments de verre et d'acier, des antennes, des laboratoires. C'était le lieu où les scientifiques du monde entier se réunissaient pour travailler sur les défis du futur.</p>
+
+                    <p>Adam fut accueilli par une chercheuse, le Dr. Elara, qui lui proposa de visiter le centre.</p>
+
+                    <p>— "Tu es le petit-fils de Jameson ?" demanda-t-elle. "Il parlait souvent de toi. Il disait que tu étais curieux, que tu posais toujours des questions. Il aimait ça."</p>
+
+                    <p>Adam était surpris. Son arrière-grand-père parlait de lui ? Il ne l'avait jamais su. Il suivit le Dr. Elara dans les couloirs du centre.</p>
+
+                    <p>La première salle était consacrée à l'<strong>intelligence artificielle</strong>. Des écrans affichaient des données, des algorithmes, des simulations. Elle lui expliqua que l'IA n'était pas une machine qui pense comme un humain, mais un outil qui peut analyser des données à une vitesse que l'homme ne peut pas atteindre.</p>
+
+                    <p>— "L'IA peut aider à diagnostiquer des maladies", dit-elle. "Elle peut aider à prévoir les catastrophes. Elle peut aider à concevoir des villes plus intelligentes. Mais elle ne peut pas décider à notre place. Elle ne peut pas remplacer la conscience humaine."</p>
+
+                    <p>La deuxième salle était consacrée au <strong>changement climatique</strong>. Des cartes animées montraient l'évolution des températures, la fonte des glaces, la montée des eaux. Elle lui expliqua que le réchauffement climatique était l'un des plus grands défis de l'humanité. Mais que des solutions existaient : les énergies renouvelables, la capture du carbone, la reforestation.</p>
+
+                    <p>— "La question n'est pas de savoir si nous avons les solutions, mais si nous avons la volonté de les mettre en œuvre."</p>
+
+                    <p>La troisième salle était consacrée à l'<strong>exploration spatiale</strong>. Des maquettes de fusées, des photos de Mars, des vidéos de la Station spatiale internationale. Elle lui expliqua que l'homme avait posé le pied sur la Lune en 1969, et qu'il préparait maintenant des missions vers Mars.</p>
+
+                    <p>— "L'exploration spatiale, ce n'est pas une question d'orgueil. C'est une question de survie. Nous avons besoin de nouvelles ressources, de nouvelles planètes, de nouvelles connaissances."</p>
+
+                    <p>La quatrième salle était consacrée aux <strong>nouvelles énergies</strong>. Des prototypes de panneaux solaires, d'éoliennes, de centrales à fusion nucléaire. Elle lui expliqua que l'énergie propre était la clé d'un avenir durable.</p>
+
+                    <p>La cinquième salle était consacrée à la <strong>médecine du futur</strong>. Des imprimantes 3D capables de fabriquer des organes, des robots chirurgiens, des traitements génétiques. Elle lui expliqua que la médecine progressait plus vite que jamais, mais qu'elle posait aussi des questions éthiques.</p>
+
+                    <p>Adam était silencieux. Il avait compris que le futur n'était pas écrit. Il dépendait des décisions que l'on prenait aujourd'hui. Il dépendait de la manière dont on utilisait la connaissance.</p>
+
+                    <p>Le Dr. Elara le regarda.</p>
+
+                    <p>— "Ton arrière-grand-père disait souvent : "Le futur n'est pas un lieu où l'on va. C'est un lieu que l'on construit." Il avait raison. Chaque découverte, chaque invention, chaque décision que nous prenons aujourd'hui façonne le monde de demain."</p>
+
+                    <p>Adam sortit son carnet et écrivit :</p>
+
+                    <p><span class="citation">"Le futur n'est pas une prédiction. C'est une construction. Nous avons tous un rôle à jouer."</span></p>
+
+                    <p>Il savait maintenant que le Livre des Origines n'était pas un livre de réponses, mais un livre de questions. Il était temps de le trouver.</p>
+
+                    <div class="savoir-box">
+                        <strong>🚀 Le savais-tu ?</strong><br>
+                        La Station spatiale internationale (ISS) est le plus grand objet jamais construit dans l'espace. Elle orbite à 400 km d'altitude et se déplace à 28 000 km/h. Elle a été construite par 15 nations et abrite des astronautes du monde entier qui y vivent et travaillent en microgravité.
+                    </div>
+
+                    <div class="fin-chapitre">— Fin du chapitre 4 —</div>
+                `
+            }, {
+                id: 5,
+                titre: "Le Livre des Origines",
+                meta: "Sagesse · Questions · Connaissance · Héritage · Transmission",
+                content: `
+                    <p>Adam arriva enfin au dernier lieu indiqué par la carte. C'était une petite île, perdue au milieu d'un lac de montagne. Il y avait une vieille cabane en bois, presque cachée par les arbres. Il comprit que c'était là que son arrière-grand-père avait passé ses dernières années.</p>
+
+                    <p>Il entra. L'intérieur était simple : un lit, une table, une chaise, et une bibliothèque. Sur la table, un livre. Le Livre des Origines.</p>
+
+                    <p>Adam s'approcha, le cœur battant. Il l'ouvrit. Il était vierge. Page après page, blanc. Aucune écriture, aucun symbole, aucune illustration.</p>
+
+                    <p>Il était déçu, frustré. Il avait parcouru le monde, traversé des bibliothèques, des musées, des laboratoires, pour trouver un livre vide.</p>
+
+                    <p>Il s'assit, le livre ouvert devant lui. Il relut la phrase de son arrière-grand-père :</p>
+
+                    <p><span class="citation">"Celui qui connaît le passé comprend le présent et construit le futur."</span></p>
+
+                    <p>Il comprit soudain. Le livre n'était pas vide. Il était à remplir. Il était le livre. Ses découvertes, ses apprentissages, ses questions, ses réflexions. C'était cela, le Livre des Origines. La connaissance n'était pas un contenu qu'on reçoit. C'était un chemin qu'on parcourt.</p>
+
+                    <p>Il prit un stylo et écrivit sur la première page :</p>
+
+                    <p><span class="citation">"La culture générale n'est pas connaître toutes les réponses. C'est savoir quelles questions poser."</span></p>
+
+                    <p>Il continua à écrire. Il écrivit ce qu'il avait appris de chaque civilisation, chaque invention, chaque empire, chaque défi. Il écrivit ses questions, ses doutes, ses espoirs. Il comprit que le savoir n'est pas un point d'arrivée, mais un voyage. Un voyage qui ne s'arrête jamais.</p>
+
+                    <p>Il ferma le livre et le serra contre lui. Il avait trouvé ce qu'il cherchait. Pas des réponses, mais la certitude que les questions étaient plus importantes que les réponses.</p>
+
+                    <p>Il sortit de la cabane. Le lac étincelait sous le soleil couchant. Il se sentait différent. Il n'était plus le même adolescent qui avait commencé cette quête. Il avait compris que le monde est une immense bibliothèque, et que chaque livre, chaque découverte, chaque personne, est une page de l'histoire de l'humanité.</p>
+
+                    <p>Il se souvint des paroles du Dr. Elara : "Le futur n'est pas un lieu où l'on va. C'est un lieu que l'on construit."</p>
+
+                    <p>Il savait maintenant ce qu'il voulait construire. Il voulait transmettre ce qu'il avait appris. Il voulait que d'autres jeunes comme lui comprennent que la connaissance n'est pas un poids, mais une force. Une force qui permet de comprendre le monde, de le transformer, et de le rendre meilleur.</p>
+
+                    <p>Il regarda le livre. La première page était remplie. Mais il restait des centaines de pages blanches. Il sourit. Il savait qu'il les remplirait, une page à la fois, au fil de sa vie.</p>
+
+                    <p>Il avait compris que le véritable savoir n'est pas une collection de faits, mais une aventure qui dure toute la vie.</p>
+
+                    <div class="citation" style="font-size:1.1rem;text-align:center;padding:1.5rem;">
+                        « Une grande découverte ne commence pas par une réponse.<br>
+                        Elle commence toujours par une question. »
+                    </div>
+
+                    <p style="text-align:center;font-style:italic;color:#6a5a4a;">Le voyage d'Adam ne faisait que commencer.</p>
+
+                    <div class="fin-chapitre">— Fin —</div>
+                `
+            }];
+
+        // ================================================================
+        //  CONSTRUCTION DE LA PAGE D'ACCUEIL
+        // ================================================================
+
+        const homeContent = document.getElementById('homeContent');
+
+        const grid = document.createElement('div');
+        grid.className = 'grid';
+
+        chapitres.forEach(ch => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.setAttribute('data-id', ch.id);
+            const themes = ch.meta.split(' · ');
+            card.innerHTML = `
+                <div class="num">Chapitre ${ch.id}</div>
+                <h3>${ch.titre}</h3>
+                <div class="desc">${themes.slice(0, 3).join(' · ')}</div>
+                <div class="themes">${themes.map(t => `<span>${t}</span>`).join('')}</div>
+            `;
+            card.addEventListener('click', () => navigateToChapter(ch.id));
+            grid.appendChild(card);
+        });
+
+        homeContent.appendChild(grid);
+
+        // ================================================================
+        //  ROUTING (Hash-based)
+        // ================================================================
+
+        const homePage = document.getElementById('homePage');
+        const articlePage = document.getElementById('articlePage');
+
+        function showHome() {
+            homePage.classList.remove('hidden');
+            articlePage.classList.remove('active');
+            window.location.hash = '';
+            document.title = 'Le Voyageur des Mille Savoirs — Roman de culture générale';
+        }
+
+        function showChapter(id) {
+            homePage.classList.add('hidden');
+            articlePage.classList.add('active');
+            window.location.hash = `chapitre-${id}`;
+            renderChapter(id);
+        }
+
+        function renderChapter(id) {
+            const ch = chapitres.find(c => c.id === id);
+            if (!ch) {
+                showHome();
+                return;
+            }
+            document.getElementById('chapterNum').textContent = `Chapitre ${ch.id}`;
+            document.getElementById('chapterTitle').textContent = ch.titre;
+            document.getElementById('chapterMeta').textContent = ch.meta;
+            document.getElementById('chapterContent').innerHTML = ch.content;
+
+            const prev = chapitres.find(c => c.id === id - 1);
+            const next = chapitres.find(c => c.id === id + 1);
+
+            const prevLink = document.getElementById('prevChapter');
+            const nextLink = document.getElementById('nextChapter');
+
+            if (prev) {
+                prevLink.style.display = 'inline-block';
+                prevLink.href = '#';
+                prevLink.onclick = (e) => { e.preventDefault();
+                    navigateToChapter(prev.id); };
+            } else {
+                prevLink.style.display = 'none';
+            }
+
+            if (next) {
+                nextLink.style.display = 'inline-block';
+                nextLink.href = '#';
+                nextLink.onclick = (e) => { e.preventDefault();
+                    navigateToChapter(next.id); };
+            } else {
+                nextLink.style.display = 'none';
+            }
+
+            document.title = `${ch.titre} — Le Voyageur des Mille Savoirs`;
+        }
+
+        function navigateToChapter(id) {
+            showChapter(id);
+        }
+
+        function handleHash() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#chapitre-')) {
+                const id = parseInt(hash.replace('#chapitre-', ''), 10);
+                if (chapitres.find(c => c.id === id)) {
+                    showChapter(id);
+                    return;
+                }
+            }
+            showHome();
+        }
+
+        document.getElementById('backToHomeLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+        document.getElementById('backHomeBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+
+        window.addEventListener('hashchange', handleHash);
+        window.addEventListener('load', handleHash);
+        window.addEventListener('popstate', handleHash);
+    </script>
+
+</body>
+</html>
