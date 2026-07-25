@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scientifiques &amp; Physiciens - Découvertes qui ont changé le monde</title>
+    <style>
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            color: #1a2634;
+            padding: 2rem 1rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* --- HEADER --- */
+        .header {
+            background: linear-gradient(135deg, #0d1b2a, #1a3a5c);
+            color: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header h1 span {
+            color: #7fc8ff;
+        }
+
+        .header p {
+            margin-top: 0.6rem;
+            font-size: 1.1rem;
+            opacity: 0.85;
+            max-width: 700px;
+        }
+
+        .badge-count {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.18);
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 0.8rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #7fc8ff;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        /* --- GRILLE --- */
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin: 2rem 0 1.2rem 0;
+            padding-left: 0.5rem;
+            border-left: 6px solid #1a3a5c;
+            color: #0d1b2a;
+        }
+
+        .section-title .emoji {
+            margin-right: 0.5rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        /* --- CARTE --- */
+        .card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 1rem 1.2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s ease;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 20, 40, 0.10);
+            border-color: #1a3a5c;
+        }
+
+        .card .num {
+            font-weight: 700;
+            font-size: 0.7rem;
+            color: #7a8fa3;
+            background: #eef3f8;
+            border-radius: 30px;
+            padding: 0.1rem 0.7rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .card .text {
+            font-size: 0.95rem;
+            color: #1a2634;
+            font-weight: 500;
+        }
+
+        .card .text small {
+            display: block;
+            font-weight: 400;
+            font-size: 0.78rem;
+            color: #5d7388;
+            margin-top: 0.1rem;
+        }
+
+        /* --- COULEURS PAR CATÉGORIE --- */
+        .cat-physique .card { border-left: 4px solid #2563eb; }
+        .cat-chimie .card { border-left: 4px solid #0f7b3a; }
+        .cat-biologie .card { border-left: 4px solid #b91c5c; }
+        .cat-astro .card { border-left: 4px solid #7c3a9e; }
+        .cat-mathematiques .card { border-left: 4px solid #d97706; }
+        .cat-moderne .card { border-left: 4px solid #a6572e; }
+
+        /* --- PAGE ARTICLE --- */
+        #articlePage {
+            display: none;
+        }
+
+        #articlePage.active {
+            display: block;
+        }
+
+        #homePage.hidden {
+            display: none;
+        }
+
+        .article-container {
+            background: #fff;
+            border-radius: 20px;
+            padding: 2.5rem 2.8rem;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.07);
+            margin-top: 0.5rem;
+            max-width: 820px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .article-container .article-num {
+            font-size: 0.8rem;
+            color: #7a8fa3;
+            background: #eef3f8;
+            display: inline-block;
+            padding: 0.2rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+
+        .article-container h2 {
+            font-size: 2rem;
+            margin: 0.3rem 0 0.1rem 0;
+            color: #0d1b2a;
+        }
+
+        .article-container .article-country {
+            font-size: 1rem;
+            color: #4a6a8a;
+            margin-bottom: 0.2rem;
+        }
+
+        .article-container .article-disco {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1a3a5c;
+            margin-bottom: 0.5rem;
+            padding: 0.3rem 0.8rem;
+            background: #eef3f8;
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        .article-container .article-date {
+            display: inline-block;
+            background: #eef3f8;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #3a6a8a;
+            margin-left: 0.5rem;
+        }
+
+        .article-container .article-tag {
+            display: inline-block;
+            background: #eef3f8;
+            padding: 0.25rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #3a6a8a;
+            margin-left: 0.5rem;
+        }
+
+        .article-container .article-content {
+            font-size: 1.05rem;
+            line-height: 1.9;
+            color: #1a2634;
+            margin-top: 1rem;
+        }
+
+        .article-container .article-content p {
+            margin-bottom: 0.9rem;
+        }
+
+        .article-container .article-content ul {
+            padding-left: 1.8rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .article-container .article-content li {
+            margin-bottom: 0.4rem;
+        }
+
+        .article-container .article-content strong {
+            color: #0d1b2a;
+        }
+
+        .article-container .article-content .quote {
+            font-style: italic;
+            color: #4a6a8a;
+            padding: 0.5rem 1.2rem;
+            border-left: 4px solid #1a3a5c;
+            margin: 1rem 0;
+            background: #f8fafc;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 1.8rem;
+            color: #1a3a5c;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1.2rem;
+            border: 2px solid #1a3a5c;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+
+        .back-home:hover {
+            background: #1a3a5c;
+            color: #fff;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 640px) {
+            body { padding: 1rem 0.6rem; }
+            .header { padding: 1.5rem 1rem; }
+            .header h1 { font-size: 1.5rem; }
+            .grid { grid-template-columns: 1fr; }
+            .section-title { font-size: 1.2rem; }
+            .article-container { padding: 1.5rem; }
+            .article-container h2 { font-size: 1.5rem; }
+        }
+
+        .footer {
+            margin-top: 3.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #6a7f94;
+            border-top: 1px solid #dce4ec;
+            padding-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ============================================================ -->
+        <!-- PAGE D'ACCUEIL -->
+        <!-- ============================================================ -->
+        <div id="homePage">
+            <div class="header">
+                <h1>🔬 Scientifiques &amp; Physiciens · <span>Découvertes qui ont changé le monde</span></h1>
+                <p>50 scientifiques et physiciens légendaires. Cliquez sur un nom pour découvrir sa découverte, son histoire et son héritage.</p>
+                <div class="badge-count">📚 50 scientifiques · Chaque découverte a sa propre URL</div>
+            </div>
+
+            <h2 class="section-title"><span class="emoji">⚛️</span> Physique &amp; Mécanique</h2>
+            <div class="grid cat-physique" id="grid-physique"></div>
+
+            <h2 class="section-title"><span class="emoji">🧪</span> Chimie &amp; Matière</h2>
+            <div class="grid cat-chimie" id="grid-chimie"></div>
+
+            <h2 class="section-title"><span class="emoji">🧬</span> Biologie &amp; Médecine</h2>
+            <div class="grid cat-biologie" id="grid-biologie"></div>
+
+            <h2 class="section-title"><span class="emoji">🌌</span> Astronomie &amp; Cosmologie</h2>
+            <div class="grid cat-astro" id="grid-astro"></div>
+
+            <h2 class="section-title"><span class="emoji">📐</span> Mathématiques</h2>
+            <div class="grid cat-mathematiques" id="grid-mathematiques"></div>
+
+            <h2 class="section-title"><span class="emoji">🚀</span> Physique Moderne &amp; Théories</h2>
+            <div class="grid cat-moderne" id="grid-moderne"></div>
+
+            <div class="footer">
+                <p>📌 50 scientifiques — Découvertes, histoire, héritage</p>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PAGE ARTICLE -->
+        <!-- ============================================================ -->
+        <div id="articlePage">
+            <div class="header" style="margin-bottom: 1.5rem;">
+                <h1>🔬 <span>Scientifiques &amp; Physiciens</span></h1>
+                <a class="back-link" href="#" id="backToHomeLink">← Retour à la liste</a>
+            </div>
+            <div class="article-container" id="articleContainer">
+                <div class="article-num" id="articleNum">01</div>
+                <h2 id="articleTitle">Nom</h2>
+                <div class="article-country" id="articleCountry">🌍 Pays</div>
+                <div>
+                    <span class="article-disco" id="articleDiscovery">🔬 Découverte</span>
+                    <span class="article-date" id="articleDate">📅 Année</span>
+                    <span class="article-tag" id="articleTag">🏷️ Domaine</span>
+                </div>
+                <div class="article-content" id="articleContent">
+                    <p>Histoire et découverte...</p>
+                </div>
+                <a href="#" class="back-home" id="backHomeBtn">← Tous les scientifiques</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ================================================================
+        //  DONNÉES : 50 SCIENTIFIQUES ET PHYSICIENS
+        // ================================================================
+        const data = {
+            // ---------- PHYSIQUE & MÉCANIQUE (1-10) ----------
+            1: {
+                title: "Isaac Newton",
+                country: "Angleterre",
+                discovery: "Lois du mouvement & Gravitation universelle",
+                date: "1687",
+                tag: "Physique",
+                content: `
+                    <p><strong>Isaac Newton</strong> (1643-1727) est l'un des plus grands scientifiques de tous les temps. Ses travaux ont jeté les bases de la physique classique.</p>
+                    <div class="quote">"Si j'ai vu plus loin, c'est en me tenant sur les épaules de géants."</div>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Lois du mouvement :</strong> Les trois lois qui régissent la mécanique classique (inertie, F=ma, action/réaction).</li>
+                        <li><strong>Loi de la gravitation universelle :</strong> La force d'attraction entre deux masses est proportionnelle au produit de leurs masses et inversement proportionnelle au carré de la distance.</li>
+                        <li><strong>Calcul infinitésimal :</strong> Développé simultanément avec Leibniz, le calcul différentiel et intégral.</li>
+                        <li><strong>Optique :</strong> Découverte de la décomposition de la lumière blanche par un prisme.</li>
+                    </ul>
+                    <p>Son œuvre majeure, <em>Philosophiæ Naturalis Principia Mathematica</em> (1687), est considérée comme l'un des livres scientifiques les plus importants de l'histoire.</p>
+                `
+            },
+            2: {
+                title: "Albert Einstein",
+                country: "Allemagne / USA",
+                discovery: "Théorie de la Relativité (E=mc²)",
+                date: "1905",
+                tag: "Physique",
+                content: `
+                    <p><strong>Albert Einstein</strong> (1879-1955) est le physicien le plus célèbre du XXe siècle. Ses travaux ont révolutionné notre compréhension de l'espace, du temps et de la gravité.</p>
+                    <div class="quote">"L'imagination est plus importante que le savoir."</div>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Relativité restreinte (1905) :</strong> Les lois de la physique sont les mêmes pour tous les observateurs en mouvement uniforme. La vitesse de la lumière est constante. E=mc².</li>
+                        <li><strong>Relativité générale (1915) :</strong> La gravité n'est pas une force mais une courbure de l'espace-temps causée par la masse.</li>
+                        <li><strong>Effet photoélectrique :</strong> Explication du phénomène qui a valu le prix Nobel de physique en 1921.</li>
+                        <li><strong>Mouvement brownien :</strong> Preuve de l'existence des atomes.</li>
+                    </ul>
+                    <p>La relativité générale a prédit des phénomènes comme les ondes gravitationnelles (détectées en 2015) et les trous noirs (observés en 2019).</p>
+                `
+            },
+            3: {
+                title: "Galilée Galilei",
+                country: "Italie",
+                discovery: "Loi de la chute des corps & Héliocentrisme",
+                date: "1590-1610",
+                tag: "Physique",
+                content: `
+                    <p><strong>Galilée Galilei</strong> (1564-1642) est le père de la science expérimentale moderne. Il a défendu l'héliocentrisme contre l'Église catholique.</p>
+                    <div class="quote">"Et pourtant, elle tourne !" (attribué)</div>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Chute des corps :</strong> Tous les corps tombent à la même vitesse dans le vide, indépendamment de leur masse.</li>
+                        <li><strong>Lunette astronomique :</strong> Amélioration de l'instrument pour observer les lunes de Jupiter, les phases de Vénus, et les montagnes de la Lune.</li>
+                        <li><strong>Héliocentrisme :</strong> Défense du modèle copernicien (la Terre tourne autour du Soleil).</li>
+                        <li><strong>Méthode scientifique :</strong> Il a établi la démarche expérimentale basée sur l'observation, l'hypothèse et l'expérience.</li>
+                    </ul>
+                    <p>Galilée a été jugé par l'Inquisition en 1633 pour ses idées hélipcentriques et assigné à résidence.</p>
+                `
+            },
+            4: {
+                title: "James Clerk Maxwell",
+                country: "Écosse",
+                discovery: "Équations de Maxwell (Électromagnétisme)",
+                date: "1861-1865",
+                tag: "Physique",
+                content: `
+                    <p><strong>James Clerk Maxwell</strong> (1831-1879) est le physicien qui a unifié l'électricité et le magnétisme en une seule théorie : l'<strong>électromagnétisme</strong>.</p>
+                    <div class="quote">"L'œuvre de Maxwell est l'une des plus grandes de la physique." — Albert Einstein</div>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Équations de Maxwell :</strong> Quatre équations qui décrivent tous les phénomènes électromagnétiques.</li>
+                        <li><strong>Nature de la lumière :</strong> La lumière est une onde électromagnétique qui se propage à une vitesse finie.</li>
+                        <li><strong>Distribution de Maxwell-Boltzmann :</strong> Description statistique des vitesses des molécules dans un gaz.</li>
+                        <li><strong>Théorie des couleurs :</strong> Précurseur de la photographie couleur.</li>
+                    </ul>
+                    <p>Les équations de Maxwell sont le fondement de la physique moderne et ont ouvert la voie à la relativité d'Einstein et à la mécanique quantique.</p>
+                `
+            },
+            5: {
+                title: "Niels Bohr",
+                country: "Danemark",
+                discovery: "Modèle atomique de Bohr (Quantique)",
+                date: "1913",
+                tag: "Physique",
+                content: `
+                    <p><strong>Niels Bohr</strong> (1885-1962) est un des pères de la mécanique quantique. Il a proposé un modèle de l'atome qui intègre la quantification des niveaux d'énergie.</p>
+                    <div class="quote">"Si la mécanique quantique ne vous a pas profondément choqué, c'est que vous ne l'avez pas comprise."</div>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Modèle de Bohr :</strong> Les électrons orbitent autour du noyau sur des orbites quantifiées. L'énergie d'un électron dépend de son orbite.</li>
+                        <li><strong>Principe de correspondance :</strong> La mécanique quantique doit redonner les résultats de la physique classique aux grandes échelles.</li>
+                        <li><strong>Complémentarité :</strong> Un phénomène quantique peut avoir des aspects complémentaires (onde/particule) qui ne peuvent être observés simultanément.</li>
+                        <li><strong>Institut de physique théorique :</strong> Fondation à Copenhague, devenu un centre mondial pour la physique quantique.</li>
+                    </ul>
+                    <p>Bohr a reçu le prix Nobel de physique en 1922 pour son modèle atomique.</p>
+                `
+            },
+            6: {
+                title: "Werner Heisenberg",
+                country: "Allemagne",
+                discovery: "Principe d'incertitude",
+                date: "1927",
+                tag: "Physique",
+                content: `
+                    <p><strong>Werner Heisenberg</strong> (1901-1976) est le physicien qui a formulé le célèbre <strong>principe d'incertitude</strong>, l'un des piliers de la mécanique quantique.</p>
+                    <div class="quote">"Nous ne pouvons pas connaître à la fois la position et la vitesse d'une particule avec une précision infinie."</div>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Principe d'incertitude :</strong> Δx × Δp ≥ h/4π. Plus on connaît précisément la position d'une particule, moins on connaît sa quantité de mouvement, et vice versa.</li>
+                        <li><strong>Mécanique des matrices :</strong> Une des premières formulations de la mécanique quantique.</li>
+                        <li><strong>Théorie des champs quantiques :</strong> Contributions à la théorie quantique des champs.</li>
+                        <li><strong>Magnétisme quantique :</strong> Explication de l'origine du magnétisme à l'échelle atomique.</li>
+                    </ul>
+                    <p>Heisenberg a reçu le prix Nobel de physique en 1932 pour la création de la mécanique quantique matricielle.</p>
+                `
+            },
+            7: {
+                title: "Erwin Schrödinger",
+                country: "Autriche",
+                discovery: "Équation de Schrödinger",
+                date: "1926",
+                tag: "Physique",
+                content: `
+                    <p><strong>Erwin Schrödinger</strong> (1887-1961) est le physicien qui a proposé l'<strong>équation de Schrödinger</strong>, l'équation fondamentale de la mécanique quantique.</p>
+                    <div class="quote">"Le chat est à la fois vivant et mort." — Paradoxe du chat de Schrödinger</div>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Équation de Schrödinger :</strong> Une équation d'onde qui décrit l'évolution de la fonction d'onde d'un système quantique.</li>
+                        <li><strong>Mécanique ondulatoire :</strong> Formulation de la mécanique quantique basée sur les ondes de matière.</li>
+                        <li><strong>Chat de Schrödinger :</strong> Une expérience de pensée illustrant l'interprétation de la superposition quantique.</li>
+                        <li><strong>Biologie quantique :</strong> Auteur de "Qu'est-ce que la vie ?" qui a influencé la découverte de l'ADN.</li>
+                    </ul>
+                    <p>Schrödinger a reçu le prix Nobel de physique en 1933 avec Paul Dirac.</p>
+                `
+            },
+            8: {
+                title: "Richard Feynman",
+                country: "États-Unis",
+                discovery: "Électrodynamique quantique (QED)",
+                date: "1948",
+                tag: "Physique",
+                content: `
+                    <p><strong>Richard Feynman</strong> (1918-1988) est l'un des physiciens les plus brillants et charismatiques du XXe siècle. Il est connu pour ses travaux en <strong>électrodynamique quantique</strong>.</p>
+                    <div class="quote">"Si vous ne pouvez pas l'expliquer simplement, c'est que vous ne l'avez pas suffisamment compris."</div>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Électrodynamique quantique (QED) :</strong> Théorie qui décrit l'interaction entre la lumière et la matière.</li>
+                        <li><strong>Diagrammes de Feynman :</strong> Une représentation graphique qui simplifie les calculs en physique des particules.</li>
+                        <li><strong>Intégrales de chemin :</strong> Une formulation alternative de la mécanique quantique.</li>
+                        <li><strong>Théorie des superfluidités :</strong> Explication du comportement de l'hélium liquide.</li>
+                    </ul>
+                    <p>Feynman a reçu le prix Nobel de physique en 1965 pour ses travaux en QED.</p>
+                `
+            },
+            9: {
+                title: "Paul Dirac",
+                country: "Angleterre",
+                discovery: "Équation de Dirac (Antimatière)",
+                date: "1928",
+                tag: "Physique",
+                content: `
+                    <p><strong>Paul Dirac</strong> (1902-1984) est le physicien qui a prédit l'existence de l'<strong>antimatière</strong> en combinant la mécanique quantique et la relativité restreinte.</p>
+                    <div class="quote">"Les lois de la physique doivent avoir une beauté mathématique."</div>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Équation de Dirac :</strong> Une équation relativiste pour les fermions qui prédit l'existence des antiparticules.</li>
+                        <li><strong>Prédiction du positron :</strong> L'antiparticule de l'électron, découverte en 1932 par Carl Anderson.</li>
+                        <li><strong>Statistique de Fermi-Dirac :</strong> Distribution statistique pour les particules de spin demi-entier.</li>
+                        <li><strong>Magnétisme quantique :</strong> Contributions à la théorie quantique du magnétisme.</li>
+                    </ul>
+                    <p>Dirac a reçu le prix Nobel de physique en 1933 avec Erwin Schrödinger.</p>
+                `
+            },
+            10: {
+                title: "Max Planck",
+                country: "Allemagne",
+                discovery: "Quantification de l'énergie",
+                date: "1900",
+                tag: "Physique",
+                content: `
+                    <p><strong>Max Planck</strong> (1858-1947) est le père de la <strong>mécanique quantique</strong>. Il a introduit l'idée que l'énergie est émise par quanta.</p>
+                    <div class="quote">"Une nouvelle vérité scientifique ne triomphe pas en convainquant ses opposants, mais parce que ses opposants finissent par mourir."</div>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Quantification de l'énergie :</strong> L'énergie d'un oscillateur ne peut prendre que des valeurs discrètes : E = nhν.</li>
+                        <li><strong>Constante de Planck :</strong> h = 6,626 × 10⁻³⁴ J·s, une constante fondamentale de la physique.</li>
+                        <li><strong>Loi de Planck :</strong> Distribution spectrale du rayonnement du corps noir.</li>
+                        <li><strong>Théorie des quanta :</strong> Le fondement de toute la physique moderne.</li>
+                    </ul>
+                    <p>Planck a reçu le prix Nobel de physique en 1918 pour sa découverte des quanta d'énergie.</p>
+                `
+            },
+            // ---------- CHIMIE & MATIÈRE (11-18) ----------
+            11: {
+                title: "Marie Curie",
+                country: "Pologne / France",
+                discovery: "Radioactivité & Polonium (Po), Radium (Ra)",
+                date: "1898",
+                tag: "Chimie",
+                content: `
+                    <p><strong>Marie Skłodowska-Curie</strong> (1867-1934) est la première femme à avoir reçu un prix Nobel, et la seule à en avoir reçu deux dans deux disciplines différentes.</p>
+                    <div class="quote">"La vie n'est facile pour aucun d'entre nous, mais qu'importe, il faut persévérer."</div>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Radioactivité :</strong> Découverte du phénomène (avec son mari Pierre Curie).</li>
+                        <li><strong>Polonium (Po) :</strong> Élément chimique nommé en hommage à la Pologne.</li>
+                        <li><strong>Radium (Ra) :</strong> Élément radioactif utilisé en médecine.</li>
+                        <li><strong>Applications médicales :</strong> Utilisation de la radioactivité en radiothérapie.</li>
+                    </ul>
+                    <p>Elle a reçu le prix Nobel de physique en 1903 (avec Pierre Curie et Henri Becquerel) et le prix Nobel de chimie en 1911.</p>
+                `
+            },
+            12: {
+                title: "Dmitri Mendeleïev",
+                country: "Russie",
+                discovery: "Tableau périodique des éléments",
+                date: "1869",
+                tag: "Chimie",
+                content: `
+                    <p><strong>Dmitri Mendeleïev</strong> (1834-1907) est le chimiste russe qui a créé le <strong>tableau périodique des éléments</strong>, l'un des outils les plus importants de la chimie.</p>
+                    <div class="quote">"J'ai vu dans un rêve une table où tous les éléments s'ordonnaient."</div>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Tableau périodique :</strong> Classement des éléments par masse atomique et propriétés chimiques.</li>
+                        <li><strong>Prédictions :</strong> Il a laissé des cases vides pour des éléments encore inconnus (Gallium, Germanium, Scandium).</li>
+                        <li><strong>Loi périodique :</strong> Les propriétés des éléments varient périodiquement avec leur masse atomique.</li>
+                        <li><strong>Pétrochimie :</strong> Contributions à l'industrie du pétrole.</li>
+                    </ul>
+                    <p>Le tableau périodique moderne est basé sur son travail, avec les éléments classés par numéro atomique.</p>
+                `
+            },
+            13: {
+                title: "Antoine Lavoisier",
+                country: "France",
+                discovery: "Loi de la conservation de la masse",
+                date: "1789",
+                tag: "Chimie",
+                content: `
+                    <p><strong>Antoine Lavoisier</strong> (1743-1794) est considéré comme le père de la chimie moderne. Il a révolutionné la chimie en la rendant quantitative.</p>
+                    <div class="quote">"Rien ne se perd, rien ne se crée, tout se transforme."</div>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Conservation de la masse :</strong> Dans une réaction chimique, la masse totale des réactifs est égale à la masse totale des produits.</li>
+                        <li><strong>Oxygène :</strong> Identification et nomination de l'oxygène comme élément.</li>
+                        <li><strong>Combustion :</strong> Explication de la combustion par l'oxygène, réfutant la théorie du phlogistique.</li>
+                        <li><strong>Nomenclature chimique :</strong> Création d'un système de nomenclature logique pour les composés chimiques.</li>
+                    </ul>
+                    <p>Lavoisier a été guillotiné pendant la Révolution française. Lagrange a dit : "Il n'a fallu qu'un instant pour faire tomber cette tête, et cent ans peut-être ne suffiront pas pour en reproduire une semblable."</p>
+                `
+            },
+            14: {
+                title: "John Dalton",
+                country: "Angleterre",
+                discovery: "Théorie atomique moderne",
+                date: "1803",
+                tag: "Chimie",
+                content: `
+                    <p><strong>John Dalton</strong> (1766-1844) est le chimiste anglais qui a formulé la <strong>théorie atomique moderne</strong>, qui a révolutionné la chimie.</p>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Théorie atomique :</strong> Les éléments sont composés d'atomes indivisibles. Les atomes d'un même élément sont identiques. Les réactions chimiques sont des combinaisons d'atomes.</li>
+                        <li><strong>Loi des proportions multiples :</strong> Les composés chimiques sont formés de combinaisons de nombres entiers d'atomes.</li>
+                        <li><strong>Daltonisme :</strong> Première description scientifique de ce trouble de la vision (dont il souffrait).</li>
+                        <li><strong>Pressions partielles :</strong> Loi de Dalton sur les pressions partielles des gaz.</li>
+                    </ul>
+                    <p>La théorie atomique de Dalton a jeté les bases de la chimie moderne et de la physique atomique.</p>
+                `
+            },
+            15: {
+                title: "Linus Pauling",
+                country: "États-Unis",
+                discovery: "Nature de la liaison chimique",
+                date: "1931-1939",
+                tag: "Chimie",
+                content: `
+                    <p><strong>Linus Pauling</strong> (1901-1994) est l'un des plus grands chimistes du XXe siècle. Il a reçu <strong>deux prix Nobel</strong>.</p>
+                    <div class="quote">"La science est la seule activité humaine qui soit cumulative et progressive."</div>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Nature de la liaison chimique :</strong> Explication des liaisons covalentes, ioniques et métalliques.</li>
+                        <li><strong>Électronégativité :</strong> Définition de l'échelle de Pauling.</li>
+                        <li><strong>Structure des protéines :</strong> Études de la structure des protéines (hélice alpha).</li>
+                        <li><strong>Vitamine C :</strong> Promotion de ses bienfaits pour la santé.</li>
+                    </ul>
+                    <p>Il a reçu le prix Nobel de chimie en 1954 et le prix Nobel de la paix en 1962 pour son opposition aux essais nucléaires.</p>
+                `
+            },
+            16: {
+                title: "Amedeo Avogadro",
+                country: "Italie",
+                discovery: "Hypothèse d'Avogadro (nombre d'Avogadro)",
+                date: "1811",
+                tag: "Chimie",
+                content: `
+                    <p><strong>Amedeo Avogadro</strong> (1776-1856) est le chimiste italien qui a proposé que <strong>des volumes égaux de gaz contiennent le même nombre de molécules</strong>.</p>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Hypothèse d'Avogadro :</strong> À température et pression constantes, des volumes égaux de gaz contiennent le même nombre de molécules.</li>
+                        <li><strong>Nombre d'Avogadro :</strong> Nₐ = 6,022 × 10²³ mol⁻¹, le nombre de particules dans une mole.</li>
+                        <li><strong>Distinction atomes/molécules :</strong> Il a clarifié la différence entre les atomes et les molécules.</li>
+                        <li><strong>Théorie moléculaire :</strong> La matière est composée de molécules.</li>
+                    </ul>
+                    <p>L'hypothèse d'Avogadro n'a été acceptée que longtemps après sa mort, mais elle est fondamentale pour la chimie.</p>
+                `
+            },
+            17: {
+                title: "Robert Boyle",
+                country: "Irlande / Angleterre",
+                discovery: "Loi de Boyle (Gaz)",
+                date: "1662",
+                tag: "Chimie",
+                content: `
+                    <p><strong>Robert Boyle</strong> (1627-1691) est considéré comme le père de la <strong>chimie moderne</strong> et le premier chimiste à mener des expériences rigoureuses.</p>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Loi de Boyle :</strong> Le volume d'un gaz est inversement proportionnel à sa pression (à température constante).</li>
+                        <li><strong>Définition des éléments :</strong> Un élément est une substance qui ne peut pas être décomposée en substances plus simples.</li>
+                        <li><strong>Méthode scientifique :</strong> Promotion de l'approche expérimentale.</li>
+                        <li><strong>Pompe à vide :</strong> Développement de la pompe à air pour ses expériences.</li>
+                    </ul>
+                    <p>Boyle est l'auteur de <em>The Sceptical Chymist</em> (1661), un livre fondateur de la chimie.</p>
+                `
+            },
+            18: {
+                title: "Louis Pasteur",
+                country: "France",
+                discovery: "Microbiologie & Pasteurisation",
+                date: "1860-1885",
+                tag: "Biologie",
+                content: `
+                    <p><strong>Louis Pasteur</strong> (1822-1895) est l'un des scientifiques les plus importants de l'histoire, fondateur de la <strong>microbiologie moderne</strong>.</p>
+                    <div class="quote">"Dans les champs de l'observation, le hasard ne favorise que les esprits préparés."</div>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Pasteurisation :</strong> Procédé de chauffage pour tuer les micro-organismes dans les liquides (vin, bière, lait).</li>
+                        <li><strong>Vaccins :</strong> Développement des vaccins contre le choléra des poules, le charbon, et la rage.</li>
+                        <li><strong>Théorie des germes :</strong> Les maladies infectieuses sont causées par des micro-organismes.</li>
+                        <li><strong>Fermentation :</strong> Étude des processus de fermentation, distinguant les fermentations alcoolique et lactique.</li>
+                    </ul>
+                    <p>Pasteur a sauvé des millions de vies grâce à ses travaux sur la vaccination et la pasteurisation.</p>
+                `
+            },
+            // ---------- BIOLOGIE & MÉDECINE (19-25) ----------
+            19: {
+                title: "Charles Darwin",
+                country: "Angleterre",
+                discovery: "Théorie de l'évolution par sélection naturelle",
+                date: "1859",
+                tag: "Biologie",
+                content: `
+                    <p><strong>Charles Darwin</strong> (1809-1882) est le naturaliste qui a révolutionné la biologie avec sa théorie de l'évolution par <strong>sélection naturelle</strong>.</p>
+                    <div class="quote">"Ce n'est pas l'espèce la plus forte qui survit, ni la plus intelligente, mais celle qui s'adapte le mieux aux changements."</div>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Sélection naturelle :</strong> Les organismes les mieux adaptés à leur environnement ont plus de chances de survivre et de se reproduire.</li>
+                        <li><strong>L'Origine des espèces (1859) :</strong> Livre fondateur qui présente la théorie de l'évolution.</li>
+                        <li><strong>Voyage du Beagle :</strong> Voyage de cinq ans qui a fourni les preuves de sa théorie (îles Galápagos).</li>
+                        <li><strong>Ancêtre commun :</strong> Tous les êtres vivants descendent d'un ancêtre commun.</li>
+                    </ul>
+                    <p>La théorie de Darwin est le fondement de la biologie moderne.</p>
+                `
+            },
+            20: {
+                title: "Gregor Mendel",
+                country: "Autriche",
+                discovery: "Lois de l'hérédité (Génétique)",
+                date: "1866",
+                tag: "Biologie",
+                content: `
+                    <p><strong>Gregor Mendel</strong> (1822-1884) est le moine et scientifique qui a découvert les <strong>lois fondamentales de la génétique</strong>.</p>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Lois de Mendel :</strong> Les traits héréditaires sont transmis par des unités (gènes) qui suivent des lois de ségrégation et d'assortiment indépendant.</li>
+                        <li><strong>Expériences sur les petits pois :</strong> Croisement de variétés de pois pour étudier la transmission des caractères.</li>
+                        <li><strong>Dominance et récessivité :</strong> Distinction entre allèles dominants et récessifs.</li>
+                        <li><strong>Héritage mendélien :</strong> Fondement de la génétique moderne.</li>
+                    </ul>
+                    <p>Les travaux de Mendel ont été redécouverts en 1900, longtemps après sa mort.</p>
+                `
+            },
+            21: {
+                title: "Francis Crick & James Watson",
+                country: "Angleterre / États-Unis",
+                discovery: "Structure de l'ADN (double hélice)",
+                date: "1953",
+                tag: "Biologie",
+                content: `
+                    <p><strong>Francis Crick (1916-2004) et James Watson (1928-)</strong> ont découvert la <strong>structure en double hélice de l'ADN</strong>, l'une des découvertes les plus importantes du XXe siècle.</p>
+                    <div class="quote">"Nous avons trouvé le secret de la vie." — Francis Crick</div>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Double hélice :</strong> L'ADN est formé de deux brins enroulés autour d'un axe commun.</li>
+                        <li><strong>Appariement des bases :</strong> Adénine (A) avec Thymine (T), Guanine (G) avec Cytosine (C).</li>
+                        <li><strong>Réplication :</strong> Mécanisme de duplication de l'ADN.</li>
+                        <li><strong>Code génétique :</strong> L'ADN contient l'information héréditaire sous forme de séquences de bases.</li>
+                    </ul>
+                    <p>Ils ont reçu le prix Nobel de médecine en 1962 (avec Maurice Wilkins). Rosalind Franklin a contribué de manière essentielle à la découverte.</p>
+                `
+            },
+            22: {
+                title: "Rosalind Franklin",
+                country: "Angleterre",
+                discovery: "Photographie de l'ADN (Photo 51)",
+                date: "1952",
+                tag: "Biologie",
+                content: `
+                    <p><strong>Rosalind Franklin</strong> (1920-1958) est la scientifique dont les <strong>images de diffraction des rayons X</strong> ont permis de découvrir la structure de l'ADN.</p>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Photo 51 :</strong> La photographie de diffraction qui a montré la structure hélicoïdale de l'ADN.</li>
+                        <li><strong>Structure de l'ADN :</strong> Ses données ont été utilisées par Watson et Crick sans son consentement.</li>
+                        <li><strong>Virologie :</strong> Études sur la structure du virus de la mosaïque du tabac.</li>
+                        <li><strong>Charbon :</strong> Recherches sur la structure du charbon.</li>
+                    </ul>
+                    <p>Franklin n'a pas reçu le prix Nobel (mort avant 1962), mais son rôle est aujourd'hui largement reconnu.</p>
+                `
+            },
+            23: {
+                title: "Alexander Fleming",
+                country: "Écosse",
+                discovery: "Pénicilline (antibiotique)",
+                date: "1928",
+                tag: "Biologie",
+                content: `
+                    <p><strong>Alexander Fleming</strong> (1881-1955) est le médecin et bactériologiste qui a découvert la <strong>pénicilline</strong>, le premier antibiotique.</p>
+                    <div class="quote">"Quand j'ai découvert la pénicilline, je ne savais pas que j'avais trouvé un médicament."</div>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Pénicilline :</strong> Découverte par hasard en 1928, en observant une moisissure qui tuait les bactéries.</li>
+                        <li><strong>Lysozyme :</strong> Découverte d'une enzyme antibactérienne dans les larmes.</li>
+                        <li><strong>Antibiotiques :</strong> Précurseur de toute la médecine antibiotique.</li>
+                        <li><strong>Applications médicales :</strong> Utilisation massive pendant la Seconde Guerre mondiale.</li>
+                    </ul>
+                    <p>Fleming a reçu le prix Nobel de médecine en 1945 avec Florey et Chain, qui ont industrialisé la production.</p>
+                `
+            },
+            24: {
+                title: "Ivan Pavlov",
+                country: "Russie",
+                discovery: "Réflexe conditionné",
+                date: "1890",
+                tag: "Biologie",
+                content: `
+                    <p><strong>Ivan Pavlov</strong> (1849-1936) est le physiologiste russe célèbre pour ses travaux sur les <strong>réflexes conditionnés</strong>, qui ont fondé le behaviorisme.</p>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Réflexe conditionné :</strong> Un chien associe le son d'une cloche à la nourriture et salive en entendant la cloche seule.</li>
+                        <li><strong>Pavlovien (conditionnement classique) :</strong> Base de l'apprentissage associatif.</li>
+                        <li><strong>Physiologie digestive :</strong> Travaux sur la digestion qui lui ont valu le prix Nobel en 1904.</li>
+                        <li><strong>Psychologie expérimentale :</strong> Influence sur le behaviorisme de Watson et Skinner.</li>
+                    </ul>
+                    <p>Pavlov est l'un des pères de la psychologie expérimentale.</p>
+                `
+            },
+            25: {
+                title: "Louis Pasteur (déjà listé)",
+                country: "France",
+                discovery: "Vaccination & Microbiologie",
+                date: "1860-1885",
+                tag: "Biologie",
+                content: `
+                    <p><strong>Louis Pasteur</strong> (1822-1895) est déjà présent dans la catégorie Chimie. Ses travaux en microbiologie et vaccination sont également majeurs.</p>
+                    <ul>
+                        <li><strong>Vaccin contre la rage :</strong> Premier vaccin efficace contre une maladie humaine.</li>
+                        <li><strong>Théorie des germes :</strong> Les maladies sont causées par des micro-organismes.</li>
+                        <li><strong>Pasteurisation :</strong> Méthode de conservation des aliments.</li>
+                    </ul>
+                `
+            },
+            // ---------- ASTRONOMIE & COSMOLOGIE (26-32) ----------
+            26: {
+                title: "Nicolas Copernic",
+                country: "Pologne",
+                discovery: "Modèle héliocentrique",
+                date: "1543",
+                tag: "Astronomie",
+                content: `
+                    <p><strong>Nicolas Copernic</strong> (1473-1543) est l'astronome polonais qui a proposé le <strong>modèle héliocentrique</strong>, plaçant le Soleil au centre de l'univers.</p>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Héliocentrisme :</strong> La Terre et les planètes tournent autour du Soleil.</li>
+                        <li><strong>De revolutionibus orbium coelestium (1543) :</strong> Livre fondateur de l'astronomie moderne.</li>
+                        <li><strong>Mouvements planétaires :</strong> Explication des mouvements rétrogrades des planètes.</li>
+                        <li><strong>Révolution copernicienne :</strong> Bouleversement de la cosmologie traditionnelle.</li>
+                    </ul>
+                    <p>Le modèle de Copernic a été perfectionné par Kepler et Newton.</p>
+                `
+            },
+            27: {
+                title: "Galilée (déjà listé)",
+                country: "Italie",
+                discovery: "Observations astronomiques",
+                date: "1610",
+                tag: "Astronomie",
+                content: `
+                    <p><strong>Galilée</strong> est déjà présent dans la catégorie Physique. Il a également révolutionné l'astronomie.</p>
+                    <ul>
+                        <li><strong>Lunes de Jupiter :</strong> Découverte en 1610, preuve que tous les corps ne tournent pas autour de la Terre.</li>
+                        <li><strong>Phases de Vénus :</strong> Preuve du modèle héliocentrique.</li>
+                        <li><strong>Montagnes de la Lune :</strong> La Lune a un relief, comme la Terre.</li>
+                        <li><strong>Voie lactée :</strong> Composée d'étoiles innombrables.</li>
+                    </ul>
+                `
+            },
+            28: {
+                title: "Johannes Kepler",
+                country: "Allemagne",
+                discovery: "Lois de Kepler (orbites planétaires)",
+                date: "1609-1619",
+                tag: "Astronomie",
+                content: `
+                    <p><strong>Johannes Kepler</strong> (1571-1630) est l'astronome allemand qui a découvert les <strong>lois du mouvement planétaire</strong>.</p>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>1ère loi :</strong> Les planètes orbitent selon des ellipses, le Soleil étant à l'un des foyers.</li>
+                        <li><strong>2ème loi :</strong> Les planètes balayent des aires égales en des temps égaux (loi des aires).</li>
+                        <li><strong>3ème loi :</strong> Le carré de la période de révolution est proportionnel au cube du demi-grand axe de l'orbite.</li>
+                        <li><strong>Astronomie :</strong> Fondement de la mécanique céleste.</li>
+                    </ul>
+                    <p>Les lois de Kepler ont permis à Newton de formuler la loi de la gravitation universelle.</p>
+                `
+            },
+            29: {
+                title: "Edwin Hubble",
+                country: "États-Unis",
+                discovery: "Expansion de l'univers (Loi de Hubble)",
+                date: "1929",
+                tag: "Astronomie",
+                content: `
+                    <p><strong>Edwin Hubble</strong> (1889-1953) est l'astronome américain qui a découvert l'<strong>expansion de l'univers</strong>.</p>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Loi de Hubble :</strong> Les galaxies s'éloignent les unes des autres à une vitesse proportionnelle à leur distance. v = H₀ × d.</li>
+                        <li><strong>Constante de Hubble (H₀) :</strong> Mesure du taux d'expansion de l'univers.</li>
+                        <li><strong>Galaxies extérieures :</strong> Découverte que la Voie lactée n'est qu'une galaxie parmi des milliards.</li>
+                        <li><strong>Big Bang :</strong> L'expansion implique que l'univers a eu un début.</li>
+                    </ul>
+                    <p>Le télescope spatial Hubble porte son nom.</p>
+                `
+            },
+            30: {
+                title: "Carl Sagan",
+                country: "États-Unis",
+                discovery: "Astrophysique & Vulgarisation",
+                date: "1960-1990",
+                tag: "Astronomie",
+                content: `
+                    <p><strong>Carl Sagan</strong> (1934-1996) est un astrophysicien et vulgarisateur scientifique américain, célèbre pour la série <em>Cosmos</em>.</p>
+                    <div class="quote">"Nous sommes faits de poussières d'étoiles."</div>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Atmosphère de Vénus :</strong> Effet de serre sur Vénus.</li>
+                        <li><strong>Recherche d'intelligence extraterrestre (SETI) :</strong> Promotion de la recherche de signaux extraterrestres.</li>
+                        <li><strong>Fermi paradox :</strong> "Où sont-ils ?"</li>
+                        <li><strong>Vulgarisation :</strong> Auteur de <em>Cosmos</em>, <em>Contact</em>, etc.</li>
+                    </ul>
+                    <p>Sagan a inspiré des générations de scientifiques par sa passion pour l'univers.</p>
+                `
+            },
+            31: {
+                title: "Stephen Hawking",
+                country: "Angleterre",
+                discovery: "Trous noirs & Radiation de Hawking",
+                date: "1974",
+                tag: "Astronomie",
+                content: `
+                    <p><strong>Stephen Hawking</strong> (1942-2018) est l'un des cosmologistes les plus célèbres, connu pour ses travaux sur les <strong>trous noirs</strong> et la <strong>radiation de Hawking</strong>.</p>
+                    <div class="quote">"Souviens-toi de regarder les étoiles, pas sous tes pieds."</div>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Radiation de Hawking :</strong> Les trous noirs émettent des particules et finissent par s'évaporer.</li>
+                        <li><strong>Singularités :</strong> Les trous noirs contiennent des singularités où les lois de la physique s'effondrent.</li>
+                        <li><strong>Gravité quantique :</strong> Tentatives d'unifier la relativité générale et la mécanique quantique.</li>
+                        <li><strong>Vulgarisation :</strong> Auteur de <em>Une brève histoire du temps</em>.</li>
+                    </ul>
+                    <p>Hawking a vécu avec la sclérose latérale amyotrophique (SLA) pendant plus de 50 ans.</p>
+                `
+            },
+            32: {
+                title: "Henrietta Swan Leavitt",
+                country: "États-Unis",
+                discovery: "Relation période-luminosité (Céphéides)",
+                date: "1908",
+                tag: "Astronomie",
+                content: `
+                    <p><strong>Henrietta Swan Leavitt</strong> (1868-1921) est l'astronome américaine qui a découvert la <strong>relation période-luminosité</strong> des étoiles variables Céphéides.</p>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Relation période-luminosité :</strong> La période de variation des Céphéides est liée à leur luminosité intrinsèque.</li>
+                        <li><strong>Distances cosmiques :</strong> Les Céphéides sont utilisées comme "chandelles standard" pour mesurer les distances dans l'univers.</li>
+                        <li><strong>Expansion de l'univers :</strong> Ses travaux ont permis à Hubble de calculer les distances des galaxies.</li>
+                    </ul>
+                    <p>Leavitt est l'une des astronomes les plus importantes mais souvent méconnues.</p>
+                `
+            },
+            // ---------- MATHÉMATIQUES (33-38) ----------
+            33: {
+                title: "Pythagore",
+                country: "Grèce",
+                discovery: "Théorème de Pythagore",
+                date: "~500 av. J.-C.",
+                tag: "Mathématiques",
+                content: `
+                    <p><strong>Pythagore</strong> (580-495 av. J.-C.) est un mathématicien et philosophe grec, connu pour le <strong>théorème de Pythagore</strong>.</p>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Théorème de Pythagore :</strong> Dans un triangle rectangle, le carré de l'hypoténuse est égal à la somme des carrés des deux autres côtés. a² + b² = c².</li>
+                        <li><strong>Nombres irrationnels :</strong> Découverte des nombres irrationnels (√2).</li>
+                        <li><strong>École pythagoricienne :</strong> Fondation d'une école philosophique et mathématique.</li>
+                        <li><strong>Musique et mathématiques :</strong> Relation entre les rapports mathématiques et les harmonies musicales.</li>
+                    </ul>
+                    <p>Le théorème de Pythagore est l'un des plus célèbres et utiles en mathématiques.</p>
+                `
+            },
+            34: {
+                title: "Euclide",
+                country: "Grèce",
+                discovery: "Éléments d'Euclide (Géométrie)",
+                date: "~300 av. J.-C.",
+                tag: "Mathématiques",
+                content: `
+                    <p><strong>Euclide</strong> (325-265 av. J.-C.) est le mathématicien grec auteur des <strong>Éléments</strong>, l'un des livres les plus influents de l'histoire.</p>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Éléments :</strong> 13 livres qui présentent les fondements de la géométrie et de l'arithmétique.</li>
+                        <li><strong>Géométrie euclidienne :</strong> Système axiomatique basé sur des postulats et des définitions.</li>
+                        <li><strong>Algorithme d'Euclide :</strong> Méthode pour trouver le plus grand commun diviseur (PGCD).</li>
+                        <li><strong>Nombres premiers :</strong> Démonstration de l'infinité des nombres premiers.</li>
+                    </ul>
+                    <p>Les Éléments ont été utilisés comme manuel scolaire pendant plus de 2000 ans.</p>
+                `
+            },
+            35: {
+                title: "Leonhard Euler",
+                country: "Suisse",
+                discovery: "Nombre d'Euler (e), Identité d'Euler",
+                date: "XVIIIe siècle",
+                tag: "Mathématiques",
+                content: `
+                    <p><strong>Leonhard Euler</strong> (1707-1783) est l'un des plus grands mathématiciens de tous les temps. Il a contribué à presque tous les domaines des mathématiques.</p>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Nombre d'Euler (e) :</strong> e ≈ 2,718, la base des logarithmes naturels.</li>
+                        <li><strong>Identité d'Euler :</strong> e^(iπ) + 1 = 0, considérée comme la plus belle formule mathématique.</li>
+                        <li><strong>Formule d'Euler :</strong> e^(ix) = cos(x) + i sin(x).</li>
+                        <li><strong>Notations :</strong> Introduction de f(x), Σ, π, etc.</li>
+                        <li><strong>Graphes :</strong> Résolution du problème des sept ponts de Königsberg (théorie des graphes).</li>
+                    </ul>
+                    <p>Euler a publié plus de 800 articles et livres, un record dans l'histoire des mathématiques.</p>
+                `
+            },
+            36: {
+                title: "Carl Friedrich Gauss",
+                country: "Allemagne",
+                discovery: "Distribution normale (Gaussienne)",
+                date: "1809",
+                tag: "Mathématiques",
+                content: `
+                    <p><strong>Carl Friedrich Gauss</strong> (1777-1855) est considéré comme le plus grand mathématicien depuis l'Antiquité, surnommé le "Prince des mathématiciens".</p>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Distribution normale :</strong> Courbe de Gauss ou "courbe en cloche", fondamentale en statistiques.</li>
+                        <li><strong>Méthode des moindres carrés :</strong> Technique d'optimisation en statistique.</li>
+                        <li><strong>Théorie des nombres :</strong> Contributions majeures aux nombres premiers.</li>
+                        <li><strong>Géométrie différentielle :</strong> Théorème de Gauss-Bonnet.</li>
+                        <li><strong>Magnétisme :</strong> Mesure du champ magnétique terrestre.</li>
+                    </ul>
+                    <p>Gauss a influencé tous les domaines des mathématiques et de la physique.</p>
+                `
+            },
+            37: {
+                title: "Alan Turing",
+                country: "Angleterre",
+                discovery: "Machine de Turing (Informatique théorique)",
+                date: "1936",
+                tag: "Mathématiques",
+                content: `
+                    <p><strong>Alan Turing</strong> (1912-1954) est le mathématicien et informaticien britannique qui a posé les bases de l'<strong>informatique théorique</strong>.</p>
+                    <div class="quote">"Nous ne pouvons prévoir l'avenir, mais nous pouvons le construire."</div>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Machine de Turing :</strong> Modèle théorique qui définit le calcul et la programmation.</li>
+                        <li><strong>Test de Turing :</strong> Critère pour évaluer l'intelligence artificielle.</li>
+                        <li><strong>Décryptage d'Enigma :</strong> Pendant la Seconde Guerre mondiale, il a déchiffré les codes allemands.</li>
+                        <li><strong>Algorithmique :</strong> Fondateur de l'informatique moderne.</li>
+                    </ul>
+                    <p>Turing est considéré comme le père de l'informatique et de l'intelligence artificielle.</p>
+                `
+            },
+            38: {
+                title: "Blaise Pascal",
+                country: "France",
+                discovery: "Probabilités & Pascal (langage)",
+                date: "1654",
+                tag: "Mathématiques",
+                content: `
+                    <p><strong>Blaise Pascal</strong> (1623-1662) est un mathématicien, physicien et philosophe français, précurseur des <strong>probabilités</strong>.</p>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Théorie des probabilités :</strong> Travaux avec Fermat sur les jeux de hasard.</li>
+                        <li><strong>Triangle de Pascal :</strong> Arrangement des coefficients binomiaux.</li>
+                        <li><strong>Pascal (langage) :</strong> Le langage de programmation est nommé en son honneur.</li>
+                        <li><strong>Pression atmosphérique :</strong> Expériences sur le vide et la pression.</li>
+                    </ul>
+                    <p>Pascal a laissé son nom à plusieurs concepts mathématiques et à un langage de programmation.</p>
+                `
+            },
+            // ---------- PHYSIQUE MODERNE & THÉORIES (39-50) ----------
+            39: {
+                title: "Max Planck (déjà listé)",
+                country: "Allemagne",
+                discovery: "Quanta d'énergie",
+                date: "1900",
+                tag: "Physique Moderne",
+                content: `<p>Déjà présent. Voir l'article complet plus haut.</p>`
+            },
+            40: {
+                title: "Enrico Fermi",
+                country: "Italie / États-Unis",
+                discovery: "Réaction nucléaire en chaîne",
+                date: "1942",
+                tag: "Physique Moderne",
+                content: `
+                    <p><strong>Enrico Fermi</strong> (1901-1954) est le physicien italo-américain qui a construit le <strong>premier réacteur nucléaire</strong> (Chicago Pile-1).</p>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Réaction en chaîne :</strong> Première réaction nucléaire contrôlée (1942).</li>
+                        <li><strong>Statistique de Fermi-Dirac :</strong> Distribution des particules de spin 1/2.</li>
+                        <li><strong>Interaction faible :</strong> Théorie de la désintégration bêta.</li>
+                        <li><strong>Projet Manhattan :</strong> Participation à la construction de la bombe atomique.</li>
+                    </ul>
+                    <p>Fermi a reçu le prix Nobel de physique en 1938.</p>
+                `
+            },
+            41: {
+                title: "Robert Oppenheimer",
+                country: "États-Unis",
+                discovery: "Direction du Projet Manhattan",
+                date: "1945",
+                tag: "Physique Moderne",
+                content: `
+                    <p><strong>J. Robert Oppenheimer</strong> (1904-1967) est le physicien américain qui a dirigé le <strong>Projet Manhattan</strong> pour la bombe atomique.</p>
+                    <div class="quote">"Je suis devenu la mort, le destructeur des mondes."</div>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Projet Manhattan :</strong> Conception de la première bombe atomique.</li>
+                        <li><strong>Trou noir :</strong> Premières études sur les trous noirs.</li>
+                        <li><strong>Physique quantique :</strong> Approche de Born-Oppenheimer.</li>
+                        <li><strong>Éthique :</strong> Oppositions post-guerre à l'arme nucléaire.</li>
+                    </ul>
+                    <p>Oppenheimer est l'une des figures les plus complexes de la physique moderne.</p>
+                `
+            },
+            42: {
+                title: "Murray Gell-Mann",
+                country: "États-Unis",
+                discovery: "Quarks (particules élémentaires)",
+                date: "1964",
+                tag: "Physique Moderne",
+                content: `
+                    <p><strong>Murray Gell-Mann</strong> (1929-2019) est le physicien américain qui a proposé l'existence des <strong>quarks</strong>.</p>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Quarks :</strong> Particules fondamentales qui composent les protons et les neutrons.</li>
+                        <li><strong>Huitfold way :</strong> Classification des particules élémentaires.</li>
+                        <li><strong>Chromodynamique quantique (QCD) :</strong> Théorie de l'interaction forte.</li>
+                        <li><strong>Complexité :</strong> Théorie de la complexité et de l'adaptation.</li>
+                    </ul>
+                    <p>Gell-Mann a reçu le prix Nobel de physique en 1969.</p>
+                `
+            },
+            43: {
+                title: "Peter Higgs",
+                country: "Angleterre",
+                discovery: "Boson de Higgs (particule de Dieu)",
+                date: "1964",
+                tag: "Physique Moderne",
+                content: `
+                    <p><strong>Peter Higgs</strong> (1929-2024) est le physicien britannique qui a proposé l'existence du <strong>boson de Higgs</strong>.</p>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Boson de Higgs :</strong> Particule qui donne leur masse aux autres particules.</li>
+                        <li><strong>Mécanisme de Higgs :</strong> Brisure de symétrie électrofaible.</li>
+                        <li><strong>LHC :</strong> Détection du boson de Higgs au CERN en 2012.</li>
+                        <li><strong>Modèle standard :</strong> Dernière pièce manquante du modèle standard.</li>
+                    </ul>
+                    <p>Higgs a reçu le prix Nobel de physique en 2013.</p>
+                `
+            },
+            44: {
+                title: "Marie Curie (déjà listée)",
+                country: "Pologne / France",
+                discovery: "Radioactivité",
+                date: "1898",
+                tag: "Physique Moderne",
+                content: `<p>Déjà présente. Voir l'article complet plus haut.</p>`
+            },
+            45: {
+                title: "Ernest Rutherford",
+                country: "Nouvelle-Zélande",
+                discovery: "Noyau atomique",
+                date: "1911",
+                tag: "Physique Moderne",
+                content: `
+                    <p><strong>Ernest Rutherford</strong> (1871-1937) est le physicien néo-zélandais qui a découvert le <strong>noyau atomique</strong>.</p>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Noyau atomique :</strong> L'atome est constitué d'un noyau dense et chargé positivement, entouré d'électrons.</li>
+                        <li><strong>Expérience de la feuille d'or :</strong> Déviation de particules alpha par une fine feuille d'or.</li>
+                        <li><strong>Transmutation :</strong> Conversion d'un élément en un autre (azote en oxygène).</li>
+                        <li><strong>Radioactivité :</strong> Découverte des rayonnements alpha et bêta.</li>
+                    </ul>
+                    <p>Rutherford est considéré comme le père de la physique nucléaire.</p>
+                `
+            },
+            46: {
+                title: "Lise Meitner",
+                country: "Autriche / Suède",
+                discovery: "Fission nucléaire (co-découverte)",
+                date: "1938",
+                tag: "Physique Moderne",
+                content: `
+                    <p><strong>Lise Meitner</strong> (1878-1968) est la physicienne austro-suédoise qui a co-découvert la <strong>fission nucléaire</strong>.</p>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Fission nucléaire :</strong> Explication de la division d'un noyau d'uranium en deux noyaux plus légers.</li>
+                        <li><strong>Protactinium :</strong> Découverte de l'élément chimique Protactinium (Pa).</li>
+                        <li><strong>Radioactivité :</strong> Études sur les rayonnements.</li>
+                        <li><strong>Exclusion :</strong> Elle n'a pas reçu le prix Nobel, contrairement à son collaborateur Hahn.</li>
+                    </ul>
+                    <p>Meitner est l'une des scientifiques les plus brillantes mais souvent méconnues.</p>
+                `
+            },
+            47: {
+                title: "John Bardeen",
+                country: "États-Unis",
+                discovery: "Transistor & Superconductivité",
+                date: "1947 & 1957",
+                tag: "Physique Moderne",
+                content: `
+                    <p><strong>John Bardeen</strong> (1908-1991) est le seul scientifique à avoir reçu <strong>deux prix Nobel</strong> de physique.</p>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Transistor (1947) :</strong> Invention du transistor (avec Shockley et Brattain).</li>
+                        <li><strong>Théorie BCS (1957) :</strong> Explication de la supraconductivité (avec Cooper et Schrieffer).</li>
+                        <li><strong>Électronique :</strong> Fondement de l'ère numérique.</li>
+                    </ul>
+                    <p>Bardeen est le père de l'électronique moderne.</p>
+                `
+            },
+            48: {
+                title: "Richard Feynman (déjà listé)",
+                country: "États-Unis",
+                discovery: "Électrodynamique quantique",
+                date: "1948",
+                tag: "Physique Moderne",
+                content: `<p>Déjà présent. Voir l'article complet plus haut.</p>`
+            },
+            49: {
+                title: "Jocelyn Bell Burnell",
+                country: "Irlande",
+                discovery: "Pulsars",
+                date: "1967",
+                tag: "Astronomie",
+                content: `
+                    <p><strong>Jocelyn Bell Burnell</strong> (1943-) est l'astrophysicienne irlandaise qui a découvert les <strong>pulsars</strong>.</p>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Pulsars :</strong> Étoiles à neutrons qui émettent des signaux réguliers.</li>
+                        <li><strong>Astrophysique :</strong> Confirmation de l'existence des étoiles à neutrons.</li>
+                        <li><strong>Exclusion :</strong> Le prix Nobel a été attribué à son directeur de thèse, Antony Hewish.</li>
+                        <li><strong>Carrière :</strong> Engagement pour la diversité en science.</li>
+                    </ul>
+                    <p>Bell Burnell est un modèle de persévérance dans le milieu scientifique.</p>
+                `
+            },
+            50: {
+                title: "Emmy Noether",
+                country: "Allemagne",
+                discovery: "Théorème de Noether (Symétrie & Lois de conservation)",
+                date: "1918",
+                tag: "Mathématiques",
+                content: `
+                    <p><strong>Emmy Noether</strong> (1882-1935) est la mathématicienne allemande qui a révolutionné la physique avec son <strong>théorème</strong>.</p>
+                    <div class="quote">"Les lois de conservation sont liées aux symétries continues."</div>
+                    <p><strong>Principales découvertes :</strong></p>
+                    <ul>
+                        <li><strong>Théorème de Noether :</strong> Chaque symétrie continue correspond à une loi de conservation (ex: symétrie de translation → conservation de l'énergie).</li>
+                        <li><strong>Algèbre moderne :</strong> Théorie des anneaux et des idéaux.</li>
+                        <li><strong>Physique théorique :</strong> Fondement de la physique mathématique.</li>
+                    </ul>
+                    <p>Le théorème de Noether est considéré comme l'un des plus élégants de la physique.</p>
+                `
+            }
+        };
+
+        // ================================================================
+        //  CONSTRUCTION DES GRILLES
+        // ================================================================
+
+        const categories = {
+            physique: { ids: [1,2,3,4,5,6,7,8,9,10], gridId: 'grid-physique' },
+            chimie: { ids: [11,12,13,14,15,16,17,18], gridId: 'grid-chimie' },
+            biologie: { ids: [19,20,21,22,23,24,25], gridId: 'grid-biologie' },
+            astro: { ids: [26,27,28,29,30,31,32,49], gridId: 'grid-astro' },
+            mathematiques: { ids: [33,34,35,36,37,38,50], gridId: 'grid-mathematiques' },
+            moderne: { ids: [39,40,41,42,43,44,45,46,47,48], gridId: 'grid-moderne' }
+        };
+
+        for (const [cat, obj] of Object.entries(categories)) {
+            const grid = document.getElementById(obj.gridId);
+            for (const id of obj.ids) {
+                const item = data[id];
+                if (!item) continue;
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.setAttribute('data-id', id);
+                card.innerHTML = `
+                    <span class="num">${String(id).padStart(2, '0')}</span>
+                    <span class="text">${item.title}<small>${item.discovery} · ${item.date}</small></span>
+                `;
+                card.addEventListener('click', () => navigateToArticle(id));
+                grid.appendChild(card);
+            }
+        }
+
+        // ================================================================
+        //  ROUTING (Hash-based)
+        // ================================================================
+
+        const homePage = document.getElementById('homePage');
+        const articlePage = document.getElementById('articlePage');
+
+        function showHome() {
+            homePage.classList.remove('hidden');
+            articlePage.classList.remove('active');
+            window.location.hash = '';
+            document.title = 'Scientifiques & Physiciens - Découvertes qui ont changé le monde';
+        }
+
+        function showArticle(id) {
+            homePage.classList.add('hidden');
+            articlePage.classList.add('active');
+            window.location.hash = `article-${id}`;
+            renderArticle(id);
+        }
+
+        function renderArticle(id) {
+            const item = data[id];
+            if (!item) {
+                showHome();
+                return;
+            }
+            document.getElementById('articleNum').textContent = String(id).padStart(2, '0');
+            document.getElementById('articleTitle').textContent = item.title;
+            document.getElementById('articleCountry').textContent = `🌍 ${item.country}`;
+            document.getElementById('articleDiscovery').textContent = `🔬 ${item.discovery}`;
+            document.getElementById('articleDate').textContent = `📅 ${item.date}`;
+            document.getElementById('articleTag').textContent = `🏷️ ${item.tag}`;
+            document.getElementById('articleContent').innerHTML = item.content;
+            document.title = `${item.title} - ${item.discovery} - Scientifiques Célèbres`;
+        }
+
+        function navigateToArticle(id) {
+            showArticle(id);
+        }
+
+        function handleHash() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#article-')) {
+                const id = parseInt(hash.replace('#article-', ''), 10);
+                if (data[id]) {
+                    showArticle(id);
+                    return;
+                }
+            }
+            showHome();
+        }
+
+        document.getElementById('backToHomeLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+        document.getElementById('backHomeBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+
+        window.addEventListener('hashchange', handleHash);
+        window.addEventListener('load', handleHash);
+        window.addEventListener('popstate', handleHash);
+    </script>
+</body>
+</html>
