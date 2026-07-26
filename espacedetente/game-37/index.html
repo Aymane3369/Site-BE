@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bibliothèque – Béton Armé · Genie Civil PDF</title>
+    <style>
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f6fc;
+            color: #1a2634;
+            padding: 2rem 1rem;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* --- HEADER --- */
+        .header {
+            background: linear-gradient(135deg, #0d2b45, #1a5a8a);
+            color: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header h1 span {
+            color: #7fc8ff;
+        }
+
+        .header p {
+            margin-top: 0.6rem;
+            font-size: 1.05rem;
+            opacity: 0.9;
+            max-width: 750px;
+        }
+
+        .badge-count {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 0.8rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #7fc8ff;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        /* --- GRILLE --- */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2rem 0 1.2rem 0;
+            padding-left: 0.5rem;
+            border-left: 6px solid #1a5a8a;
+            color: #0d2b45;
+        }
+
+        .section-title .emoji {
+            margin-right: 0.5rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        /* --- CARTE --- */
+        .card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 1rem 1.2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s ease;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 20, 40, 0.10);
+            border-color: #1a5a8a;
+        }
+
+        .card .num {
+            font-weight: 700;
+            font-size: 0.65rem;
+            color: #7a8fa3;
+            background: #eef3f8;
+            border-radius: 30px;
+            padding: 0.1rem 0.7rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .card .text {
+            font-size: 0.92rem;
+            color: #1a2634;
+            font-weight: 500;
+        }
+
+        .card .text small {
+            display: block;
+            font-weight: 400;
+            font-size: 0.75rem;
+            color: #5d7388;
+            margin-top: 0.1rem;
+        }
+
+        /* --- COULEURS PAR CATÉGORIE --- */
+        .cat-cours .card { border-left: 4px solid #2563eb; }
+        .cat-exercices .card { border-left: 4px solid #d97706; }
+        .cat-projets .card { border-left: 4px solid #0f7b3a; }
+        .cat-outils .card { border-left: 4px solid #7c3a9e; }
+        .cat-ferraillage .card { border-left: 4px solid #b91c5c; }
+        .cat-calcul .card { border-left: 4px solid #a6572e; }
+
+        /* --- PAGE ARTICLE --- */
+        #articlePage {
+            display: none;
+        }
+
+        #articlePage.active {
+            display: block;
+        }
+
+        #homePage.hidden {
+            display: none;
+        }
+
+        .article-container {
+            background: #fff;
+            border-radius: 20px;
+            padding: 2.5rem 2.8rem;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.07);
+            margin-top: 0.5rem;
+            max-width: 950px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .article-container .article-num {
+            font-size: 0.8rem;
+            color: #7a8fa3;
+            background: #eef3f8;
+            display: inline-block;
+            padding: 0.2rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+
+        .article-container h2 {
+            font-size: 2rem;
+            margin: 0.3rem 0 0.1rem 0;
+            color: #0d2b45;
+        }
+
+        .article-container .article-sub {
+            font-size: 1rem;
+            color: #4a6a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .article-container .article-tag {
+            display: inline-block;
+            background: #eef3f8;
+            padding: 0.25rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #3a6a8a;
+        }
+
+        .article-container .article-content {
+            font-size: 1.02rem;
+            line-height: 1.9;
+            color: #1a2634;
+            margin-top: 1rem;
+        }
+
+        .article-container .article-content p {
+            margin-bottom: 0.9rem;
+        }
+
+        .article-container .article-content ul {
+            padding-left: 1.8rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .article-container .article-content li {
+            margin-bottom: 0.4rem;
+        }
+
+        .article-container .article-content strong {
+            color: #0d2b45;
+        }
+
+        .article-container .article-content .code-block {
+            background: #1e2a3a;
+            color: #e2e8f0;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin: 0.8rem 0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        .article-container .article-content .example-box {
+            background: #f0f7ee;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            border-left: 4px solid #0f7b3a;
+            margin: 0.8rem 0;
+        }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 1.8rem;
+            color: #1a5a8a;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1.2rem;
+            border: 2px solid #1a5a8a;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+
+        .back-home:hover {
+            background: #1a5a8a;
+            color: #fff;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: #1a5a8a;
+            color: #fff;
+            padding: 0.6rem 1.8rem;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            transition: 0.2s;
+        }
+
+        .download-btn:hover {
+            background: #0d3b5e;
+            transform: scale(1.02);
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 640px) {
+            body { padding: 1rem 0.6rem; }
+            .header { padding: 1.5rem 1rem; }
+            .header h1 { font-size: 1.5rem; }
+            .grid { grid-template-columns: 1fr; }
+            .section-title { font-size: 1.2rem; }
+            .article-container { padding: 1.5rem; }
+            .article-container h2 { font-size: 1.4rem; }
+        }
+
+        .footer {
+            margin-top: 3.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #6a7f94;
+            border-top: 1px solid #dce4ec;
+            padding-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ============================================================ -->
+        <!-- PAGE D'ACCUEIL -->
+        <!-- ============================================================ -->
+        <div id="homePage" class="hidden">
+            <div class="header">
+                <h1>📚 Bibliothèque · <span>Béton Armé</span></h1>
+                <p>Retrouvez tous les cours, exercices, projets et outils de calcul en béton armé, rassemblés dans une bibliothèque interactive et gratuite.</p>
+                <div class="badge-count">📄 48 ressources · Cliquez sur une carte pour l'explorer</div>
+            </div>
+
+            <h2 class="section-title"><span class="emoji">📖</span> Cours &amp; Formations</h2>
+            <div class="grid cat-cours" id="grid-cours"></div>
+
+            <h2 class="section-title"><span class="emoji">✏️</span> Exercices &amp; Corrigés</h2>
+            <div class="grid cat-exercices" id="grid-exercices"></div>
+
+            <h2 class="section-title"><span class="emoji">🏗️</span> Projets &amp; Études de Cas</h2>
+            <div class="grid cat-projets" id="grid-projets"></div>
+
+            <h2 class="section-title"><span class="emoji">🛠️</span> Outils de Calcul &amp; Notes</h2>
+            <div class="grid cat-outils" id="grid-outils"></div>
+
+            <h2 class="section-title"><span class="emoji">🔩</span> Ferraillage &amp; Plans</h2>
+            <div class="grid cat-ferraillage" id="grid-ferraillage"></div>
+
+            <h2 class="section-title"><span class="emoji">🧮</span> Méthodes de Calcul</h2>
+            <div class="grid cat-calcul" id="grid-calcul"></div>
+
+            <div class="footer">
+                <p>📌 Toutes les ressources sont issues de GenieCivilPDF.com · Usage personnel uniquement</p>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PAGE ARTICLE -->
+        <!-- ============================================================ -->
+        <div id="articlePage" class="active">
+            <div class="header" style="margin-bottom: 1.5rem;">
+                <h1>📚 <span>Béton Armé</span></h1>
+                <a class="back-link" href="#" id="backToHomeLink">← Retour à la bibliothèque</a>
+            </div>
+            <div class="article-container" id="articleContainer">
+                <div class="article-num" id="articleNum">01</div>
+                <h2 id="articleTitle">Titre</h2>
+                <div class="article-sub" id="articleSub">sous‑titre</div>
+                <span class="article-tag" id="articleTag">🏷️ Catégorie</span>
+                <div class="article-content" id="articleContent">
+                    <p>Contenu de l'article.</p>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <a href="#" id="downloadLink" class="download-btn" target="_blank">📥 Télécharger le PDF</a>
+                </div>
+                <a href="#" class="back-home" id="backHomeBtn">← Tous les documents</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ================================================================
+        //  DONNÉES : 48 RESSOURCES BÉTON ARMÉ
+        // ================================================================
+        const data = {
+            // ---------- COURS (1-12) ----------
+            1: {
+                title: "Tout en un Calcul de structures bâtiment en béton armé",
+                sub: "Guide complet – Calcul des structures",
+                tag: "Cours",
+                cat: "cours",
+                content: `
+                    <p>Ce document est un <strong>manuel complet</strong> qui couvre l'ensemble des méthodes de calcul des structures en béton armé pour les bâtiments.</p>
+                    <ul>
+                        <li>Principes de base (BAEL / Eurocode 2)</li>
+                        <li>Dimensionnement des éléments : poutres, poteaux, dalles, voiles</li>
+                        <li>Ferraillage et dispositions constructives</li>
+                        <li>Exemples de calcul détaillés</li>
+                    </ul>
+                    <div class="example-box">
+                        <strong>📌 Utilisation :</strong> Idéal pour les ingénieurs en bureau d'études et les étudiants en master génie civil.
+                    </div>
+                `,
+                link: "https://geniecivilpdf.com/tout-en-un-calcul-de-structures-batiment-en-beton-arme/"
+            },
+            2: {
+                title: "Cours béton armé pdf",
+                sub: "Cours complet avec exercices",
+                tag: "Cours",
+                cat: "cours",
+                content: `
+                    <p>Un cours exhaustif sur le <strong>béton armé</strong>, avec une approche pédagogique progressive.</p>
+                    <ul>
+                        <li>Propriétés des matériaux (béton, acier)</li>
+                        <li>Flexion simple, effort tranchant, torsion</li>
+                        <li>État limite ultime (ELU) et état limite de service (ELS)</li>
+                        <li>Applications avec corrigés détaillés</li>
+                    </ul>
+                `,
+                link: "https://geniecivilpdf.com/cours-beton-arme-en-pdf/"
+            },
+            3: {
+                title: "Cours de béton armé : Poutres en Té",
+                sub: "Spécifique aux poutres en T",
+                tag: "Cours",
+                cat: "cours",
+                content: `
+                    <p>Ce cours traite en détail le <strong>dimensionnement des poutres en T</strong> en béton armé.</p>
+                    <ul>
+                        <li>Largeur de table participante</li>
+                        <li>Calcul des armatures longitudinales et transversales</li>
+                        <li>Vérifications ELU / ELS</li>
+                        <li>Exemples pratiques</li>
+                    </ul>
+                `,
+                link: "https://geniecivilpdf.com/cours-de-beton-arme-poutres-en-te/"
+            },
+            4: {
+                title: "Cours dessin de plans coffrage, ferraillage et béton armé",
+                sub: "Dessin technique – Plans de ferraillage",
+                tag: "Cours",
+                cat: "cours",
+                content: `
+                    <p>Apprenez à <strong>dessiner des plans de coffrage et de ferraillage</strong> conformément aux règles de l'art.</p>
+                    <ul>
+                        <li>Symboles et conventions de dessin</li>
+                        <li>Représentation des armatures</li>
+                        <li>Exemples de plans complets</li>
+                        <li>Logiciels de DAO</li>
+                    </ul>
+                `,
+                link: "https://geniecivilpdf.com/cours-dessin-de-plans-coffrage-ferraillage-et-beton-arme/"
+            },
+            5: {
+                title: "Cours béton armé",
+                sub: "Cours de base – BAEL",
+                tag: "Cours",
+                cat: "cours",
+                content: `
+                    <p>Un <strong>cours de référence</strong> sur le béton armé, conforme aux anciennes normes BAEL (encore utilisées dans de nombreux pays).</p>
+                    <ul>
+                        <li>Historique et principes du béton armé</li>
+                        <li>Méthode des états limites</li>
+                        <li>Ferraillage minimal et maximal</li>
+                    </ul>
+                `,
+                link: "https://geniecivilpdf.com/cours-beton-arme/"
+            },
+            6: {
+                title: "Bases du Béton Armé",
+                sub: "Les fondamentaux",
+                tag: "Cours",
+                cat: "cours",
+                content: `
+                    <p>Introduction aux <strong>bases du béton armé</strong> : historique, matériaux, adhérence, enrobage, fissuration.</p>
+                    <div class="example-box">
+                        <strong>🔑 Points clés :</strong> Comportement mécanique, durabilité, classes d'exposition.
+                    </div>
+                `,
+                link: "https://geniecivilpdf.com/bases-du-beton-arme/"
+            },
+            7: {
+                title: "Béton armé principes et calcul",
+                sub: "Méthodes de calcul",
+                tag: "Cours",
+                cat: "cours",
+                content: `
+                    <p>Présentation des <strong>principes fondamentaux</strong> et des méthodes de calcul du béton armé.</p>
+                    <ul>
+                        <li>Sollicitations et combinaisons</li>
+                        <li>Section d'acier minimale</li>
+                        <li>Justification des contraintes</li>
+                    </ul>
+                `,
+                link: "https://geniecivilpdf.com/beton-arme-principes-et-calcul/"
+            },
+            8: {
+                title: "Les ossatures en béton armé",
+                sub: "Systèmes constructifs",
+                tag: "Cours",
+                cat: "cours",
+                content: `
+                    <p>Étude des <strong>ossatures en béton armé</strong> : portiques, voiles, noyaux, planchers.</p>
+                    <ul>
+                        <li>Choix du système en fonction de la hauteur</li>
+                        <li>Stabilité d'ensemble</li>
+                        <li>Dispositions antisismiques</li>
+                    </ul>
+                `,
+                link: "https://geniecivilpdf.com/les-ossatures-en-beton-arme/"
+            },
+            9: {
+                title: "Cours de Béton Armé 1",
+                sub: "Première partie",
+                tag: "Cours",
+                cat: "cours",
+                content: `
+                    <p>Premier volume d'une série de cours sur le <strong>béton armé</strong> : propriétés des matériaux, bases de la flexion.</p>
+                `,
+                link: "https://geniecivilpdf.com/cours-de-beton-arme-1/"
+            },
+            10: {
+                title: "Cours de Béton Armé 2",
+                sub: "Deuxième partie",
+                tag: "Cours",
+                cat: "cours",
+                content: `
+                    <p>Deuxième volume : <strong>effort tranchant, torsion, poinçonnement</strong>, et dispositions constructives.</p>
+                `,
+                link: "https://geniecivilpdf.com/cours-de-beton-arme-2/"
+            },
+            11: {
+                title: "Application règles béton armé états limites",
+                sub: "Mise en pratique des règles",
+                tag: "Cours",
+                cat: "cours",
+                content: `
+                    <p>Application pratique des <strong>règles du béton armé</strong> aux états limites (ELU / ELS).</p>
+                `,
+                link: "https://geniecivilpdf.com/application-regles-beton-arme-etats-limites/"
+            },
+            12: {
+                title: "Manuel Calcul Béton Armé",
+                sub: "Guide de poche",
+                tag: "Cours",
+                cat: "cours",
+                content: `
+                    <p>Un <strong>manuel de poche</strong> pour les calculs courants en béton armé : formules, tableaux, abaques.</p>
+                `,
+                link: "https://geniecivilpdf.com/manuel-calcul-beton-arme/"
+            },
+            // ---------- EXERCICES (13-20) ----------
+            13: {
+                title: "Béton armé exercice corrigé – BAEL",
+                sub: "Exercices avec solutions",
+                tag: "Exercices",
+                cat: "exercices",
+                content: `
+                    <p>Recueil d'<strong>exercices corrigés</strong> sur le béton armé selon les règles BAEL.</p>
+                    <ul>
+                        <li>Poutres, poteaux, dalles</li>
+                        <li>Calcul des armatures</li>
+                        <li>Vérifications aux états limites</li>
+                    </ul>
+                `,
+                link: "https://geniecivilpdf.com/beton-arme-exercice-corrige-bael/"
+            },
+            14: {
+                title: "BAEL exercice avec solution",
+                sub: "Exercices BAEL",
+                tag: "Exercices",
+                cat: "exercices",
+                content: `
+                    <p>Une série d'<strong>exercices d'application</strong> sur le BAEL, avec les solutions détaillées.</p>
+                `,
+                link: "https://geniecivilpdf.com/bael-exercice-avec-solution/"
+            },
+            15: {
+                title: "Receuil Exercices Beton Armé",
+                sub: "Recueil d'exercices",
+                tag: "Exercices",
+                cat: "exercices",
+                content: `
+                    <p><strong>Recueil complet</strong> d'exercices de béton armé, couvrant tous les thèmes (flexion, cisaillement, etc.).</p>
+                `,
+                link: "https://geniecivilpdf.com/receuil-exercices-beton-arme/"
+            },
+            16: {
+                title: "Exercices Beton Arme Dimensionement",
+                sub: "Dimensionnement",
+                tag: "Exercices",
+                cat: "exercices",
+                content: `
+                    <p>Exercices ciblant le <strong>dimensionnement</strong> des éléments en béton armé.</p>
+                `,
+                link: "https://geniecivilpdf.com/exercices-beton-arme-dimensionement/"
+            },
+            17: {
+                title: "Exercices – Beton Armé",
+                sub: "Exercices variés",
+                tag: "Exercices",
+                cat: "exercices",
+                content: `
+                    <p>Une collection d'<strong>exercices variés</strong> sur le béton armé, avec difficulté progressive.</p>
+                `,
+                link: "https://geniecivilpdf.com/exercises-beton-arme/"
+            },
+            18: {
+                title: "beton armé exercices",
+                sub: "Exercices de base",
+                tag: "Exercices",
+                cat: "exercices",
+                content: `
+                    <p>Exercices d'<strong>initiation</strong> au béton armé, pour les débutants.</p>
+                `,
+                link: "https://geniecivilpdf.com/beton-arme-exercices/"
+            },
+            19: {
+                title: "Exemple Simple de Calcul d'un Escalier en Béton Armé",
+                sub: "Escalier – Exemple",
+                tag: "Exercices",
+                cat: "exercices",
+                content: `
+                    <p>Un <strong>exemple complet</strong> de calcul d'un escalier en béton armé, avec toutes les étapes.</p>
+                    <ul>
+                        <li>Géométrie de l'escalier</li>
+                        <li>Charges et combinaisons</li>
+                        <li>Ferraillage de la paillasse et des marches</li>
+                    </ul>
+                `,
+                link: "https://geniecivilpdf.com/exemple-simple-de-calcul-dun-escalier-en-beton-arme/"
+            },
+            20: {
+                title: "Exemple de Controle de Batiment",
+                sub: "Contrôle technique",
+                tag: "Exercices",
+                cat: "exercices",
+                content: `
+                    <p>Exemple de <strong>contrôle de bâtiment</strong> en béton armé : vérifications réglementaires.</p>
+                `,
+                link: "https://geniecivilpdf.com/exemple-de-controle-de-batiment/"
+            },
+            // ---------- PROJETS (21-28) ----------
+            21: {
+                title: "PFE : dimensionnement des fondations d'ouvrages d'art en béton armé",
+                sub: "Projet de fin d'études",
+                tag: "Projets",
+                cat: "projets",
+                content: `
+                    <p><strong>Projet de fin d'études</strong> sur le dimensionnement des fondations d'ouvrages d'art en béton armé, avec application aux ponts-routes sur micropieux.</p>
+                `,
+                link: "https://geniecivilpdf.com/projet-de-fin-detudes-methodologie-de-dimensionnement-des-fondations-douvrages-dart-en-beton-arme-application-aux-ponts-routes-sur-micros-pieux/"
+            },
+            22: {
+                title: "Conception et dimensionnement d'un bâtiment R+3 – rapport de stage ingénieur",
+                sub: "Rapport de stage",
+                tag: "Projets",
+                cat: "projets",
+                content: `
+                    <p><strong>Rapport de stage ingénieur</strong> présentant la conception et le dimensionnement d'un bâtiment R+3 en béton armé.</p>
+                `,
+                link: "https://geniecivilpdf.com/conception-et-dimensionnement-dun-batiment-r3-rapport-de-stage-ingenieur/"
+            },
+            23: {
+                title: "Projet d'un batiment R+3",
+                sub: "Étude complète",
+                tag: "Projets",
+                cat: "projets",
+                content: `
+                    <p>Étude complète d'un <strong>bâtiment R+3</strong> en béton armé : de la conception à l'exécution.</p>
+                `,
+                link: "https://geniecivilpdf.com/projet-dun-batiment-r3/"
+            },
+            24: {
+                title: "Etude d'un Bâtiment à usage d'habitation R+4",
+                sub: "Étude de cas",
+                tag: "Projets",
+                cat: "projets",
+                content: `
+                    <p><strong>Étude de cas</strong> d'un bâtiment d'habitation R+4 en béton armé, avec plans de ferraillage.</p>
+                `,
+                link: "https://geniecivilpdf.com/etude-dun-batiment-a-usage-dhabitation-r4/"
+            },
+            25: {
+                title: "Dimensionnement d'un bâtiment de 6 étages en béton armé",
+                sub: "Bâtiment de 6 étages",
+                tag: "Projets",
+                cat: "projets",
+                content: `
+                    <p>Dimensionnement complet d'un <strong>bâtiment de 6 étages</strong> en béton armé (structure, fondations, etc.).</p>
+                `,
+                link: "https://geniecivilpdf.com/dimensionnement-dun-batiment-de-6-etages-en-beton-arme/"
+            },
+            26: {
+                title: "Guide pratique du bâtiment",
+                sub: "Guide de terrain",
+                tag: "Projets",
+                cat: "projets",
+                content: `
+                    <p><strong>Guide pratique</strong> pour la construction en béton armé : méthodes, contrôles, bonnes pratiques.</p>
+                `,
+                link: "https://geniecivilpdf.com/guide-pratique-du-batiment/"
+            },
+            27: {
+                title: "Livre armature du béton",
+                sub: "Référence sur les armatures",
+                tag: "Projets",
+                cat: "projets",
+                content: `
+                    <p>Ouvrage de référence sur les <strong>armatures du béton</strong> : types, mise en œuvre, plans.</p>
+                `,
+                link: "https://geniecivilpdf.com/livre-armature-du-beton/"
+            },
+            28: {
+                title: "Dessin de plan de coffrage, ferraillage et béton arme",
+                sub: "Plans d'exécution",
+                tag: "Projets",
+                cat: "projets",
+                content: `
+                    <p>Exemples de <strong>plans de coffrage et de ferraillage</strong> pour des ouvrages courants en béton armé.</p>
+                `,
+                link: "https://geniecivilpdf.com/dessin-de-plan-de-coffrage-ferraillage-et-beton-arme/"
+            },
+            // ---------- OUTILS (29-36) ----------
+            29: {
+                title: "Note de Calcul Dalot",
+                sub: "Dalot – Note de calcul",
+                tag: "Outils",
+                cat: "outils",
+                content: `
+                    <p><strong>Note de calcul</strong> complète pour un dalot en béton armé, avec justifications ELU/ELS.</p>
+                `,
+                link: "https://geniecivilpdf.com/note-de-calcul-dalot/"
+            },
+            30: {
+                title: "Note de Calcul Charpente Metallique",
+                sub: "Charpente métallique",
+                tag: "Outils",
+                cat: "outils",
+                content: `
+                    <p>Note de calcul pour une <strong>charpente métallique</strong> (mixte acier-béton).</p>
+                `,
+                link: "https://geniecivilpdf.com/note-de-calcul-charpente-metallique/"
+            },
+            31: {
+                title: "Notes de Calcul Pont BA",
+                sub: "Pont en béton armé",
+                tag: "Outils",
+                cat: "outils",
+                content: `
+                    <p>Notes de calcul pour un <strong>pont en béton armé</strong> (tablier, appuis, fondations).</p>
+                `,
+                link: "https://geniecivilpdf.com/notes-de-calcul-pont-ba/"
+            },
+            32: {
+                title: "Vérifications ELU et ELS (Poutre)",
+                sub: "Vérifications poutre",
+                tag: "Outils",
+                cat: "outils",
+                content: `
+                    <p>Méthode de <strong>vérification ELU/ELS</strong> pour une poutre en béton armé, avec organigrammes.</p>
+                `,
+                link: "https://geniecivilpdf.com/verifications-elu-et-els-poutre/"
+            },
+            33: {
+                title: "Organigramme de calcule la semelle",
+                sub: "Semelle – Organigramme",
+                tag: "Outils",
+                cat: "outils",
+                content: `
+                    <p><strong>Organigramme de calcul</strong> pour une semelle de fondation en béton armé.</p>
+                `,
+                link: "https://geniecivilpdf.com/organigramme-de-calcule-la-semelle/"
+            },
+            34: {
+                title: "Fichier Excel sur Calcul des dalles en Béton Armé",
+                sub: "Excel – Dalles",
+                tag: "Outils",
+                cat: "outils",
+                content: `
+                    <p>Un <strong>fichier Excel</strong> pour le calcul rapide des dalles en béton armé.</p>
+                `,
+                link: "https://geniecivilpdf.com/dalles-en-b-a/"
+            },
+            35: {
+                title: "Calcul ferraillage voile béton armé avec excel",
+                sub: "Excel – Voile",
+                tag: "Outils",
+                cat: "outils",
+                content: `
+                    <p><strong>Fichier Excel</strong> pour le calcul du ferraillage d'un voile en béton armé.</p>
+                `,
+                link: "https://geniecivilpdf.com/calcul-ferraillage-voile-beton-arme-avec-excel/"
+            },
+            36: {
+                title: "Tableaux des charges permanentes et surcharges",
+                sub: "Charges – Tableaux",
+                tag: "Outils",
+                cat: "outils",
+                content: `
+                    <p><strong>Tableaux de charges</strong> permanentes et variables pour le dimensionnement des structures.</p>
+                `,
+                link: "https://geniecivilpdf.com/tableaux-des-charges-permanentes-et-surcharges/"
+            },
+            // ---------- FERRAILLAGE (37-42) ----------
+            37: {
+                title: "Ferraillage des poteaux",
+                sub: "Poteaux – Ferraillage",
+                tag: "Ferraillage",
+                cat: "ferraillage",
+                content: `
+                    <p>Présentation du <strong>ferraillage des poteaux</strong> : dispositions constructives, cadres, étriers.</p>
+                `,
+                link: "https://geniecivilpdf.com/ferraillage-des-poteaux/"
+            },
+            38: {
+                title: "Ratios ferraillage éléments ouvrages béton armé",
+                sub: "Ratios de ferraillage",
+                tag: "Ferraillage",
+                cat: "ferraillage",
+                content: `
+                    <p><strong>Ratios de ferraillage</strong> pour les principaux éléments en béton armé (poutres, poteaux, dalles).</p>
+                `,
+                link: "https://geniecivilpdf.com/ratios-ferraillage-elements-ouvrages-beton-arme/"
+            },
+            39: {
+                title: "Tableaux aciers",
+                sub: "Tableaux des aciers",
+                tag: "Ferraillage",
+                cat: "ferraillage",
+                content: `
+                    <p><strong>Tableaux des aciers</strong> (section, poids, diamètres) pour le ferraillage.</p>
+                `,
+                link: "https://geniecivilpdf.com/tableaux-aciers/"
+            },
+            40: {
+                title: "Dessin des plans de BA et de coffrage",
+                sub: "Plans BA / Coffrage",
+                tag: "Ferraillage",
+                cat: "ferraillage",
+                content: `
+                    <p>Exemples de <strong>plans de béton armé</strong> et de coffrage pour des ouvrages types.</p>
+                `,
+                link: "https://geniecivilpdf.com/dessin-des-plans-de-ba-et-de-coffrage/"
+            },
+            41: {
+                title: "bordereau d'aciers",
+                sub: "Bordereau",
+                tag: "Ferraillage",
+                cat: "ferraillage",
+                content: `
+                    <p>Modèle de <strong>bordereau d'aciers</strong> pour la commande et le suivi des armatures.</p>
+                `,
+                link: "https://geniecivilpdf.com/bordereau-daciers/"
+            },
+            42: {
+                title: "Etude de coffrage et de ferraillage des éléments porteur",
+                sub: "Coffrage / Ferraillage",
+                tag: "Ferraillage",
+                cat: "ferraillage",
+                content: `
+                    <p>Étude détaillée du <strong>coffrage et ferraillage</strong> des éléments porteurs (poutres, poteaux).</p>
+                `,
+                link: "https://geniecivilpdf.com/etude-de-coffrage-et-de-ferraillage-des-elements-porteur/"
+            },
+            // ---------- CALCUL (43-48) ----------
+            43: {
+                title: "Méthodes de calcul des voiles",
+                sub: "Voiles – Méthodes",
+                tag: "Calcul",
+                cat: "calcul",
+                content: `
+                    <p><strong>Méthodes de calcul</strong> des voiles en béton armé : flexion, compression, cisaillement.</p>
+                `,
+                link: "https://geniecivilpdf.com/methodes-de-calcul-des-voiles/"
+            },
+            44: {
+                title: "Règles de calcul et dimensionnement des dalles – pdf",
+                sub: "Dalles – Règles",
+                tag: "Calcul",
+                cat: "calcul",
+                content: `
+                    <p><strong>Règles de calcul</strong> et de dimensionnement des dalles en béton armé.</p>
+                `,
+                link: "https://geniecivilpdf.com/regles-de-calcul-et-dimensionnement-des-dalles-pdf/"
+            },
+            45: {
+                title: "Dalles Pleines",
+                sub: "Dalles pleines",
+                tag: "Calcul",
+                cat: "calcul",
+                content: `
+                    <p>Calcul des <strong>dalles pleines</strong> en béton armé : moments, flèches, ferraillage.</p>
+                `,
+                link: "https://geniecivilpdf.com/dalles-pleines/"
+            },
+            46: {
+                title: "note calcul BAEL",
+                sub: "Note de calcul BAEL",
+                tag: "Calcul",
+                cat: "calcul",
+                content: `
+                    <p>Note de calcul type selon les <strong>règles BAEL</strong> pour un bâtiment.</p>
+                `,
+                link: "https://geniecivilpdf.com/note-calcul-bael/"
+            },
+            47: {
+                title: "regles de BAEL",
+                sub: "Règles BAEL",
+                tag: "Calcul",
+                cat: "calcul",
+                content: `
+                    <p>Les <strong>règles BAEL</strong> (Béton Armé aux États Limites) – document de référence.</p>
+                `,
+                link: "https://geniecivilpdf.com/regles-de-bael/"
+            },
+            48: {
+                title: "Résumé BAEL 2015",
+                sub: "Résumé BAEL",
+                tag: "Calcul",
+                cat: "calcul",
+                content: `
+                    <p><strong>Résumé synthétique</strong> des règles BAEL 2015, avec les formules essentielles.</p>
+                `,
+                link: "https://geniecivilpdf.com/resume-bael-2015/"
+            }
+        };
+
+        // ================================================================
+        //  CONSTRUCTION DES GRILLES PAR CATÉGORIE
+        // ================================================================
+
+        const categories = {
+            cours: { ids: [1,2,3,4,5,6,7,8,9,10,11,12], gridId: 'grid-cours' },
+            exercices: { ids: [13,14,15,16,17,18,19,20], gridId: 'grid-exercices' },
+            projets: { ids: [21,22,23,24,25,26,27,28], gridId: 'grid-projets' },
+            outils: { ids: [29,30,31,32,33,34,35,36], gridId: 'grid-outils' },
+            ferraillage: { ids: [37,38,39,40,41,42], gridId: 'grid-ferraillage' },
+            calcul: { ids: [43,44,45,46,47,48], gridId: 'grid-calcul' }
+        };
+
+        for (const [cat, obj] of Object.entries(categories)) {
+            const grid = document.getElementById(obj.gridId);
+            for (const id of obj.ids) {
+                const item = data[id];
+                if (!item) continue;
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.setAttribute('data-id', id);
+                card.innerHTML = `
+                    <span class="num">${String(id).padStart(2, '0')}</span>
+                    <span class="text">${item.title}<small>${item.sub}</small></span>
+                `;
+                card.addEventListener('click', () => navigateToArticle(id));
+                grid.appendChild(card);
+            }
+        }
+
+        // ================================================================
+        //  ROUTING (Hash-based)
+        // ================================================================
+
+        const homePage = document.getElementById('homePage');
+        const articlePage = document.getElementById('articlePage');
+
+        function showHome() {
+            homePage.classList.remove('hidden');
+            articlePage.classList.remove('active');
+            window.location.hash = '';
+            document.title = 'Bibliothèque – Béton Armé · Genie Civil PDF';
+        }
+
+        function showArticle(id) {
+            homePage.classList.add('hidden');
+            articlePage.classList.add('active');
+            window.location.hash = `article-${id}`;
+            renderArticle(id);
+        }
+
+        function renderArticle(id) {
+            const item = data[id];
+            if (!item) {
+                showHome();
+                return;
+            }
+            document.getElementById('articleNum').textContent = String(id).padStart(2, '0');
+            document.getElementById('articleTitle').textContent = item.title;
+            document.getElementById('articleSub').textContent = item.sub;
+            document.getElementById('articleTag').textContent = `🏷️ ${item.tag}`;
+            document.getElementById('articleContent').innerHTML = item.content;
+            document.getElementById('downloadLink').href = item.link;
+            document.title = `${item.title} – Bibliothèque Béton Armé`;
+        }
+
+        function navigateToArticle(id) {
+            showArticle(id);
+        }
+
+        function handleHash() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#article-')) {
+                const id = parseInt(hash.replace('#article-', ''), 10);
+                if (data[id]) {
+                    showArticle(id);
+                    return;
+                }
+            }
+            showHome();
+        }
+
+        document.getElementById('backToHomeLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+        document.getElementById('backHomeBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            showHome();
+        });
+
+        window.addEventListener('hashchange', handleHash);
+        window.addEventListener('load', handleHash);
+        window.addEventListener('popstate', handleHash);
+    </script>
+
+</body>
+</html>
