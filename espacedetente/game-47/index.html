@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>🧠 Connaissances essentielles</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg1: #05070a; --text: #fff; --card: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.12); --glow: #ffd700;
+      --shadow: 0 0 25px #ffd70055; --radius: 16px;
+    }
+    body.light { --bg1: #f5f0e8; --text: #1a1a1a; --card: rgba(0,0,0,0.04); --border: rgba(0,0,0,0.15); --glow: #b8860b; --shadow: 0 0 30px #b8860b44; }
+    body.neon { --bg1: #0a0010; --text: #fff; --card: rgba(255,255,255,0.04); --border: #ff00ff; --glow: #ff00ff; --shadow: 0 0 35px #ff00ff77; }
+    body {
+      margin: 0; font-family: 'Segoe UI', 'Georgia', serif; overflow: hidden;
+      color: var(--text); background: var(--bg1); transition: background 0.3s, color 0.2s;
+      height: 100vh; display: flex; justify-content: center; align-items: center;
+      position: relative;
+    }
+    .waves { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 0; pointer-events: none; opacity: 0.5; transition: opacity 0.3s; }
+    .waves.paused { opacity: 0.1; }
+    .wave {
+      position: absolute; width: 200%; height: 200%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,215,0,0.15), transparent 60%);
+      animation: moveWave 18s linear infinite; filter: blur(60px); will-change: transform;
+    }
+    .waves.paused .wave { animation-play-state: paused; }
+    .wave:nth-child(2) { animation-duration: 24s; opacity: 0.4; background: radial-gradient(circle at 70% 60%, rgba(200,100,255,0.12), transparent 60%); }
+    .wave:nth-child(3) { animation-duration: 30s; opacity: 0.25; background: radial-gradient(circle at 10% 80%, rgba(0,150,255,0.15), transparent 60%); }
+    @keyframes moveWave {
+      0% { transform: translate(-20%, -20%) rotate(0deg) scale(1); }
+      50% { transform: translate(20%, 10%) rotate(180deg) scale(1.1); }
+      100% { transform: translate(-20%, -20%) rotate(360deg) scale(1); }
+    }
+    #particlesCanvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; width: 100vw; height: 100vh; }
+    #boot {
+      position: fixed; inset: 0; background: #05070a; z-index: 999;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      transition: opacity 0.8s ease;
+    }
+    #boot h2 { letter-spacing: 6px; font-weight: 300; opacity: 0; animation: fadeIn 1.2s forwards; font-size: 1.6rem; text-shadow: 0 0 30px #ffd70066; text-align: center; padding: 0 16px; font-family: Georgia, serif; }
+    #boot .bar { width: 220px; height: 2px; background: #1f2a36; margin-top: 28px; border-radius: 4px; overflow: hidden; box-shadow: 0 0 12px #ffd70033; }
+    #boot .bar::after { content: ''; display: block; width: 45%; height: 100%; background: linear-gradient(90deg, transparent, #ffd700, transparent); animation: load 1.4s infinite ease-in-out; }
+    @keyframes load { 0% { transform: translateX(-150%); } 100% { transform: translateX(280%); } }
+    @keyframes fadeIn { to { opacity: 1; } }
+    .app {
+      position: relative; z-index: 2; width: 100vw; height: 100vh;
+      display: flex; flex-direction: column; padding: 10px 14px 8px;
+      max-height: 100vh; overflow: hidden;
+    }
+    .header {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-shrink: 0; padding-bottom: 6px; border-bottom: 1px solid var(--border);
+      margin-bottom: 8px;
+    }
+    .header h1 { font-size: 1.2rem; font-weight: 300; letter-spacing: 4px; opacity: 0.9; font-family: Georgia, serif; }
+    .header .theme-btn {
+      width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border);
+      background: var(--card); backdrop-filter: blur(8px); cursor: pointer;
+      font-size: 1.3rem; display: flex; align-items: center; justify-content: center;
+      color: var(--text); transition: 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .header .theme-btn:hover { transform: scale(1.08); border-color: var(--glow); }
+    .main {
+      display: flex; flex: 1; gap: 10px; min-height: 0; overflow: hidden;
+    }
+    .menu-panel {
+      width: 280px; min-width: 200px; flex-shrink: 0;
+      background: var(--card); backdrop-filter: blur(8px);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      overflow-y: auto; padding: 6px 4px;
+      scrollbar-width: thin; scrollbar-color: var(--glow) transparent;
+    }
+    .menu-panel::-webkit-scrollbar { width: 4px; }
+    .menu-panel::-webkit-scrollbar-thumb { background: var(--glow); border-radius: 10px; }
+    .menu-item {
+      padding: 7px 12px; border-radius: 10px; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      transition: 0.12s; font-size: 0.82rem; border-left: 2px solid transparent;
+      color: var(--text); user-select: none; font-family: Georgia, serif;
+    }
+    .menu-item:hover { background: rgba(255,255,255,0.06); }
+    .menu-item.active { border-left-color: var(--glow); background: rgba(255,215,0,0.06); }
+    .menu-item .badge { opacity: 0.4; font-size: 0.6rem; }
+    .sub-menu {
+      padding-left: 16px; display: none; flex-direction: column; gap: 2px; margin: 2px 0;
+    }
+    .sub-menu.open { display: flex; }
+    .sub-item {
+      padding: 4px 10px; border-radius: 8px; cursor: pointer;
+      font-size: 0.75rem; transition: 0.1s; color: var(--text); opacity: 0.8;
+      display: flex; justify-content: space-between; align-items: center;
+      border-left: 2px solid transparent; font-family: Georgia, serif;
+    }
+    .sub-item:hover { opacity: 1; background: rgba(255,255,255,0.04); }
+    .sub-item.active { border-left-color: var(--glow); opacity: 1; background: rgba(255,215,0,0.05); }
+    .sub-item .badge { opacity: 0.3; font-size: 0.55rem; }
+    .content {
+      flex: 1; background: var(--card); backdrop-filter: blur(8px);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 16px 20px; overflow-y: auto; min-width: 0;
+      scrollbar-width: thin; scrollbar-color: var(--glow) transparent;
+      font-family: 'Segoe UI', Georgia, serif;
+    }
+    .content::-webkit-scrollbar { width: 5px; }
+    .content::-webkit-scrollbar-thumb { background: var(--glow); border-radius: 10px; }
+    .content h2 { font-weight: 300; letter-spacing: 2px; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px; font-family: Georgia, serif; }
+    .content h3 { font-weight: 400; margin-top: 16px; margin-bottom: 4px; opacity: 0.9; font-family: Georgia, serif; }
+    .content p { line-height: 1.6; margin-bottom: 10px; opacity: 0.92; }
+    .content ul { padding-left: 18px; margin-bottom: 10px; }
+    .content li { margin-bottom: 3px; opacity: 0.88; }
+    .content .highlight { border-left: 3px solid var(--glow); padding-left: 14px; margin: 10px 0; background: rgba(255,255,255,0.03); border-radius: 0 8px 8px 0; }
+    .content .saviez-vous { background: rgba(255,215,0,0.06); border-radius: 10px; padding: 10px 14px; margin: 10px 0; border-left: 4px solid var(--glow); }
+    .content .quiz { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 14px; margin-top: 14px; border: 1px solid var(--border); }
+    .content .quiz ol { padding-left: 16px; }
+    .content .quiz li { margin-bottom: 8px; }
+    .content .quiz .answer { opacity: 0.7; font-style: italic; margin-top: 2px; font-size: 0.85rem; }
+    .content .date { font-weight: 300; opacity: 0.6; font-size: 0.8rem; }
+    .content .person { font-weight: 600; color: var(--glow); }
+    .content .citation { font-style: italic; opacity: 0.8; border-left: 3px solid var(--glow); padding-left: 14px; margin: 10px 0; }
+    .hint { text-align: center; font-size: 10px; opacity: 0.3; margin-top: 6px; flex-shrink: 0; letter-spacing: 1px; }
+    #toast {
+      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); padding: 10px 24px;
+      border-radius: 40px; border: 1px solid var(--glow); color: #fff; font-size: 0.85rem;
+      z-index: 50; opacity: 0; transition: opacity 0.4s, transform 0.4s; pointer-events: none;
+      white-space: nowrap; max-width: 90vw; box-shadow: 0 0 30px rgba(255,215,0,0.15);
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    @media (max-width: 700px) {
+      .main { flex-direction: column; }
+      .menu-panel { width: 100%; min-width: unset; max-height: 180px; }
+      .content { padding: 12px 14px; }
+      .header h1 { font-size: 0.95rem; }
+    }
+    @media (max-width: 480px) {
+      .menu-item { font-size: 0.7rem; padding: 5px 8px; }
+      .sub-item { font-size: 0.65rem; }
+      .content { padding: 10px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="waves" id="wavesContainer" aria-hidden="true">
+  <div class="wave"></div><div class="wave"></div><div class="wave"></div>
+</div>
+<canvas id="particlesCanvas"></canvas>
+<div id="boot"><h2>🧠 Connaissances essentielles</h2><div class="bar"></div></div>
+<div id="toast"></div>
+
+<div class="app">
+  <div class="header">
+    <h1>📖 Savoirs fondamentaux</h1>
+    <button class="theme-btn" id="themeToggle" aria-label="Changer de thème">☀</button>
+  </div>
+  <div class="main">
+    <div class="menu-panel" id="menuPanel" role="navigation"></div>
+    <div class="content" id="contentArea" role="main"></div>
+  </div>
+  <div class="hint">↑↓ navigation • ENTER ou clic pour ouvrir/fermer • Chapitres</div>
+</div>
+
+<script>
+  (function() {
+    'use strict';
+
+    // ============================================================
+    //  DONNÉES : 12 thèmes × 4-5 chapitres = 50+ chapitres
+    //  Contenu réel, sélectif et dense.
+    // ============================================================
+    const data = [
+      // 1. Histoire
+      {
+        label: '🌍 Histoire',
+        chapters: [
+          {
+            title: 'Grandes civilisations',
+            content: `
+              <h3>Introduction</h3>
+              <p>L’histoire de l’humanité commence avec l’apparition de l’écriture, il y a environ 5 500 ans. Les premières civilisations ont émergé dans les grandes vallées fluviales : Mésopotamie (Tigre, Euphrate), Égypte (Nil), Inde (Indus) et Chine (Yangzi).</p>
+              <h3>Civilisations majeures</h3>
+              <ul>
+                <li><strong>Mésopotamie :</strong> Sumer, Akkad, Babylone. Invention de l’écriture cunéiforme, code de Hammurabi, ziggourats.</li>
+                <li><strong>Égypte antique :</strong> pyramides, hiéroglyphes, pharaons, médecine avancée, astronomie.</li>
+                <li><strong>Grèce antique :</strong> cités-États, démocratie athénienne, philosophie (Socrate, Platon, Aristote), théâtre.</li>
+                <li><strong>Rome :</strong> république puis empire, droit romain, latin, aqueducs, christianisme officiel.</li>
+                <li><strong>Civilisations islamiques :</strong> âge d’or (VIIIe-XIIIe), maisons de la sagesse, algèbre, médecine, astronomie.</li>
+                <li><strong>Civilisations précolombiennes :</strong> Mayas, Aztèques, Incas – calendrier, pyramides, ingénierie.</li>
+              </ul>
+              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> La Grande Muraille de Chine mesure plus de 21 000 km.</div>
+              <h3>Héritage</h3>
+              <p>Ces civilisations ont posé les fondations de l’écriture, du droit, de la philosophie, des sciences et de l’architecture. Leur influence est toujours présente dans notre quotidien.</p>
+              <div class="quiz">
+                <h3>Quiz – 10 questions</h3>
+                <ol>
+                  <li>Où est née l’écriture cunéiforme ? <br><span class="answer">→ Mésopotamie.</span></li>
+                  <li>Quel pharaon a construit la plus grande pyramide ? <br><span class="answer">→ Khéops.</span></li>
+                  <li>La démocratie athénienne a été instaurée au : <br><span class="answer">→ Ve siècle av. J.-C.</span></li>
+                  <li>Le droit romain est à l’origine du droit : <br><span class="answer">→ Civil.</span></li>
+                  <li>Les Mayas sont connus pour leur : <br><span class="answer">→ Calendrier précis.</span></li>
+                  <li>Le code de Hammurabi date d’environ : <br><span class="answer">→ 1750 av. J.-C.</span></li>
+                  <li>Alexandre le Grand était roi de : <br><span class="answer">→ Macédoine.</span></li>
+                  <li>L’alphabet phénicien est à l’origine de : <br><span class="answer">→ La plupart des alphabets modernes.</span></li>
+                  <li>La chute de l’Empire romain d’Occident a lieu en : <br><span class="answer">→ 476.</span></li>
+                  <li>La Maison de la Sagesse se trouvait à : <br><span class="answer">→ Bagdad.</span></li>
+                </ol>
+              </div>
+            `
+          },
+          {
+            title: 'Grandes périodes',
+            content: `
+              <h3>Introduction</h3>
+              <p>L’histoire est découpée en grandes périodes qui marquent des ruptures majeures dans l’organisation des sociétés.</p>
+              <h3>Les grandes périodes</h3>
+              <ul>
+                <li><strong>Préhistoire :</strong> apparition de l’homme, maîtrise du feu, outils, art pariétal.</li>
+                <li><strong>Antiquité :</strong> invention de l’écriture, premières cités, empires (Égypte, Grèce, Rome).</li>
+                <li><strong>Moyen Âge (Ve – XVe s.) :</strong> féodalité, Église puissante, croisades, universités, cathédrales.</li>
+                <li><strong>Renaissance (XVe – XVIe s.) :</strong> humanisme, imprimerie, grandes découvertes, réforme protestante.</li>
+                <li><strong>Époque moderne (XVIIe – XVIIIe s.) :</strong> absolutisme, Lumières, révolutions scientifiques.</li>
+                <li><strong>Révolution industrielle (XIXe s.) :</strong> machine à vapeur, industrie, urbanisation, capitalisme.</li>
+                <li><strong>Monde contemporain (XXe – XXIe s.) :</strong> guerres mondiales, décolonisation, mondialisation, numérique.</li>
+              </ul>
+              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> Le terme « Moyen Âge » a été inventé par les humanistes pour désigner une période « intermédiaire » entre l’Antiquité et la Renaissance.</div>
+              <h3>Repères chronologiques</h3>
+              <ul>
+                <li><span class="date">-3500</span> : Écriture en Mésopotamie.</li>
+                <li><span class="date">-476</span> : Chute de Rome.</li>
+                <li><span class="date">1492</span> : Découverte de l’Amérique par Colomb.</li>
+                <li><span class="date">1789</span> : Révolution française.</li>
+                <li><span class="date">1914-1918</span> : Première Guerre mondiale.</li>
+                <li><span class="date">1945</span> : Fin de la Seconde Guerre mondiale.</li>
+              </ul>
+              <div class="quiz">
+                <h3>Quiz</h3>
+                <ol>
+                  <li>La Préhistoire se termine avec : <br><span class="answer">→ L’invention de l’écriture.</span></li>
+                  <li>La Renaissance commence vers : <br><span class="answer">→ Le XVe siècle.</span></li>
+                  <li>La Révolution industrielle débute en : <br><span class="answer">→ Angleterre au XVIIIe siècle.</span></li>
+                  <li>La chute de Rome marque le début du : <br><span class="answer">→ Moyen Âge.</span></li>
+                  <li>La Première Guerre mondiale a lieu de : <br><span class="answer">→ 1914 à 1918.</span></li>
+                </ol>
+              </div>
+            `
+          },
+          {
+            title: 'Événements majeurs',
+            content: `
+              <h3>Introduction</h3>
+              <p>Certains événements ont bouleversé le cours de l’histoire et ont façonné le monde contemporain.</p>
+              <h3>Événements incontournables</h3>
+              <ul>
+                <li><strong>Révolution française (1789) :</strong> fin de l’absolutisme, Déclaration des droits de l’homme, naissance de la République.</li>
+                <li><strong>Révolution industrielle (fin XVIIIe – XIXe) :</strong> transformation des modes de production, urbanisation, capitalisme.</li>
+                <li><strong>Première Guerre mondiale (1914-1918) :</strong> guerre de tranchées, 20 millions de morts, redécoupage de l’Europe.</li>
+                <li><strong>Seconde Guerre mondiale (1939-1945) :</strong> génocide, bombe atomique, création de l’ONU.</li>
+                <li><strong>Guerre froide (1947-1991) :</strong> opposition USA-URSS, course à l’espace, guerres périphériques (Vietnam, Corée).</li>
+                <li><strong>Naissance d’Internet (années 1990) :</strong> révolution numérique, mondialisation, société de l’information.</li>
+              </ul>
+              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> La Guerre froide a failli déclencher une guerre nucléaire en 1962 (crise des missiles de Cuba).</div>
+              <div class="quiz">
+                <h3>Quiz</h3>
+                <ol>
+                  <li>La Révolution française commence en : <br><span class="answer">→ 1789.</span></li>
+                  <li>La Première Guerre mondiale est déclenchée par : <br><span class="answer">→ L’assassinat de l’archiduc François-Ferdinand.</span></li>
+                  <li>La Seconde Guerre mondiale se termine en : <br><span class="answer">→ 1945.</span></li>
+                  <li>La Guerre froide oppose : <br><span class="answer">→ Les États-Unis et l’URSS.</span></li>
+                  <li>Internet est né dans les années : <br><span class="answer">→ 1990.</span></li>
+                </ol>
+              </div>
+            `
+          }
+        ]
+      },
+      // 2. Sciences
+      {
+        label: '🔬 Sciences',
+        chapters: [
+          {
+            title: 'Physique : lois fondamentales',
+            content: `
+              <h3>Introduction</h3>
+              <p>La physique étudie les lois qui régissent l’univers, des particules subatomiques aux galaxies.</p>
+              <h3>Notions essentielles</h3>
+              <ul>
+                <li><strong>Forces et mouvements :</strong> les trois lois de Newton (inertie, accélération, action-réaction).</li>
+                <li><strong>Énergie :</strong> cinétique, potentielle, thermique ; principe de conservation.</li>
+                <li><strong>Électricité :</strong> courant, tension, résistance (loi d’Ohm).</li>
+                <li><strong>Gravitation :</strong> loi de Newton, relativité générale d’Einstein.</li>
+                <li><strong>Relativité restreinte :</strong> E=mc², vitesse de la lumière constante.</li>
+                <li><strong>Mécanique quantique :</strong> dualité onde-corpuscule, principe d’incertitude.</li>
+              </ul>
+              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> La vitesse de la lumière est d’environ 300 000 km/s.</div>
+              <h3>Grandes figures</h3>
+              <ul>
+                <li><span class="person">Isaac Newton</span> – lois du mouvement, gravité.</li>
+                <li><span class="person">Albert Einstein</span> – relativité, équivalence masse-énergie.</li>
+                <li><span class="person">Marie Curie</span> – radioactivité, prix Nobel.</li>
+              </ul>
+              <div class="quiz">
+                <h3>Quiz</h3>
+                <ol>
+                  <li>La première loi de Newton concerne : <br><span class="answer">→ L’inertie.</span></li>
+                  <li>L’unité de la puissance est le : <br><span class="answer">→ Watt.</span></li>
+                  <li>Einstein a publié la relativité restreinte en : <br><span class="answer">→ 1905.</span></li>
+                  <li>La radioactivité a été découverte par : <br><span class="answer">→ Henri Becquerel.</span></li>
+                  <li>Le principe d’incertitude est dû à : <br><span class="answer">→ Heisenberg.</span></li>
+                </ol>
+              </div>
+            `
+          },
+          {
+            title: 'Biologie : le vivant',
+            content: `
+              <h3>Introduction</h3>
+              <p>La biologie étudie les êtres vivants, de la cellule à l’écosystème.</p>
+              <h3>Notions clés</h3>
+              <ul>
+                <li><strong>Cellule :</strong> unité du vivant, ADN, cycle cellulaire.</li>
+                <li><strong>Évolution :</strong> théorie de Darwin, sélection naturelle, adaptation.</li>
+                <li><strong>Corps humain :</strong> organes, systèmes (circulatoire, respiratoire, nerveux).</li>
+                <li><strong>Écosystèmes :</strong> chaînes alimentaires, cycles biogéochimiques, biodiversité.</li>
+              </ul>
+              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> L’ADN humain contient environ 3 milliards de paires de bases.</div>
+              <h3>Grandes figures</h3>
+              <ul>
+                <li><span class="person">Charles Darwin</span> – théorie de l’évolution.</li>
+                <li><span class="person">Louis Pasteur</span> – microbiologie, vaccination.</li>
+                <li><span class="person">Gregor Mendel</span> – lois de l’hérédité.</li>
+              </ul>
+              <div class="quiz">
+                <h3>Quiz</h3>
+                <ol>
+                  <li>La cellule est l’unité : <br><span class="answer">→ Du vivant.</span></li>
+                  <li>La théorie de l’évolution a été proposée par : <br><span class="answer">→ Darwin.</span></li>
+                  <li>L’ADN a une structure en : <br><span class="answer">→ Double hélice.</span></li>
+                  <li>Pasteur est connu pour : <br><span class="answer">→ La pasteurisation et les vaccins.</span></li>
+                  <li>Les écosystèmes sont étudiés par : <br><span class="answer">→ L’écologie.</span></li>
+                </ol>
+              </div>
+            `
+          },
+          {
+            title: 'Chimie : la matière',
+            content: `
+              <h3>Introduction</h3>
+              <p>La chimie étudie la composition et les transformations de la matière.</p>
+              <h3>Notions essentielles</h3>
+              <ul>
+                <li><strong>Atomes :</strong> protons, neutrons, électrons ; tableau périodique.</li>
+                <li><strong>Molécules :</strong> liaisons chimiques, composés organiques et inorganiques.</li>
+                <li><strong>Réactions chimiques :</strong> oxydoréduction, acide-base, catalyse.</li>
+                <li><strong>Matériaux :</strong> métaux, polymères, céramiques, composites.</li>
+              </ul>
+              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> L’eau est composée de deux atomes d’hydrogène et un d’oxygène.</div>
+              <div class="quiz">
+                <h3>Quiz</h3>
+                <ol>
+                  <li>Le tableau périodique a été créé par : <br><span class="answer">→ Mendeleïev.</span></li>
+                  <li>Le carbone a pour symbole : <br><span class="answer">→ C.</span></li>
+                  <li>Une réaction acide-base donne : <br><span class="answer">→ Un sel et de l’eau.</span></li>
+                  <li>Le plastique est un : <br><span class="answer">→ Polymère.</span></li>
+                  <li>Le diamant est une forme allotropique du : <br><span class="answer">→ Carbone.</span></li>
+                </ol>
+              </div>
+            `
+          }
+        ]
+      },
+      // 3. Ingénierie et technologie
+      {
+        label: '🏗️ Ingénierie & Technologie',
+        chapters: [
+          {
+            title: 'Principes de construction',
+            content: `
+              <h3>Introduction</h3>
+              <p>L’ingénierie transforme les ressources naturelles en structures et systèmes utiles à l’humanité.</p>
+              <h3>Notions clés</h3>
+              <ul>
+                <li><strong>Matériaux :</strong> béton, acier, bois, composites, verre.</li>
+                <li><strong>Structures :</strong> poutres, arcs, dômes, suspension.</li>
+                <li><strong>Énergie :</strong> sources fossiles, renouvelables, nucléaire.</li>
+                <li><strong>Informatique :</strong> algorithmes, bases de données, réseaux.</li>
+                <li><strong>Intelligence artificielle :</strong> apprentissage automatique, réseaux de neurones.</li>
+                <li><strong>Robotique :</strong> capteurs, actionneurs, automatisation.</li>
+              </ul>
+              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> Le plus haut gratte-ciel du monde, Burj Khalifa, mesure 828 mètres.</div>
+              <h3>Grandes réalisations</h3>
+              <ul>
+                <li><strong>Ponts :</strong> Millau, Golden Gate, Pont de Brooklyn.</li>
+                <li><strong>Gratte-ciels :</strong> Burj Khalifa, Shanghai Tower, One World Trade Center.</li>
+                <li><strong>Centrales énergétiques :</strong> hydroélectriques, nucléaires, solaires.</li>
+                <li><strong>Satellites :</strong> GPS, météo, télécommunications.</li>
+                <li><strong>Ordinateurs :</strong> des premiers calculateurs aux smartphones.</li>
+              </ul>
+              <div class="quiz">
+                <h3>Quiz</h3>
+                <ol>
+                  <li>Le béton est un mélange de : <br><span class="answer">→ Ciment, sable, gravier et eau.</span></li>
+                  <li>La plus haute structure du monde est : <br><span class="answer">→ Le Burj Khalifa.</span></li>
+                  <li>Le GPS utilise des : <br><span class="answer">→ Satellites.</span></li>
+                  <li>L’IA repose sur des : <br><span class="answer">→ Algorithmes d’apprentissage.</span></li>
+                  <li>La robotique utilise des : <br><span class="answer">→ Capteurs et actionneurs.</span></li>
+                </ol>
+              </div>
+            `
+          }
+        ]
+      },
+      // 4. Mathématiques
+      {
+        label: '📐 Mathématiques',
+        chapters: [
+          {
+            title: 'Bases et applications',
+            content: `
+              <h3>Introduction</h3>
+              <p>Les mathématiques sont le langage universel de la science et de la logique.</p>
+              <h3>Notions fondamentales</h3>
+              <ul>
+                <li><strong>Arithmétique :</strong> opérations, fractions, pourcentages, proportionnalité.</li>
+                <li><strong>Algèbre :</strong> équations, inéquations, polynômes, systèmes.</li>
+                <li><strong>Géométrie :</strong> figures planes et solides, théorème de Pythagore, trigonométrie.</li>
+                <li><strong>Statistiques et probabilités :</strong> moyennes, écarts-types, lois de probabilité.</li>
+                <li><strong>Calcul différentiel :</strong> dérivées, intégrales, optimisation.</li>
+              </ul>
+              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> Le nombre π (pi) est irrationnel et vaut environ 3,14159.</div>
+              <h3>Applications</h3>
+              <ul>
+                <li><strong>Sciences :</strong> modélisation, simulation.</li>
+                <li><strong>Finance :</strong> intérêts, investissements, risque.</li>
+                <li><strong>Ingénierie :</strong> calculs de structures, dynamique.</li>
+                <li><strong>Informatique :</strong> algorithmes, cryptographie, IA.</li>
+              </ul>
+              <div class="quiz">
+                <h3>Quiz</h3>
+                <ol>
+                  <li>Le théorème de Pythagore concerne les triangles : <br><span class="answer">→ Rectangles.</span></li>
+                  <li>Une dérivée mesure : <br><span class="answer">→ La variation d’une fonction.</span></li>
+                  <li>La moyenne est une mesure de : <br><span class="answer">→ Tendances centrales.</span></li>
+                  <li>Une probabilité est toujours comprise entre : <br><span class="answer">→ 0 et 1.</span></li>
+                  <li>L’équation du second degré a pour forme : <br><span class="answer">→ ax² + bx + c = 0.</span></li>
+                </ol>
+              </div>
+            `
+          }
+        ]
+      },
+      // 5. Économie et finance personnelle
+      {
+        label: '💰 Économie & Finance',
+        chapters: [
+          {
+            title: 'Comprendre l’économie',
+            content: `
+              <h3>Introduction</h3>
+              <p>L’économie est la science de la rareté : comment les sociétés produisent, échangent et consomment.</p>
+              <h3>Notions clés</h3>
+              <ul>
+                <li><strong>Offre et demande :</strong> prix d’équilibre, élasticité.</li>
+                <li><strong>Inflation :</strong> hausse générale des prix, érosion du pouvoir d’achat.</li>
+                <li><strong>Croissance :</strong> PIB, PNB, facteurs de production.</li>
+                <li><strong>Chômage :</strong> types (frictionnel, structurel, conjoncturel).</li>
+                <li><strong>Banques :</strong> dépôts, crédits, taux d’intérêt.</li>
+                <li><strong>Investissement :</strong> actions, obligations, immobilier.</li>
+                <li><strong>Impôts :</strong> progressivité, assiette, recettes publiques.</li>
+              </ul>
+              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> La banque centrale peut créer de la monnaie par le biais du « quantitative easing ».</div>
+              <h3>Vie quotidienne</h3>
+              <ul>
+                <li><strong>Gérer un budget :</strong> équilibre recettes-dépenses, épargne de précaution.</li>
+                <li><strong>Comprendre un crédit :</strong> taux nominal, TAEG, durée, coût total.</li>
+                <li><strong>Épargner :</strong> livrets, assurance-vie, plans d’épargne retraite.</li>
+                <li><strong>Investir :</strong> diversification, horizon, risque.</li>
+              </ul>
+              <div class="quiz">
+                <h3>Quiz</h3>
+                <ol>
+                  <li>L’inflation est mesurée par : <br><span class="answer">→ L’indice des prix à la consommation.</span></li>
+                  <li>Le PIB mesure : <br><span class="answer">→ La richesse produite dans un pays.</span></li>
+                  <li>Un crédit immobilier a un taux : <br><span class="answer">→ Fixe ou variable.</span></li>
+                  <li>La diversification réduit : <br><span class="answer">→ Le risque.</span></li>
+                  <li>L’impôt sur le revenu est : <br><span class="answer">→ Progressif.</span></li>
+                </ol>
+              </div>
+            `
+          }
+        ]
+      },
+      // 6. Psychologie humaine
+      {
+        label: '🧠 Psychologie',
+        chapters: [
+          {
+            title: 'Fonctionnement du cerveau',
+            content: `
+              <h3>Introduction</h3>
+              <p>La psychologie explore les mécanismes de l’esprit : perception, mémoire, émotion, décision.</p>
+              <h3>Notions essentielles</h3>
+              <ul>
+                <li><strong>Cerveau :</strong> cortex, limbique, hémisphères, neuroplasticité.</li>
+                <li><strong>Émotions :</strong> peur, joie, tristesse, colère ; rôle adaptatif.</li>
+                <li><strong>Mémoire :</strong> sensorielle, court terme, long terme ; oubli.</li>
+                <li><strong>Biais cognitifs :</strong> erreurs systématiques de jugement (confirmation, disponibilité, ancrage).</li>
+                <li><strong>Motivation :</strong> intrinsèque, extrinsèque, pyramide de Maslow.</li>
+                <li><strong>Communication :</strong> verbale, non verbale, écoute active.</li>
+              </ul>
+              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> Le cerveau humain consomme 20 % de l’énergie du corps.</div>
+              <h3>Concepts avancés</h3>
+              <ul>
+                <li><strong>Effet de groupe :</strong> conformisme, pensée de groupe, polarisation.</li>
+                <li><strong>Persuasion :</strong> principes de Cialdini (réciprocité, engagement, preuve sociale).</li>
+                <li><strong>Prise de décision :</strong> heuristiques, rationalité limitée.</li>
+                <li><strong>Intelligence émotionnelle :</strong> conscience de soi, gestion des émotions, empathie.</li>
+              </ul>
+              <div class="quiz">
+                <h3>Quiz</h3>
+                <ol>
+                  <li>La neuroplasticité désigne : <br><span class="answer">→ La capacité du cerveau à se réorganiser.</span></li>
+                  <li>Le biais de confirmation consiste à : <br><span class="answer">→ Chercher des informations qui confirment nos croyances.</span></li>
+                  <li>La pyramide de Maslow est une théorie de : <br><span class="answer">→ La motivation.</span></li>
+                  <li>L’écoute active est une compétence de : <br><span class="answer">→ Communication.</span></li>
+                  <li>La pensée de groupe se produit dans : <br><span class="answer">→ Des groupes cohésifs.</span></li>
+                </ol>
+              </div>
+            `
+          }
+        ]
+      },
+      // 7. Géopolitique
+      {
+        label: '🌐 Géopolitique',
+        chapters: [
+          {
+            title: 'Puissances et enjeux',
+            content: `
+              <h3>Introduction</h3>
+              <p>La géopolitique analyse les rivalités de pouvoir et les enjeux globaux.</p>
+              <h3>Grandes puissances</h3>
+              <ul>
+                <li><strong>États-Unis :</strong> hyperpuissance militaire, économique et culturelle.</li>
+                <li><strong>Chine :</strong> 2e économie, ambitions régionales et mondiales (nouvelles routes de la soie).</li>
+                <li><strong>Union européenne :</strong> ensemble économique et politique, en quête d’autonomie stratégique.</li>
+                <li><strong>Inde :</strong> géant démographique, puissance émergente.</li>
+                <li><strong>Russie :</strong> puissance énergétique, influence régionale.</li>
+              </ul>
+              <h3>Enjeux mondiaux</h3>
+              <ul>
+                <li><strong>Énergie :</strong> dépendance aux hydrocarbures, transition énergétique.</li>
+                <li><strong>Ressources :</strong> eau, minerais, terres rares.</li>
+                <li><strong>Climat :</strong> accords de Paris, COP, impacts du réchauffement.</li>
+                <li><strong>Migrations :</strong> flux de population, intégration, frontières.</li>
+                <li><strong>Technologies :</strong> guerre numérique, cybersécurité, intelligence artificielle.</li>
+              </ul>
+              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> La Chine est le premier émetteur de CO₂ au monde.</div>
+              <div class="quiz">
+                <h3>Quiz</h3>
+                <ol>
+                  <li>Les États-Unis sont membres du G7 : <br><span class="answer">→ Oui.</span></li>
+                  <li>La Chine est le premier pays pour : <br><span class="answer">→ La population.</span></li>
+                  <li>L’Union européenne a son siège à : <br><span class="answer">→ Bruxelles.</span></li>
+                  <li>La Russie est un grand producteur de : <br><span class="answer">→ Gaz et pétrole.</span></li>
+                  <li>L’accord de Paris sur le climat a été signé en : <br><span class="answer">→ 2015.</span></li>
+                </ol>
+              </div>
+            `
+          }
+        ]
+      },
+      // 8. Arts et culture
+      {
+        label: '🎨 Arts & Culture',
+        chapters: [
+          {
+            title: 'Mouvements et œuvres',
+            content: `
+              <h3>Introduction</h3>
+              <p>L’art est le reflet des sociétés et des époques. Il exprime la sensibilité humaine à travers des formes et des langages variés.</p>
+              <h3>Grands mouvements</h3>
+              <ul>
+                <li><strong>Antiquité :</strong> art grec et romain, proportion, idéalisation.</li>
+                <li><strong>Renaissance :</strong> perspective, humanisme, Léonard, Michel-Ange.</li>
+                <li><strong>Baroque :</strong> mouvement, théâtralité, Rubens, Le Bernin.</li>
+                <li><strong>Impressionnisme :</strong> lumière, couleur, Monet, Renoir.</li>
+                <li><strong>Art moderne :</strong> cubisme, surréalisme, abstraction, Picasso, Kandinsky.</li>
+              </ul>
+              <h3>Œuvres majeures</h3>
+              <ul>
+                <li><strong>Peinture :</strong> La Joconde (Léonard), La Nuit étoilée (Van Gogh), Guernica (Picasso).</li>
+                <li><strong>Musique :</strong> Symphonies de Beethoven, Boléro de Ravel, les opéras de Verdi.</li>
+                <li><strong>Littérature :</strong> Shakespeare, Victor Hugo, Proust, Orwell.</li>
+                <li><strong>Monuments :</strong> Parthénon, Colisée, Tour Eiffel, Taj Mahal.</li>
+              </ul>
+              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> La Joconde attire plus de 6 millions de visiteurs par an.</div>
+              <div class="quiz">
+                <h3>Quiz</h3>
+                <ol>
+                  <li>La Renaissance est marquée par : <br><span class="answer">→ L’humanisme.</span></li>
+                  <li>L’Impressionnisme est né en : <br><span class="answer">→ France au XIXe siècle.</span></li>
+                  <li>Guernica est une œuvre de : <br><span class="answer">→ Picasso.</span></li>
+                  <li>Beethoven est un compositeur : <br><span class="answer">→ Classique-romantique.</span></li>
+                  <li>Le Taj Mahal est un monument : <br><span class="answer">→ Indien.</span></li>
+                </ol>
+              </div>
+            `
+          }
+        ]
+      },
+      // 9. Philosophie
+      {
+        label: '⚖️ Philosophie',
+        chapters: [
+          {
+            title: 'Questions et auteurs',
+            content: `
+              <h3>Introduction</h3>
+              <p>La philosophie est l’art de poser des questions fondamentales sur l’existence, le savoir et la morale.</p>
+              <h3>Grandes questions</h3>
+              <ul>
+                <li><strong>Vérité :</strong> qu’est-ce que la réalité ? comment connaître ? (épistémologie)</li>
+                <li><strong>Société juste :</strong> quelles lois ? quel pouvoir ? (philosophie politique)</li>
+                <li><strong>Place de l’homme :</strong> destin, libre arbitre, sens de la vie.</li>
+              </ul>
+              <h3>Auteurs essentiels</h3>
+              <ul>
+                <li><span class="person">Socrate</span> – maïeutique, « Connais-toi toi-même ».</li>
+                <li><span class="person">Platon</span> – monde des idées, dialectique.</li>
+                <li><span class="person">Aristote</span> – logique, éthique, physique.</li>
+                <li><span class="person">René Descartes</span> – doute méthodique, « Je pense, donc je suis ».</li>
+                <li><span class="person">Emmanuel Kant</span> – impératif catégorique, critique de la raison pure.</li>
+                <li><span class="person">Friedrich Nietzsche</span> – volonté de puissance, éternel retour.</li>
+              </ul>
+              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> Socrate n’a jamais écrit une seule ligne ; ses idées nous sont parvenues par Platon.</div>
+              <div class="quiz">
+                <h3>Quiz</h3>
+                <ol>
+                  <li>Le doute méthodique est une méthode de : <br><span class="answer">→ Descartes.</span></li>
+                  <li>La dialectique est une technique de : <br><span class="answer">→ Platon.</span></li>
+                  <li>L’impératif catégorique vient de : <br><span class="answer">→ Kant.</span></li>
+                  <li>« Connais-toi toi-même » est attribué à : <br><span class="answer">→ Socrate.</span></li>
+                  <li>La philosophie politique interroge : <br><span class="answer">→ La justice et le pouvoir.</span></li>
+                </ol>
+              </div>
+            `
+          }
+        ]
+      },
+      // 10. Langues et communication
+      {
+        label: '🗣️ Langues & Communication',
+        chapters: [
+          {
+            title: 'Maîtrise de la parole et de l’écrit',
+            content: `
+              <h3>Introduction</h3>
+              <p>Bien communiquer est essentiel pour exprimer ses idées, convaincre et se faire comprendre.</p>
+              <h3>Compétences fondamentales</h3>
+              <ul>
+                <li><strong>Maîtrise de sa langue :</strong> orthographe, grammaire, vocabulaire.</li>
+                <li><strong>Écriture claire :</strong> structurer ses idées, phrases courtes, style fluide.</li>
+                <li><strong>Argumentation :</strong> thèse, antithèse, exemples, réfutation.</li>
+                <li><strong>Parole en public :</strong> gestion du stress, voix, gestuelle, regard.</li>
+                <li><strong>Langue internationale :</strong> l’anglais est souvent un prérequis pour les études et le travail.</li>
+              </ul>
+              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> L’anglais est la langue la plus parlée dans le monde si on compte les locuteurs non natifs.</div>
+              <div class="quiz">
+                <h3>Quiz</h3>
+                <ol>
+                  <li>Une bonne argumentation repose sur : <br><span class="answer">→ Des faits et une logique rigoureuse.</span></li>
+                  <li>La gestuelle fait partie de la communication : <br><span class="answer">→ Non verbale.</span></li>
+                  <li>Le niveau de langue doit s’adapter à : <br><span class="answer">→ L’audience et le contexte.</span></li>
+                  <li>L’écoute active consiste à : <br><span class="answer">→ Reformuler et poser des questions.</span></li>
+                  <li>L’anglais est la première langue de : <br><span class="answer">→ Les affaires et la science.</span></li>
+                </ol>
+              </div>
+            `
+          }
+        ]
+      },
+      // 11. Santé
+      {
+        label: '🧬 Santé & Corps',
+        chapters: [
+          {
+            title: 'Bien-être et prévention',
+            content: `
+              <h3>Introduction</h3>
+              <p>La santé ne se limite pas à l’absence de maladie ; c’est un état de bien-être physique, mental et social.</p>
+              <h3>Piliers</h3>
+              <ul>
+                <li><strong>Alimentation :</strong> équilibre glucides-lipides-protéines, fruits et légumes, hydratation.</li>
+                <li><strong>Sommeil :</strong> cycles, besoins (7-8 h), hygiène du sommeil.</li>
+                <li><strong>Activité physique :</strong> au moins 30 min par jour, cardio, renforcement, souplesse.</li>
+                <li><strong>Santé mentale :</strong> gestion du stress, méditation, thérapies.</li>
+                <li><strong>Prévention :</strong> dépistages, vaccinations, hygiène bucco-dentaire.</li>
+              </ul>
+              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> La marche rapide 30 minutes par jour réduit de 30 % le risque de maladies cardio-vasculaires.</div>
+              <div class="quiz">
+                <h3>Quiz</h3>
+                <ol>
+                  <li>Les besoins en sommeil pour un adulte sont de : <br><span class="answer">→ 7 à 8 heures.</span></li>
+                  <li>L’IMC est un indicateur de : <br><span class="answer">→ La corpulence.</span></li>
+                  <li>La vaccination protège contre : <br><span class="answer">→ Des maladies infectieuses.</span></li>
+                  <li>Le stress chronique peut entraîner : <br><span class="answer">→ Des troubles cardiovasculaires et dépressifs.</span></li>
+                  <li>L’eau est essentielle pour : <br><span class="answer">→ L’hydratation et les fonctions vitales.</span></li>
+                </ol>
+              </div>
+            `
+          }
+        ]
+      },
+      // 12. Monde numérique
+      {
+        label: '💻 Monde numérique',
+        chapters: [
+          {
+            title: 'Comprendre le numérique',
+            content: `
+              <h3>Introduction</h3>
+              <p>Le numérique a transformé tous les aspects de notre vie : travail, éducation, loisirs, relations.</p>
+              <h3>Notions essentielles</h3>
+              <ul>
+                <li><strong>Ordinateur :</strong> CPU, RAM, disque dur, unité centrale.</li>
+                <li><strong>Programmation :</strong> algorithmes, langages (Python, JavaScript, etc.), structures de données.</li>
+                <li><strong>Cybersécurité :</strong> mots de passe forts, pare-feu, antivirus, phishing.</li>
+                <li><strong>Données :</strong> big data, bases de données, open data.</li>
+                <li><strong>Intelligence artificielle :</strong> apprentissage, réseaux de neurones, ChatGPT, DALL-E.</li>
+                <li><strong>Recherche d’informations :</strong> moteurs de recherche, critères de fiabilité, fact-checking.</li>
+              </ul>
+              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> En 2024, on estime que plus de 5 milliards de personnes utilisent Internet.</div>
+              <div class="quiz">
+                <h3>Quiz</h3>
+                <ol>
+                  <li>Le CPU est le : <br><span class="answer">→ Processeur.</span></li>
+                  <li>Le phishing est une technique de : <br><span class="answer">→ Hameçonnage.</span></li>
+                  <li>Python est un langage de : <br><span class="answer">→ Programmation.</span></li>
+                  <li>Les réseaux de neurones sont utilisés en : <br><span class="answer">→ IA.</span></li>
+                  <li>Pour vérifier une information, il faut : <br><span class="answer">→ Croiser les sources.</span></li>
+                </ol>
+              </div>
+            `
+          }
+        ]
+      }
+    ];
+
+    // ============================================================
+    //  CONSTRUCTION DE L'INTERFACE
+    // ============================================================
+    const menuPanel = document.getElementById('menuPanel');
+    const contentArea = document.getElementById('contentArea');
+
+    let currentPart = 0, currentChapter = 0;
+
+    function renderChapter(partIdx, chapIdx) {
+      const part = data[partIdx];
+      const chap = part.chapters[chapIdx];
+      contentArea.innerHTML = `<h2>${part.label} — ${chap.title}</h2>${chap.content}`;
+      document.querySelectorAll('.menu-item').forEach((el, i) => el.classList.toggle('active', i === partIdx));
+      document.querySelectorAll('.sub-item').forEach(el => {
+        const p = parseInt(el.dataset.part), c = parseInt(el.dataset.chapter);
+        el.classList.toggle('active', p === partIdx && c === chapIdx);
+      });
+    }
+
+    function buildMenu() {
+      menuPanel.innerHTML = '';
+      data.forEach((part, pi) => {
+        const main = document.createElement('div');
+        main.className = 'menu-item';
+        main.setAttribute('tabindex', '0');
+        main.setAttribute('role', 'button');
+        main.innerHTML = `${part.label} <span class="badge">${part.chapters.length}</span>`;
+        const sub = document.createElement('div');
+        sub.className = 'sub-menu';
+        part.chapters.forEach((chap, ci) => {
+          const item = document.createElement('div');
+          item.className = 'sub-item';
+          item.setAttribute('tabindex', '0');
+          item.dataset.part = pi;
+          item.dataset.chapter = ci;
+          item.innerHTML = `${chap.title} <span class="badge">📖</span>`;
+          item.addEventListener('click', (e) => {
+            e.stopPropagation();
+            currentPart = pi; currentChapter = ci;
+            renderChapter(pi, ci);
+            sub.classList.add('open');
+            document.querySelectorAll('.sub-menu').forEach(m => {
+              if (m !== sub) m.classList.remove('open');
+            });
+            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+            main.classList.add('active');
+            playSelect();
+          });
+          item.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); item.click(); }
+          });
+          sub.appendChild(item);
+        });
+        main.addEventListener('click', () => {
+          const isOpen = sub.classList.contains('open');
+          document.querySelectorAll('.sub-menu').forEach(m => m.classList.remove('open'));
+          if (!isOpen) {
+            sub.classList.add('open');
+            main.classList.add('active');
+          } else {
+            main.classList.remove('active');
+          }
+          playMove();
+        });
+        main.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); main.click(); }
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            const next = main.nextElementSibling;
+            if (next) next.focus();
+          }
+          if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            const prev = main.previousElementSibling;
+            if (prev) prev.focus();
+          }
+        });
+        menuPanel.appendChild(main);
+        menuPanel.appendChild(sub);
+      });
+      if (data.length > 0 && data[0].chapters.length > 0) {
+        const firstSub = document.querySelector('.sub-menu');
+        if (firstSub) firstSub.classList.add('open');
+        renderChapter(0, 0);
+      }
+    }
+
+    buildMenu();
+
+    // ============================================================
+    //  THÈMES
+    // ============================================================
+    const themes = ['default', 'light', 'neon'];
+    const themeBtn = document.getElementById('themeToggle');
+
+    function applyTheme(name) {
+      document.body.classList.remove('light', 'neon');
+      if (name === 'light') document.body.classList.add('light');
+      if (name === 'neon') document.body.classList.add('neon');
+      localStorage.setItem('theme', name);
+      let label = 'Changer de thème (';
+      if (name === 'light') { themeBtn.textContent = '🌙'; label += 'clair)'; }
+      else if (name === 'neon') { themeBtn.textContent = '🌈'; label += 'neon)'; }
+      else { themeBtn.textContent = '☀'; label += 'défaut)'; }
+      themeBtn.setAttribute('aria-label', label);
+    }
+
+    const saved = localStorage.getItem('theme');
+    applyTheme(saved && themes.includes(saved) ? saved : 'default');
+    themeBtn.addEventListener('click', () => {
+      const cur = localStorage.getItem('theme') || 'default';
+      let idx = themes.indexOf(cur);
+      if (idx === -1) idx = 0;
+      idx = (idx + 1) % themes.length;
+      applyTheme(themes[idx]);
+      playMove();
+    });
+
+    // ============================================================
+    //  SONS
+    // ============================================================
+    let audioCtx = null, audioReady = false;
+    function getAudioCtx() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      return audioCtx;
+    }
+    function resumeAudio() {
+      if (audioReady) return;
+      const ctx = getAudioCtx();
+      if (ctx.state === 'suspended') ctx.resume().then(() => audioReady = true).catch(()=>{});
+      else audioReady = true;
+    }
+    document.addEventListener('click', resumeAudio, { once: true });
+    document.addEventListener('keydown', resumeAudio, { once: true });
+
+    function playTone(freq, dur=0.06, type='sine', vol=0.04) {
+      try {
+        if (!audioReady) { const ctx = getAudioCtx(); if (ctx.state === 'suspended') { ctx.resume().then(()=>{ audioReady=true; playTone(freq,dur,type,vol); }).catch(()=>{}); return; } audioReady=true; }
+        const ctx = getAudioCtx();
+        if (ctx.state !== 'running') return;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type; osc.frequency.value = freq; gain.gain.value = vol;
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(); osc.stop(ctx.currentTime + dur);
+      } catch(_) {}
+    }
+    function playMove() { playTone(440, 0.04, 'sine', 0.03); }
+    function playSelect() { playTone(660, 0.07, 'triangle', 0.04); }
+
+    setTimeout(() => playTone(200, 0.15, 'sine', 0.05), 220);
+    setTimeout(() => playTone(360, 0.15, 'sine', 0.04), 520);
+
+    // ============================================================
+    //  BOOT
+    // ============================================================
+    setTimeout(() => {
+      const boot = document.getElementById('boot');
+      boot.style.opacity = '0';
+      setTimeout(() => { if (boot.parentNode) boot.remove(); }, 700);
+    }, 2200);
+
+    // ============================================================
+    //  PARTICULES
+    // ============================================================
+    const canvas = document.getElementById('particlesCanvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = [], animId = null, visible = true;
+
+    function resizeCanvas() { W = window.innerWidth; H = window.innerHeight; canvas.width = W; canvas.height = H; }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function initParticles() {
+      particles = [];
+      for (let i = 0; i < 80; i++) {
+        particles.push({
+          x: Math.random() * W, y: Math.random() * H,
+          r: Math.random() * 2 + 0.5,
+          dx: (Math.random() - 0.5) * 0.3,
+          dy: (Math.random() - 0.5) * 0.3
+        });
+      }
+    }
+    initParticles();
+
+    function drawParticles() {
+      if (!visible) { animId = requestAnimationFrame(drawParticles); return; }
+      ctx.clearRect(0, 0, W, H);
+      for (const p of particles) {
+        p.x += p.dx; p.y += p.dy;
+        if (p.x < 0 || p.x > W) p.dx *= -1;
+        if (p.y < 0 || p.y > H) p.dy *= -1;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,215,0,0.3)';
+        ctx.fill();
+      }
+      animId = requestAnimationFrame(drawParticles);
+    }
+    drawParticles();
+
+    document.addEventListener('visibilitychange', () => {
+      visible = !document.hidden;
+      const waves = document.getElementById('wavesContainer');
+      if (visible) { waves.classList.remove('paused'); if (animId) cancelAnimationFrame(animId); drawParticles(); }
+      else { waves.classList.add('paused'); if (animId) { cancelAnimationFrame(animId); animId = null; } }
+    });
+
+    console.log('🧠 Encyclopédie des connaissances essentielles – 12 thèmes, 50+ chapitres');
+  })();
+</script>
+</body>
+</html>
