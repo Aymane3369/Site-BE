@@ -64,6 +64,10 @@
       z-index: 0;
       pointer-events: none;
       opacity: 0.5;
+      transition: opacity 0.3s;
+    }
+    .waves.paused {
+      opacity: 0.1;
     }
 
     .wave {
@@ -74,6 +78,9 @@
       animation: moveWave 14s linear infinite;
       filter: blur(50px);
       will-change: transform;
+    }
+    .waves.paused .wave {
+      animation-play-state: paused;
     }
 
     .wave:nth-child(2) {
@@ -116,7 +123,6 @@
       justify-content: center;
       align-items: center;
       transition: opacity 0.8s ease;
-      backdrop-filter: blur(2px);
     }
 
     #boot h2 {
@@ -126,6 +132,8 @@
       animation: fadeIn 1.2s forwards;
       font-size: 1.6rem;
       text-shadow: 0 0 20px #00ffcc55;
+      text-align: center;
+      padding: 0 16px;
     }
 
     #boot .bar {
@@ -163,11 +171,14 @@
       width: 460px;
       max-width: 94vw;
       padding: 6px 0;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
     }
 
     .title {
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 18px;
       letter-spacing: 6px;
       font-weight: 300;
       font-size: 1.2rem;
@@ -176,17 +187,19 @@
       border-bottom: 1px solid var(--border);
       padding-bottom: 12px;
       backdrop-filter: blur(4px);
+      flex-shrink: 0;
     }
 
     .menu {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      max-height: 68vh;
       overflow-y: auto;
       padding-right: 4px;
       scrollbar-width: thin;
       scrollbar-color: var(--glow) transparent;
+      flex: 1 1 auto;
+      min-height: 0;
     }
 
     .menu::-webkit-scrollbar {
@@ -211,6 +224,13 @@
       font-weight: 400;
       letter-spacing: 0.3px;
       user-select: none;
+      outline: none;
+      color: var(--text);
+    }
+
+    .item:focus-visible {
+      outline: 2px solid var(--glow);
+      outline-offset: 2px;
     }
 
     .item span {
@@ -231,12 +251,13 @@
     }
 
     .hint {
-      margin-top: 18px;
+      margin-top: 16px;
       text-align: center;
       font-size: 11px;
       opacity: 0.45;
       letter-spacing: 1.5px;
       font-weight: 300;
+      flex-shrink: 0;
     }
 
     /* ===== THEME TOGGLE ===== */
@@ -266,19 +287,51 @@
       border-color: var(--glow);
     }
 
+    /* ===== TOAST ===== */
+    #toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      padding: 12px 28px;
+      border-radius: 40px;
+      border: 1px solid var(--glow);
+      color: #fff;
+      font-size: 0.95rem;
+      z-index: 50;
+      opacity: 0;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      pointer-events: none;
+      white-space: nowrap;
+      box-shadow: 0 0 30px rgba(255,0,0,0.2);
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
     /* ========== RESPONSIVE ========== */
     @media (max-width: 500px) {
-      .container { width: 98vw; }
+      .container { width: 98vw; max-height: 92vh; }
       .title { font-size: 1rem; letter-spacing: 3px; }
-      .item { padding: 12px 14px; font-size: 0.9rem; }
+      .item { padding: 12px 14px; font-size: 0.85rem; }
       .theme-btn { width: 40px; height: 40px; font-size: 1.2rem; top: 12px; right: 12px; }
+      #toast { font-size: 0.8rem; padding: 10px 20px; white-space: normal; max-width: 90vw; text-align: center; }
+    }
+
+    @media (max-width: 400px) {
+      .item { padding: 10px 10px; font-size: 0.75rem; }
+      .title { font-size: 0.9rem; }
     }
   </style>
 </head>
 <body>
 
 <!-- 🌊 WAVES -->
-<div class="waves" aria-hidden="true">
+<div class="waves" id="wavesContainer" aria-hidden="true">
   <div class="wave"></div>
   <div class="wave"></div>
   <div class="wave"></div>
@@ -296,11 +349,14 @@
 <!-- THEME TOGGLE -->
 <button class="theme-btn" id="themeToggle" aria-label="Changer de thème">☀</button>
 
+<!-- TOAST -->
+<div id="toast"></div>
+
 <!-- MENU -->
 <div class="container">
   <div class="title">🕹️ GAME HUB // CONSOLE</div>
 
-  <div class="menu" id="menuContainer">
+  <div class="menu" id="menuContainer" role="listbox" aria-label="Liste des jeux et outils">
     <!-- Les éléments sont générés par JavaScript -->
   </div>
 
@@ -312,10 +368,9 @@
     'use strict';
 
     // =============================================
-    //  1. DONNÉES DU MENU — 33 ENTRÉES NUMÉROTÉES
+    //  1. CONFIGURATION DU MENU
     // =============================================
     const menuItems = [
-      // 1 à 20 : contenus originaux, préfixés par leur numéro
       { label: '1. 🎮 Game 1 Balls', url: '/espacedetente/game-balls', status: '▶' },
       { label: '2. 🧩 Game 2 Your name', url: '/espacedetente/game-2', status: '▶' },
       { label: '3. 🚀 Game 3 Earth', url: '/espacedetente/game-3', status: '▶' },
@@ -336,8 +391,6 @@
       { label: '18. 📊 Charges permanentes & variables', url: '/espacedetente/game-18', status: 'En cours' },
       { label: '19. 🌍 Eurocode 8 : parasismique', url: '/espacedetente/game-19', status: 'En cours' },
       { label: '20. 🔬 Matériaux innovants & durabilité', url: '/espacedetente/game-20', status: 'En cours' },
-
-      // 21 à 33 : nouveaux éléments génériques (à personnaliser)
       { label: '21. 🧪 Game 21', url: '/espacedetente/game-21', status: 'En cours' },
       { label: '22. 🧮 Game 22', url: '/espacedetente/game-22', status: 'En cours' },
       { label: '23. 🎯 Game 23', url: '/espacedetente/game-23', status: 'En cours' },
@@ -354,45 +407,117 @@
     ];
 
     // =============================================
-    //  2. RENDU DU MENU
+    //  2. RENDU DU MENU (ACCESSIBLE)
     // =============================================
     const menuContainer = document.getElementById('menuContainer');
 
     menuItems.forEach((item, idx) => {
       const div = document.createElement('div');
       div.className = 'item';
-      if (idx === 0) div.classList.add('selected');
+      if (idx === 0) {
+        div.classList.add('selected');
+        div.setAttribute('aria-selected', 'true');
+      } else {
+        div.setAttribute('aria-selected', 'false');
+      }
       div.setAttribute('data-index', idx);
+      div.setAttribute('role', 'option');
+      div.setAttribute('tabindex', '0');
       div.innerHTML = `${item.label} <span>${item.status}</span>`;
+      
+      // Gestion clic
       div.addEventListener('click', () => {
-        selectSound();
-        setTimeout(() => {
-          window.location.href = item.url;
-        }, 130);
+        handleItemClick(idx);
       });
+
+      // Gestion focus pour synchroniser la sélection
+      div.addEventListener('focus', () => {
+        setCurrentIndex(idx);
+      });
+
       menuContainer.appendChild(div);
     });
 
     // =============================================
-    //  3. NAVIGATION CLAVIER
+    //  3. NAVIGATION & SÉLECTION
     // =============================================
     const items = document.querySelectorAll('.item');
     let currentIndex = 0;
+    let isNavigating = false;
 
-    function updateSelection() {
-      items.forEach((el, i) => {
-        el.classList.toggle('selected', i === currentIndex);
-      });
-      items[currentIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    function setCurrentIndex(idx) {
+      if (idx === currentIndex) return;
+      const prev = items[currentIndex];
+      if (prev) {
+        prev.classList.remove('selected');
+        prev.setAttribute('aria-selected', 'false');
+      }
+      currentIndex = idx;
+      const curr = items[currentIndex];
+      if (curr) {
+        curr.classList.add('selected');
+        curr.setAttribute('aria-selected', 'true');
+        curr.focus();
+        curr.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
     }
 
     function move(direction) {
       const len = items.length;
-      currentIndex = (currentIndex + direction + len) % len;
-      updateSelection();
+      const newIdx = (currentIndex + direction + len) % len;
+      setCurrentIndex(newIdx);
       moveSound();
     }
 
+    // =============================================
+    //  4. GESTION DU CLIC / ENTRÉE (AVEC VÉRIFICATION 404)
+    // =============================================
+    let toastTimeout = null;
+
+    function showToast(message, isError = true) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.style.borderColor = isError ? '#ff4444' : 'var(--glow)';
+      toast.classList.add('show');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    async function handleItemClick(index) {
+      const item = menuItems[index];
+      if (!item) return;
+
+      selectSound();
+
+      // Vérification de l'existence de la page avec fetch (HEAD)
+      try {
+        const response = await fetch(item.url, { method: 'HEAD', cache: 'no-cache' });
+        if (response.ok) {
+          // La page existe → redirection
+          setTimeout(() => {
+            window.location.href = item.url;
+          }, 120);
+        } else {
+          // La page renvoie une erreur HTTP
+          showToast(`❌ Page introuvable : ${item.url} (${response.status})`);
+        }
+      } catch (err) {
+        // Erreur réseau (CORS, DNS, etc.) ou page inexistante
+        // On tente une dernière vérification : si l'erreur est liée à CORS, on redirige quand même
+        // mais on prévient l'utilisateur.
+        // En pratique, pour un site interne, on suppose que les pages existent,
+        // mais on affiche un message d'erreur convivial.
+        showToast(`⚠️ Impossible de vérifier ${item.url}. Redirection tentée...`);
+        // On tente la redirection quand même (au cas où)
+        setTimeout(() => {
+          window.location.href = item.url;
+        }, 500);
+      }
+    }
+
+    // Événements clavier globaux
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowDown') {
         e.preventDefault();
@@ -402,21 +527,20 @@
         move(-1);
       } else if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        const selected = items[currentIndex];
-        if (selected) {
-          selectSound();
-          setTimeout(() => {
-            const url = menuItems[currentIndex]?.url;
-            if (url) window.location.href = url;
-          }, 120);
-        }
+        handleItemClick(currentIndex);
       }
     });
 
+    // Initialisation : focus sur le premier élément
+    setTimeout(() => {
+      if (items.length) items[0].focus();
+    }, 300);
+
     // =============================================
-    //  4. SON (WEB AUDIO)
+    //  5. SON (WEB AUDIO) + RÉVEIL AU PREMIER CLIC
     // =============================================
     let audioCtx = null;
+    let audioReady = false;
 
     function getAudioCtx() {
       if (!audioCtx) {
@@ -425,9 +549,44 @@
       return audioCtx;
     }
 
-    function playTone(freq, duration = 0.06, type = 'sine', volume = 0.05) {
+    function resumeAudioOnInteraction() {
+      if (audioReady) return;
       try {
         const ctx = getAudioCtx();
+        if (ctx.state === 'suspended') {
+          ctx.resume().then(() => {
+            audioReady = true;
+          }).catch(() => {});
+        } else {
+          audioReady = true;
+        }
+      } catch (_) {}
+    }
+
+    // Réveil audio au premier clic n'importe où sur la page
+    document.addEventListener('click', resumeAudioOnInteraction, { once: true });
+    document.addEventListener('keydown', resumeAudioOnInteraction, { once: true });
+    // Si l'utilisateur interagit avec le menu, on s'assure que le son est prêt
+    document.addEventListener('click', () => {
+      if (!audioReady) resumeAudioOnInteraction();
+    });
+
+    function playTone(freq, duration = 0.06, type = 'sine', volume = 0.05) {
+      try {
+        if (!audioReady) {
+          // On tente de réveiller le contexte avant de jouer
+          const ctx = getAudioCtx();
+          if (ctx.state === 'suspended') {
+            ctx.resume().then(() => {
+              audioReady = true;
+              playTone(freq, duration, type, volume);
+            }).catch(() => {});
+            return;
+          }
+          audioReady = true;
+        }
+        const ctx = getAudioCtx();
+        if (ctx.state !== 'running') return;
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = type;
@@ -443,12 +602,12 @@
     function moveSound() { playTone(440, 0.04, 'sine', 0.04); }
     function selectSound() { playTone(880, 0.09, 'triangle', 0.06); }
 
-    // petit boot sonore
+    // Sons de démarrage (après le boot)
     setTimeout(() => playTone(200, 0.2, 'sine', 0.06), 220);
     setTimeout(() => playTone(360, 0.2, 'sine', 0.05), 520);
 
     // =============================================
-    //  5. BOOT DISPARITION
+    //  6. BOOT DISPARITION
     // =============================================
     setTimeout(() => {
       const boot = document.getElementById('boot');
@@ -459,7 +618,7 @@
     }, 2200);
 
     // =============================================
-    //  6. THÈME (localStorage + toggle)
+    //  7. THÈME (localStorage + toggle)
     // =============================================
     const themes = ['default', 'light', 'neon'];
     let themeIndex = 0;
@@ -494,12 +653,16 @@
     themeBtn.addEventListener('click', cycleTheme);
 
     // =============================================
-    //  7. PARTICULES (Canvas)
+    //  8. PARTICULES (Canvas) + OPTIMISATION
     // =============================================
     const canvas = document.getElementById('particlesCanvas');
     const ctx = canvas.getContext('2d');
-
     let width, height;
+    let particles = [];
+    const COUNT = 70;
+    let animFrameId = null;
+    let isPageVisible = true;
+
     function resize() {
       width = window.innerWidth;
       height = window.innerHeight;
@@ -509,43 +672,74 @@
     window.addEventListener('resize', resize);
     resize();
 
-    const particles = [];
-    const COUNT = 70;
-
-    for (let i = 0; i < COUNT; i++) {
-      particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        r: Math.random() * 2.2 + 0.8,
-        dx: (Math.random() - 0.5) * 0.35,
-        dy: (Math.random() - 0.5) * 0.35,
-      });
+    function initParticles() {
+      particles = [];
+      for (let i = 0; i < COUNT; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          r: Math.random() * 2.2 + 0.8,
+          dx: (Math.random() - 0.5) * 0.35,
+          dy: (Math.random() - 0.5) * 0.35,
+        });
+      }
     }
+    initParticles();
 
     function drawParticles() {
+      if (!isPageVisible) {
+        // Si la page est cachée, on arrête de dessiner pour économiser les ressources
+        animFrameId = requestAnimationFrame(drawParticles);
+        return;
+      }
       ctx.clearRect(0, 0, width, height);
-
       for (const p of particles) {
         p.x += p.dx;
         p.y += p.dy;
-
         if (p.x < 0 || p.x > width) p.dx *= -1;
         if (p.y < 0 || p.y > height) p.dy *= -1;
-
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fillStyle = 'rgba(255,255,255,0.5)';
         ctx.fill();
       }
-
-      requestAnimationFrame(drawParticles);
+      animFrameId = requestAnimationFrame(drawParticles);
     }
 
     drawParticles();
 
-    console.log('🚀 Game Hub Ultra Console — 33 entrées prêtes');
+    // Gestion de la visibilité de la page (économise les ressources)
+    document.addEventListener('visibilitychange', () => {
+      isPageVisible = !document.hidden;
+      const waves = document.getElementById('wavesContainer');
+      if (isPageVisible) {
+        waves.classList.remove('paused');
+        // Redessiner immédiatement
+        if (animFrameId) cancelAnimationFrame(animFrameId);
+        drawParticles();
+      } else {
+        waves.classList.add('paused');
+        if (animFrameId) {
+          cancelAnimationFrame(animFrameId);
+          animFrameId = null;
+        }
+      }
+    });
+
+    // =============================================
+    //  9. GESTION DES ERREURS DE REDIRECTION (fallback)
+    // =============================================
+    // Si la page ne se charge pas (ex: réseau hors ligne), on affiche un toast
+    window.addEventListener('load', () => {
+      // On vérifie si la page a été chargée avec un paramètre d'erreur (optionnel)
+      // Mais on laisse le mécanisme de fetch gérer.
+    });
+
+    // =============================================
+    //  10. INITIALISATION FINALE
+    // =============================================
+    console.log('🚀 Game Hub Ultra Console — 33 entrées, accessibilité améliorée, vérification 404');
   })();
 </script>
-
 </body>
 </html>
