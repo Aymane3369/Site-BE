@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maths 2ème Année Collège – Toutes les ressources</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* -------------------- RESET & BASE -------------------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f4f7fc;
+            color: #1e293b;
+            line-height: 1.6;
+            padding: 1.5rem;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.08);
+            padding: 2rem 2rem 3rem;
+        }
+
+        /* -------------------- HEADER -------------------- */
+        .page-header {
+            text-align: center;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #e9eef3;
+            margin-bottom: 2.5rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.6rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(145deg, #0b2b4a, #1a4b6d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.25rem;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: #5b6f82;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .badge-diagnostic {
+            display: inline-block;
+            margin-top: 1rem;
+            background: #eaf5ff;
+            border-radius: 60px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            border: 1px solid #b6d4e8;
+            transition: 0.2s;
+        }
+        .badge-diagnostic a {
+            color: #0f3b5c;
+            text-decoration: none;
+        }
+        .badge-diagnostic i {
+            margin-right: 0.5rem;
+            color: #256f9e;
+        }
+        .badge-diagnostic:hover {
+            background: #dcecf9;
+            transform: translateY(-2px);
+        }
+
+        /* -------------------- SOMMAIRE (anchor nav) -------------------- */
+        .toc {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem 1rem;
+            justify-content: center;
+            padding: 1.2rem 0.5rem;
+            margin-bottom: 2rem;
+            background: #f8faff;
+            border-radius: 60px;
+            border: 1px solid #e2ecf5;
+        }
+        .toc a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #1f4b6e;
+            text-decoration: none;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+        .toc a:hover {
+            background: #d0e2f0;
+            color: #0a2c44;
+        }
+
+        /* -------------------- CHAPITRE CARD -------------------- */
+        .chapter {
+            margin-bottom: 3rem;
+            border-radius: 1.5rem;
+            background: #ffffff;
+            border: 1px solid #e2eaf2;
+            overflow: hidden;
+            transition: box-shadow 0.25s;
+        }
+        .chapter:hover {
+            box-shadow: 0 8px 30px rgba(0, 20, 40, 0.06);
+        }
+
+        .chapter-header {
+            background: #f0f6fd;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #dce6f0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .chapter-header .num {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #1e5a7e;
+            background: #cde0ef;
+            border-radius: 40px;
+            padding: 0.1rem 1rem;
+        }
+        .chapter-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #0b2f49;
+            flex: 1;
+        }
+
+        .chapter-body {
+            padding: 1.5rem 2rem 2rem;
+        }
+
+        /* ----- catégories (fiches, cours, exos) en grille ----- */
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .resource-card {
+            background: #fafcff;
+            border-radius: 1.2rem;
+            padding: 1.2rem 1.5rem 1.5rem;
+            border: 1px solid #e6edf5;
+            transition: 0.2s;
+        }
+        .resource-card:hover {
+            border-color: #b3cee5;
+            background: #f5faff;
+        }
+
+        .resource-card .icon {
+            font-size: 1.4rem;
+            margin-right: 0.5rem;
+            width: 2rem;
+            display: inline-block;
+            color: #1f6d9b;
+        }
+        .resource-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1f4b6e;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            border-bottom: 1px dashed #d7e2ed;
+            padding-bottom: 0.4rem;
+        }
+        .resource-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .resource-card li {
+            margin-bottom: 0.4rem;
+        }
+        .resource-card a {
+            color: #1a5a7e;
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: inline-block;
+            padding: 0.15rem 0.4rem;
+            border-radius: 20px;
+            transition: 0.15s;
+        }
+        .resource-card a:hover {
+            background: #d6e6f5;
+            color: #05314b;
+        }
+        .resource-card a i {
+            margin-right: 0.4rem;
+            font-size: 0.8rem;
+            color: #5f8aaa;
+        }
+
+        /* ----- devoirs (tableau) ----- */
+        .devoirs-section {
+            margin-top: 1.8rem;
+            border-top: 2px solid #e1ebf3;
+            padding-top: 1.8rem;
+        }
+        .devoirs-section h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1f4b6e;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .devoirs-section h3 i {
+            color: #2b7aa0;
+        }
+
+        .devoir-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.8rem;
+        }
+        .devoir-grid a {
+            background: #f0f6fd;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #135073;
+            text-decoration: none;
+            border: 1px solid #d6e2ef;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .devoir-grid a:hover {
+            background: #d6e5f5;
+            border-color: #9fbcd4;
+            transform: translateY(-2px);
+        }
+        .devoir-grid a i {
+            font-size: 0.8rem;
+            color: #3b7d9e;
+        }
+
+        /* -------------------- FOOTER -------------------- */
+        .footer {
+            margin-top: 3rem;
+            text-align: center;
+            border-top: 1px solid #e2eaf2;
+            padding-top: 2rem;
+            font-size: 0.95rem;
+            color: #4f6a7e;
+        }
+        .footer i {
+            color: #2f6f92;
+            margin: 0 0.3rem;
+        }
+
+        /* -------------------- RESPONSIVE -------------------- */
+        @media (max-width: 700px) {
+            .container {
+                padding: 1rem;
+            }
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            .chapter-header {
+                padding: 0.8rem 1.2rem;
+            }
+            .chapter-body {
+                padding: 1rem 1rem 1.5rem;
+            }
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+            .devoir-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .toc {
+                gap: 0.3rem;
+                border-radius: 30px;
+                padding: 0.8rem 0.3rem;
+            }
+            .toc a {
+                font-size: 0.75rem;
+                padding: 0.1rem 0.5rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .devoir-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- HEADER -->
+        <header class="page-header">
+            <h1><i class="fas fa-calculator" style="color: #1f6d9b; margin-right: 0.5rem;"></i>Maths 2<sup>ème</sup> Année Collège</h1>
+            <p>Retrouvez toutes les ressources : fiches pédagogiques, cours, exercices et devoirs contrôlés.</p>
+            <div class="badge-diagnostic">
+                <i class="fas fa-stethoscope"></i>
+                <a href="https://zoneduca.com/test-diagnostique-maths-college/">Évaluations diagnostiques</a>
+            </div>
+        </header>
+
+        <!-- SOMMAIRE -->
+        <nav class="toc" aria-label="Sommaire des chapitres">
+            <a href="#ch1">1. Relatifs</a>
+            <a href="#ch2">2. Rationnels</a>
+            <a href="#ch3">3. Symétrie</a>
+            <a href="#ch4">4. Somme/Diff</a>
+            <a href="#ch5">5. Produit/Quot</a>
+            <a href="#ch6">6. 4 opérations</a>
+            <a href="#ch7">7. Droites rem.</a>
+            <a href="#ch8">8. Milieux</a>
+            <a href="#ch9">9. Puissances</a>
+            <a href="#ch10">10. Littéral</a>
+            <a href="#ch11">11. Équations</a>
+            <a href="#ch12">12. Réels</a>
+            <a href="#ch13">13. Ordre/Inéq.</a>
+            <a href="#ch14">14. Triangle/Cercle</a>
+            <a href="#ch15">15. Pythagore</a>
+            <a href="#ch16">16. Vecteurs</a>
+            <a href="#ch17">17. Surfaces/Vol.</a>
+            <a href="#ch18">18. Proportionnalité</a>
+            <a href="#ch19">19. Statistiques</a>
+        </nav>
+
+        <!-- ================================================== -->
+        <!-- CHAPITRE 1 -->
+        <section class="chapter" id="ch1">
+            <div class="chapter-header">
+                <span class="num">1</span>
+                <h2>Opérations sur les Nombres Relatifs</h2>
+            </div>
+            <div class="chapter-body">
+                <div class="resources-grid">
+                    <!-- Fiches -->
+                    <div class="resource-card">
+                        <h3><i class="fas fa-file-alt icon"></i> Fiches pédagogiques</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Operations-sur-les-Nombres-relatifs-Fiches-pedagogiques-Maths-2AC-Word-3.docx"><i class="fas fa-file-word"></i> Word-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Operations-sur-les-Nombres-relatifs-Fiches-pedagogiques-Maths-2AC-PDF-2.pdf"><i class="fas fa-file-pdf"></i> PDF-2</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Operations-sur-les-Nombres-relatifs-Fiches-pedagogiques-Maths-2AC-PDF-1.pdf"><i class="fas fa-file-pdf"></i> PDF-3</a></li>
+                        </ul>
+                    </div>
+                    <!-- Cours -->
+                    <div class="resource-card">
+                        <h3><i class="fas fa-book-open icon"></i> Cours</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Operations-sur-les-Nombres-relatifs-Cours-1-PDF.pdf"><i class="fas fa-file-pdf"></i> PDF-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Operations-sur-les-Nombres-relatifs-Cours-2-Word.docx"><i class="fas fa-file-word"></i> Word-2</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Operations-sur-les-Nombres-relatifs-Cours-3-Word.doc"><i class="fas fa-file-word"></i> Word-3</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Operations-sur-les-Nombres-relatifs-Cours-4-Word.docx"><i class="fas fa-file-word"></i> Word-4</a></li>
+                        </ul>
+                    </div>
+                    <!-- Exercices -->
+                    <div class="resource-card">
+                        <h3><i class="fas fa-pencil-alt icon"></i> Séries d'exercices</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Operations-sur-les-Nombres-relatifs-Serie-dexercices-1-Word.docx"><i class="fas fa-file-word"></i> Word-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Operations-sur-les-Nombres-relatifs-Serie-dexercices-2-Word.docx"><i class="fas fa-file-word"></i> Word-2</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Pas de devoirs pour ce chapitre -->
+            </div>
+        </section>
+
+        <!-- CHAPITRE 2 -->
+        <section class="chapter" id="ch2">
+            <div class="chapter-header">
+                <span class="num">2</span>
+                <h2>Les Nombres Rationnels</h2>
+            </div>
+            <div class="chapter-body">
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <h3><i class="fas fa-file-alt icon"></i> Fiches pédagogiques</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Les-Nombres-Rationnels-Fiches-pedagogiques-Maths-2AC-PDF-1.pdf"><i class="fas fa-file-pdf"></i> PDF-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Les-Nombres-Rationnels-Fiches-pedagogiques-Maths-2AC-PDF-2.pdf"><i class="fas fa-file-pdf"></i> PDF-2</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Les-Nombres-Rationnels-Fiches-pedagogiques-Maths-2AC-PDF-3.pdf"><i class="fas fa-file-pdf"></i> PDF-3</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Les-Nombres-Rationnels-Fiches-pedagogiques-Maths-2AC-Word-4.docx"><i class="fas fa-file-word"></i> Word-4</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3><i class="fas fa-book-open icon"></i> Cours</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Les-Nombres-Rationnels-Cours-1-Word.pdf"><i class="fas fa-file-pdf"></i> PDF-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Les-Nombres-Rationnels-Cours-2-Word.pdf"><i class="fas fa-file-pdf"></i> PDF-2</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Les-Nombres-Rationnels-Cours-3-Word.pdf"><i class="fas fa-file-pdf"></i> PDF-3</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Les-Nombres-Rationnels-Cours-4-Word.pdf"><i class="fas fa-file-pdf"></i> PDF-4</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3><i class="fas fa-pencil-alt icon"></i> Séries d'exercices</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Les-Nombres-Rationnels-Serie-dexercices-1-Word.docx"><i class="fas fa-file-word"></i> Word-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Les-Nombres-Rationnels-Serie-dexercices-2-PDF.pdf"><i class="fas fa-file-pdf"></i> PDF-2</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHAPITRE 3 -->
+        <section class="chapter" id="ch3">
+            <div class="chapter-header">
+                <span class="num">3</span>
+                <h2>Symétrie Axiale</h2>
+            </div>
+            <div class="chapter-body">
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <h3><i class="fas fa-file-alt icon"></i> Fiches pédagogiques</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Symetrie-Axiale-Fiches-pedagogiques-Maths-2AC-PDF-1.pdf"><i class="fas fa-file-pdf"></i> PDF-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Symetrie-Axiale-Fiches-pedagogiques-Maths-2AC-PDF-2.pdf"><i class="fas fa-file-pdf"></i> PDF-2</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Symetrie-Axiale-Fiches-pedagogiques-Maths-2AC-Word-3.docx"><i class="fas fa-file-word"></i> Word-3</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3><i class="fas fa-book-open icon"></i> Cours</h3>
+                        <ul>
+                            <li><a href="https://zoneduca.com/wp-content/uploads/2024/06/symetrie-axiale-cours-complet.pdf"><i class="fas fa-file-pdf"></i> Cours complet (PDF)</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3><i class="fas fa-pencil-alt icon"></i> Séries d'exercices</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Symetrie-Axiale-Serie-dexercices-1-PDF.pdf"><i class="fas fa-file-pdf"></i> PDF-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Symetrie-Axiale-Serie-dexercices-2-Word.docx"><i class="fas fa-file-word"></i> Word-2</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Symetrie-Axiale-Serie-dexercices-3-Word.docx"><i class="fas fa-file-word"></i> Word-3</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Symetrie-Axiale-Serie-dexercices-4-Word.docx"><i class="fas fa-file-word"></i> Word-4</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Symetrie-Axiale-Serie-dexercices-5-PDF.pdf"><i class="fas fa-file-pdf"></i> PDF-5</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHAPITRE 4 -->
+        <section class="chapter" id="ch4">
+            <div class="chapter-header">
+                <span class="num">4</span>
+                <h2>Somme et Différence des Nombres Rationnels</h2>
+            </div>
+            <div class="chapter-body">
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <h3><i class="fas fa-file-alt icon"></i> Fiches pédagogiques</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Addition-et-soustraction-des-nombres-rationnels-Fiches-pedagogiques-Maths-2AC-PDF-1.pdf"><i class="fas fa-file-pdf"></i> PDF-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Addition-et-soustraction-des-nombres-rationnels-Fiches-pedagogiques-Maths-2AC-PDF-2.pdf"><i class="fas fa-file-pdf"></i> PDF-2</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Addition-et-soustraction-des-nombres-rationnels-Fiches-pedagogiques-Maths-2AC-PDF-3.pdf"><i class="fas fa-file-pdf"></i> PDF-3</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Addition-et-soustraction-des-nombres-rationnels-Fiches-pedagogiques-Maths-2AC-Word-4.docx"><i class="fas fa-file-word"></i> Word-4</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3><i class="fas fa-book-open icon"></i> Cours</h3>
+                        <ul>
+                            <li><a href="https://zoneduca.com/wp-content/uploads/2024/06/4e_nc_frac_add_soust_egalite.pdf"><i class="fas fa-file-pdf"></i> Cours (PDF)</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3><i class="fas fa-pencil-alt icon"></i> Séries d'exercices</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Somme-et-difference-des-nombres-rationnels-Serie-dexercices-1-Word.docx"><i class="fas fa-file-word"></i> Word-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Somme-et-difference-des-nombres-rationnels-Serie-dexercices-2-PDF.pdf"><i class="fas fa-file-pdf"></i> PDF-2</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Somme-et-difference-des-nombres-rationnels-Serie-dexercices-3-PDF.pdf"><i class="fas fa-file-pdf"></i> PDF-3</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHAPITRE 5 -->
+        <section class="chapter" id="ch5">
+            <div class="chapter-header">
+                <span class="num">5</span>
+                <h2>Produit et Quotient des Nombres Rationnels</h2>
+            </div>
+            <div class="chapter-body">
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <h3><i class="fas fa-file-alt icon"></i> Fiches pédagogiques</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Multiplication-et-division-des-nombres-rationnels-Fiches-pedagogiques-Maths-2AC-PDF-1.pdf"><i class="fas fa-file-pdf"></i> PDF-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Multiplication-et-division-des-nombres-rationnels-Fiches-pedagogiques-Maths-2AC-PDF-2.pdf"><i class="fas fa-file-pdf"></i> PDF-2</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Multiplication-et-division-des-nombres-rationnels-Fiches-pedagogiques-Maths-2AC-PDF-3.pdf"><i class="fas fa-file-pdf"></i> PDF-3</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Multiplication-et-division-des-nombres-rationnels-Fiches-pedagogiques-Maths-2AC-Word-4.docx"><i class="fas fa-file-word"></i> Word-4</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3><i class="fas fa-book-open icon"></i> Cours</h3>
+                        <ul>
+                            <li><a href="https://zoneduca.com/wp-content/uploads/2024/06/4e_nc_frac_multipli_divi.pdf"><i class="fas fa-file-pdf"></i> Cours (PDF)</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3><i class="fas fa-pencil-alt icon"></i> Séries d'exercices</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Produit-et-quotient-des-nombres-rationnels-Serie-dexercices-1-Word-1.docx"><i class="fas fa-file-word"></i> Word-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Produit-et-quotient-des-nombres-rationnels-Serie-dexercices-2-Word-1.docx"><i class="fas fa-file-word"></i> Word-2</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Produit-et-quotient-des-nombres-rationnels-Serie-dexercices-3-PDF-1.pdf"><i class="fas fa-file-pdf"></i> PDF-3</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHAPITRE 6 -->
+        <section class="chapter" id="ch6">
+            <div class="chapter-header">
+                <span class="num">6</span>
+                <h2>Les Quatre Opérations sur les Nombres Rationnels</h2>
+            </div>
+            <div class="chapter-body">
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <h3><i class="fas fa-pencil-alt icon"></i> Séries d'exercices</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Produit-et-quotient-des-nombres-rationnels-Serie-dexercices-1-Word.docx"><i class="fas fa-file-word"></i> Word-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Produit-et-quotient-des-nombres-rationnels-Serie-dexercices-2-Word.docx"><i class="fas fa-file-word"></i> Word-2</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Produit-et-quotient-des-nombres-rationnels-Serie-dexercices-3-PDF.pdf"><i class="fas fa-file-pdf"></i> PDF-3</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Les-quatre-operations-sur-les-nombres-rationnels-Serie-dexercices-4-PDF.pdf"><i class="fas fa-file-pdf"></i> PDF-4</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHAPITRE 7 -->
+        <section class="chapter" id="ch7">
+            <div class="chapter-header">
+                <span class="num">7</span>
+                <h2>Droites Remarquables dans le Triangle</h2>
+            </div>
+            <div class="chapter-body">
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <h3><i class="fas fa-file-alt icon"></i> Fiches pédagogiques</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Droites-Remarquables-dans-le-Triangle-Fiches-pedagogiques-Maths-2AC-PDF-1.pdf"><i class="fas fa-file-pdf"></i> PDF-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Droites-Remarquables-dans-le-Triangle-Fiches-pedagogiques-Maths-2AC-PDF-2.pdf"><i class="fas fa-file-pdf"></i> PDF-2</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Droites-Remarquables-dans-le-Triangle-Fiches-pedagogiques-Maths-2AC-Word-3.docx"><i class="fas fa-file-word"></i> Word-3</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Droites-Remarquables-dans-le-Triangle-Fiches-pedagogiques-Maths-2AC-Word-4.docx"><i class="fas fa-file-word"></i> Word-4</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3><i class="fas fa-pencil-alt icon"></i> Séries d'exercices</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Droites-Remarquables-dans-le-Triangle-Serie-dexercices-1-Word.docx"><i class="fas fa-file-word"></i> Word-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Droites-Remarquables-dans-le-Triangle-Serie-dexercices-2-Word.docx"><i class="fas fa-file-word"></i> Word-2</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Droites-Remarquables-dans-le-Triangle-Serie-dexercices-3-PDF.pdf"><i class="fas fa-file-pdf"></i> PDF-3</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHAPITRE 8 -->
+        <section class="chapter" id="ch8">
+            <div class="chapter-header">
+                <span class="num">8</span>
+                <h2>Droites des Milieux dans un Triangle</h2>
+            </div>
+            <div class="chapter-body">
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <h3><i class="fas fa-file-alt icon"></i> Fiches pédagogiques</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Droites-des-milieux-dans-un-Triangle-Fiches-pedagogiques-Maths-2AC-PDF-1.pdf"><i class="fas fa-file-pdf"></i> PDF-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Droites-des-milieux-dans-un-Triangle-Fiches-pedagogiques-Maths-2AC-Word-2.docx"><i class="fas fa-file-word"></i> Word-2</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3><i class="fas fa-pencil-alt icon"></i> Séries d'exercices</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Droites-des-milieux-dans-un-Triangle-Serie-dexercices-1-Word.docx"><i class="fas fa-file-word"></i> Word-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Droites-des-milieux-dans-un-Triangle-Serie-dexercices-2-Word.docx"><i class="fas fa-file-word"></i> Word-2</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHAPITRE 9 -->
+        <section class="chapter" id="ch9">
+            <div class="chapter-header">
+                <span class="num">9</span>
+                <h2>Puissances</h2>
+            </div>
+            <div class="chapter-body">
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <h3><i class="fas fa-file-alt icon"></i> Fiches pédagogiques</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Puissances-Fiches-pedagogiques-Maths-2AC-PDF-1.pdf"><i class="fas fa-file-pdf"></i> PDF-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Puissances-Fiches-pedagogiques-Maths-2AC-PDF-2.pdf"><i class="fas fa-file-pdf"></i> PDF-2</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Puissances-Fiches-pedagogiques-Maths-2AC-PDF-3.pdf"><i class="fas fa-file-pdf"></i> PDF-3</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2022/07/Puissances-Fiches-pedagogiques-Maths-2AC-Word-4.docx"><i class="fas fa-file-word"></i> Word-4</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3><i class="fas fa-pencil-alt icon"></i> Séries d'exercices</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Puissances-Serie-dexercices-1-Word.docx"><i class="fas fa-file-word"></i> Word-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Puissances-Serie-dexercices-2-Word.docx"><i class="fas fa-file-word"></i> Word-2</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Puissances-Serie-dexercices-3-PDF.pdf"><i class="fas fa-file-pdf"></i> PDF-3</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Puissances-Serie-dexercices-4-PDF.pdf"><i class="fas fa-file-pdf"></i> PDF-4</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHAPITRE 10 -->
+        <section class="chapter" id="ch10">
+            <div class="chapter-header">
+                <span class="num">10</span>
+                <h2>Calcul Littéral</h2>
+            </div>
+            <div class="chapter-body">
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <h3><i class="fas fa-file-alt icon"></i> Fiches pédagogiques</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2024/02/jodadat-Calcul-Litteral.docx"><i class="fas fa-file-word"></i> Word-1</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3><i class="fas fa-pencil-alt icon"></i> Séries d'exercices</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Calcul-Litteral-Serie-d-exercices-1-Word.docx"><i class="fas fa-file-word"></i> Word-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Calcul-Litteral-Serie-d-exercices-2-PDF.pdf"><i class="fas fa-file-pdf"></i> PDF-2</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Calcul-Litteral-Serie-d-exercices-3-PDF.pdf"><i class="fas fa-file-pdf"></i> PDF-3</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Calcul-Litteral-Serie-d-exercices-4-PDF.pdf"><i class="fas fa-file-pdf"></i> PDF-4</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Calcul-Litteral-Serie-d-exercices-5-PDF.pdf"><i class="fas fa-file-pdf"></i> PDF-5</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHAPITRE 11 -->
+        <section class="chapter" id="ch11">
+            <div class="chapter-header">
+                <span class="num">11</span>
+                <h2>Équations</h2>
+            </div>
+            <div class="chapter-body">
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <h3><i class="fas fa-file-alt icon"></i> Fiches pédagogiques</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2024/02/%D8%A7%D9%84%D9%85%D8%B9%D8%A7%D8%AF%D9%84%D8%A7%D8%AA-2APIC.docx"><i class="fas fa-file-word"></i> Word-1</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3><i class="fas fa-book-open icon"></i> Cours</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/equations-cours-maths-2AC-1.pdf"><i class="fas fa-file-pdf"></i> PDF-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/equations-cours-maths-2AC-2.pdf"><i class="fas fa-file-pdf"></i> PDF-2</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3><i class="fas fa-pencil-alt icon"></i> Séries d'exercices</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/%D8%B3%D9%84%D8%B3%D9%84%D8%A9-%D8%AA%D9%85%D8%A7%D8%B1%D9%8A%D9%86-%D8%A7%D9%84%D9%85%D8%B9%D8%A7%D8%AF%D9%84%D8%A7%D8%AA-2apic-biof.docx"><i class="fas fa-file-word"></i> Word-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Chapitre_A8_Equation_inequation-8-9.pdf"><i class="fas fa-file-pdf"></i> PDF-2</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Exercices-sur-les-equations.pdf"><i class="fas fa-file-pdf"></i> PDF-3</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Serie-equation-2ac.pdf"><i class="fas fa-file-pdf"></i> PDF-4</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/%D8%B3%D9%84%D8%B3%D9%84%D8%A9-%D8%AA%D9%85%D8%A7%D8%B1%D9%8A%D9%86-%D8%A7%D9%84%D9%85%D8%B9%D8%A7%D8%AF%D9%84%D8%A7%D8%AA-2apic-biof.pdf"><i class="fas fa-file-pdf"></i> PDF-5</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Equations-Serie-dexercices-Word-6-2AC.pdf"><i class="fas fa-file-pdf"></i> PDF-6</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHAPITRE 12 -->
+        <section class="chapter" id="ch12">
+            <div class="chapter-header">
+                <span class="num">12</span>
+                <h2>Introduction aux Nombres Réels</h2>
+            </div>
+            <div class="chapter-body">
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <h3><i class="fas fa-file-alt icon"></i> Fiches pédagogiques</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2024/02/fiche-nombres-reels.docx"><i class="fas fa-file-word"></i> Word-1</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3><i class="fas fa-book-open icon"></i> Cours</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Introduction-aux-nombres-reels-Cours-1.pdf"><i class="fas fa-file-pdf"></i> PDF-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Introduction-aux-nombres-reels-Cours-2.pdf"><i class="fas fa-file-pdf"></i> PDF-2</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHAPITRE 13 -->
+        <section class="chapter" id="ch13">
+            <div class="chapter-header">
+                <span class="num">13</span>
+                <h2>Ordre et Inéquations</h2>
+            </div>
+            <div class="chapter-body">
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <h3><i class="fas fa-file-alt icon"></i> Fiches pédagogiques</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2024/02/l_ordre-et-operations-.docx"><i class="fas fa-file-word"></i> Word-1</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3><i class="fas fa-pencil-alt icon"></i> Séries d'exercices</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Ordre-et-Inequations-exercices-2AC-Maths-1.docx"><i class="fas fa-file-word"></i> Word-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Ordre-et-Inequations-exercices-2AC-Maths-2.pdf"><i class="fas fa-file-pdf"></i> PDF-2</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Ordre-et-Inequations-exercices-2AC-Maths-3.pdf"><i class="fas fa-file-pdf"></i> PDF-3</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHAPITRE 14 -->
+        <section class="chapter" id="ch14">
+            <div class="chapter-header">
+                <span class="num">14</span>
+                <h2>Triangle Rectangle et Cercle</h2>
+            </div>
+            <div class="chapter-body">
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <h3><i class="fas fa-file-alt icon"></i> Fiches pédagogiques</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2024/02/fiche-triangle-rectangle-et-cercle.docx"><i class="fas fa-file-word"></i> Word-1</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3><i class="fas fa-pencil-alt icon"></i> Séries d'exercices</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Triangle-Rectangle-et-Cercle-exercices-Maths-2AC-1.pdf"><i class="fas fa-file-pdf"></i> PDF-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Triangle-Rectangle-et-Cercle-exercices-Maths-2AC-2.pdf"><i class="fas fa-file-pdf"></i> PDF-2</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHAPITRE 15 -->
+        <section class="chapter" id="ch15">
+            <div class="chapter-header">
+                <span class="num">15</span>
+                <h2>Théorème de Pythagore et Cosinus d'un Angle Aigu</h2>
+            </div>
+            <div class="chapter-body">
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <h3><i class="fas fa-file-alt icon"></i> Fiches pédagogiques</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2024/02/th-de-pytaghore-et-cosinus-newwwwww.docx"><i class="fas fa-file-word"></i> Word-1</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3><i class="fas fa-pencil-alt icon"></i> Séries d'exercices</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Theoreme-de-Pythagore-et-cosinus-d-un-angle-aigu-exercices-2AC-Maths-1.pdf"><i class="fas fa-file-pdf"></i> Exercices (PDF)</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Theoreme-de-Pythagore-et-cosinus-d-un-angle-aigu-exercices-corriges-2AC-Maths-1.pdf"><i class="fas fa-file-pdf"></i> Corrigés (PDF)</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHAPITRE 16 -->
+        <section class="chapter" id="ch16">
+            <div class="chapter-header">
+                <span class="num">16</span>
+                <h2>Vecteurs et Translation</h2>
+            </div>
+            <div class="chapter-body">
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <h3><i class="fas fa-file-alt icon"></i> Fiches pédagogiques</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2024/02/COURS-TRANSLATIONS-ET-VECTEURS.docx"><i class="fas fa-file-word"></i> Word-1</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3><i class="fas fa-pencil-alt icon"></i> Séries d'exercices</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Vecteurs-et-translation-exercices-2AC-Maths-1.pdf"><i class="fas fa-file-pdf"></i> PDF-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Vecteurs-et-translation-exercices-2AC-Maths-2.pdf"><i class="fas fa-file-pdf"></i> PDF-2</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Vecteurs-et-translation-exercices-2AC-Maths-3.pdf"><i class="fas fa-file-pdf"></i> PDF-3</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHAPITRE 17 -->
+        <section class="chapter" id="ch17">
+            <div class="chapter-header">
+                <span class="num">17</span>
+                <h2>Surfaces et Volumes</h2>
+            </div>
+            <div class="chapter-body">
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <h3><i class="fas fa-file-alt icon"></i> Fiches pédagogiques</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/surfaces-et-volumes-maths-2ac/"><i class="fas fa-link"></i> Surfaces et Volumes (Word-1)</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3><i class="fas fa-pencil-alt icon"></i> Séries d'exercices</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/proprietes-de-la-pyramide-perspectives-exercices.pdf"><i class="fas fa-file-pdf"></i> Pyramide – Perspectives – Exos</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/proprietes-de-la-pyramide-perspectives-corriges-d-exercices.pdf"><i class="fas fa-file-pdf"></i> Pyramide – Perspectives – Corrigés</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/pyramides-patrons-exercices.pdf"><i class="fas fa-file-pdf"></i> Pyramides (Patrons) – Exos</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/pyramides-patrons-corriges-d-exercices.pdf"><i class="fas fa-file-pdf"></i> Pyramides (Patrons) – Corrigés</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/calculs-de-volumes-exercices.pdf"><i class="fas fa-file-pdf"></i> Calculs de volumes – Exos</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/calculs-de-volumes-corriges-d-exercices.pdf"><i class="fas fa-file-pdf"></i> Calculs de volumes – Corrigés</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHAPITRE 18 -->
+        <section class="chapter" id="ch18">
+            <div class="chapter-header">
+                <span class="num">18</span>
+                <h2>Proportionnalité et Fonctions Linéaires</h2>
+            </div>
+            <div class="chapter-body">
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <h3><i class="fas fa-file-alt icon"></i> Fiches pédagogiques</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2024/02/proportionnalite-2APIC.docx"><i class="fas fa-file-word"></i> Word-1</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3><i class="fas fa-pencil-alt icon"></i> Séries d'exercices</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Proportionnalite-et-fonctions-lineaires-exercices-2AC-Maths-1.docx"><i class="fas fa-file-word"></i> Word-1</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Proportionnalite-et-fonctions-lineaires-exercices-2AC-Maths-2.pdf"><i class="fas fa-file-pdf"></i> PDF-2</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHAPITRE 19 -->
+        <section class="chapter" id="ch19">
+            <div class="chapter-header">
+                <span class="num">19</span>
+                <h2>Statistiques</h2>
+            </div>
+            <div class="chapter-body">
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <h3><i class="fas fa-file-alt icon"></i> Fiches pédagogiques</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2024/02/fiche-statistiques-Copie.docx"><i class="fas fa-file-word"></i> Word-1</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3><i class="fas fa-book-open icon"></i> Cours</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/Statistiques-cours-2AC-Maths-1.pdf"><i class="fas fa-file-pdf"></i> PDF-1</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3><i class="fas fa-pencil-alt icon"></i> Séries d'exercices</h3>
+                        <ul>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/statistiques-exercices-fr.pdf"><i class="fas fa-file-pdf"></i> Exercices (PDF)</a></li>
+                            <li><a href="https://dyrassa.com/wp-content/uploads/2023/04/statistiques-corrige-d-exercices-fr.pdf"><i class="fas fa-file-pdf"></i> Corrigés (PDF)</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================== -->
+        <!-- DEVOIRS CONTRÔLÉS (semestres) -->
+        <section style="margin-top: 3rem; border-top: 2px solid #e1ebf3; padding-top: 2rem;">
+            <h2 style="font-size: 2rem; font-weight: 600; color: #0f3b5c; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fas fa-tasks" style="color: #1a6d9b;"></i> Devoirs Contrôlés
+            </h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <!-- Semestre 1 -->
+                <div>
+                    <h3 style="font-size: 1.4rem; font-weight: 600; color: #1f4b6e; margin-bottom: 1rem; border-bottom: 2px solid #d6e2ef; padding-bottom: 0.3rem;">
+                        <i class="fas fa-calendar-alt" style="color: #256f9e;"></i> Semestre 1
+                    </h3>
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="font-weight: 600; color: #2b5f7e;">Devoir N1</h4>
+                        <div class="devoir-grid">
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC_Semestre-1_Modele_1.pdf"><i class="fas fa-file-pdf"></i> Modèle 1</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC_Semestre-1_Modele_2.pdf"><i class="fas fa-file-pdf"></i> Modèle 2</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC_Semestre-1_Modele_3.pdf"><i class="fas fa-file-pdf"></i> Modèle 3</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC_Semestre-1_Modele_4.pdf"><i class="fas fa-file-pdf"></i> Modèle 4</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC_Semestre-1_Modele_5.pdf"><i class="fas fa-file-pdf"></i> Modèle 5</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC_Semestre-1_Modele_6.pdf"><i class="fas fa-file-pdf"></i> Modèle 6</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC_Semestre-1_Modele_7.pdf"><i class="fas fa-file-pdf"></i> Modèle 7</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC_Semestre-1_Modele_8.pdf"><i class="fas fa-file-pdf"></i> Modèle 8</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC_Semestre-1_Modele_9.pdf"><i class="fas fa-file-pdf"></i> Modèle 9</a>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="font-weight: 600; color: #2b5f7e;">Devoir N2</h4>
+                        <div class="devoir-grid">
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC_Semestre-1_Modele_1.pdf"><i class="fas fa-file-pdf"></i> Modèle 1</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC_Semestre-1_Modele_2.pdf"><i class="fas fa-file-pdf"></i> Modèle 2</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC_Semestre-1_Modele_3.pdf"><i class="fas fa-file-pdf"></i> Modèle 3</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC_Semestre-1_Modele_4.pdf"><i class="fas fa-file-pdf"></i> Modèle 4</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC_Semestre-1_Modele_5.pdf"><i class="fas fa-file-pdf"></i> Modèle 5</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC_Semestre-1_Modele_6.pdf"><i class="fas fa-file-pdf"></i> Modèle 6</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC_Semestre-1_Modele_7.pdf"><i class="fas fa-file-pdf"></i> Modèle 7</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC_Semestre-1_Modele_8.pdf"><i class="fas fa-file-pdf"></i> Modèle 8</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC_Semestre-1_Modele_9.pdf"><i class="fas fa-file-pdf"></i> Modèle 9</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC_Semestre-1_Modele_10.pdf"><i class="fas fa-file-pdf"></i> Modèle 10</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC_Semestre-1_Modele_11.pdf"><i class="fas fa-file-pdf"></i> Modèle 11</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC_Semestre-1_Modele_12.pdf"><i class="fas fa-file-pdf"></i> Modèle 12</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC_Semestre-1_Modele_13.pdf"><i class="fas fa-file-pdf"></i> Modèle 13</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC_Semestre-1_Modele_14.pdf"><i class="fas fa-file-pdf"></i> Modèle 14</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC_Semestre-1_Modele_15.pdf"><i class="fas fa-file-pdf"></i> Modèle 15</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC_Semestre-1_Modele_16.pdf"><i class="fas fa-file-pdf"></i> Modèle 16</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC_Semestre-1_Modele_17.pdf"><i class="fas fa-file-pdf"></i> Modèle 17</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC_Semestre-1_Modele_18.pdf"><i class="fas fa-file-pdf"></i> Modèle 18</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC_Semestre-1_Modele_19-Word.docx"><i class="fas fa-file-word"></i> Modèle 19 (Word)</a>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 style="font-weight: 600; color: #2b5f7e;">Devoir N3</h4>
+                        <div class="devoir-grid">
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N3-Maths-2AC_Semestre-1_Modele_1.pdf"><i class="fas fa-file-pdf"></i> Modèle 1</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N3-Maths-2AC_Semestre-1_Modele_2.pdf"><i class="fas fa-file-pdf"></i> Modèle 2</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N3-Maths-2AC_Semestre-1_Modele_3.pdf"><i class="fas fa-file-pdf"></i> Modèle 3</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N3-Maths-2AC_Semestre-1_Modele_4.pdf"><i class="fas fa-file-pdf"></i> Modèle 4</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N3-Maths-2AC_Semestre-1_Modele_5.pdf"><i class="fas fa-file-pdf"></i> Modèle 5</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N3-Maths-2AC_Semestre-1_Modele_6.pdf"><i class="fas fa-file-pdf"></i> Modèle 6</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N3-Maths-2AC_Semestre-1_Modele_7.pdf"><i class="fas fa-file-pdf"></i> Modèle 7</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N3-Maths-2AC_Semestre-1_Modele_8.pdf"><i class="fas fa-file-pdf"></i> Modèle 8</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N3-Maths-2AC_Semestre-1_Modele_9.pdf"><i class="fas fa-file-pdf"></i> Modèle 9</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N3-Maths-2AC_Semestre-1_Modele_10.pdf"><i class="fas fa-file-pdf"></i> Modèle 10</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N3-Maths-2AC_Semestre-1_Modele_11.pdf"><i class="fas fa-file-pdf"></i> Modèle 11</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N3-Maths-2AC_Semestre-1_Modele_12.pdf"><i class="fas fa-file-pdf"></i> Modèle 12</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N3-Maths-2AC_Semestre-1_Modele_13.pdf"><i class="fas fa-file-pdf"></i> Modèle 13</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Semestre 2 -->
+                <div>
+                    <h3 style="font-size: 1.4rem; font-weight: 600; color: #1f4b6e; margin-bottom: 1rem; border-bottom: 2px solid #d6e2ef; padding-bottom: 0.3rem;">
+                        <i class="fas fa-calendar-alt" style="color: #256f9e;"></i> Semestre 2
+                    </h3>
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="font-weight: 600; color: #2b5f7e;">Devoir N1</h4>
+                        <div class="devoir-grid">
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC-Semestre-2_Modele-1.docx"><i class="fas fa-file-word"></i> Modèle 1</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC-Semestre-2_Modele-2.docx"><i class="fas fa-file-word"></i> Modèle 2</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC-Semestre-2_Modele-3.docx"><i class="fas fa-file-word"></i> Modèle 3</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC-Semestre-2_Modele-4.pdf"><i class="fas fa-file-pdf"></i> Modèle 4</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC-Semestre-2_Modele-5.pdf"><i class="fas fa-file-pdf"></i> Modèle 5</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC-Semestre-2_Modele-6.pdf"><i class="fas fa-file-pdf"></i> Modèle 6</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC-Semestre-2_Modele-7.pdf"><i class="fas fa-file-pdf"></i> Modèle 7</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC-Semestre-2_Modele-8.pdf"><i class="fas fa-file-pdf"></i> Modèle 8</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC-Semestre-2_Modele-9.pdf"><i class="fas fa-file-pdf"></i> Modèle 9</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC-Semestre-2_Modele-10.pdf"><i class="fas fa-file-pdf"></i> Modèle 10</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC-Semestre-2_Modele-11.pdf"><i class="fas fa-file-pdf"></i> Modèle 11</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC-Semestre-2_Modele-12.pdf"><i class="fas fa-file-pdf"></i> Modèle 12</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC-Semestre-2_Modele-13.pdf"><i class="fas fa-file-pdf"></i> Modèle 13</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC-Semestre-2_Modele-14.pdf"><i class="fas fa-file-pdf"></i> Modèle 14</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC-Semestre-2_Modele-15.pdf"><i class="fas fa-file-pdf"></i> Modèle 15</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC-Semestre-2_Modele-16.pdf"><i class="fas fa-file-pdf"></i> Modèle 16</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC-Semestre-2_Modele-17.pdf"><i class="fas fa-file-pdf"></i> Modèle 17</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC-Semestre-2_Modele-18.pdf"><i class="fas fa-file-pdf"></i> Modèle 18</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC-Semestre-2_Modele-19.pdf"><i class="fas fa-file-pdf"></i> Modèle 19</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N1-Maths-2AC-Semestre-2_Modele-20.pdf"><i class="fas fa-file-pdf"></i> Modèle 20</a>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="font-weight: 600; color: #2b5f7e;">Devoir N2</h4>
+                        <div class="devoir-grid">
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC-Semestre-2-1.pdf"><i class="fas fa-file-pdf"></i> Modèle 1</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC-Semestre-2-2.pdf"><i class="fas fa-file-pdf"></i> Modèle 2</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC-Semestre-2-3.pdf"><i class="fas fa-file-pdf"></i> Modèle 3</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC-Semestre-2-4.pdf"><i class="fas fa-file-pdf"></i> Modèle 4</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC-Semestre-2-5.pdf"><i class="fas fa-file-pdf"></i> Modèle 5</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC-Semestre-2-6.pdf"><i class="fas fa-file-pdf"></i> Modèle 6</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC-Semestre-2-7.pdf"><i class="fas fa-file-pdf"></i> Modèle 7</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N2-Maths-2AC-Semestre-2-8.pdf"><i class="fas fa-file-pdf"></i> Modèle 8</a>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 style="font-weight: 600; color: #2b5f7e;">Devoir N3</h4>
+                        <div class="devoir-grid">
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N3-Maths-2AC_Semestre-2_Modele_1.pdf"><i class="fas fa-file-pdf"></i> Modèle 1</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/Devoir-N3-Maths-2AC_Semestre-2_Modele_1-Correction.pdf"><i class="fas fa-file-pdf"></i> Corrigé 1</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/04/devoir-3-modele-2-mathematiques-2ac-semestre-2.pdf"><i class="fas fa-file-pdf"></i> Modèle 2</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/05/controle-N3-semestre2-2AC-modele-1-Maths.jpg"><i class="fas fa-file-image"></i> Modèle 3 (JPG)</a>
+                            <a href="https://dyrassa.com/wp-content/uploads/2023/05/CC-N3-S2-2AC.pdf"><i class="fas fa-file-pdf"></i> Modèle 4 (PDF)</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <p><i class="fas fa-graduation-cap"></i> Toutes les ressources sont à usage pédagogique. <i class="fas fa-envelope"></i> zoneduca@gmail.com</p>
+        </footer>
+
+    </div><!-- container -->
+</body>
+</html>
