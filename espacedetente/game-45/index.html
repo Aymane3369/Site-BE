@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Convertisseur Universel</title>
+
+<style>
+body {
+    font-family: Arial;
+    text-align:center;
+    margin:40px;
+}
+
+textarea {
+    width:80%;
+    height:100px;
+    font-size:18px;
+}
+
+button {
+    padding:12px 25px;
+    font-size:18px;
+}
+
+pre {
+    background:#eee;
+    padding:20px;
+    text-align:left;
+    white-space:pre-wrap;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>🔐 Convertisseur Texte → ASCII → Binaire → Décimal → Base64</h1>
+
+<textarea id="input" placeholder="Écrire un texte"></textarea>
+<br><br>
+
+<button onclick="convertir()">Convertir</button>
+
+<pre id="resultat"></pre>
+
+
+<script>
+
+function convertir(){
+
+    let texte = document.getElementById("input").value;
+
+    let ascii = [];
+    let binaire = "";
+
+    for(let caractere of texte){
+
+        let code = caractere.charCodeAt(0);
+
+        ascii.push(code);
+
+        binaire += code.toString(2).padStart(8,"0") + " ";
+    }
+
+
+    // Conversion binaire complète en décimal
+    let binaireSansEspace = binaire.replaceAll(" ","");
+
+    let decimal = BigInt("0b" + binaireSansEspace);
+
+
+    // Conversion Base64
+    let base64 = btoa(unescape(encodeURIComponent(texte)));
+
+
+    document.getElementById("resultat").innerHTML =
+`
+Texte :
+${texte}
+
+ASCII :
+${ascii.join(" ")}
+
+Binaire :
+${binaire}
+
+Décimal :
+${decimal}
+
+Base64 :
+${base64}
+`;
+
+}
+
+</script>
+
+</body>
+</html>
