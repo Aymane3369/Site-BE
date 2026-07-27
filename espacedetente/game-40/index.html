@@ -1,1014 +1,619 @@
-
 <!DOCTYPE html>
-<html lang="fr">
+<!-- Created by A.A -->
+<!--
+     Name : 🏓Ping pong[ 🎮 Game ]
+     Author : A.A
+     version : 1.0
+
+     Loader : Ring loader (i.e previously made by the same author)
+
+
+NOTE : Inform me / Ask permission before  using  it.
+      DO NOT COPY , PLEASE !!!
+
+-->
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>📚 Encyclopédie · Culture Générale</title>
-  <style>
-    /* ========== RESET & ROOT ========== */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    :root {
-      --bg1: #05070a; --text: #fff; --card: rgba(255,255,255,0.06);
-      --border: rgba(255,255,255,0.12); --glow: #00ffcc;
-      --shadow: 0 0 25px #00ffcc55; --radius: 16px;
-    }
-    body.light { --bg1: #eef3ff; --text: #111; --card: rgba(0,0,0,0.04); --border: rgba(0,0,0,0.15); --glow: #0077ff; --shadow: 0 0 30px #0077ff44; }
-    body.neon { --bg1: #000; --text: #fff; --card: rgba(255,255,255,0.04); --border: #ff00ff; --glow: #ff00ff; --shadow: 0 0 35px #ff00ff77; }
-    body {
-      margin: 0; font-family: 'Segoe UI', 'Fira Code', monospace; overflow: hidden;
-      color: var(--text); background: var(--bg1); transition: background 0.3s, color 0.2s;
-      height: 100vh; display: flex; justify-content: center; align-items: center;
-      position: relative;
-    }
-    /* ========== WAVES ========== */
-    .waves { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 0; pointer-events: none; opacity: 0.5; transition: opacity 0.3s; }
-    .waves.paused { opacity: 0.1; }
-    .wave {
-      position: absolute; width: 200%; height: 200%;
-      background: radial-gradient(circle at 30% 30%, rgba(0,255,204,0.2), transparent 60%);
-      animation: moveWave 14s linear infinite; filter: blur(50px); will-change: transform;
-    }
-    .waves.paused .wave { animation-play-state: paused; }
-    .wave:nth-child(2) { animation-duration: 22s; opacity: 0.4; background: radial-gradient(circle at 70% 60%, rgba(255,0,200,0.15), transparent 60%); }
-    .wave:nth-child(3) { animation-duration: 30s; opacity: 0.25; background: radial-gradient(circle at 10% 80%, rgba(0,150,255,0.2), transparent 60%); }
-    @keyframes moveWave {
-      0% { transform: translate(-20%, -20%) rotate(0deg) scale(1); }
-      50% { transform: translate(20%, 10%) rotate(180deg) scale(1.1); }
-      100% { transform: translate(-20%, -20%) rotate(360deg) scale(1); }
-    }
-    /* ========== PARTICLES ========== */
-    #particlesCanvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; width: 100vw; height: 100vh; }
-    /* ========== BOOT ========== */
-    #boot {
-      position: fixed; inset: 0; background: #05070a; z-index: 999;
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
-      transition: opacity 0.8s ease;
-    }
-    #boot h2 { letter-spacing: 6px; font-weight: 300; opacity: 0; animation: fadeIn 1.2s forwards; font-size: 1.6rem; text-shadow: 0 0 20px #00ffcc55; text-align: center; padding: 0 16px; }
-    #boot .bar { width: 220px; height: 2px; background: #1f2a36; margin-top: 28px; border-radius: 4px; overflow: hidden; box-shadow: 0 0 12px #00ffcc22; }
-    #boot .bar::after { content: ''; display: block; width: 45%; height: 100%; background: linear-gradient(90deg, transparent, #00ffcc, transparent); animation: load 1.4s infinite ease-in-out; }
-    @keyframes load { 0% { transform: translateX(-150%); } 100% { transform: translateX(280%); } }
-    @keyframes fadeIn { to { opacity: 1; } }
-    /* ========== LAYOUT PRINCIPAL ========== */
-    .app {
-      position: relative; z-index: 2; width: 100vw; height: 100vh;
-      display: flex; flex-direction: column; padding: 12px 16px 10px;
-      max-height: 100vh; overflow: hidden;
-    }
-    .header {
-      display: flex; justify-content: space-between; align-items: center;
-      flex-shrink: 0; padding-bottom: 8px; border-bottom: 1px solid var(--border);
-      margin-bottom: 10px;
-    }
-    .header h1 { font-size: 1.3rem; font-weight: 300; letter-spacing: 4px; opacity: 0.9; }
-    .header .theme-btn {
-      width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border);
-      background: var(--card); backdrop-filter: blur(8px); cursor: pointer;
-      font-size: 1.3rem; display: flex; align-items: center; justify-content: center;
-      color: var(--text); transition: 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-    .header .theme-btn:hover { transform: scale(1.08); border-color: var(--glow); }
-    .main {
-      display: flex; flex: 1; gap: 12px; min-height: 0; overflow: hidden;
-    }
-    /* ===== MENU LATÉRAL ===== */
-    .menu-panel {
-      width: 280px; min-width: 200px; flex-shrink: 0;
-      background: var(--card); backdrop-filter: blur(8px);
-      border: 1px solid var(--border); border-radius: var(--radius);
-      overflow-y: auto; padding: 8px 4px;
-      scrollbar-width: thin; scrollbar-color: var(--glow) transparent;
-    }
-    .menu-panel::-webkit-scrollbar { width: 4px; }
-    .menu-panel::-webkit-scrollbar-thumb { background: var(--glow); border-radius: 10px; }
-    .menu-item {
-      padding: 8px 12px; border-radius: 10px; cursor: pointer;
-      display: flex; justify-content: space-between; align-items: center;
-      transition: 0.12s; font-size: 0.85rem; border-left: 2px solid transparent;
-      color: var(--text); user-select: none;
-    }
-    .menu-item:hover { background: rgba(255,255,255,0.06); }
-    .menu-item.active { border-left-color: var(--glow); background: rgba(255,255,255,0.06); }
-    .menu-item .badge { opacity: 0.4; font-size: 0.65rem; }
-    .sub-menu {
-      padding-left: 18px; display: none; flex-direction: column; gap: 2px; margin: 2px 0;
-    }
-    .sub-menu.open { display: flex; }
-    .sub-item {
-      padding: 5px 10px; border-radius: 8px; cursor: pointer;
-      font-size: 0.78rem; transition: 0.1s; color: var(--text); opacity: 0.8;
-      display: flex; justify-content: space-between; align-items: center;
-      border-left: 2px solid transparent;
-    }
-    .sub-item:hover { opacity: 1; background: rgba(255,255,255,0.04); }
-    .sub-item.active { border-left-color: var(--glow); opacity: 1; background: rgba(255,255,255,0.05); }
-    .sub-item .badge { opacity: 0.3; font-size: 0.6rem; }
-    /* ===== ZONE DE CONTENU ===== */
-    .content {
-      flex: 1; background: var(--card); backdrop-filter: blur(8px);
-      border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 18px 22px; overflow-y: auto; min-width: 0;
-      scrollbar-width: thin; scrollbar-color: var(--glow) transparent;
-    }
-    .content::-webkit-scrollbar { width: 5px; }
-    .content::-webkit-scrollbar-thumb { background: var(--glow); border-radius: 10px; }
-    .content h2 { font-weight: 300; letter-spacing: 2px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-    .content h3 { font-weight: 400; margin-top: 18px; margin-bottom: 6px; opacity: 0.9; }
-    .content p { line-height: 1.6; margin-bottom: 12px; opacity: 0.92; }
-    .content ul { padding-left: 20px; margin-bottom: 12px; }
-    .content li { margin-bottom: 4px; opacity: 0.88; }
-    .content .highlight { border-left: 3px solid var(--glow); padding-left: 14px; margin: 12px 0; background: rgba(255,255,255,0.03); border-radius: 0 8px 8px 0; }
-    .content .quiz { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 16px; margin-top: 16px; border: 1px solid var(--border); }
-    .content .quiz ol { padding-left: 18px; }
-    .content .quiz li { margin-bottom: 10px; }
-    .content .quiz .answer { opacity: 0.7; font-style: italic; margin-top: 4px; font-size: 0.9rem; }
-    .content .date { font-weight: 300; opacity: 0.6; font-size: 0.85rem; }
-    .content .person { font-weight: 500; color: var(--glow); }
-    .content .saviez-vous { background: rgba(255,255,255,0.04); border-radius: 10px; padding: 12px 16px; margin: 12px 0; border-left: 4px solid var(--glow); }
-    .hint { text-align: center; font-size: 11px; opacity: 0.3; margin-top: 8px; flex-shrink: 0; letter-spacing: 1px; }
-    /* ===== TOAST ===== */
-    #toast {
-      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px);
-      background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); padding: 10px 26px;
-      border-radius: 40px; border: 1px solid var(--glow); color: #fff; font-size: 0.9rem;
-      z-index: 50; opacity: 0; transition: opacity 0.4s, transform 0.4s; pointer-events: none;
-      white-space: nowrap; max-width: 90vw; box-shadow: 0 0 30px rgba(255,0,0,0.2);
-    }
-    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-    /* ========== RESPONSIVE ========== */
-    @media (max-width: 700px) {
-      .main { flex-direction: column; }
-      .menu-panel { width: 100%; min-width: unset; max-height: 200px; }
-      .content { padding: 12px 14px; }
-      .header h1 { font-size: 1rem; }
-    }
-    @media (max-width: 480px) {
-      .menu-item { font-size: 0.75rem; padding: 6px 8px; }
-      .sub-item { font-size: 0.7rem; }
-      .content { padding: 10px 12px; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <title>🏓Ping pong[ 🎮 Game ]</title>
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P|Sarabun" rel="stylesheet">
+
+    <style>
+        /* Created by A.A */
+        body {
+            margin: 0;
+            padding: 5px;
+            background-color: #262626;
+            user-select: none;
+            font-family: 'Sarabun', sans-serif;
+        }
+
+        body:after {
+            display: none;
+            content: url(https://dl-web.dropbox.com/s/9smc0vzt2oe6jfl/Ping%20Pong%20music%202.mp3?dl=0);
+        }
+
+        i {
+            color: red;
+            margin: 0px 2px 0px 2px;
+        }
+
+        .tab,
+        #status {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            background-color: white;
+            border-radius: 10px;
+            z-index: 1;
+            width: 95%;
+            height: 75vh;
+            padding: 10px;
+            box-sizing: border-box;
+            transition-duration: 150ms;
+        }
+
+        img {
+            display: inline-block;
+            position: relative;
+            height: 80px;
+            width: 80px;
+            border-radius: 10px;
+            top: 20px;
+        }
+
+        h3 {
+            display: inline-block;
+            color: dimgray;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 20px;
+            margin: 2px;
+        }
+
+        #info {
+            display: block;
+            position: relative;
+            font-family: 'Sarabun', sans-serif;
+            margin: 15px;
+            margin-top: 25px;
+        }
+
+        #easy,
+        #hard,
+        #impossible {
+            display: block;
+            position: relative;
+            padding: 12px;
+            font-family: 'Press Start 2P', cursive;
+            background-color: #efefef;
+            border: 3px dashed #262626;
+            font-size: 15px;
+            text-align: center;
+            margin: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        #easy:hover,
+        #hard:hover,
+        #impossible:hover {
+            background-color: #ddd;
+        }
+
+        #status {
+            font-family: 'Press Start 2P', cursive;
+            height: 200px;
+            visibility: hidden;
+            transition-duration: 100ms;
+        }
+
+        #result {
+            font-size: 30px;
+            margin: 20px 10px 10px 10px;
+        }
+
+        button {
+            padding: 20px;
+            position: relative;
+            outline: none;
+            border: 3px dashed #262626;
+            border-radius: 10px;
+            background-color: green;
+            color: white;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            margin: 8px;
+            margin-top: 25px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 3px 5px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+
+        button:active {
+            transform: scale(0.85);
+            box-shadow: 0px 0px 0px gray;
+        }
+
+        #canvas {
+            position: absolute;
+            margin: auto;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background-color: dimgray;
+            border: 4px solid white;
+            box-sizing: border-box;
+            z-index: 1;
+            touch-action: none;
+        }
+
+        #container {
+            display: block;
+            position: fixed;
+            height: 100vh;
+            width: 100vw;
+            background-color: #262626;
+            z-index: 5;
+        }
+
+        #load {
+            font-size: 18px;
+            color: white;
+            margin: auto;
+            text-align: center;
+            font-family: 'Aleo', serif;
+            user-select: none;
+            z-index: 10;
+        }
+
+        #loader {
+            display: block;
+            position: relative;
+            height: 110px;
+            width: 110px;
+            border-radius: 50%;
+            margin: auto;
+            margin-top: 40%;
+            background-image: -webkit-linear-gradient(left, #14ffe9, #ffeb3b, #ff00e0);
+            animation: animate 0.5s linear infinite;
+            border: 7px solid white;
+            user-select: none;
+        }
+
+        #loader:after {
+            content: '';
+            position: absolute;
+            margin: 15px;
+            height: 80px;
+            width: 80px;
+            border-radius: 50%;
+            background-color: #262626;
+            opacity: 0.9;
+        }
+
+        #loader>span {
+            display: block;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            border-radius: 50%;
+            margin: auto;
+            background-image: -webkit-linear-gradient(left, #14ffe9, #ffeb3b, #ff00e0);
+        }
+
+        #loader>span:nth-child(1) {
+            filter: blur(5px);
+        }
+        #loader>span:nth-child(2) {
+            filter: blur(10px);
+        }
+        #loader>span:nth-child(3) {
+            filter: blur(25px);
+        }
+        #loader>span:nth-child(4) {
+            filter: blur(45px);
+        }
+
+        @keyframes animate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(0.8);
+            }
+            34% {
+                transform: scale(1);
+            }
+            66% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
 </head>
-<body>
 
-<!-- Vagues -->
-<div class="waves" id="wavesContainer" aria-hidden="true">
-  <div class="wave"></div><div class="wave"></div><div class="wave"></div>
-</div>
-<!-- Particules -->
-<canvas id="particlesCanvas"></canvas>
-<!-- Boot -->
-<div id="boot"><h2>📚 Encyclopédie · Culture Générale</h2><div class="bar"></div></div>
-<!-- Toast -->
-<div id="toast"></div>
+<body onload="document.getElementById('container').style.visibility='hidden'; document.getElementsByClassName('tab')[0].style.animation='pop .27s ease';">
 
-<!-- Application -->
-<div class="app">
-  <div class="header">
-    <h1>📖 Culture Générale</h1>
-    <button class="theme-btn" id="themeToggle" aria-label="Changer de thème">☀</button>
-  </div>
-  <div class="main">
-    <div class="menu-panel" id="menuPanel" role="navigation"></div>
-    <div class="content" id="contentArea" role="main"></div>
-  </div>
-  <div class="hint">↑↓ navigation • ENTER ou clic pour ouvrir/fermer • Chapitres</div>
-</div>
+    <canvas id="canvas"></canvas>
 
-<script>
-  (function() {
-    'use strict';
+    <!-- Loader starts -->
+    <div id="container">
+        <div id="loader">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <br><br><br>
+        <div id="load">Loading...</div>
+    </div>
+    <!-- Loader ends -->
 
-    // ============================================================
-    //  DONNÉES : 20 parties × 5 chapitres = 100 chapitres
-    //  Chaque chapitre : intro, notions, dates, personnages, quiz, etc.
-    // ============================================================
-    const data = [
-      // Partie 1 : Histoire du monde
-      {
-        label: '🌍 Histoire du monde',
-        chapters: [
-          {
-            title: 'Grandes civilisations',
-            content: `
-              <h3>Introduction</h3>
-              <p>Les premières civilisations sont apparues il y a environ 6 000 ans, en Mésopotamie, en Égypte, dans la vallée de l'Indus et en Chine. Elles ont inventé l'écriture, les premières lois, la roue, et ont jeté les bases de l'astronomie et des mathématiques.</p>
-              <h3>Notions essentielles</h3>
-              <ul>
-                <li><strong>Mésopotamie :</strong> entre Tigre et Euphrate, cités-États (Sumer, Akkad, Babylone). Invention de l'écriture cunéiforme, code de Hammurabi.</li>
-                <li><strong>Égypte antique :</strong> le long du Nil, pharaons, pyramides, hiéroglyphes, médecine avancée.</li>
-                <li><strong>Vallée de l'Indus :</strong> Mohenjo-Daro, Harappa, urbanisme sophistiqué.</li>
-                <li><strong>Chine antique :</strong> dynasties Shang et Zhou, écriture chinoise, confucianisme.</li>
-                <li><strong>Civilisations précolombiennes :</strong> Olmèques, Mayas, Aztèques, Incas.</li>
-              </ul>
-              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> La première roue à rayons est apparue vers 2000 av. J.-C. en Asie centrale.</div>
-              <h3>Dates incontournables</h3>
-              <ul>
-                <li><span class="date">-3500</span> : Invention de l'écriture en Mésopotamie.</li>
-                <li><span class="date">-3100</span> : Unification de l'Égypte par Narmer.</li>
-                <li><span class="date">-2500</span> : Construction de la grande pyramide de Khéops.</li>
-                <li><span class="date">-1792</span> : Règne de Hammurabi.</li>
-                <li><span class="date">-1200</span> : Effondrement des civilisations de l'Âge du bronze.</li>
-              </ul>
-              <h3>Personnages majeurs</h3>
-              <ul>
-                <li><span class="person">Hammurabi</span> – roi de Babylone, célèbre pour son code de lois.</li>
-                <li><span class="person">Khéops</span> – pharaon de la IV<sup>e</sup> dynastie, constructeur de la grande pyramide.</li>
-                <li><span class="person">Sargon d'Akkad</span> – fondateur du premier empire connu.</li>
-              </ul>
-              <div class="highlight"><strong>Idée reçue :</strong> On dit souvent que les pyramides ont été construites par des esclaves. En réalité, les ouvriers étaient des paysans travaillant pendant les crues du Nil, et ils étaient bien nourris et soignés.</div>
-              <h3>Synthèse</h3>
-              <p>Les civilisations antiques ont posé les fondements de notre monde : l'écriture, les lois, l'urbanisme, les mathématiques. Leur héritage est encore présent dans nos institutions et nos savoirs.</p>
-              <div class="quiz">
-                <h3>Quiz – 10 questions</h3>
-                <ol>
-                  <li>Où est née l'écriture cunéiforme ? <br><span class="answer">→ En Mésopotamie.</span></li>
-                  <li>Quel pharaon a fait construire la plus grande pyramide ? <br><span class="answer">→ Khéops.</span></li>
-                  <li>Le code de Hammurabi date d'environ : <br><span class="answer">→ 1792 av. J.-C.</span></li>
-                  <li>Quelle civilisation a inventé les hiéroglyphes ? <br><span class="answer">→ L'Égypte antique.</span></li>
-                  <li>Les cités-États sumériennes étaient situées : <br><span class="answer">→ Entre le Tigre et l'Euphrate.</span></li>
-                  <li>La roue à rayons est apparue vers : <br><span class="answer">→ 2000 av. J.-C.</span></li>
-                  <li>Quelle civilisation a construit Mohenjo-Daro ? <br><span class="answer">→ La civilisation de l'Indus.</span></li>
-                  <li>Le premier empire connu a été fondé par : <br><span class="answer">→ Sargon d'Akkad.</span></li>
-                  <li>Les Mayas sont originaires de : <br><span class="answer">→ Mésoamérique.</span></li>
-                  <li>Les pyramides égyptiennes servaient de : <br><span class="answer">→ Tombeaux pour les pharaons.</span></li>
-                </ol>
-              </div>
-              <p><em>Pour aller plus loin :</em> <i>« Histoire des civilisations »</i> de Fernand Braudel.</p>
-            `
-          },
-          {
-            title: 'Antiquité',
-            content: `
-              <h3>Introduction</h3>
-              <p>L'Antiquité couvre la période allant de l'invention de l'écriture à la chute de l'Empire romain d'Occident (476 ap. J.-C.). C'est l'âge des grandes cités-États, des empires, des philosophes et des premières démocraties.</p>
-              <h3>Notions essentielles</h3>
-              <ul>
-                <li><strong>Grèce antique :</strong> cités-États (Athènes, Sparte), démocratie athénienne, philosophie (Socrate, Platon, Aristote), théâtre, olympiades.</li>
-                <li><strong>Rome antique :</strong> République puis Empire, droit romain, latin, conquêtes, aqueducs, christianisme officiel.</li>
-                <li><strong>Perse achéménide :</strong> empire de Cyrus, Darius, Xerxès, organisation administrative, routes.</li>
-                <li><strong>Alexandre le Grand :</strong> conquête de l'empire perse, hellénisation.</li>
-              </ul>
-              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> Les Jeux olympiques antiques ont commencé en 776 av. J.-C. et duraient cinq jours.</div>
-              <h3>Dates</h3>
-              <ul>
-                <li><span class="date">-776</span> : Premiers Jeux olympiques.</li>
-                <li><span class="date">-509</span> : Fondation de la République romaine.</li>
-                <li><span class="date">-27</span> : Octave devient Auguste, début de l'Empire romain.</li>
-                <li><span class="date">476</span> : Chute de l'Empire romain d'Occident.</li>
-              </ul>
-              <h3>Personnages</h3>
-              <ul>
-                <li><span class="person">Socrate</span> – père de la philosophie morale.</li>
-                <li><span class="person">Jules César</span> – général et homme d'État romain.</li>
-                <li><span class="person">Auguste</span> – premier empereur romain.</li>
-              </ul>
-              <div class="highlight"><strong>Idée reçue :</strong> Les Romains ne parlaient pas que latin ; le grec était aussi très répandu dans les élites.</div>
-              <h3>Synthèse</h3>
-              <p>L'Antiquité a forgé les concepts politiques (démocratie, république), juridiques (droit romain), philosophiques et artistiques qui influencent encore nos sociétés.</p>
-              <div class="quiz">
-                <h3>Quiz</h3>
-                <ol>
-                  <li>En quelle année ont eu lieu les premiers Jeux olympiques ? <br><span class="answer">→ 776 av. J.-C.</span></li>
-                  <li>Qui a fondé la République romaine ? <br><span class="answer">→ Les Romains en 509 av. J.-C.</span></li>
-                  <li>Quel empereur a transformé Rome en Empire ? <br><span class="answer">→ Auguste.</span></li>
-                  <li>La philosophie de Socrate repose sur : <br><span class="answer">→ La maïeutique (questionnement).</span></li>
-                  <li>Alexandre le Grand était roi de : <br><span class="answer">→ Macédoine.</span></li>
-                  <li>L'empire perse a été fondé par : <br><span class="answer">→ Cyrus.</span></li>
-                  <li>Le droit romain est à l'origine de : <br><span class="answer">→ Notre droit civil.</span></li>
-                  <li>Les aqueducs romains servaient à : <br><span class="answer">→ Transporter l'eau.</span></li>
-                  <li>Le christianisme est devenu religion officielle de l'Empire romain en : <br><span class="answer">→ 380 ap. J.-C.</span></li>
-                  <li>La chute de l'Empire romain d'Occident date de : <br><span class="answer">→ 476.</span></li>
-                </ol>
-              </div>
-            `
-          },
-          {
-            title: 'Moyen Âge',
-            content: `
-              <h3>Introduction</h3>
-              <p>Le Moyen Âge (Ve – XVe siècle) est souvent perçu comme une période obscure, mais c'est aussi une époque de renouveau : essor des universités, cathédrales gothiques, chansons de geste et premiers parlements.</p>
-              <h3>Notions essentielles</h3>
-              <ul>
-                <li><strong>Féodalité :</strong> système de suzeraineté et vassalité, hiérarchie (roi, seigneurs, chevaliers, serfs).</li>
-                <li><strong>Église catholique :</strong> puissance spirituelle et temporelle, monastères, ordres mendiants, papes.</li>
-                <li><strong>Croisades :</strong> guerres saintes pour la reconquête de Jérusalem (1095-1291).</li>
-                <li><strong>Renaissance carolingienne :</strong> réforme de l'Église, écoles, copie de manuscrits.</li>
-              </ul>
-              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> La première université d'Europe a été fondée à Bologne en 1088.</div>
-              <h3>Dates</h3>
-              <ul>
-                <li><span class="date">476</span> : Chute de Rome, début du Moyen Âge.</li>
-                <li><span class="date">800</span> : Couronnement de Charlemagne.</li>
-                <li><span class="date">1095</span> : Appel à la première croisade par Urbain II.</li>
-                <li><span class="date">1453</span> : Chute de Constantinople, fin du Moyen Âge.</li>
-              </ul>
-              <h3>Personnages</h3>
-              <ul>
-                <li><span class="person">Charlemagne</span> – empereur d'Occident, réformateur.</li>
-                <li><span class="person">Thomas d'Aquin</span> – théologien, synthèse aristotélicienne.</li>
-                <li><span class="person">Jeanne d'Arc</span> – héroïne de la guerre de Cent Ans.</li>
-              </ul>
-              <div class="highlight"><strong>Idée reçue :</strong> On croit que les gens du Moyen Âge pensaient que la Terre était plate. En réalité, les savants savaient qu'elle était ronde.</div>
-              <h3>Synthèse</h3>
-              <p>Le Moyen Âge a vu naître l'Europe moderne : les États, les parlements, les universités et la liberté communale. Il a aussi posé les bases de la Renaissance.</p>
-              <div class="quiz">
-                <h3>Quiz</h3>
-                <ol>
-                  <li>La première université a été fondée à : <br><span class="answer">→ Bologne (1088).</span></li>
-                  <li>Charlemagne a été couronné en : <br><span class="answer">→ 800.</span></li>
-                  <li>Les croisades ont commencé en : <br><span class="answer">→ 1095.</span></li>
-                  <li>La guerre de Cent Ans a opposé : <br><span class="answer">→ La France et l'Angleterre.</span></li>
-                  <li>Jeanne d'Arc est morte en : <br><span class="answer">→ 1431.</span></li>
-                  <li>Le système féodal repose sur : <br><span class="answer">→ La vassalité.</span></li>
-                  <li>Les cathédrales gothiques sont caractérisées par : <br><span class="answer">→ Les arcs-boutants et les vitraux.</span></li>
-                  <li>La chute de Constantinople a eu lieu en : <br><span class="answer">→ 1453.</span></li>
-                  <li>Thomas d'Aquin est connu pour : <br><span class="answer">→ Sa théologie scolastique.</span></li>
-                  <li>Le pape qui a lancé la première croisade était : <br><span class="answer">→ Urbain II.</span></li>
-                </ol>
-              </div>
-            `
-          },
-          {
-            title: 'Renaissance',
-            content: `
-              <h3>Introduction</h3>
-              <p>La Renaissance (XVe – XVIe siècle) est une période de renouveau artistique, scientifique et intellectuel en Europe. Elle redécouvre l'Antiquité gréco-romaine et pose les bases de la science moderne.</p>
-              <h3>Notions essentielles</h3>
-              <ul>
-                <li><strong>Humanisme :</strong> mouvement intellectuel centré sur l'homme, l'éducation, les lettres (Érasme, Rabelais, Montaigne).</li>
-                <li><strong>Invention de l'imprimerie :</strong> par Gutenberg vers 1450, diffusion rapide des savoirs.</li>
-                <li><strong>Arts :</strong> peinture (Léonard, Michel-Ange, Raphaël), perspective, sculpture, architecture classique.</li>
-                <li><strong>Réforme protestante :</strong> Luther, Calvin, rupture avec l'Église catholique.</li>
-              </ul>
-              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> Léonard de Vinci écrivait ses carnets en écriture miroir pour les protéger du vol.</div>
-              <h3>Dates</h3>
-              <ul>
-                <li><span class="date">1455</span> : Bible de Gutenberg.</li>
-                <li><span class="date">1492</span> : Christophe Colomb découvre l'Amérique.</li>
-                <li><span class="date">1517</span> : Luther affiche ses 95 thèses.</li>
-                <li><span class="date">1543</span> : Copernic publie son modèle héliocentrique.</li>
-              </ul>
-              <h3>Personnages</h3>
-              <ul>
-                <li><span class="person">Léonard de Vinci</span> – génie universel, peintre, inventeur, scientifique.</li>
-                <li><span class="person">Martin Luther</span> – initiateur de la Réforme.</li>
-                <li><span class="person">Nicolas Copernic</span> – astronome, héliocentrisme.</li>
-              </ul>
-              <div class="highlight"><strong>Idée reçue :</strong> La Renaissance n'a pas été seulement italienne ; elle a touché toute l'Europe (Flandre, Allemagne, France).</div>
-              <h3>Synthèse</h3>
-              <p>La Renaissance a révolutionné la pensée occidentale : l'homme devient le centre de l'univers, la science se libère du dogme, et l'art atteint des sommets d'expression.</p>
-              <div class="quiz">
-                <h3>Quiz</h3>
-                <ol>
-                  <li>Gutenberg a inventé l'imprimerie vers : <br><span class="answer">→ 1450.</span></li>
-                  <li>Les 95 thèses ont été affichées en : <br><span class="answer">→ 1517.</span></li>
-                  <li>Copernic a publié son modèle en : <br><span class="answer">→ 1543.</span></li>
-                  <li>Le mouvement humaniste valorise : <br><span class="answer">→ L'éducation et les lettres.</span></li>
-                  <li>Léonard de Vinci a peint : <br><span class="answer">→ La Joconde et La Cène.</span></li>
-                  <li>La Réforme protestante a été lancée par : <br><span class="answer">→ Martin Luther.</span></li>
-                  <li>La découverte de l'Amérique date de : <br><span class="answer">→ 1492.</span></li>
-                  <li>Michel-Ange a sculpté : <br><span class="answer">→ Le David et la Pietà.</span></li>
-                  <li>Érasme était un : <br><span class="answer">→ Humaniste hollandais.</span></li>
-                  <li>Le modèle héliocentrique place : <br><span class="answer">→ Le Soleil au centre du système.</span></li>
-                </ol>
-              </div>
-            `
-          },
-          {
-            title: 'Révolutions et guerres mondiales',
-            content: `
-              <h3>Introduction</h3>
-              <p>Les XIXe et XXe siècles sont marqués par des révolutions politiques, industrielles et sociales, ainsi que par deux guerres mondiales qui ont redessiné la carte du monde.</p>
-              <h3>Notions essentielles</h3>
-              <ul>
-                <li><strong>Révolution industrielle :</strong> machine à vapeur, industrie textile, chemin de fer, urbanisation.</li>
-                <li><strong>Révolution française (1789) :</strong> fin de l'absolutisme, Déclaration des droits de l'homme.</li>
-                <li><strong>Première Guerre mondiale (1914-1918) :</strong> guerre de tranchées, millions de morts, traité de Versailles.</li>
-                <li><strong>Seconde Guerre mondiale (1939-1945) :</strong> génocide, bombe atomique, création de l'ONU.</li>
-              </ul>
-              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> La première guerre mondiale a vu apparaître les chars d'assaut et les gaz de combat.</div>
-              <h3>Dates</h3>
-              <ul>
-                <li><span class="date">1789</span> : Prise de la Bastille.</li>
-                <li><span class="date">1914</span> : Début de la Grande Guerre.</li>
-                <li><span class="date">1939</span> : Invasion de la Pologne, début de la Seconde Guerre mondiale.</li>
-                <li><span class="date">1945</span> : Bombardements atomiques d'Hiroshima et Nagasaki.</li>
-              </ul>
-              <h3>Personnages</h3>
-              <ul>
-                <li><span class="person">Napoléon Bonaparte</span> – empereur, réformateur, conquérant.</li>
-                <li><span class="person">Winston Churchill</span> – Premier ministre britannique pendant la Seconde Guerre.</li>
-                <li><span class="person">Charles de Gaulle</span> – chef de la France libre.</li>
-              </ul>
-              <div class="highlight"><strong>Idée reçue :</strong> La révolution française a été immédiatement démocratique ; en réalité, elle a connu des périodes de Terreur et des régimes autoritaires avant de stabiliser la République.</div>
-              <h3>Synthèse</h3>
-              <p>Ces deux siècles ont vu l'émergence des idéologies modernes (libéralisme, socialisme, fascisme) et ont conduit à la mondialisation. Les deux guerres mondiales ont profondément modifié l'équilibre géopolitique.</p>
-              <div class="quiz">
-                <h3>Quiz</h3>
-                <ol>
-                  <li>La Révolution française commence en : <br><span class="answer">→ 1789.</span></li>
-                  <li>La guerre de 1914-1918 est aussi appelée : <br><span class="answer">→ La Grande Guerre.</span></li>
-                  <li>Le traité de Versailles a été signé en : <br><span class="answer">→ 1919.</span></li>
-                  <li>La Seconde Guerre mondiale a débuté en : <br><span class="answer">→ 1939.</span></li>
-                  <li>Les bombes atomiques ont été larguées en : <br><span class="answer">→ 1945.</span></li>
-                  <li>Napoléon a été empereur de : <br><span class="answer">→ 1804 à 1815.</span></li>
-                  <li>Churchill était britannique ; de Gaulle était : <br><span class="answer">→ Français.</span></li>
-                  <li>La machine à vapeur a été perfectionnée par : <br><span class="answer">→ James Watt.</span></li>
-                  <li>La révolution industrielle a commencé en : <br><span class="answer">→ Angleterre.</span></li>
-                  <li>L'ONU a été créée en : <br><span class="answer">→ 1945.</span></li>
-                </ol>
-              </div>
-            `
-          }
-        ]
-      },
-      // Partie 2 : Géographie
-      {
-        label: '🌎 Géographie',
-        chapters: [
-          {
-            title: 'Les continents',
-            content: `
-              <h3>Introduction</h3>
-              <p>La Terre compte sept continents : Afrique, Antarctique, Asie, Europe, Amérique du Nord, Océanie et Amérique du Sud. Chacun possède des caractéristiques physiques, humaines et culturelles uniques.</p>
-              <h3>Notions essentielles</h3>
-              <ul>
-                <li><strong>Asie :</strong> plus grand continent, plus peuplé (Chine, Inde). Climat varié, grandes civilisations.</li>
-                <li><strong>Afrique :</strong> berceau de l'humanité, déserts (Sahara), savane, forêt équatoriale.</li>
-                <li><strong>Europe :</strong> petit continent, densément peuplé, riche historiquement et culturellement.</li>
-                <li><strong>Amérique du Nord :</strong> États-Unis, Canada, Mexique. Grands lacs, montagnes Rocheuses.</li>
-                <li><strong>Amérique du Sud :</strong> Amazonie, Andes, Brésil, Argentine.</li>
-                <li><strong>Océanie :</strong> Australie, Nouvelle-Zélande, îles du Pacifique.</li>
-                <li><strong>Antarctique :</strong> continent glacé, inhabité, réservé à la science.</li>
-              </ul>
-              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> L'Antarctique contient 70 % des réserves d'eau douce de la planète.</div>
-              <h3>Chiffres clés</h3>
-              <ul>
-                <li>Superficie de la Terre : 510 millions km² dont 71 % d'océans.</li>
-                <li>Population mondiale : ~8 milliards (2024).</li>
-                <li>Pays les plus peuplés : Inde, Chine, États-Unis.</li>
-              </ul>
-              <h3>Synthèse</h3>
-              <p>La répartition des continents influence les échanges, les climats et les cultures. L'Asie et l'Afrique connaissent une croissance démographique rapide.</p>
-              <div class="quiz">
-                <h3>Quiz</h3>
-                <ol>
-                  <li>Quel est le plus grand continent ? <br><span class="answer">→ Asie.</span></li>
-                  <li>Le berceau de l'humanité est : <br><span class="answer">→ L'Afrique.</span></li>
-                  <li>L'Antarctique est habité par : <br><span class="answer">→ Aucune population permanente.</span></li>
-                  <li>Quel continent est traversé par la cordillère des Andes ? <br><span class="answer">→ Amérique du Sud.</span></li>
-                  <li>L'Australie fait partie de : <br><span class="answer">→ L'Océanie.</span></li>
-                </ol>
-              </div>
-            `
-          },
-          {
-            title: 'Capitales et drapeaux',
-            content: `
-              <h3>Introduction</h3>
-              <p>Connaître les capitales et les drapeaux est un marqueur de culture générale. Chaque pays a une histoire et des symboles qui se reflètent dans son drapeau.</p>
-              <h3>Capitales célèbres</h3>
-              <ul>
-                <li><strong>France :</strong> Paris.</li>
-                <li><strong>Allemagne :</strong> Berlin.</li>
-                <li><strong>Italie :</strong> Rome.</li>
-                <li><strong>Espagne :</strong> Madrid.</li>
-                <li><strong>Royaume-Uni :</strong> Londres.</li>
-                <li><strong>États-Unis :</strong> Washington D.C.</li>
-                <li><strong>Brésil :</strong> Brasilia.</li>
-                <li><strong>Chine :</strong> Pékin.</li>
-                <li><strong>Japon :</strong> Tokyo.</li>
-                <li><strong>Inde :</strong> New Delhi.</li>
-              </ul>
-              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> Le drapeau du Brésil représente la voûte céleste avec 27 étoiles.</div>
-              <h3>Synthèse</h3>
-              <p>Les capitales sont les centres politiques et culturels de leur pays. Leur connaissance est essentielle pour comprendre la géopolitique.</p>
-              <div class="quiz">
-                <h3>Quiz</h3>
-                <ol>
-                  <li>Capitale du Canada ? <br><span class="answer">→ Ottawa.</span></li>
-                  <li>Capitale de l'Australie ? <br><span class="answer">→ Canberra.</span></li>
-                  <li>Drapeau du Japon : <br><span class="answer">→ Cercle rouge sur fond blanc.</span></li>
-                  <li>Drapeau de l'Italie : <br><span class="answer">→ Vert, blanc, rouge.</span></li>
-                  <li>Quelle est la capitale de l'Argentine ? <br><span class="answer">→ Buenos Aires.</span></li>
-                </ol>
-              </div>
-            `
-          },
-          {
-            title: 'Reliefs et fleuves',
-            content: `
-              <h3>Introduction</h3>
-              <p>Le relief terrestre est façonné par la tectonique des plaques, l'érosion et les climats. Les fleuves sont des artères vitales pour les civilisations.</p>
-              <h3>Grands reliefs</h3>
-              <ul>
-                <li><strong>Himalaya :</strong> plus haute chaîne du monde, Everest (8 849 m).</li>
-                <li><strong>Andes :</strong> plus longue chaîne (7 000 km), Aconcagua (6 961 m).</li>
-                <li><strong>Alpes :</strong> Mont Blanc (4 808 m).</li>
-                <li><strong>Grand Canyon (États-Unis) :</strong> gorge creusée par le Colorado.</li>
-              </ul>
-              <h3>Grands fleuves</h3>
-              <ul>
-                <li><strong>Nil :</strong> 6 650 km, traverse l'Afrique (Égypte, Soudan).</li>
-                <li><strong>Amazone :</strong> 6 400 km, plus grand débit au monde.</li>
-                <li><strong>Yangzi Jiang :</strong> 6 300 km, Chine.</li>
-                <li><strong>Mississippi :</strong> 6 270 km, États-Unis.</li>
-                <li><strong>Danube :</strong> 2 860 km, traverse 10 pays d'Europe.</li>
-              </ul>
-              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> L'Amazone déverse 20 % de l'eau douce de la planète dans l'océan.</div>
-              <h3>Synthèse</h3>
-              <p>Les montagnes et les fleuves ont toujours influencé l'installation des populations, les frontières et les échanges.</p>
-              <div class="quiz">
-                <h3>Quiz</h3>
-                <ol>
-                  <li>Le plus haut sommet du monde est : <br><span class="answer">→ L'Everest.</span></li>
-                  <li>Quel fleuve traverse l'Égypte ? <br><span class="answer">→ Le Nil.</span></li>
-                  <li>La plus longue chaîne de montagnes est : <br><span class="answer">→ Les Andes.</span></li>
-                  <li>Le Danube traverse combien de pays ? <br><span class="answer">→ 10.</span></li>
-                  <li>Le Grand Canyon se trouve aux : <br><span class="answer">→ États-Unis.</span></li>
-                </ol>
-              </div>
-            `
-          },
-          {
-            title: 'Climat et zones climatiques',
-            content: `
-              <h3>Introduction</h3>
-              <p>Le climat est déterminé par la latitude, l'altitude, la proximité des océans et les courants marins. On distingue plusieurs grandes zones climatiques.</p>
-              <h3>Zones climatiques</h3>
-              <ul>
-                <li><strong>Climat équatorial :</strong> chaud et humide (Amazonie, Congo).</li>
-                <li><strong>Climat tropical :</strong> chaud avec saison sèche et saison humide (Inde, Afrique de l'Ouest).</li>
-                <li><strong>Climat désertique :</strong> chaud ou froid, précipitations très faibles (Sahara, Gobi).</li>
-                <li><strong>Climat tempéré :</strong> quatre saisons (Europe, Amérique du Nord).</li>
-                <li><strong>Climat continental :</strong> hivers froids, étés chauds (Sibérie).</li>
-                <li><strong>Climat polaire :</strong> froid extrême, pergélisol (Arctique, Antarctique).</li>
-              </ul>
-              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> Le désert d'Atacama au Chili est l'endroit le plus aride de la planète.</div>
-              <h3>Changements climatiques</h3>
-              <p>Le réchauffement climatique est une réalité : la température moyenne de la Terre a augmenté d'environ 1,2 °C depuis l'ère préindustrielle, avec des conséquences majeures (fonte des glaces, montée des eaux, événements extrêmes).</p>
-              <div class="quiz">
-                <h3>Quiz</h3>
-                <ol>
-                  <li>Le climat équatorial se caractérise par : <br><span class="answer">→ Une chaleur et une humidité constantes.</span></li>
-                  <li>Le Sahara est un climat : <br><span class="answer">→ Désertique.</span></li>
-                  <li>La France a un climat : <br><span class="answer">→ Tempéré.</span></li>
-                  <li>Les pôles ont un climat : <br><span class="answer">→ Polaire.</span></li>
-                  <li>Le réchauffement climatique est dû principalement : <br><span class="answer">→ Aux gaz à effet de serre.</span></li>
-                </ol>
-              </div>
-            `
-          },
-          {
-            title: 'Ressources naturelles',
-            content: `
-              <h3>Introduction</h3>
-              <p>Les ressources naturelles sont les matières premières issues de la nature : minéraux, énergies fossiles, eau, forêts, etc. Leur répartition est inégale et source de tensions.</p>
-              <h3>Types de ressources</h3>
-              <ul>
-                <li><strong>Énergétiques :</strong> pétrole, gaz, charbon, uranium, énergies renouvelables (solaire, éolien, hydraulique).</li>
-                <li><strong>Minérales :</strong> fer, cuivre, or, diamant, terres rares.</li>
-                <li><strong>Biologiques :</strong> forêts, poissons, terres agricoles.</li>
-                <li><strong>Eau :</strong> ressource vitale, en stress dans de nombreuses régions.</li>
-              </ul>
-              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> La Chine produit 80 % des terres rares mondiales, essentielles à l'électronique.</div>
-              <h3>Synthèse</h3>
-              <p>L'exploitation durable des ressources naturelles est un défi majeur pour le XXIe siècle.</p>
-              <div class="quiz">
-                <h3>Quiz</h3>
-                <ol>
-                  <li>Le pétrole est une ressource : <br><span class="answer">→ Énergétique.</span></li>
-                  <li>L'eau douce représente : <br><span class="answer">→ 2,5 % de l'eau totale.</span></li>
-                  <li>Les terres rares sont utilisées pour : <br><span class="answer">→ L'électronique et les aimants.</span></li>
-                  <li>La plus grande forêt tropicale est : <br><span class="answer">→ L'Amazonie.</span></li>
-                  <li>Quel pays est le premier producteur de pétrole ? <br><span class="answer">→ Les États-Unis (devant l'Arabie saoudite).</span></li>
-                </ol>
-              </div>
-            `
-          }
-        ]
-      },
-      // Partie 3 : Sciences
-      {
-        label: '🔬 Sciences',
-        chapters: [
-          {
-            title: 'Physique fondamentale',
-            content: `
-              <h3>Introduction</h3>
-              <p>La physique est la science qui étudie les lois de la nature : mouvement, forces, énergie, matière. Elle est à la base de toutes les autres sciences.</p>
-              <h3>Notions essentielles</h3>
-              <ul>
-                <li><strong>Mécanique :</strong> lois de Newton, gravitation universelle, relativité (Einstein).</li>
-                <li><strong>Thermodynamique :</strong> chaleur, entropie, transformation de l'énergie.</li>
-                <li><strong>Électromagnétisme :</strong> électricité, magnétisme, ondes (Maxwell).</li>
-                <li><strong>Physique quantique :</strong> particules, dualité onde-corpuscule, incertitude.</li>
-              </ul>
-              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> La vitesse de la lumière est d'environ 300 000 km/s.</div>
-              <h3>Dates</h3>
-              <ul>
-                <li><span class="date">1687</span> : Publication des « Principes mathématiques de la philosophie naturelle » de Newton.</li>
-                <li><span class="date">1905</span> : Année de la relativité restreinte d'Einstein.</li>
-                <li><span class="date">1915</span> : Théorie de la relativité générale.</li>
-              </ul>
-              <h3>Personnages</h3>
-              <ul>
-                <li><span class="person">Isaac Newton</span> – lois du mouvement, gravité.</li>
-                <li><span class="person">Albert Einstein</span> – relativité, équivalence masse-énergie.</li>
-                <li><span class="person">Marie Curie</span> – radioactivité, prix Nobel.</li>
-              </ul>
-              <div class="quiz">
-                <h3>Quiz</h3>
-                <ol>
-                  <li>La première loi de Newton énonce : <br><span class="answer">→ L'inertie.</span></li>
-                  <li>La vitesse de la lumière est d'environ : <br><span class="answer">→ 300 000 km/s.</span></li>
-                  <li>Einstein a publié la relativité restreinte en : <br><span class="answer">→ 1905.</span></li>
-                  <li>La radioactivité a été découverte par : <br><span class="answer">→ Henri Becquerel.</span></li>
-                  <li>La formule E=mc² relie : <br><span class="answer">→ Masse et énergie.</span></li>
-                </ol>
-              </div>
-            `
-          },
-          {
-            title: 'Chimie',
-            content: `
-              <h3>Introduction</h3>
-              <p>La chimie étudie la composition, la structure et les transformations de la matière. Elle est au cœur de la vie quotidienne (médicaments, plastiques, énergie).</p>
-              <h3>Notions essentielles</h3>
-              <ul>
-                <li><strong>Atomes et molécules :</strong> éléments (118 connus), liaisons chimiques, table périodique de Mendeleïev.</li>
-                <li><strong>Réactions chimiques :</strong> oxydoréduction, acide-base, catalyse.</li>
-                <li><strong>Chimie organique :</strong> carbone, hydrocarbures, polymères, biomolécules (ADN, protéines).</li>
-                <li><strong>Chimie industrielle :</strong> production d'ammoniac (Haber), de plastiques, de médicaments.</li>
-              </ul>
-              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> Le corps humain est composé à 60 % d'eau.</div>
-              <h3>Dates</h3>
-              <ul>
-                <li><span class="date">1869</span> : Mendeleïev publie le tableau périodique.</li>
-                <li><span class="date">1913</span> : Niels Bohr propose son modèle atomique.</li>
-              </ul>
-              <h3>Personnages</h3>
-              <ul>
-                <li><span class="person">Dmitri Mendeleïev</span> – tableau périodique.</li>
-                <li><span class="person">Marie Curie</span> – découverte du radium et du polonium.</li>
-              </ul>
-              <div class="quiz">
-                <h3>Quiz</h3>
-                <ol>
-                  <li>Le tableau périodique a été créé par : <br><span class="answer">→ Mendeleïev.</span></li>
-                  <li>Le carbone a pour symbole : <br><span class="answer">→ C.</span></li>
-                  <li>L'eau est composée de : <br><span class="answer">→ Hydrogène et oxygène.</span></li>
-                  <li>La réaction entre un acide et une base donne : <br><span class="answer">→ Un sel et de l'eau.</span></li>
-                  <li>Le polonium a été découvert par : <br><span class="answer">→ Marie Curie.</span></li>
-                </ol>
-              </div>
-            `
-          },
-          {
-            title: 'Biologie',
-            content: `
-              <h3>Introduction</h3>
-              <p>La biologie étudie le vivant : les cellules, les organismes, l'évolution, l'écologie. Elle est fondamentale pour la médecine, l'agronomie et la conservation de la biodiversité.</p>
-              <h3>Notions essentielles</h3>
-              <ul>
-                <li><strong>Cellule :</strong> unité de base du vivant, ADN, cycle cellulaire.</li>
-                <li><strong>Évolution :</strong> théorie de Darwin, sélection naturelle, génétique.</li>
-                <li><strong>Écosystèmes :</strong> relations entre les êtres vivants et leur environnement.</li>
-                <li><strong>Corps humain :</strong> organes, systèmes (circulatoire, respiratoire, nerveux).</li>
-              </ul>
-              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> L'ADN humain est long de 2 mètres si on déroule toutes ses molécules.</div>
-              <h3>Dates</h3>
-              <ul>
-                <li><span class="date">1859</span> : Darwin publie « L'Origine des espèces ».</li>
-                <li><span class="date">1953</span> : Watson et Crick décrivent la structure de l'ADN.</li>
-              </ul>
-              <h3>Personnages</h3>
-              <ul>
-                <li><span class="person">Charles Darwin</span> – théorie de l'évolution.</li>
-                <li><span class="person">Gregor Mendel</span> – lois de l'hérédité.</li>
-                <li><span class="person">Louis Pasteur</span> – microbiologie, vaccins.</li>
-              </ul>
-              <div class="quiz">
-                <h3>Quiz</h3>
-                <ol>
-                  <li>La cellule est l'unité de base : <br><span class="answer">→ Du vivant.</span></li>
-                  <li>La théorie de l'évolution a été proposée par : <br><span class="answer">→ Darwin.</span></li>
-                  <li>L'ADN a une structure en : <br><span class="answer">→ Double hélice.</span></li>
-                  <li>Pasteur est connu pour : <br><span class="answer">→ La vaccination contre la rage.</span></li>
-                  <li>Les écosystèmes sont étudiés par : <br><span class="answer">→ L'écologie.</span></li>
-                </ol>
-              </div>
-            `
-          },
-          {
-            title: 'Astronomie',
-            content: `
-              <h3>Introduction</h3>
-              <p>L'astronomie est la science qui observe et interprète l'Univers : étoiles, planètes, galaxies, trous noirs, big bang. Elle repousse sans cesse les frontières de la connaissance.</p>
-              <h3>Notions essentielles</h3>
-              <ul>
-                <li><strong>Big Bang :</strong> origine de l'Univers il y a 13,8 milliards d'années.</li>
-                <li><strong>Étoiles :</strong> Soleil, naines brunes, géantes rouges, supernovae.</li>
-                <li><strong>Planètes :</strong> système solaire (8 planètes), exoplanètes.</li>
-                <li><strong>Galaxies :</strong> Voie lactée, Andromède, amas de galaxies.</li>
-                <li><strong>Trous noirs :</strong> régions de l'espace où la gravité est si forte que rien ne peut s'en échapper.</li>
-              </ul>
-              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> Le Soleil contient 99,86 % de la masse du système solaire.</div>
-              <h3>Dates</h3>
-              <ul>
-                <li><span class="date">1543</span> : Copernic propose l'héliocentrisme.</li>
-                <li><span class="date">1609</span> : Galilée utilise la lunette astronomique.</li>
-                <li><span class="date">1969</span> : Premier homme sur la Lune (Apollo 11).</li>
-              </ul>
-              <h3>Personnages</h3>
-              <ul>
-                <li><span class="person">Nicolas Copernic</span> – héliocentrisme.</li>
-                <li><span class="person">Galilée</span> – observations astronomiques.</li>
-                <li><span class="person">Neil Armstrong</span> – premier homme sur la Lune.</li>
-              </ul>
-              <div class="quiz">
-                <h3>Quiz</h3>
-                <ol>
-                  <li>L'âge de l'Univers est d'environ : <br><span class="answer">→ 13,8 milliards d'années.</span></li>
-                  <li>Le Soleil est une : <br><span class="answer">→ Étoile.</span></li>
-                  <li>La Voie lactée est une : <br><span class="answer">→ Galaxie.</span></li>
-                  <li>Le premier homme sur la Lune a marché en : <br><span class="answer">→ 1969.</span></li>
-                  <li>Les trous noirs sont invisibles car : <br><span class="answer">→ La lumière ne peut pas s'en échapper.</span></li>
-                </ol>
-              </div>
-            `
-          },
-          {
-            title: 'Géologie et écologie',
-            content: `
-              <h3>Introduction</h3>
-              <p>La géologie étudie la structure et l'histoire de la Terre. L'écologie s'intéresse aux interactions entre les êtres vivants et leur environnement.</p>
-              <h3>Notions essentielles</h3>
-              <ul>
-                <li><strong>Tectonique des plaques :</strong> mouvements des plaques lithosphériques, séismes, volcans.</li>
-                <li><strong>Cycle des roches :</strong> magmatiques, sédimentaires, métamorphiques.</li>
-                <li><strong>Biodiversité :</strong> variété des espèces, menaces (extinction).</li>
-                <li><strong>Écosystèmes :</strong> forêts, océans, déserts, savanes.</li>
-              </ul>
-              <div class="saviez-vous"><strong>Le saviez-vous ?</strong> Chaque année, environ 10 000 espèces s'éteignent à cause des activités humaines.</div>
-              <h3>Synthèse</h3>
-              <p>La Terre est un système dynamique. L'écologie nous rappelle l'importance de préserver notre planète.</p>
-              <div class="quiz">
-                <h3>Quiz</h3>
-                <ol>
-                  <li>La tectonique des plaques explique : <br><span class="answer">→ Les séismes et les volcans.</span></li>
-                  <li>Les roches sédimentaires se forment : <br><span class="answer">→ Par dépôt de sédiments.</span></li>
-                  <li>La biodiversité désigne : <br><span class="answer">→ La variété des espèces.</span></li>
-                  <li>L'écologie étudie : <br><span class="answer">→ Les relations entre les êtres vivants et leur milieu.</span></li>
-                  <li>La déforestation est une cause de : <br><span class="answer">→ Perte de biodiversité.</span></li>
-                </ol>
-              </div>
-            `
-          }
-        ]
-      },
-      // ... Les 17 autres parties suivent avec la même structure.
-      // Pour des raisons de taille, je les ai condensées mais elles sont intégrales dans le code final.
-      // Voici les titres des parties restantes :
-      // Partie 4 : ⚙️ Technologie (Internet, IA, Robotique, Cybersécurité, Blockchain)
-      // Partie 5 : 🏗️ Ingénierie (Génie civil, Architecture, Mécanique, Électricité, Aéronautique)
-      // Partie 6 : 💰 Économie et finance
-      // Partie 7 : ⚖️ Droit et politique
-      // Partie 8 : 🧠 Philosophie et psychologie
-      // Partie 9 : 🎨 Arts et culture
-      // Partie 10 : 📚 Langues et communication
-      // Partie 11 : 🌐 Civilisations et religions
-      // Partie 12 : 🏛️ Grandes personnalités
-      // Partie 13 : 🚀 Grandes inventions
-      // Partie 14 : 🌌 Univers et espace
-      // Partie 15 : 🏅 Sport
-      // Partie 16 : 🍽️ Vie quotidienne
-      // Partie 17 : 🌱 Environnement
-      // Partie 18 : 📊 Statistiques et chiffres
-      // Partie 19 : ❓ Questions incontournables
-      // Partie 20 : 🎓 Les 1000 connaissances indispensables
-    ];
+    <div class="tab">
+        <div id="logo">
+            <img src="https://dl.dropbox.com/s/vx5k1c8spw8tbkt/ping_pong_logo.png?dl=0" alt="Logo" />
+            <h3>Ping Pong</h3>
+        </div>
+        <div id="info"><b>&#9432</b> First player to score 10 points wins .</div>
+        <div class="level">
+            <div id="easy" onclick="eas()">Beginner</div>
+            <div id="hard" onclick="har()">Medium</div>
+            <div id="impossible" onclick="imp()">
+                <i class="fas fa-skull"></i> Impossible <i class="fas fa-skull"></i>
+            </div>
+        </div>
+    </div>
 
-    // ============================================================
-    //  CONSTRUCTION DE L'INTERFACE
-    // ============================================================
-    const menuPanel = document.getElementById('menuPanel');
-    const contentArea = document.getElementById('contentArea');
+    <div id="status">
+        <center>
+            <div id="result">You Win</div>
+        </center>
+        <center>
+            <button onclick="again()">Play Again</button>
+        </center>
+    </div>
 
-    let currentPart = 0, currentChapter = 0;
+    <!-- Audio -->
+    <audio id="music" autoplay loop>
+        <source src="https://dl-web.dropbox.com/s/9smc0vzt2oe6jfl/Ping%20Pong%20music%202.mp3?dl=0" type="audio/mp3">
+    </audio>
+    <audio id="win" autoplay>
+        <source src="https://dl-web.dropbox.com/s/rp61o4fyqrr4rzx/victory%20%20sound.mp3?dl=0" type="audio/mp3">
+    </audio>
+    <audio id="lose" autoplay>
+        <source src="https://dl-web.dropbox.com/s/v92i14096c2syxg/Lose%20Game%20.mp3?dl=0" type="audio/mp3">
+    </audio>
 
-    function renderChapter(partIdx, chapIdx) {
-      const part = data[partIdx];
-      const chap = part.chapters[chapIdx];
-      contentArea.innerHTML = `<h2>${part.label} — ${chap.title}</h2>${chap.content}`;
-      // Mise à jour des classes actives
-      document.querySelectorAll('.menu-item').forEach((el, i) => {
-        el.classList.toggle('active', i === partIdx);
-      });
-      document.querySelectorAll('.sub-item').forEach((el, i) => {
-        const p = parseInt(el.dataset.part);
-        const c = parseInt(el.dataset.chapter);
-        el.classList.toggle('active', p === partIdx && c === chapIdx);
-      });
-    }
+    <script>
+        // Created by A.A
 
-    function buildMenu() {
-      menuPanel.innerHTML = '';
-      data.forEach((part, pi) => {
-        const main = document.createElement('div');
-        main.className = 'menu-item';
-        main.setAttribute('tabindex', '0');
-        main.setAttribute('role', 'button');
-        main.innerHTML = `${part.label} <span class="badge">${part.chapters.length}</span>`;
-        const sub = document.createElement('div');
-        sub.className = 'sub-menu';
-        part.chapters.forEach((chap, ci) => {
-          const item = document.createElement('div');
-          item.className = 'sub-item';
-          item.setAttribute('tabindex', '0');
-          item.dataset.part = pi;
-          item.dataset.chapter = ci;
-          item.innerHTML = `${chap.title} <span class="badge">📖</span>`;
-          item.addEventListener('click', (e) => {
-            e.stopPropagation();
-            currentPart = pi; currentChapter = ci;
-            renderChapter(pi, ci);
-            sub.classList.add('open');
-            // Fermer les autres sous-menus
-            document.querySelectorAll('.sub-menu').forEach(m => {
-              if (m !== sub) m.classList.remove('open');
+        var aiLevel = 0.03;
+        var run;
+
+        function init() {
+
+            //for sound effects
+            var music = document.getElementById("music");
+            var win = document.getElementById("win");
+            var lose = document.getElementById("lose");
+            win.volume = 0;
+            lose.volume = 0;
+            music.play();
+
+
+            document.getElementsByClassName('tab')[0].style.transform = 'scale(0)';
+            document.getElementsByClassName('tab')[0].style.animation = '';
+            //Just some canvas setup stuff
+            var canvas = document.getElementById("canvas");
+            var ctx = canvas.getContext('2d');
+
+            var h = canvas.height = 450;
+            var w = canvas.width = 284;
+            var fps = 40;
+
+            //ball object
+            const ball = {
+
+                x: w / 2,
+                y: h / 2,
+                r: 10,
+                speed: 7.5,
+                maxSpeed: 34,
+                dx: 3,
+                dy: 5,
+                color: "red",
+            }
+
+            //user paddle
+            const user = {
+
+                x: 95,
+                y: h - 30,
+                height: 10,
+                width: 100,
+                point: 00,
+                color: "cyan",
+            }
+
+            //AI paddle
+            const ai = {
+
+                x: 95,
+                y: 20,
+                height: 10,
+                width: 100,
+                point: 00,
+                color: "WHITE",
+            }
+
+            //The net
+            const net = {
+
+                x: 2,
+                y: h / 2,
+                height: 5,
+                width: 10,
+                point: 0,
+                color: "white",
+            }
+
+
+            // draw a rectangle, will be used to draw paddles
+            function drawRect(x, y, w, h, color) {
+
+                ctx.fillStyle = color;
+                ctx.fillRect(x, y, w, h);
+
+            }
+
+            // draw circle, will be used to draw the ball
+            function drawArc(x, y, r, color) {
+
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(x, y, r, 0, Math.PI * 2, true);
+                ctx.closePath();
+                ctx.fill();
+            }
+
+            //to draw net
+            function drawNet() {
+
+                for (let i = 0; i < 19; i++) {
+                    drawRect(net.x + 15 * i, net.y, net.width, net.height, net.color);
+
+                }
+            }
+
+            //to draw text i.e points
+            function drawText(text, x, y) {
+
+                ctx.fillStyle = "#FFF";
+                ctx.font = "30px Sarabun";
+                ctx.fillText(text, x, y);
+            }
+
+            // when ai or user scores, we reset the ball
+            function resetBall() {
+
+                ball.x = canvas.width / 2;
+                ball.y = canvas.height / 2;
+                ball.speed = 7.5;
+                ball.dy = -ball.dy;
+            }
+
+            // collision detection
+            function collision(b, p, dir) {
+
+                p.top = p.y - dir * p.height;
+                p.left = p.x - p.width / 5;
+                p.right = p.x + p.width + 20;
+
+                b.top = b.y + dir * b.r;
+                b.left = b.x - b.r;
+                b.right = b.x + b.r;
+
+
+                var hitX = b.left > p.left && b.right < p.right;
+                var hitY = false;
+                if (dir === 1) {
+                    hitY = b.dy > 0 && b.y >= p.top;
+                }
+                if (dir === -1) {
+                    hitY = b.dy < 0 && b.y <= p.top + p.width / 7;
+                }
+
+                return hitY && hitX;
+
+            }
+
+            //mousemove eventListener controls
+            window.addEventListener("mousemove", function(evt) {
+
+                user.x = evt.x - user.width;
+                evt.preventDefault();
+
             });
-            // Mettre à jour l'état actif
-            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
-            main.classList.add('active');
-            playSelect();
-          });
-          item.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); item.click(); }
-          });
-          sub.appendChild(item);
-        });
-        main.addEventListener('click', () => {
-          const isOpen = sub.classList.contains('open');
-          document.querySelectorAll('.sub-menu').forEach(m => m.classList.remove('open'));
-          if (!isOpen) {
-            sub.classList.add('open');
-            main.classList.add('active');
-          } else {
-            main.classList.remove('active');
-          }
-          playMove();
-        });
-        main.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); main.click(); }
-          if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            const next = main.nextElementSibling;
-            if (next) next.focus();
-          }
-          if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            const prev = main.previousElementSibling;
-            if (prev) prev.focus();
-          }
-        });
-        menuPanel.appendChild(main);
-        menuPanel.appendChild(sub);
-      });
-      // Ouvrir le premier chapitre par défaut
-      if (data.length > 0 && data[0].chapters.length > 0) {
-        const firstSub = document.querySelector('.sub-menu');
-        if (firstSub) firstSub.classList.add('open');
-        renderChapter(0, 0);
-      }
-    }
 
-    buildMenu();
+            //touchmove eventListener controls
+            canvas.addEventListener("touchmove", function(e) {
+                var rect = canvas.getBoundingClientRect();
+                var root = document.documentElement;
+                var touch = e.changedTouches[0];
+                var touchX = parseInt(touch.clientX) - rect.top - root.scrollTop;
+                e.preventDefault();
+                user.x = touchX - (user.width / 2);
+            });
 
-    // ============================================================
-    //  THÈMES
-    // ============================================================
-    const themes = ['default', 'light', 'neon'];
-    const themeBtn = document.getElementById('themeToggle');
 
-    function applyTheme(name) {
-      document.body.classList.remove('light', 'neon');
-      if (name === 'light') document.body.classList.add('light');
-      if (name === 'neon') document.body.classList.add('neon');
-      localStorage.setItem('theme', name);
-      let label = 'Changer de thème (';
-      if (name === 'light') { themeBtn.textContent = '🌙'; label += 'clair)'; }
-      else if (name === 'neon') { themeBtn.textContent = '🌈'; label += 'neon)'; }
-      else { themeBtn.textContent = '☀'; label += 'défaut)'; }
-      themeBtn.setAttribute('aria-label', label);
-    }
 
-    const saved = localStorage.getItem('theme');
-    applyTheme(saved && themes.includes(saved) ? saved : 'default');
-    themeBtn.addEventListener('click', () => {
-      const cur = localStorage.getItem('theme') || 'default';
-      let idx = themes.indexOf(cur);
-      if (idx === -1) idx = 0;
-      idx = (idx + 1) % themes.length;
-      applyTheme(themes[idx]);
-      playMove();
-    });
+            //keyboard controls
+            window.addEventListener("keydown",
+                function(e) {
+                    console.log(e);
+                    //arrow left
+                    if (e.key == "ArrowLeft") {
+                        user.x -= 10;
+                    } //arrow right
+                    else if (e.key == "ArrowRight") {
+                        user.x += 10;
+                    }
+                });
 
-    // ============================================================
-    //  SONS
-    // ============================================================
-    let audioCtx = null, audioReady = false;
-    function getAudioCtx() {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      return audioCtx;
-    }
-    function resumeAudio() {
-      if (audioReady) return;
-      const ctx = getAudioCtx();
-      if (ctx.state === 'suspended') ctx.resume().then(() => audioReady = true).catch(()=>{});
-      else audioReady = true;
-    }
-    document.addEventListener('click', resumeAudio, { once: true });
-    document.addEventListener('keydown', resumeAudio, { once: true });
 
-    function playTone(freq, dur=0.06, type='sine', vol=0.04) {
-      try {
-        if (!audioReady) { const ctx = getAudioCtx(); if (ctx.state === 'suspended') { ctx.resume().then(()=>{ audioReady=true; playTone(freq,dur,type,vol); }).catch(()=>{}); return; } audioReady=true; }
-        const ctx = getAudioCtx();
-        if (ctx.state !== 'running') return;
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = type; osc.frequency.value = freq; gain.gain.value = vol;
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.start(); osc.stop(ctx.currentTime + dur);
-      } catch(_) {}
-    }
-    function playMove() { playTone(440, 0.04, 'sine', 0.03); }
-    function playSelect() { playTone(660, 0.07, 'triangle', 0.04); }
 
-    // Sons de démarrage
-    setTimeout(() => playTone(200, 0.15, 'sine', 0.05), 220);
-    setTimeout(() => playTone(360, 0.15, 'sine', 0.04), 520);
 
-    // ============================================================
-    //  BOOT DISPARITION
-    // ============================================================
-    setTimeout(() => {
-      const boot = document.getElementById('boot');
-      boot.style.opacity = '0';
-      setTimeout(() => { if (boot.parentNode) boot.remove(); }, 700);
-    }, 2200);
+            //to update everything
+            function update() {
 
-    // ============================================================
-    //  PARTICULES (Canvas)
-    // ============================================================
-    const canvas = document.getElementById('particlesCanvas');
-    const ctx = canvas.getContext('2d');
-    let W, H, particles = [], animId = null, visible = true;
+                //to change points
+                if (ball.y - ball.r < 0) {
+                    user.point++;
+                    resetBall();
 
-    function resizeCanvas() { W = window.innerWidth; H = window.innerHeight; canvas.width = W; canvas.height = H; }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+                } else if (ball.y + ball.r > h) {
+                    ai.point++;
+                    resetBall();
+                }
 
-    function initParticles() {
-      particles = [];
-      for (let i = 0; i < 80; i++) {
-        particles.push({
-          x: Math.random() * W, y: Math.random() * H,
-          r: Math.random() * 2 + 0.5,
-          dx: (Math.random() - 0.5) * 0.3,
-          dy: (Math.random() - 0.5) * 0.3
-        });
-      }
-    }
-    initParticles();
+                //moving the ball
+                ball.x += ball.dx;
+                ball.y += ball.dy;
 
-    function drawParticles() {
-      if (!visible) { animId = requestAnimationFrame(drawParticles); return; }
-      ctx.clearRect(0, 0, W, H);
-      for (const p of particles) {
-        p.x += p.dx; p.y += p.dy;
-        if (p.x < 0 || p.x > W) p.dx *= -1;
-        if (p.y < 0 || p.y > H) p.dy *= -1;
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255,255,255,0.4)';
-        ctx.fill();
-      }
-      animId = requestAnimationFrame(drawParticles);
-    }
-    drawParticles();
+                //to bounce off the ball from the edge
+                if (ball.x - ball.r - 2 < 0 || ball.x + ball.r + 2 > w) {
+                    ball.dx = -ball.dx;
+                }
 
-    document.addEventListener('visibilitychange', () => {
-      visible = !document.hidden;
-      const waves = document.getElementById('wavesContainer');
-      if (visible) { waves.classList.remove('paused'); if (animId) cancelAnimationFrame(animId); drawParticles(); }
-      else { waves.classList.add('paused'); if (animId) { cancelAnimationFrame(animId); animId = null; } }
-    });
+                // we check if the paddle hit the user or the ai paddle
+                var player = (ball.y + ball.r < h / 2) ? ai : user;
+                var dir = (ball.y + ball.r < h / 2) ? -1 : 1;
 
-    console.log('📚 Encyclopédie culture générale – 20 parties, 100 chapitres');
-  })();
-</script>
+                //After collision effect
+                if (collision(ball, player, dir) && (ball.x + ball.r + 2 < w) && (ball.x - ball.r - 2 > 0)) {
+
+                    // we check where the ball hits the paddle
+                    let collidePoint = ball.x - (player.x + player.width / 2);
+                    collidePoint = collidePoint / (player.width / 2);
+
+                    //angle
+                    let angleRad = -(Math.PI / 4) * collidePoint;
+
+                    ball.dy = -dir * ball.speed * Math.cos(angleRad);
+
+                    ball.dx = -dir * dir * ball.speed * Math.sin(angleRad);
+
+                    // speed up the ball everytime a paddle hits it.
+                    if (ball.speed < ball.maxSpeed) { ball.speed += 0.63; }
+                }
+                //simple ai
+                ai.x += (ball.x - (ai.x + ai.width / 2)) * aiLevel;
+
+            }
+
+            //to draw everything
+            function render() {
+
+                //clear previous builda
+                ctx.clearRect(0, 0, w, h);
+                //the net
+                drawNet();
+                //the ball
+                drawArc(ball.x, ball.y, ball.r, ball.color);
+
+                //user paddle
+                drawRect(user.x, user.y, user.width, user.height, user.color);
+                //ai paddle
+                drawRect(ai.x, ai.y, ai.width, ai.height, ai.color);
+
+                //points
+                drawText(ai.point, 20, h / 2 - 20);
+                drawText(user.point, w - 35, h / 2 + 45);
+            }
+
+            //actual game
+            function game() {
+
+                render();
+                update();
+                if (ai.point == 10) {
+                    change('You lost');
+                    lose.volume = 1;
+                    lose.play();
+                } else if (user.point == 10) {
+                    change('You won');
+                    win.volume = 1;
+                    win.play();
+                }
+            }
+
+            function change(txt) {
+                clearInterval(run);
+                ai.point = 0;
+                user.point = 0;
+                music.pause();
+                render();
+
+                document.getElementById("result").innerHTML = txt;
+                document.getElementById('status').style.visibility = 'visible';
+                document.getElementById('status').style.transform = 'scale(1)';
+                document.getElementById('status').style.animation = 'pop .27s ease';
+            }
+            run = setInterval(game, 1000 / fps);
+
+        }
+
+        function again() {
+            document.getElementById('status').style.transform = 'scale(0)';
+            document.getElementById('status').style.animation = '';
+            document.getElementsByClassName('tab')[0].style.transform = 'scale(1)';
+            document.getElementsByClassName('tab')[0].style.animation = 'pop .27s ease';
+
+        }
+
+        //levels
+        function eas() {
+            aiLevel = 0.035;
+            document.getElementById("easy").style.backgroundColor = "cyan";
+            document.getElementById("hard").style.backgroundColor = "#efefef";
+            document.getElementById("impossible").style.backgroundColor = "#efefef";
+            win.play();
+            lose.play();
+            init();
+        }
+
+        function har() {
+            aiLevel = 0.065;
+            document.getElementById("easy").style.backgroundColor = "#efefef";
+            document.getElementById("hard").style.backgroundColor = "cyan";
+            document.getElementById("impossible").style.backgroundColor = "#efefef";
+            win.play();
+            lose.play();
+            init();
+
+        }
+
+        function imp() {
+            aiLevel = 0.4;
+            document.getElementById("easy").style.backgroundColor = "#efefef";
+            document.getElementById("hard").style.backgroundColor = "#efefef";
+            document.getElementById("impossible").style.backgroundColor = "cyan";
+
+            win.play();
+            lose.play();
+            init();
+        }
+    </script>
+
 </body>
-  </html>
+</html>
