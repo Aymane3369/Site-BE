@@ -1,1 +1,656 @@
+<!--
+  Created by Aymane
+  Cleaned & deobfuscated – all in one file.
+  A pool/billiards game with touch controls.
+-->
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pool Billiards</title>
+    <link href="https://fonts.googleapis.com/css?family=Arvo&display=swap" rel="stylesheet">
+    <style>
+        /* ─── Reset & base ─── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #926229;
+            overflow: hidden;
+            touch-action: none;
+            user-select: none;
+            height: 100vh;
+        }
+
+        canvas {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #040;
+            display: block;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+        }
+
+        /* ─── Game‑over overlay ─── */
+        .game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            max-width: 420px;
+            padding: 2rem 1.5rem;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            font-family: 'Arvo', serif;
+            color: #d9534f;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 10;
+        }
+
+        .game-over.visible {
+            visibility: visible;
+            opacity: 1;
+            animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .game-over h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .game-over .final-score {
+            font-size: 1.4rem;
+            margin: 0.8rem 0 1.2rem;
+            color: #222;
+        }
+
+        .game-over button {
+            background: #03a9f4;
+            border: none;
+            padding: 0.8rem 2rem;
+            font-size: 1.2rem;
+            font-family: 'Arvo', serif;
+            color: #fff;
+            border-radius: 40px;
+            box-shadow: 0 4px 12px rgba(3, 169, 244, 0.4);
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .game-over button:active {
+            transform: scale(0.94);
+            box-shadow: 0 2px 6px rgba(3, 169, 244, 0.3);
+        }
+
+        /* ─── Animations ─── */
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.2);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        /* ─── Responsive tweaks ─── */
+        @media (max-width: 600px) {
+            .game-over {
+                width: 85%;
+                padding: 1.5rem 1rem;
+            }
+            .game-over h2 {
+                font-size: 1.4rem;
+            }
+            .game-over .final-score {
+                font-size: 1.1rem;
+            }
+            .game-over button {
+                font-size: 1rem;
+                padding: 0.6rem 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ─── Canvas ─── -->
+    <canvas id="table"></canvas>
+
+    <!-- ─── Game‑over overlay ─── -->
+    <div class="game-over" id="gameOver">
+        <h2>🎱 You Complete The Match!</h2>
+        <div class="final-score" id="finalScore">Score: 0</div>
+        <button id="restartBtn">⟳ Restart</button>
+    </div>
+
+    <!-- ─── Script ─── -->
+    <script>
+        // ============================================================
+        //  POOL BILLIARDS  –  full game logic
+        // ============================================================
+
+        // ---- DOM refs ----
+        const canvas = document.getElementById('table');
+        const ctx = canvas.getContext('2d');
+        const gameOverEl = document.getElementById('gameOver');
+        const finalScoreEl = document.getElementById('finalScore');
+        const restartBtn = document.getElementById('restartBtn');
+
+        // ---- Dimensions ----
+        let W = window.innerWidth - 20;
+        let H = window.innerHeight - 20;
+        canvas.width = W;
+        canvas.height = H;
+
+        // ---- Constants ----
+        const RADIUS = Math.min(W, H) / 14;
+        const FRICTION = 0.016;
+        const MAX_POWER = 100;
+
+        // ---- Colors ----
+        const COLORS = [
+            ['#FFC107', 1],
+            ['#FF6F69', 2],
+            ['#00C3DF', 3],
+            ['#03A9F4', 4],
+            ['#F83600', 5],
+            ['#FFC107', 6]
+        ];
+
+        // ---- Ball layout (grid) ----
+        const BALL_LAYOUT = [
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 0, 1, 0, 1, 0, 1],
+            [1, 0, 1, 0, 1, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1]
+        ];
+
+        // ---- State ----
+        let balls = [];
+        let holes = [];
+        let cue = null; // the white ball (slider)
+        let stick = null;
+        let touch = {};
+        let showAim = true;
+        let score = 0;
+        let gameOver = false;
+
+        // ---- Helpers ----
+        function dist(x1, y1, x2, y2) {
+            const dx = x1 - x2,
+                dy = y1 - y2;
+            return Math.hypot(dx, dy);
+        }
+
+        function angle(x1, y1, x2, y2) {
+            return Math.atan2(y1 - y2, x1 - x2);
+        }
+
+        function rotate(vx, vy, ang) {
+            const mag = Math.hypot(vx, vy);
+            const a = Math.atan2(vy, vx) + ang;
+            return { x: mag * Math.cos(a), y: mag * Math.sin(a) };
+        }
+
+        // ---- Classes ----
+
+        class Ball {
+            constructor(x, y, r, vx, vy, color, points) {
+                this.x = x;
+                this.y = y;
+                this.r = r;
+                this.vx = vx || 0;
+                this.vy = vy || 0;
+                this.color = color;
+                this.points = points || 0;
+                this.friction = FRICTION;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.beginPath();
+                ctx.lineWidth = 2;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#fff';
+                ctx.fillStyle = this.color;
+                ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.closePath();
+                ctx.restore();
+
+                this.updatePhysics();
+                this.checkCollisions();
+                this.bounceWalls();
+            }
+
+            updatePhysics() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vx *= (1 - this.friction);
+                this.vy *= (1 - this.friction);
+                if (Math.abs(this.vx) < 0.1) this.vx = 0;
+                if (Math.abs(this.vy) < 0.1) this.vy = 0;
+            }
+
+            checkCollisions() {
+                for (const other of balls) {
+                    if (other === this) continue;
+                    const d = dist(this.x, this.y, other.x, other.y);
+                    const minDist = this.r + other.r * 1.5;
+                    if (d < minDist) {
+                        this.applyForce(other);
+                    }
+                }
+            }
+
+            applyForce(other) {
+                const dx = other.x - this.x;
+                const dy = other.y - this.y;
+                const dvx = this.vx - other.vx;
+                const dvy = this.vy - other.vy;
+
+                if (dvx * dx + dvy * dy >= 0) {
+                    const a = -Math.atan2(dy, dx);
+                    const rThis = rotate(this.vx, this.vy, a);
+                    const rOther = rotate(other.vx, other.vy, a);
+
+                    const swappedThis = { x: rOther.x, y: rThis.y };
+                    const swappedOther = { x: rThis.x, y: rOther.y };
+
+                    const rotBack = (v) => rotate(v.x, v.y, -a);
+                    const fThis = rotBack(swappedThis);
+                    const fOther = rotBack(swappedOther);
+
+                    this.vx = fThis.x;
+                    this.vy = fThis.y;
+                    other.vx = fOther.x;
+                    other.vy = fOther.y;
+                }
+            }
+
+            bounceWalls() {
+                const margin = 10;
+                if (this.x < margin) { this.x = margin + 1;
+                    this.vx *= -1; }
+                if (this.x > W - this.r / 2 - margin) { this.x = W - this.r / 2 - margin + 1;
+                    this.vx *= -1; }
+                if (this.y < margin) { this.y = margin + 1;
+                    this.vy *= -1; }
+                if (this.y > H - this.r / 2 - margin) { this.y = H - this.r / 2 - margin + 1;
+                    this.vy *= -1; }
+            }
+
+            launch(power) {
+                this.v = power / 6;
+                this.a = stick.angle + Math.PI;
+                this.vx = Math.cos(this.a) * this.v;
+                this.vy = Math.sin(this.a) * this.v;
+                stick.adjust();
+                resetWhenStopped();
+            }
+        }
+
+        class Hole {
+            constructor(x, y, r) {
+                this.x = x;
+                this.y = y;
+                this.r = r;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.beginPath();
+                ctx.fillStyle = '#000';
+                ctx.arc(this.x, this.y, this.r / 1.2, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.closePath();
+                ctx.restore();
+            }
+        }
+
+        class Stick {
+            constructor() {
+                this.angle = 2;
+                this.target = { x: cue.x, y: cue.y };
+                this.len = 0;
+                this.head = { x: 0, y: 0 };
+                this.updateHead();
+            }
+
+            updateHead() {
+                this.head.x = Math.cos(this.angle) * this.len + this.target.x;
+                this.head.y = Math.sin(this.angle) * this.len + this.target.y;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.setLineDash([4, 2]);
+                ctx.beginPath();
+                ctx.moveTo(this.head.x, this.head.y);
+                ctx.lineTo(this.target.x, this.target.y);
+                ctx.stroke();
+                ctx.closePath();
+
+                ctx.beginPath();
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = 2;
+                ctx.arc(this.target.x, this.target.y, RADIUS / 1.5, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            adjust() {
+                const d = touch.dist || 0;
+                const clamped = Math.min(d, MAX_POWER);
+                this.len = -clamped * 2.5;
+                this.target.x = cue.x;
+                this.target.y = cue.y;
+                this.head.x = Math.cos(this.angle) * this.len + this.target.x;
+                this.head.y = Math.sin(this.angle) * this.len + this.target.y;
+            }
+        }
+
+        // ---- Initialisation ----
+
+        function initHoles() {
+            const r = RADIUS;
+            holes = [
+                new Hole(0, r / 2, r),
+                new Hole(W, r / 2, r),
+                new Hole(0, H - r / 2, r),
+                new Hole(W, H - r / 2, r),
+                new Hole(0, H / 2 - r / 2, r),
+                new Hole(W, H / 2 - r / 2, r),
+                new Hole(W / 2, 0, r),
+                new Hole(W / 2, H, r),
+            ];
+        }
+
+        function initBalls() {
+            balls = [];
+            const r = RADIUS;
+            const offsetX = W / 2 - r * 3 / 1.3;
+            const offsetY = H / 2 - r * 6 / 1.3;
+            for (let row in BALL_LAYOUT) {
+                for (let col in BALL_LAYOUT[row]) {
+                    if (BALL_LAYOUT[row][col] === 1) {
+                        const x = r / 1.3 * col + offsetX;
+                        const y = r / 1.3 * row + offsetY;
+                        const color = COLORS[row] ? COLORS[row][0] : '#FFC107';
+                        const pts = COLORS[row] ? COLORS[row][1] : 1;
+                        balls.push(new Ball(x, y, r / 3, 0, 0, color, pts));
+                    }
+                }
+            }
+        }
+
+        function initCue() {
+            cue = new Ball(W / 2, H - 150, RADIUS / 2.5, 0, 0, '#fff', 0);
+        }
+
+        function initStick() {
+            stick = new Stick();
+        }
+
+        function initGame() {
+            initHoles();
+            initBalls();
+            initCue();
+            initStick();
+            score = 0;
+            gameOver = false;
+            showAim = true;
+            touch = {};
+            gameOverEl.classList.remove('visible');
+        }
+
+        // ---- Reset when all balls are still ----
+
+        let resetPending = false;
+
+        function resetWhenStopped() {
+            resetPending = true;
+        }
+
+        function checkReset() {
+            if (!resetPending) return;
+            let allStill = true;
+            for (const b of balls) {
+                if (b.vx !== 0 || b.vy !== 0) { allStill = false; break; }
+            }
+            if (cue && (cue.vx !== 0 || cue.vy !== 0)) allStill = false;
+
+            if (allStill && balls.length > 0) {
+                resetPending = false;
+                // respawn cue at its current position
+                const cx = cue.x,
+                    cy = cue.y;
+                cue = new Ball(cx, cy, RADIUS / 2.5, 0, 0, '#fff', 0);
+                showAim = true;
+                stick.target.x = cue.x;
+                stick.target.y = cue.y;
+                stick.updateHead();
+            }
+        }
+
+        // ---- Game loop ----
+
+        function update() {
+            ctx.clearRect(0, 0, W, H);
+
+            if (!gameOver) {
+                // Draw holes
+                for (const h of holes) h.draw();
+
+                // Draw balls
+                for (const b of balls) b.draw();
+
+                // Draw cue
+                if (cue) {
+                    if (showAim) {
+                        touch.x = cue.x;
+                        touch.y = cue.y;
+                        stick.draw();
+                    }
+                    cue.draw();
+                }
+
+                // Check pocketing
+                for (const h of holes) {
+                    for (let i = balls.length - 1; i >= 0; i--) {
+                        const b = balls[i];
+                        if (dist(b.x, b.y, h.x, h.y) < RADIUS / 1.1) {
+                            score += b.points;
+                            balls.splice(i, 1);
+                        }
+                    }
+                    if (cue && dist(cue.x, cue.y, h.x, h.y) < RADIUS / 1.3) {
+                        // cue ball pocketed → respawn with penalty
+                        score--;
+                        cue = new Ball(W / 2, H - 150, RADIUS / 2.5, 0, 0, '#fff', 0);
+                        showAim = true;
+                        stick.target.x = cue.x;
+                        stick.target.y = cue.y;
+                        stick.updateHead();
+                    }
+                }
+
+                // Draw aim guide
+                if (showAim) drawAimGuide();
+
+                // Check if all balls are potted
+                if (balls.length === 0) {
+                    gameOver = true;
+                    finalScoreEl.textContent = 'Score: ' + score;
+                    gameOverEl.classList.add('visible');
+                }
+
+                // Check reset condition
+                checkReset();
+
+                // Draw score on canvas
+                drawScore();
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        // ---- Aim guide (visual feedback) ----
+
+        function drawAimGuide() {
+            const d = touch.dist || 0;
+            const clamped = Math.min(d, MAX_POWER);
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.setLineDash([4, 2]);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = '#000';
+
+            // Line from cue to touch
+            const tx = touch.x2 || cue.x + 1;
+            const ty = touch.y2 || cue.y + 1;
+            ctx.moveTo(cue.x, cue.y);
+            ctx.lineTo(tx, ty);
+            ctx.stroke();
+            ctx.closePath();
+
+            // Power rings
+            ctx.beginPath();
+            ctx.setLineDash([8, 2]);
+            ctx.strokeStyle = '#000';
+            ctx.arc(cue.x, cue.y, clamped / 2 * 2, 0, 2 * Math.PI);
+            ctx.stroke();
+            ctx.closePath();
+
+            ctx.beginPath();
+            ctx.arc(cue.x, cue.y, clamped / 2 * 1.5, 0, 2 * Math.PI);
+            ctx.stroke();
+            ctx.closePath();
+
+            // Outer touch circle
+            ctx.beginPath();
+            ctx.setLineDash([4, 2]);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = '#000';
+            ctx.arc(tx, ty, RADIUS * 1.2, 0, 2 * Math.PI);
+            ctx.stroke();
+            ctx.closePath();
+
+            ctx.beginPath();
+            ctx.arc(tx, ty, RADIUS * 0.9, 0, 2 * Math.PI);
+            ctx.stroke();
+            ctx.closePath();
+
+            ctx.restore();
+        }
+
+        // ---- On‑screen score ----
+
+        function drawScore() {
+            ctx.save();
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.font = 'bold ' + (RADIUS * 1.5) + 'px Arvo';
+            ctx.textAlign = 'center';
+            ctx.fillText('Score: ' + score, W / 2, H - 90);
+
+            ctx.beginPath();
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 1;
+            ctx.moveTo(0, H - 150);
+            ctx.lineTo(W, H - 150);
+            ctx.stroke();
+            ctx.closePath();
+
+            ctx.beginPath();
+            ctx.arc(W / 2, H - 150, RADIUS, 2 * Math.PI, false);
+            ctx.stroke();
+            ctx.closePath();
+
+            ctx.restore();
+        }
+
+        // ---- Input events ----
+
+        function getTouchPos(e) {
+            const t = e.touches[0];
+            return { x: t.pageX - canvas.offsetLeft, y: t.pageY - canvas.offsetTop };
+        }
+
+        canvas.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            if (gameOver) return;
+            if (!showAim) return;
+            const pos = getTouchPos(e);
+            touch.x2 = pos.x;
+            touch.y2 = pos.y;
+            touch.ang = angle(pos.x, pos.y, stick.target.x, stick.target.y);
+            stick.angle = touch.ang;
+            stick.adjust();
+        }, { passive: false });
+
+        canvas.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+            if (gameOver) return;
+            if (!showAim) return;
+            const pos = getTouchPos(e);
+            touch.x2 = pos.x;
+            touch.y2 = pos.y;
+            touch.dist = dist(touch.x2, touch.y2, cue.x, cue.y);
+            touch.ang = angle(touch.x2, touch.y2, stick.target.x, stick.target.y);
+            stick.angle = touch.ang;
+            stick.adjust();
+        }, { passive: false });
+
+        canvas.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            if (gameOver) return;
+            if (!showAim) return;
+            const d = touch.dist || 0;
+            if (d > 0 && cue) {
+                cue.launch(Math.min(d, MAX_POWER));
+                showAim = false;
+                touch = {};
+            }
+        }, { passive: false });
+
+        // ---- Restart ----
+
+        restartBtn.addEventListener('click', function() {
+            initGame();
+        });
+
+        // ---- Handle resize ----
+
+        window.addEventListener('resize', function() {
+            W = window.innerWidth - 20;
+            H = window.innerHeight - 20;
+            canvas.width = W;
+            canvas.height = H;
+            // re-init everything
+            initGame();
+        });
+
+        // ---- Boot ----
+
+        // Small alert as original author requested
+        alert('🎱 Pool Billiards\n\nCreated by Aymane\n\nI took 15 days to build the physics engine.\nEnjoy the game!');
+
+        initGame();
+        requestAnimationFrame(update);
+    </script>
+</body>
+</html>
