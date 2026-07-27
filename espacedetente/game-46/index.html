@@ -1,0 +1,209 @@
+<!-- Created by Aymane -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vérification d'Âge</title>
+    <style>
+        /* Créé par Aymane */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #071426;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 40px;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            border-radius: 12px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 15px 40px;
+            font-size: 20px;
+            background: #3b82f6;
+            border: none;
+            color: white;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #2563eb;
+        }
+
+        .card {
+            margin-top: 25px;
+            background: #0d1f38;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 100, 0.2);
+        }
+
+        .green {
+            color: #00ff66;
+            font-size: 28px;
+            font-weight: bold;
+            line-height: 1.7;
+        }
+
+        /* Lien PayPal en bas */
+        .paypal-link {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 0;
+            background: linear-gradient(90deg, #ffb347, #ffcc33);
+            color: #4a2c00;
+            text-decoration: none;
+            font-weight: 800;
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.15);
+            letter-spacing: 0.5px;
+        }
+
+        .paypal-link:hover {
+            background: linear-gradient(90deg, #ffa726, #ffca28);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🧠 Vérification d'Âge</h1>
+
+        <input type="date" id="dob" />
+
+        <button onclick="startAge()">Vérifier</button>
+
+        <div class="card">
+            <h2>🧠 Âge en direct</h2>
+            <div id="liveAge"></div>
+        </div>
+
+        <div class="card">
+            <h2>🎂 Prochain anniversaire</h2>
+            <div id="birthday"></div>
+        </div>
+
+        <div class="card">
+            <h2>📊 Statistiques de vie</h2>
+            <div id="stats"></div>
+        </div>
+    </div>
+
+    <a href="https://paypal.me/Learning33AA"
+       target="_blank"
+       rel="noopener noreferrer"
+       class="paypal-link">
+       ☕ Prends-moi un café
+    </a>
+
+    <script>
+        // Créé par Aymane
+        let timer;
+
+        function startAge() {
+            clearInterval(timer);
+            timer = setInterval(updateAge, 1000);
+            updateAge();
+        }
+
+        function updateAge() {
+            const value = document.getElementById('dob').value;
+            if (!value) return;
+
+            const dob = new Date(value);
+            const now = new Date();
+
+            const ageMs = now - dob;
+
+            // Années, mois, jours
+            const years = Math.floor(ageMs / (1000 * 60 * 60 * 24 * 365.25));
+            const months = Math.floor((ageMs % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44));
+            const days = Math.floor((ageMs % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+
+            // Heure courante
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+
+            document.getElementById('liveAge').innerHTML = `
+                <div class="green">
+                    ${years} Ans<br>
+                    ${months} Mois<br>
+                    ${days} Jours<br>
+                    ${hours} Heures<br>
+                    ${minutes} Minutes<br>
+                    ${seconds} Secondes
+                </div>
+            `;
+
+            // Statistiques totales
+            const totalDays = Math.floor(ageMs / (1000 * 60 * 60 * 24));
+            const totalHours = Math.floor(ageMs / (1000 * 60 * 60));
+            const totalMinutes = Math.floor(ageMs / (1000 * 60));
+            const totalSeconds = Math.floor(ageMs / 1000);
+
+            document.getElementById('stats').innerHTML = `
+                <div class="green">
+                    ${totalDays.toLocaleString()} Jours<br>
+                    ${totalHours.toLocaleString()} Heures<br>
+                    ${totalMinutes.toLocaleString()} Minutes<br>
+                    ${totalSeconds.toLocaleString()} Secondes
+                </div>
+            `;
+
+            // Prochain anniversaire
+            let nextBirthday = new Date(now.getFullYear(), dob.getMonth(), dob.getDate());
+            if (nextBirthday < now) {
+                nextBirthday.setFullYear(now.getFullYear() + 1);
+            }
+
+            const diff = nextBirthday - now;
+            const bDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const bHours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+            document.getElementById('birthday').innerHTML = `
+                <div class="green">
+                    ${bDays} Jours<br>
+                    ${bHours} Heures restantes
+                </div>
+            `;
+        }
+
+        // Option : lancer automatiquement si une date est déjà présente
+        // startAge();
+    </script>
+
+</body>
+</html>
