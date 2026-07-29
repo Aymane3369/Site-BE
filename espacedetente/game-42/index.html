@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>IPTV Ultimate Player</title>
     <script defer src="https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"></script>
     <style>
@@ -81,14 +81,48 @@
             flex-direction: column;
         }
 
-        video {
+        /* --- NOUVEAU WRAPPER VIDÉO --- */
+        #video-wrapper {
+            width: 100%;
+            position: relative;
+            background: black;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        #video-wrapper video {
             width: 100%;
             height: auto;
             max-height: 60vh;
-            background: black;
-            border-radius: 15px;
+            display: block;
             aspect-ratio: 16/9;
             object-fit: contain;
+            background: black;
+        }
+
+        /* --- PLEIN ÉCRAN : occupe tout l'écran --- */
+        #video-wrapper:fullscreen {
+            width: 100vw;
+            height: 100vh;
+            max-height: 100vh;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: black;
+        }
+
+        #video-wrapper:fullscreen video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* remplir tout l'écran sans bandes noires */
+            max-height: 100vh;
+        }
+
+        /* --- Masquer les contrôles additionnels en plein écran --- */
+        #video-wrapper:fullscreen ~ .video-controls,
+        #video-wrapper:fullscreen + .video-controls {
+            display: none;
         }
 
         .video-controls {
@@ -445,7 +479,7 @@
                 max-height: none;
                 padding: 10px;
             }
-            video {
+            #video-wrapper video {
                 max-height: 40vh;
             }
             #channel-list {
@@ -465,7 +499,7 @@
             .card {
                 padding: 10px;
             }
-            video {
+            #video-wrapper video {
                 max-height: 30vh;
             }
             #channel-list {
@@ -502,8 +536,11 @@
 
     <div class="container">
         <div class="card video-card">
-            <video id="player" controls></video>
-            
+            <!-- NOUVEAU WRAPPER POUR LA VIDÉO -->
+            <div id="video-wrapper">
+                <video id="player" controls playsinline webkit-playsinline></video>
+            </div>
+
             <div class="video-controls">
                 <button onclick="toggleFullscreen()">⛶ Plein écran</button>
                 <button onclick="reloadStream()">🔄 Recharger</button>
@@ -585,6 +622,7 @@
         const loadedCount = document.getElementById('loaded-count');
         const totalCount = document.getElementById('total-count');
         const historyList = document.getElementById('history-list');
+        const videoWrapper = document.getElementById('video-wrapper');
         
         let allChannels = [];
         let hls = null;
@@ -837,9 +875,13 @@
         // ============ VIDEO CONTROLS ============
         function toggleFullscreen() {
             if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen();
+                videoWrapper.requestFullscreen?.() || 
+                videoWrapper.webkitRequestFullscreen?.() || 
+                videoWrapper.msRequestFullscreen?.();
             } else {
-                document.exitFullscreen();
+                document.exitFullscreen?.() || 
+                document.webkitExitFullscreen?.() || 
+                document.msExitFullscreen?.();
             }
         }
 
@@ -1078,4 +1120,4 @@
         };
     </script>
 </body>
-  </html>
+</html>
