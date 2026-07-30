@@ -534,7 +534,7 @@
     <div class="container">
         <div class="card video-card">
             <div id="video-wrapper">
-                <video id="player" controls playsinline webkit-playsinline></video>
+                <video id="player" controls playsinline webkit-playsinline x-webkit-airplay="allow"></video>
             </div>
 
             <div class="video-controls">
@@ -543,6 +543,7 @@
                 <button onclick="togglePictureInPicture()">📺 PiP</button>
                 <button onclick="toggleSpeed()">⏩ Vitesse</button>
                 <button onclick="copyShareLink()">🔗 Copier le lien</button>
+                <button onclick="startCasting()" id="cast-btn">📡 Caster</button>
                 <span style="flex:1;"></span>
                 <span id="current-time" style="font-size:12px;color:#888;">00:00 / 00:00</span>
                 <span id="bitrate-info" style="font-size:10px;color:#555;"></span>
@@ -634,7 +635,6 @@
 
         // ============ FONCTIONS DE PARTAGE ============
         function updateURL(channel) {
-            // Encoder l'URL de la chaîne en base64
             const encoded = btoa(encodeURIComponent(channel.url));
             const newUrl = window.location.origin + window.location.pathname + '?c=' + encoded;
             window.history.replaceState({}, '', newUrl);
@@ -674,7 +674,6 @@
                     statusText.textContent = '📋 Prêt';
                 }, 2000);
             }).catch(() => {
-                // Fallback
                 const input = document.createElement('input');
                 input.value = link;
                 document.body.appendChild(input);
@@ -687,6 +686,55 @@
                 }, 2000);
             });
         }
+
+        // ============ FONCTIONS DE CASTING ============
+        function startCasting() {
+            const btn = document.getElementById('cast-btn');
+            if (!player.remote) {
+                statusText.textContent = '⚠️ Remote Playback non supporté';
+                return;
+            }
+
+            if (player.remote.state === 'connected') {
+                player.remote.disconnect();
+                return;
+            }
+
+            btn.textContent = '⏳ Connexion...';
+            btn.style.background = '#ffaa00';
+            statusText.textContent = '🔍 Recherche d\'appareils...';
+
+            player.remote.prompt()
+                .then(() => {
+                    statusText.textContent = '📡 Connecté en casting';
+                    btn.textContent = '⏹ Arrêter le cast';
+                    btn.style.background = '#ff4444';
+                })
+                .catch(err => {
+                    statusText.textContent = `❌ Erreur : ${err.message}`;
+                    btn.textContent = '📡 Caster';
+                    btn.style.background = '';
+                });
+        }
+
+        // Événements remote
+        player.addEventListener('remoteconnect', () => {
+            statusText.textContent = '📡 Connecté en casting';
+            const btn = document.getElementById('cast-btn');
+            btn.textContent = '⏹ Arrêter le cast';
+            btn.style.background = '#ff4444';
+        });
+
+        player.addEventListener('remotedisconnect', () => {
+            statusText.textContent = '📡 Déconnecté du cast';
+            const btn = document.getElementById('cast-btn');
+            btn.textContent = '📡 Caster';
+            btn.style.background = '';
+        });
+
+        player.addEventListener('remoteconnecting', () => {
+            statusText.textContent = '⏳ Connexion en cours...';
+        });
 
         // ============ FONCTIONS PRINCIPALES ============
 
@@ -715,11 +763,8 @@
             statusText.textContent = "▶️ Lecture : " + ch.name;
             statusDiv.classList.remove('loading');
             
-            // Ajouter à l'historique
             addToHistory(ch);
             localStorage.setItem("lastChannel", JSON.stringify(ch));
-
-            // Mettre à jour l'URL de partage
             updateURL(ch);
 
             if (hls) {
@@ -727,7 +772,6 @@
                 hls = null;
             }
 
-            // Mettre à jour l'élément actif
             document.querySelectorAll('.channel').forEach(c => c.classList.remove('active'));
             const index = allChannels.indexOf(ch);
             if (index >= 0) {
@@ -1066,10 +1110,8 @@
             totalCount.textContent = channels.length;
             document.getElementById('last-update').textContent = `🔄 ${new Date().toLocaleTimeString()}`;
 
-            // 1. Essayer de restaurer la chaîne depuis l'URL
             const restored = restoreChannelFromURL();
 
-            // 2. Si aucune chaîne dans l'URL ou non trouvée, restaurer la dernière chaîne en cache
             if (!restored) {
                 const lastChannel = localStorage.getItem("lastChannel");
                 if (lastChannel) {
