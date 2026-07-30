@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeIN Sports Playlist</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0e1a;
+            color: #fff;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            padding: 20px 0 30px;
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, #f7b731, #f5a623);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 18px 16px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.25s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+            border-color: #f7b731;
+        }
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #f7b731;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .card-title .badge {
+            background: #f7b731;
+            color: #0a0e1a;
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+        .card-url {
+            font-size: 0.7rem;
+            color: #8892b0;
+            word-break: break-all;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 10px;
+            border-radius: 8px;
+            margin: 6px 0 10px;
+            font-family: 'Courier New', monospace;
+            line-height: 1.5;
+        }
+        .card-stream {
+            font-size: 0.8rem;
+            color: #a8b2d1;
+            background: rgba(247, 183, 49, 0.08);
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            align-self: flex-start;
+            margin-top: 4px;
+            border: 1px solid rgba(247, 183, 49, 0.15);
+        }
+        .btn-play {
+            margin-top: 12px;
+            padding: 10px 0;
+            background: #f7b731;
+            border: none;
+            border-radius: 30px;
+            font-weight: 700;
+            color: #0a0e1a;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease;
+            text-align: center;
+        }
+        .btn-play:hover {
+            background: #f5a623;
+            transform: scale(1.02);
+        }
+        .player-container {
+            margin-top: 40px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: none;
+        }
+        .player-container.active {
+            display: block;
+        }
+        .player-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .player-header h3 {
+            color: #f7b731;
+            font-weight: 500;
+            font-size: 1.2rem;
+        }
+        .player-header .close-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+        .player-header .close-btn:hover {
+            background: rgba(255, 70, 70, 0.3);
+        }
+        video {
+            width: 100%;
+            border-radius: 12px;
+            background: #000;
+            max-height: 75vh;
+            display: block;
+        }
+        .stats {
+            text-align: center;
+            margin-top: 20px;
+            color: #5a6a8a;
+            font-size: 0.85rem;
+        }
+        .stats span {
+            color: #f7b731;
+            font-weight: 600;
+        }
+        .error-msg {
+            color: #ff6b6b;
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 1.1rem;
+        }
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: #8892b0;
+            font-size: 1.1rem;
+        }
+        @media (max-width: 600px) {
+            h1 { font-size: 1.6rem; }
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚽ BeIN SPORTS · 4K & HD</h1>
+        <div id="playlistGrid" class="grid"></div>
+        
+        <div id="playerContainer" class="player-container">
+            <div class="player-header">
+                <h3 id="currentChannelName">📺 Chaîne</h3>
+                <button class="close-btn" id="closePlayer">✕ Fermer</button>
+            </div>
+            <video id="videoPlayer" controls autoplay></video>
+            <div id="playerError" style="color:#ff6b6b;text-align:center;padding:10px;display:none;"></div>
+        </div>
+        <div class="stats">🔹 <span id="channelCount">0</span> chaînes disponibles</div>
+    </div>
+
+    <script>
+        (function() {
+            // Playlist M3U corrigée manuellement
+            const channelsData = [
+                { name: "BEIN SPORTS 1 4K", url: "http://80.211.189.193/live/get.php?stream=27&username=76097116161695&password=76097116161695" },
+                { name: "BEIN SPORTS 2 4K", url: "http://80.211.189.193/live/get.php?stream=28&username=76097116161695&password=76097116161695" },
+                { name: "BEIN SPORTS 3 4K", url: "http://80.211.189.193/live/get.php?stream=29&username=76097116161695&password=76097116161695" },
+                { name: "BEIN SPORTS 4 4K", url: "http://80.211.189.193/live/get.php?stream=30&username=76097116161695&password=76097116161695" },
+                { name: "BEIN SPORTS 5 4K", url: "http://80.211.189.193/live/get.php?stream=31&username=76097116161695&password=76097116161695" },
+                { name: "BEIN SPORTS 6 4K", url: "http://80.211.189.193/live/get.php?stream=32&username=76097116161695&password=76097116161695" },
+                { name: "BEIN SPORTS 7 4K", url: "http://80.211.189.193/live/get.php?stream=33&username=76097116161695&password=76097116161695" },
+                { name: "BEIN SPORTS 8 4K", url: "http://80.211.189.193/live/get.php?stream=34&username=76097116161695&password=76097116161695" },
+                { name: "BEIN SPORTS 1 HD", url: "http://80.211.189.193/live/get.php?stream=17&username=76097116161695&password=76097116161695" },
+                { name: "BEIN SPORTS 2 HD", url: "http://80.211.189.193/live/get.php?stream=18&username=76097116161695&password=76097116161695" },
+                { name: "BEIN SPORTS 3 HD", url: "http://80.211.189.193/live/get.php?stream=19&username=76097116161695&password=76097116161695" },
+                { name: "BEIN SPORTS 4 HD", url: "http://80.211.189.193/live/get.php?stream=20&username=76097116161695&password=76097116161695" },
+                { name: "BEIN SPORTS 5 HD", url: "http://80.211.189.193/live/get.php?stream=21&username=76097116161695&password=76097116161695" },
+                { name: "BEIN SPORTS 6 HD", url: "http://80.211.189.193/live/get.php?stream=22&username=76097116161695&password=76097116161695" },
+                { name: "BEIN SPORTS 7 HD", url: "http://80.211.189.193/live/get.php?stream=23&username=76097116161695&password=76097116161695" },
+                { name: "BEIN SPORTS 8 HD", url: "http://80.211.189.193/live/get.php?stream=24&username=76097116161695&password=76097116161695" },
+                { name: "BEIN SPORTS 9 HD", url: "http://80.211.189.193/live/get.php?stream=25&username=76097116161695&password=76097116161695" },
+                { name: "BEIN SPORTS 10 HD", url: "http://80.211.189.193/live/get.php?stream=26&username=76097116161695&password=76097116161695" }
+            ];
+
+            const grid = document.getElementById('playlistGrid');
+            const playerContainer = document.getElementById('playerContainer');
+            const videoPlayer = document.getElementById('videoPlayer');
+            const currentChannelName = document.getElementById('currentChannelName');
+            const closeBtn = document.getElementById('closePlayer');
+            const channelCountSpan = document.getElementById('channelCount');
+            const playerError = document.getElementById('playerError');
+
+            function renderChannels() {
+                if (!channelsData.length) {
+                    grid.innerHTML = `<div class="loading">Aucune chaîne disponible.</div>`;
+                    channelCountSpan.textContent = '0';
+                    return;
+                }
+
+                channelCountSpan.textContent = channelsData.length;
+                grid.innerHTML = '';
+
+                channelsData.forEach((ch) => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+
+                    const is4K = ch.name.includes('4K');
+                    const isHD = ch.name.includes('HD') && !is4K;
+
+                    const title = document.createElement('div');
+                    title.className = 'card-title';
+                    title.innerHTML = `
+                        <span>${ch.name}</span>
+                        ${is4K ? '<span class="badge">4K</span>' : ''}
+                        ${isHD ? '<span class="badge">HD</span>' : ''}
+                    `;
+
+                    const urlDiv = document.createElement('div');
+                    urlDiv.className = 'card-url';
+                    urlDiv.textContent = ch.url.length > 60 ? ch.url.substring(0, 60) + '…' : ch.url;
+
+                    const streamMatch = ch.url.match(/stream=([^&]+)/);
+                    const streamBadge = document.createElement('div');
+                    streamBadge.className = 'card-stream';
+                    streamBadge.textContent = streamMatch ? `Stream: ${streamMatch[1]}` : 'Stream';
+
+                    const btn = document.createElement('button');
+                    btn.className = 'btn-play';
+                    btn.textContent = '▶ Lire';
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        playChannel(ch.url, ch.name);
+                    });
+
+                    card.appendChild(title);
+                    card.appendChild(urlDiv);
+                    card.appendChild(streamBadge);
+                    card.appendChild(btn);
+                    grid.appendChild(card);
+                });
+            }
+
+            function playChannel(url, name) {
+                playerError.style.display = 'none';
+                playerError.textContent = '';
+
+                // Nettoyer l'URL
+                let cleanUrl = url.trim();
+                
+                // S'assurer que l'URL commence par http:// ou https://
+                if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
+                    cleanUrl = 'http://' + cleanUrl;
+                }
+
+                // Supprimer les espaces et caractères problématiques
+                cleanUrl = cleanUrl.replace(/\s/g, '');
+
+                console.log('Lecture de:', cleanUrl);
+
+                // Tester si l'URL est accessible (optionnel)
+                videoPlayer.src = cleanUrl;
+                videoPlayer.load();
+                
+                // Gestion des erreurs de lecture
+                videoPlayer.onerror = function(e) {
+                    const errorMsg = videoPlayer.error ? 
+                        `Erreur de lecture (${videoPlayer.error.code})` : 
+                        'Impossible de lire ce flux.';
+                    playerError.textContent = `❌ ${errorMsg}. Vérifiez que l'URL est valide et que le serveur est accessible.`;
+                    playerError.style.display = 'block';
+                    console.error('Erreur vidéo:', videoPlayer.error);
+                };
+
+                videoPlayer.onloadeddata = function() {
+                    playerError.style.display = 'none';
+                };
+
+                currentChannelName.textContent = `📺 ${name}`;
+                playerContainer.classList.add('active');
+                playerContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            // Fermer le player
+            closeBtn.addEventListener('click', () => {
+                playerContainer.classList.remove('active');
+                videoPlayer.pause();
+                videoPlayer.src = '';
+                videoPlayer.load();
+                playerError.style.display = 'none';
+            });
+
+            // Initialisation
+            renderChannels();
+
+            // Si une erreur se produit sur la vidéo
+            videoPlayer.addEventListener('error', function() {
+                // déjà géré par onerror
+            });
+
+            console.log(`✅ ${channelsData.length} chaînes BeIN chargées.`);
+        })();
+    </script>
+</body>
+</html>
