@@ -6,6 +6,7 @@
     <title>IPTV Ultimate Player</title>
     <script defer src="https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"></script>
     <style>
+        /* ... styles inchangés ... */
         * {
             box-sizing: border-box;
             font-family: Inter, Arial, sans-serif;
@@ -155,6 +156,44 @@
         .video-controls .quality-btn.active {
             background: #0099ff;
             border-color: #0099ff;
+        }
+
+        /* ===== STYLE DU BOUTON CAST ===== */
+        #cast-btn {
+            background: #2a2a2a;
+            border-color: #666;
+            color: #ccc;
+            transition: all 0.3s;
+            position: relative;
+            padding-left: 28px;
+        }
+        #cast-btn::before {
+            content: "📡";
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+        }
+        #cast-btn.active {
+            background: #0099ff;
+            border-color: #0099ff;
+            color: white;
+        }
+        #cast-btn.connecting {
+            background: #ffaa00;
+            border-color: #ffaa00;
+            color: #111;
+            animation: pulse-cast 1s infinite;
+        }
+        #cast-btn.connected {
+            background: #ff4444;
+            border-color: #ff4444;
+            color: white;
+        }
+        @keyframes pulse-cast {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
         }
 
         .controls {
@@ -517,6 +556,14 @@
                 font-size: 11px;
                 padding: 4px 10px;
             }
+            #cast-btn {
+                padding-left: 24px;
+                font-size: 11px;
+            }
+            #cast-btn::before {
+                font-size: 12px;
+                left: 5px;
+            }
         }
     </style>
 </head>
@@ -543,7 +590,8 @@
                 <button onclick="togglePictureInPicture()">📺 PiP</button>
                 <button onclick="toggleSpeed()">⏩ Vitesse</button>
                 <button onclick="copyShareLink()">🔗 Copier le lien</button>
-                <button onclick="startCasting()" id="cast-btn">📡 Caster</button>
+                <!-- ===== BOUTON CAST ===== -->
+                <button id="cast-btn" onclick="toggleCasting()">Caster</button>
                 <span style="flex:1;"></span>
                 <span id="current-time" style="font-size:12px;color:#888;">00:00 / 00:00</span>
                 <span id="bitrate-info" style="font-size:10px;color:#555;"></span>
@@ -621,6 +669,7 @@
         const totalCount = document.getElementById('total-count');
         const historyList = document.getElementById('history-list');
         const videoWrapper = document.getElementById('video-wrapper');
+        const castBtn = document.getElementById('cast-btn');
         
         let allChannels = [];
         let hls = null;
@@ -632,6 +681,73 @@
         let autoPlayEnabled = false;
         let autoPlayTimer = null;
         let currentChannelIndex = 0;
+
+        // ============ FONCTIONS DE CASTING (CORRIGÉES) ============
+        function toggleCasting() {
+            // Vérifier si l'API Remote Playback est disponible
+            if (!player.remote) {
+                statusText.textContent = '⚠️ Le casting n\'est pas supporté par ce navigateur. Utilisez Chrome, Edge ou Safari.';
+                console.warn('Remote Playback non disponible');
+                return;
+            }
+
+            // Si déjà connecté, on se déconnecte
+            if (player.remote.state === 'connected') {
+                player.remote.disconnect();
+                return;
+            }
+
+            // Si en cours de connexion, on ne fait rien
+            if (player.remote.state === 'connecting') {
+                statusText.textContent = '⏳ Connexion en cours...';
+                return;
+            }
+
+            // Sinon, on lance la recherche
+            castBtn.textContent = '⏳ Connexion...';
+            castBtn.className = 'connecting';
+            statusText.textContent = '🔍 Recherche d\'appareils sur le Wi-Fi...';
+
+            // Appel de la boîte de dialogue de sélection
+            player.remote.prompt()
+                .then(() => {
+                    // La connexion sera gérée par les événements
+                    statusText.textContent = '📡 Sélection de l\'appareil...';
+                })
+                .catch(err => {
+                    console.error('Erreur de casting:', err);
+                    let msg = '❌ Aucun appareil trouvé ou action annulée.';
+                    if (err.message && err.message.toLowerCase().includes('dismissed')) {
+                        msg = '❌ Sélection annulée par l\'utilisateur.';
+                    } else if (err.message && err.message.toLowerCase().includes('not supported')) {
+                        msg = '❌ Appareil non compatible avec ce flux.';
+                    } else if (err.message) {
+                        msg = `❌ Erreur : ${err.message}`;
+                    }
+                    statusText.textContent = msg;
+                    castBtn.textContent = '📡 Caster';
+                    castBtn.className = '';
+                });
+        }
+
+        // Événements Remote Playback
+        player.addEventListener('remoteconnect', () => {
+            statusText.textContent = '📡 Diffusion en cours sur un appareil';
+            castBtn.textContent = '⏹ Arrêter le cast';
+            castBtn.className = 'connected';
+        });
+
+        player.addEventListener('remotedisconnect', () => {
+            statusText.textContent = '📡 Cast arrêté';
+            castBtn.textContent = '📡 Caster';
+            castBtn.className = '';
+        });
+
+        player.addEventListener('remoteconnecting', () => {
+            statusText.textContent = '⏳ Connexion en cours...';
+            castBtn.textContent = '⏳ Connexion...';
+            castBtn.className = 'connecting';
+        });
 
         // ============ FONCTIONS DE PARTAGE ============
         function updateURL(channel) {
@@ -686,55 +802,6 @@
                 }, 2000);
             });
         }
-
-        // ============ FONCTIONS DE CASTING ============
-        function startCasting() {
-            const btn = document.getElementById('cast-btn');
-            if (!player.remote) {
-                statusText.textContent = '⚠️ Remote Playback non supporté';
-                return;
-            }
-
-            if (player.remote.state === 'connected') {
-                player.remote.disconnect();
-                return;
-            }
-
-            btn.textContent = '⏳ Connexion...';
-            btn.style.background = '#ffaa00';
-            statusText.textContent = '🔍 Recherche d\'appareils...';
-
-            player.remote.prompt()
-                .then(() => {
-                    statusText.textContent = '📡 Connecté en casting';
-                    btn.textContent = '⏹ Arrêter le cast';
-                    btn.style.background = '#ff4444';
-                })
-                .catch(err => {
-                    statusText.textContent = `❌ Erreur : ${err.message}`;
-                    btn.textContent = '📡 Caster';
-                    btn.style.background = '';
-                });
-        }
-
-        // Événements remote
-        player.addEventListener('remoteconnect', () => {
-            statusText.textContent = '📡 Connecté en casting';
-            const btn = document.getElementById('cast-btn');
-            btn.textContent = '⏹ Arrêter le cast';
-            btn.style.background = '#ff4444';
-        });
-
-        player.addEventListener('remotedisconnect', () => {
-            statusText.textContent = '📡 Déconnecté du cast';
-            const btn = document.getElementById('cast-btn');
-            btn.textContent = '📡 Caster';
-            btn.style.background = '';
-        });
-
-        player.addEventListener('remoteconnecting', () => {
-            statusText.textContent = '⏳ Connexion en cours...';
-        });
 
         // ============ FONCTIONS PRINCIPALES ============
 
