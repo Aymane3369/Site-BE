@@ -81,7 +81,6 @@
             flex-direction: column;
         }
 
-        /* --- NOUVEAU WRAPPER VIDÉO --- */
         #video-wrapper {
             width: 100%;
             position: relative;
@@ -100,7 +99,6 @@
             background: black;
         }
 
-        /* --- PLEIN ÉCRAN : occupe tout l'écran --- */
         #video-wrapper:fullscreen {
             width: 100vw;
             height: 100vh;
@@ -115,11 +113,10 @@
         #video-wrapper:fullscreen video {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* remplir tout l'écran sans bandes noires */
+            object-fit: cover;
             max-height: 100vh;
         }
 
-        /* --- Masquer les contrôles additionnels en plein écran --- */
         #video-wrapper:fullscreen ~ .video-controls,
         #video-wrapper:fullscreen + .video-controls {
             display: none;
@@ -536,7 +533,6 @@
 
     <div class="container">
         <div class="card video-card">
-            <!-- NOUVEAU WRAPPER POUR LA VIDÉO -->
             <div id="video-wrapper">
                 <video id="player" controls playsinline webkit-playsinline></video>
             </div>
@@ -546,6 +542,7 @@
                 <button onclick="reloadStream()">🔄 Recharger</button>
                 <button onclick="togglePictureInPicture()">📺 PiP</button>
                 <button onclick="toggleSpeed()">⏩ Vitesse</button>
+                <button onclick="copyShareLink()">🔗 Copier le lien</button>
                 <span style="flex:1;"></span>
                 <span id="current-time" style="font-size:12px;color:#888;">00:00 / 00:00</span>
                 <span id="bitrate-info" style="font-size:10px;color:#555;"></span>
@@ -635,6 +632,62 @@
         let autoPlayTimer = null;
         let currentChannelIndex = 0;
 
+        // ============ FONCTIONS DE PARTAGE ============
+        function updateURL(channel) {
+            // Encoder l'URL de la chaîne en base64
+            const encoded = btoa(encodeURIComponent(channel.url));
+            const newUrl = window.location.origin + window.location.pathname + '?c=' + encoded;
+            window.history.replaceState({}, '', newUrl);
+        }
+
+        function getChannelFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            const c = params.get('c');
+            if (c) {
+                try {
+                    const url = decodeURIComponent(atob(c));
+                    return url;
+                } catch(e) {
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        function restoreChannelFromURL() {
+            const url = getChannelFromURL();
+            if (url) {
+                const found = allChannels.find(ch => ch.url === url);
+                if (found) {
+                    playChannel(found);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function copyShareLink() {
+            const link = window.location.href;
+            navigator.clipboard.writeText(link).then(() => {
+                statusText.textContent = '✅ Lien copié !';
+                setTimeout(() => {
+                    statusText.textContent = '📋 Prêt';
+                }, 2000);
+            }).catch(() => {
+                // Fallback
+                const input = document.createElement('input');
+                input.value = link;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                statusText.textContent = '✅ Lien copié !';
+                setTimeout(() => {
+                    statusText.textContent = '📋 Prêt';
+                }, 2000);
+            });
+        }
+
         // ============ FONCTIONS PRINCIPALES ============
 
         function createChannel(ch) {
@@ -666,6 +719,9 @@
             addToHistory(ch);
             localStorage.setItem("lastChannel", JSON.stringify(ch));
 
+            // Mettre à jour l'URL de partage
+            updateURL(ch);
+
             if (hls) {
                 hls.destroy();
                 hls = null;
@@ -692,7 +748,6 @@
 
                 hls.on(Hls.Events.MANIFEST_PARSED, () => {
                     player.play();
-                    // Affichage des infos de qualité
                     if (hls.levels && hls.levels.length > 0) {
                         const bitrates = hls.levels.map(l => l.bitrate);
                         const avg = Math.round(bitrates.reduce((a,b) => a+b, 0) / bitrates.length / 1000);
@@ -715,7 +770,6 @@
                 player.play();
             }
 
-            // Charger l'EPG si disponible
             if (ch.epg) loadEPG(ch.epg);
         }
 
@@ -804,12 +858,10 @@
             const search = document.getElementById('search').value.toLowerCase();
             let filtered = [...allChannels];
 
-            // Filtre par recherche
             if (search) {
                 filtered = filtered.filter(ch => ch.name.toLowerCase().includes(search));
             }
 
-            // Filtre par onglet
             switch(currentTab) {
                 case 'favorites':
                     filtered = filtered.filter(ch => isFavorite(ch));
@@ -932,7 +984,7 @@
             localStorage.setItem('theme', CONFIG.theme);
         }
 
-        // ============ EPG (Electronic Program Guide) ============
+        // ============ EPG ============
         function loadEPG(epgData) {
             const container = document.getElementById('epg-container');
             const list = document.getElementById('epg-list');
@@ -981,7 +1033,6 @@
                     const logoMatch = trimmed.match(/tvg-logo="([^"]*)"/);
                     if (logoMatch) logo = logoMatch[1];
                     
-                    // Extraire EPG si disponible
                     let epg = '';
                     const epgMatch = trimmed.match(/tvg-chno="([^"]*)"/);
                     if (epgMatch) epg = epgMatch[1];
@@ -1015,14 +1066,19 @@
             totalCount.textContent = channels.length;
             document.getElementById('last-update').textContent = `🔄 ${new Date().toLocaleTimeString()}`;
 
-            // Restaurer le dernier canal
-            const lastChannel = localStorage.getItem("lastChannel");
-            if (lastChannel) {
-                try {
-                    const ch = JSON.parse(lastChannel);
-                    const found = channels.find(c => c.url === ch.url);
-                    if (found) playChannel(found);
-                } catch(e) {}
+            // 1. Essayer de restaurer la chaîne depuis l'URL
+            const restored = restoreChannelFromURL();
+
+            // 2. Si aucune chaîne dans l'URL ou non trouvée, restaurer la dernière chaîne en cache
+            if (!restored) {
+                const lastChannel = localStorage.getItem("lastChannel");
+                if (lastChannel) {
+                    try {
+                        const ch = JSON.parse(lastChannel);
+                        const found = channels.find(c => c.url === ch.url);
+                        if (found) playChannel(found);
+                    } catch(e) {}
+                }
             }
 
             updateHistoryUI();
@@ -1106,7 +1162,6 @@
 
         // ============ INITIALISATION ============
         window.onload = function() {
-            // Restaurer le thème
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'light') toggleTheme();
 
