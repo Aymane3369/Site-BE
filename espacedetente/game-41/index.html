@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BeIN Sports Playlist</title>
+    <link href="https://cdn.jsdelivr.net/npm/hls.js@0.14.17/dist/hls.min.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -42,7 +43,6 @@
             padding: 18px 16px 16px;
             border: 1px solid rgba(255, 255, 255, 0.08);
             transition: transform 0.25s ease, box-shadow 0.3s ease;
-            cursor: pointer;
             display: flex;
             flex-direction: column;
         }
@@ -70,15 +70,15 @@
             border-radius: 20px;
         }
         .card-url {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #8892b0;
             word-break: break-all;
             background: rgba(0, 0, 0, 0.3);
-            padding: 8px 10px;
+            padding: 6px 10px;
             border-radius: 8px;
             margin: 6px 0 10px;
             font-family: 'Courier New', monospace;
-            line-height: 1.5;
+            line-height: 1.4;
         }
         .card-stream {
             font-size: 0.8rem;
@@ -149,7 +149,7 @@
             width: 100%;
             border-radius: 12px;
             background: #000;
-            max-height: 75vh;
+            max-height: 70vh;
             display: block;
         }
         .stats {
@@ -165,14 +165,46 @@
         .error-msg {
             color: #ff6b6b;
             text-align: center;
-            padding: 40px 20px;
-            font-size: 1.1rem;
+            padding: 10px;
+            background: rgba(255, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
         }
-        .loading {
+        .loading-msg {
             text-align: center;
-            padding: 60px 20px;
+            padding: 10px;
+            color: #f7b731;
+            display: none;
+        }
+        .player-status {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+            font-size: 0.85rem;
             color: #8892b0;
-            font-size: 1.1rem;
+        }
+        .player-status .status-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+        .status-dot.loading {
+            background: #f7b731;
+            animation: pulse 1s infinite;
+        }
+        .status-dot.playing {
+            background: #4caf50;
+        }
+        .status-dot.error {
+            background: #ff6b6b;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
         @media (max-width: 600px) {
             h1 { font-size: 1.6rem; }
@@ -190,15 +222,19 @@
                 <h3 id="currentChannelName">📺 Chaîne</h3>
                 <button class="close-btn" id="closePlayer">✕ Fermer</button>
             </div>
-            <video id="videoPlayer" controls autoplay></video>
-            <div id="playerError" style="color:#ff6b6b;text-align:center;padding:10px;display:none;"></div>
+            <video id="videoPlayer" controls autoplay playsinline></video>
+            <div id="playerError" class="error-msg"></div>
+            <div id="playerLoading" class="loading-msg">⏳ Chargement du flux...</div>
+            <div class="player-status">
+                <span><span class="status-dot" id="statusDot"></span><span id="statusText">Prêt</span></span>
+            </div>
         </div>
         <div class="stats">🔹 <span id="channelCount">0</span> chaînes disponibles</div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@0.14.17/dist/hls.min.js"></script>
     <script>
         (function() {
-            // Playlist M3U corrigée manuellement
             const channelsData = [
                 { name: "BEIN SPORTS 1 4K", url: "http://80.211.189.193/live/get.php?stream=27&username=76097116161695&password=76097116161695" },
                 { name: "BEIN SPORTS 2 4K", url: "http://80.211.189.193/live/get.php?stream=28&username=76097116161695&password=76097116161695" },
@@ -227,10 +263,21 @@
             const closeBtn = document.getElementById('closePlayer');
             const channelCountSpan = document.getElementById('channelCount');
             const playerError = document.getElementById('playerError');
+            const playerLoading = document.getElementById('playerLoading');
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+
+            let hls = null;
+            let currentHlsUrl = '';
+
+            function updateStatus(state, message) {
+                statusDot.className = 'status-dot ' + state;
+                statusText.textContent = message;
+            }
 
             function renderChannels() {
                 if (!channelsData.length) {
-                    grid.innerHTML = `<div class="loading">Aucune chaîne disponible.</div>`;
+                    grid.innerHTML = `<div style="text-align:center;padding:40px;color:#8892b0;">Aucune chaîne disponible.</div>`;
                     channelCountSpan.textContent = '0';
                     return;
                 }
@@ -279,62 +326,153 @@
             }
 
             function playChannel(url, name) {
-                playerError.style.display = 'none';
-                playerError.textContent = '';
-
                 // Nettoyer l'URL
                 let cleanUrl = url.trim();
-                
-                // S'assurer que l'URL commence par http:// ou https://
                 if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
                     cleanUrl = 'http://' + cleanUrl;
                 }
-
-                // Supprimer les espaces et caractères problématiques
                 cleanUrl = cleanUrl.replace(/\s/g, '');
 
-                console.log('Lecture de:', cleanUrl);
+                console.log('📺 Tentative de lecture:', cleanUrl);
 
-                // Tester si l'URL est accessible (optionnel)
-                videoPlayer.src = cleanUrl;
+                // Réinitialiser
+                playerError.style.display = 'none';
+                playerError.textContent = '';
+                playerLoading.style.display = 'block';
+                updateStatus('loading', 'Chargement...');
+
+                // Détruire l'ancien HLS si présent
+                if (hls) {
+                    hls.destroy();
+                    hls = null;
+                }
+
+                // Vider la vidéo
+                videoPlayer.pause();
+                videoPlayer.removeAttribute('src');
                 videoPlayer.load();
-                
-                // Gestion des erreurs de lecture
-                videoPlayer.onerror = function(e) {
-                    const errorMsg = videoPlayer.error ? 
-                        `Erreur de lecture (${videoPlayer.error.code})` : 
-                        'Impossible de lire ce flux.';
-                    playerError.textContent = `❌ ${errorMsg}. Vérifiez que l'URL est valide et que le serveur est accessible.`;
-                    playerError.style.display = 'block';
-                    console.error('Erreur vidéo:', videoPlayer.error);
-                };
 
-                videoPlayer.onloadeddata = function() {
-                    playerError.style.display = 'none';
-                };
-
+                currentHlsUrl = cleanUrl;
                 currentChannelName.textContent = `📺 ${name}`;
                 playerContainer.classList.add('active');
+
+                // Détecter si c'est un flux HLS (m3u8) ou un flux direct
+                const isHls = cleanUrl.includes('.m3u8') || cleanUrl.includes('m3u8');
+
+                if (isHls || Hls.isSupported()) {
+                    // Utiliser HLS.js pour les flux m3u8 ou si le navigateur ne supporte pas native HLS
+                    if (Hls.isSupported()) {
+                        hls = new Hls({
+                            enableWorker: true,
+                            lowLatencyMode: true,
+                            backbufferLength: 30,
+                            maxBufferLength: 60,
+                            maxMaxBufferLength: 600,
+                        });
+
+                        hls.loadSource(cleanUrl);
+                        hls.attachMedia(videoPlayer);
+
+                        hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                            playerLoading.style.display = 'none';
+                            updateStatus('playing', 'En cours de lecture');
+                            videoPlayer.play().catch(e => {
+                                console.warn('Lecture automatique bloquée:', e);
+                            });
+                        });
+
+                        hls.on(Hls.Events.ERROR, function(event, data) {
+                            if (data.fatal) {
+                                playerLoading.style.display = 'none';
+                                updateStatus('error', 'Erreur');
+                                playerError.textContent = '❌ Erreur fatale: Impossible de lire ce flux HLS. Vérifiez que le serveur est accessible.';
+                                playerError.style.display = 'block';
+                                console.error('Erreur HLS fatale:', data);
+                            }
+                        });
+
+                        // Détection de fin de flux
+                        hls.on(Hls.Events.FRAG_LOADING, function() {
+                            updateStatus('playing', 'Lecture...');
+                        });
+
+                    } else if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
+                        // Safari supporte nativement HLS
+                        videoPlayer.src = cleanUrl;
+                        videoPlayer.addEventListener('loadedmetadata', function() {
+                            playerLoading.style.display = 'none';
+                            updateStatus('playing', 'En cours de lecture');
+                            videoPlayer.play().catch(e => console.warn(e));
+                        });
+                        videoPlayer.addEventListener('error', function() {
+                            playerLoading.style.display = 'none';
+                            updateStatus('error', 'Erreur');
+                            playerError.textContent = '❌ Erreur de lecture native HLS.';
+                            playerError.style.display = 'block';
+                        });
+                    }
+                } else {
+                    // Flux direct (MP4, etc.)
+                    videoPlayer.src = cleanUrl;
+                    videoPlayer.addEventListener('loadedmetadata', function() {
+                        playerLoading.style.display = 'none';
+                        updateStatus('playing', 'En cours de lecture');
+                        videoPlayer.play().catch(e => console.warn(e));
+                    });
+                    videoPlayer.addEventListener('error', function(e) {
+                        playerLoading.style.display = 'none';
+                        updateStatus('error', 'Erreur');
+                        playerError.textContent = `❌ Erreur ${videoPlayer.error ? videoPlayer.error.code : ''}: Impossible de lire ce flux. Vérifiez que l'URL est valide.`;
+                        playerError.style.display = 'block';
+                        console.error('Erreur vidéo:', videoPlayer.error);
+                    });
+                    videoPlayer.addEventListener('stalled', function() {
+                        updateStatus('loading', 'Rebuffering...');
+                    });
+                    videoPlayer.addEventListener('playing', function() {
+                        updateStatus('playing', 'Lecture...');
+                        playerLoading.style.display = 'none';
+                    });
+                }
+
+                // Timeout pour le chargement
+                setTimeout(() => {
+                    if (playerLoading.style.display !== 'none') {
+                        playerLoading.style.display = 'none';
+                        updateStatus('error', 'Délai dépassé');
+                        playerError.textContent = '⏱️ Délai de chargement dépassé. Le serveur est peut-être indisponible.';
+                        playerError.style.display = 'block';
+                    }
+                }, 15000);
+
                 playerContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
 
-            // Fermer le player
-            closeBtn.addEventListener('click', () => {
-                playerContainer.classList.remove('active');
+            function closePlayer() {
+                if (hls) {
+                    hls.destroy();
+                    hls = null;
+                }
                 videoPlayer.pause();
-                videoPlayer.src = '';
+                videoPlayer.removeAttribute('src');
                 videoPlayer.load();
+                playerContainer.classList.remove('active');
                 playerError.style.display = 'none';
+                playerLoading.style.display = 'none';
+                updateStatus('', 'Prêt');
+            }
+
+            closeBtn.addEventListener('click', closePlayer);
+
+            // Gestion de la fermeture avec la touche Echap
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && playerContainer.classList.contains('active')) {
+                    closePlayer();
+                }
             });
 
             // Initialisation
             renderChannels();
-
-            // Si une erreur se produit sur la vidéo
-            videoPlayer.addEventListener('error', function() {
-                // déjà géré par onerror
-            });
-
             console.log(`✅ ${channelsData.length} chaînes BeIN chargées.`);
         })();
     </script>
