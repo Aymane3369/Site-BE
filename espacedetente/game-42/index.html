@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>IPTV Ultimate Player</title>
+    <!-- SDK Google Cast (framework) -->
+    <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"></script>
     <style>
-        /* ... styles identiques à la version précédente ... */
-        /* (je conserve le même CSS pour rester concis) */
+        /* ... vos styles inchangés ... */
         * {
             box-sizing: border-box;
             font-family: Inter, Arial, sans-serif;
@@ -159,6 +160,7 @@
             border-color: #0099ff;
         }
 
+        /* ===== STYLE DU BOUTON CAST ===== */
         #cast-btn {
             background: #2a2a2a;
             border-color: #666;
@@ -681,71 +683,176 @@
         let autoPlayTimer = null;
         let currentChannelIndex = 0;
 
-        // ============ FONCTIONS DE CASTING AMÉLIORÉES ============
+        // ============ GOOGLE CAST FRAMEWORK ============
+        let castContext = null;
+        let isCastReady = false;
+
+        // Callback appelée par le SDK Cast
+        window.__onGCastApiAvailable = function(isAvailable) {
+            if (isAvailable) {
+                initializeCastFramework();
+            } else {
+                console.warn('Google Cast Framework non disponible');
+                statusText.textContent = '⚠️ Cast non disponible. Utilisez Chrome ou Edge.';
+            }
+        };
+
+        function initializeCastFramework() {
+            try {
+                castContext = cast.framework.CastContext.getInstance();
+                castContext.setOptions({
+                    receiverApplicationId: chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
+                    autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED,
+                    language: 'fr'
+                });
+
+                // Écouter les changements de session
+                castContext.addEventListener(
+                    cast.framework.CastContextEventType.SESSION_STATE_CHANGED,
+                    (event) => {
+                        const sessionState = event.sessionState;
+                        console.log('Session state changed:', sessionState);
+                        if (sessionState === cast.framework.SessionState.SESSION_STARTED) {
+                            // Session démarrée
+                            updateCastUI(true);
+                            statusText.textContent = '📡 Diffusion en cours sur un appareil';
+                            // Charger le média en cours
+                            if (player.src) {
+                                loadMediaOnCast();
+                            }
+                        } else if (sessionState === cast.framework.SessionState.SESSION_ENDED) {
+                            updateCastUI(false);
+                            statusText.textContent = '📡 Cast arrêté';
+                        } else if (sessionState === cast.framework.SessionState.SESSION_STARTING) {
+                            statusText.textContent = '⏳ Connexion en cours...';
+                            castBtn.textContent = '⏳ Connexion...';
+                            castBtn.className = 'connecting';
+                        }
+                    }
+                );
+
+                isCastReady = true;
+                console.log('Cast Framework initialisé');
+            } catch (e) {
+                console.error('Erreur initialisation Cast Framework:', e);
+                statusText.textContent = '❌ Erreur Cast Framework';
+                // Fallback sur Remote Playback
+                fallbackRemotePlayback();
+            }
+        }
+
         function toggleCasting() {
-            if (!player.remote) {
-                statusText.textContent = '⚠️ Remote Playback non supporté. Utilisez Chrome, Edge ou Safari.';
-                console.warn('Remote Playback not available');
+            // Si le framework n'est pas disponible, fallback
+            if (!isCastReady || !castContext) {
+                fallbackRemotePlayback();
                 return;
             }
 
-            // Si déjà connecté, déconnexion
+            const session = castContext.getCurrentSession();
+
+            if (session) {
+                // Arrêter la session
+                session.endSession(true);
+                return;
+            }
+
+            // Démarrer une nouvelle session
+            statusText.textContent = '🔍 Recherche d\'appareils sur le Wi-Fi...';
+            castBtn.textContent = '⏳ Connexion...';
+            castBtn.className = 'connecting';
+
+            castContext.requestSession()
+                .then(() => {
+                    // La session sera gérée par l'événement SESSION_STARTED
+                })
+                .catch(err => {
+                    console.error('Erreur requestSession:', err);
+                    let msg = '❌ Aucun appareil trouvé ou sélection annulée. Vérifiez que votre appareil (Chromecast, Freebox, TV) est allumé et sur le même Wi-Fi.';
+                    if (err.message && err.message.toLowerCase().includes('cancel')) {
+                        msg = '❌ Sélection annulée.';
+                    }
+                    statusText.textContent = msg;
+                    updateCastUI(false);
+                    castBtn.textContent = '📡 Caster';
+                    castBtn.className = '';
+                });
+        }
+
+        function loadMediaOnCast() {
+            const session = castContext.getCurrentSession();
+            if (!session) return;
+
+            const mediaUrl = player.src;
+            if (!mediaUrl) {
+                statusText.textContent = '⚠️ Aucune vidéo à diffuser.';
+                return;
+            }
+
+            // Déterminer le type de média
+            let contentType = 'video/mp4';
+            if (mediaUrl.includes('.m3u8')) contentType = 'application/x-mpegurl';
+
+            const mediaInfo = new chrome.cast.media.MediaInfo(mediaUrl, contentType);
+            const request = new chrome.cast.media.LoadRequest(mediaInfo);
+            request.autoplay = true;
+
+            session.loadMedia(request)
+                .then(() => {
+                    console.log('Media chargé sur le récepteur');
+                })
+                .catch(err => {
+                    console.error('Erreur chargement média:', err);
+                    statusText.textContent = `❌ Erreur lecture sur le récepteur : ${err.message}`;
+                });
+        }
+
+        function updateCastUI(connected) {
+            if (connected) {
+                castBtn.textContent = '⏹ Arrêter le cast';
+                castBtn.className = 'connected';
+            } else {
+                castBtn.textContent = '📡 Caster';
+                castBtn.className = '';
+            }
+        }
+
+        // ============ FALLBACK REMOTE PLAYBACK (si Cast non dispo) ============
+        function fallbackRemotePlayback() {
+            if (!player.remote) {
+                statusText.textContent = '⚠️ Le casting n\'est pas supporté par ce navigateur. Utilisez Chrome, Edge ou Safari.';
+                return;
+            }
+
             if (player.remote.state === 'connected') {
                 player.remote.disconnect();
                 return;
             }
 
-            // Si en cours de connexion, on attend
             if (player.remote.state === 'connecting') {
                 statusText.textContent = '⏳ Connexion en cours...';
                 return;
             }
 
-            // Vérifier que la vidéo est chargée
-            if (!player.src || player.src === '') {
-                statusText.textContent = '⚠️ Aucune vidéo chargée pour le cast.';
+            if (!player.src) {
+                statusText.textContent = '⚠️ Aucune vidéo chargée.';
                 return;
             }
 
-            // Mettre à jour l'interface
             castBtn.textContent = '⏳ Connexion...';
             castBtn.className = 'connecting';
-            statusText.textContent = '🔍 Recherche d\'appareils sur le Wi-Fi...';
+            statusText.textContent = '🔍 Recherche d\'appareils...';
 
-            // S'assurer que la vidéo est en lecture (certains navigateurs l'exigent)
-            if (player.paused) {
-                player.play().catch(() => {});
-            }
+            if (player.paused) player.play().catch(() => {});
 
-            // Lancer le prompt avec un timeout pour éviter un blocage
-            const promptPromise = player.remote.prompt();
-
-            // Gérer la promesse avec un délai de sécurité
-            const timeoutId = setTimeout(() => {
-                // Si la promesse n'est pas résolue après 15s, on considère qu'il y a un problème
-                statusText.textContent = '⏳ La recherche d\'appareils prend trop de temps...';
-            }, 15000);
-
-            promptPromise
+            player.remote.prompt()
                 .then(() => {
-                    clearTimeout(timeoutId);
                     statusText.textContent = '📡 Sélection de l\'appareil...';
                 })
                 .catch(err => {
-                    clearTimeout(timeoutId);
-                    console.error('Erreur de casting:', err);
-                    
-                    let msg = '';
-                    // Analyse du message d'erreur
-                    const errMsg = err.message ? err.message.toLowerCase() : '';
-                    if (errMsg.includes('dismissed') || errMsg.includes('cancel')) {
-                        msg = '❌ Aucun appareil trouvé ou sélection annulée. Vérifiez que votre appareil (Chromecast, AirPlay, Freebox) est allumé et sur le même Wi-Fi.';
-                    } else if (errMsg.includes('not supported')) {
-                        msg = '❌ Le flux vidéo n\'est pas compatible avec le récepteur. Essayez un autre format.';
-                    } else if (errMsg.includes('abort')) {
-                        msg = '❌ La demande a été interrompue. Réessayez.';
-                    } else {
-                        msg = `❌ Erreur : ${err.message || 'cause inconnue'}`;
+                    console.error('Remote Playback error:', err);
+                    let msg = '❌ Aucun appareil trouvé ou sélection annulée.';
+                    if (err.message && err.message.toLowerCase().includes('cancel')) {
+                        msg = '❌ Sélection annulée.';
                     }
                     statusText.textContent = msg;
                     castBtn.textContent = '📡 Caster';
@@ -753,19 +860,17 @@
                 });
         }
 
-        // Événements Remote Playback
+        // Événements Remote Playback (fallback)
         player.addEventListener('remoteconnect', () => {
             statusText.textContent = '📡 Diffusion en cours sur un appareil';
             castBtn.textContent = '⏹ Arrêter le cast';
             castBtn.className = 'connected';
         });
-
         player.addEventListener('remotedisconnect', () => {
             statusText.textContent = '📡 Cast arrêté';
             castBtn.textContent = '📡 Caster';
             castBtn.className = '';
         });
-
         player.addEventListener('remoteconnecting', () => {
             statusText.textContent = '⏳ Connexion en cours...';
             castBtn.textContent = '⏳ Connexion...';
@@ -905,6 +1010,14 @@
             }
 
             if (ch.epg) loadEPG(ch.epg);
+
+            // Si une session Cast est active, charger le média sur le récepteur
+            if (isCastReady && castContext) {
+                const session = castContext.getCurrentSession();
+                if (session) {
+                    loadMediaOnCast();
+                }
+            }
         }
 
         // ============ HISTORIQUE ============
