@@ -6,7 +6,8 @@
     <title>IPTV Ultimate Player</title>
     <script defer src="https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"></script>
     <style>
-        /* ... styles inchangés ... */
+        /* ... styles identiques à la version précédente ... */
+        /* (je conserve le même CSS pour rester concis) */
         * {
             box-sizing: border-box;
             font-family: Inter, Arial, sans-serif;
@@ -158,7 +159,6 @@
             border-color: #0099ff;
         }
 
-        /* ===== STYLE DU BOUTON CAST ===== */
         #cast-btn {
             background: #2a2a2a;
             border-color: #666;
@@ -590,7 +590,6 @@
                 <button onclick="togglePictureInPicture()">📺 PiP</button>
                 <button onclick="toggleSpeed()">⏩ Vitesse</button>
                 <button onclick="copyShareLink()">🔗 Copier le lien</button>
-                <!-- ===== BOUTON CAST ===== -->
                 <button id="cast-btn" onclick="toggleCasting()">Caster</button>
                 <span style="flex:1;"></span>
                 <span id="current-time" style="font-size:12px;color:#888;">00:00 / 00:00</span>
@@ -682,47 +681,71 @@
         let autoPlayTimer = null;
         let currentChannelIndex = 0;
 
-        // ============ FONCTIONS DE CASTING (CORRIGÉES) ============
+        // ============ FONCTIONS DE CASTING AMÉLIORÉES ============
         function toggleCasting() {
-            // Vérifier si l'API Remote Playback est disponible
             if (!player.remote) {
-                statusText.textContent = '⚠️ Le casting n\'est pas supporté par ce navigateur. Utilisez Chrome, Edge ou Safari.';
-                console.warn('Remote Playback non disponible');
+                statusText.textContent = '⚠️ Remote Playback non supporté. Utilisez Chrome, Edge ou Safari.';
+                console.warn('Remote Playback not available');
                 return;
             }
 
-            // Si déjà connecté, on se déconnecte
+            // Si déjà connecté, déconnexion
             if (player.remote.state === 'connected') {
                 player.remote.disconnect();
                 return;
             }
 
-            // Si en cours de connexion, on ne fait rien
+            // Si en cours de connexion, on attend
             if (player.remote.state === 'connecting') {
                 statusText.textContent = '⏳ Connexion en cours...';
                 return;
             }
 
-            // Sinon, on lance la recherche
+            // Vérifier que la vidéo est chargée
+            if (!player.src || player.src === '') {
+                statusText.textContent = '⚠️ Aucune vidéo chargée pour le cast.';
+                return;
+            }
+
+            // Mettre à jour l'interface
             castBtn.textContent = '⏳ Connexion...';
             castBtn.className = 'connecting';
             statusText.textContent = '🔍 Recherche d\'appareils sur le Wi-Fi...';
 
-            // Appel de la boîte de dialogue de sélection
-            player.remote.prompt()
+            // S'assurer que la vidéo est en lecture (certains navigateurs l'exigent)
+            if (player.paused) {
+                player.play().catch(() => {});
+            }
+
+            // Lancer le prompt avec un timeout pour éviter un blocage
+            const promptPromise = player.remote.prompt();
+
+            // Gérer la promesse avec un délai de sécurité
+            const timeoutId = setTimeout(() => {
+                // Si la promesse n'est pas résolue après 15s, on considère qu'il y a un problème
+                statusText.textContent = '⏳ La recherche d\'appareils prend trop de temps...';
+            }, 15000);
+
+            promptPromise
                 .then(() => {
-                    // La connexion sera gérée par les événements
+                    clearTimeout(timeoutId);
                     statusText.textContent = '📡 Sélection de l\'appareil...';
                 })
                 .catch(err => {
+                    clearTimeout(timeoutId);
                     console.error('Erreur de casting:', err);
-                    let msg = '❌ Aucun appareil trouvé ou action annulée.';
-                    if (err.message && err.message.toLowerCase().includes('dismissed')) {
-                        msg = '❌ Sélection annulée par l\'utilisateur.';
-                    } else if (err.message && err.message.toLowerCase().includes('not supported')) {
-                        msg = '❌ Appareil non compatible avec ce flux.';
-                    } else if (err.message) {
-                        msg = `❌ Erreur : ${err.message}`;
+                    
+                    let msg = '';
+                    // Analyse du message d'erreur
+                    const errMsg = err.message ? err.message.toLowerCase() : '';
+                    if (errMsg.includes('dismissed') || errMsg.includes('cancel')) {
+                        msg = '❌ Aucun appareil trouvé ou sélection annulée. Vérifiez que votre appareil (Chromecast, AirPlay, Freebox) est allumé et sur le même Wi-Fi.';
+                    } else if (errMsg.includes('not supported')) {
+                        msg = '❌ Le flux vidéo n\'est pas compatible avec le récepteur. Essayez un autre format.';
+                    } else if (errMsg.includes('abort')) {
+                        msg = '❌ La demande a été interrompue. Réessayez.';
+                    } else {
+                        msg = `❌ Erreur : ${err.message || 'cause inconnue'}`;
                     }
                     statusText.textContent = msg;
                     castBtn.textContent = '📡 Caster';
