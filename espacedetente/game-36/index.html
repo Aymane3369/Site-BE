@@ -1,4 +1,240 @@
-<!DOCTYPE html>
+// ================================================================
+// 7. SYSTÈME DE QUIZ – 1 question aléatoire avec 4 choix
+// ================================================================
+
+let currentQuestion = null;
+let currentChoices = [];
+let currentCorrectAnswer = '';
+
+// Fonction pour mélanger un tableau (algorithme de Fisher-Yates)
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// Fonction pour obtenir une question aléatoire avec 4 choix
+function getRandomQuestion() {
+  // Sélectionner une question aléatoire parmi les 100
+  const randomIndex = Math.floor(Math.random() * questions100.length);
+  const question = questions100[randomIndex];
+  
+  // Préparer la question
+  let questionText = '';
+  let correctAnswer = '';
+  
+  // Choisir aléatoirement entre la partie SR et PS
+  const useSR = Math.random() < 0.5;
+  
+  if (useSR) {
+    questionText = question.qSR;
+    correctAnswer = question.rSR;
+  } else {
+    questionText = question.qPS;
+    correctAnswer = question.rPS;
+  }
+  
+  // Récupérer toutes les réponses pour générer des distracteurs
+  const allAnswers = questions100.map(q => q.rSR);
+  const allAnswersPS = questions100.map(q => q.rPS);
+  const allPossibleAnswers = [...allAnswers, ...allAnswersPS];
+  
+  // Filtrer pour enlever la bonne réponse et les doublons
+  const uniqueAnswers = [...new Set(allPossibleAnswers.filter(a => a !== correctAnswer))];
+  
+  // Mélanger et prendre 3 distracteurs
+  const shuffled = shuffleArray([...uniqueAnswers]);
+  const distractors = shuffled.slice(0, 3);
+  
+  // Créer les 4 choix (1 bonne + 3 mauvaises)
+  const choices = [correctAnswer, ...distractors];
+  const shuffledChoices = shuffleArray(choices);
+  
+  return {
+    question: questionText,
+    correctAnswer: correctAnswer,
+    choices: shuffledChoices,
+    id: question.id,
+    verif: question.verif,
+    useSR: useSR
+  };
+}
+
+// Fonction pour afficher la question dans l'interface
+function displayQuizQuestion() {
+  // Générer une question aléatoire
+  const quizData = getRandomQuestion();
+  currentQuestion = quizData;
+  currentCorrectAnswer = quizData.correctAnswer;
+  currentChoices = quizData.choices;
+  
+  // Construire le HTML du quiz
+  let html = `
+    <div class="quiz-container" style="background:#f8faff; border-radius:1.5rem; padding:2rem; border:2px solid #e6edf5; margin-top:1rem;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:0.5rem;">
+        <span style="font-size:0.85rem; background:#dde9f5; padding:0.2rem 1rem; border-radius:30px; color:#1f6d9b; font-weight:600;">
+          <i class="fas fa-question-circle"></i> Question ${quizData.id} ${quizData.useSR ? '• Sécurité routière' : '• Premiers secours'}
+          <span style="background:#3b7a9e; color:#fff; padding:0.1rem 0.6rem; border-radius:20px; font-size:0.7rem; margin-left:0.5rem;">${quizData.verif}</span>
+        </span>
+        <button onclick="displayQuizQuestion()" style="background:#1f6d9b; color:#fff; border:none; padding:0.4rem 1.2rem; border-radius:30px; font-weight:600; cursor:pointer; font-family:inherit; transition:0.2s;">
+          <i class="fas fa-sync-alt"></i> Nouvelle question
+        </button>
+      </div>
+      
+      <div style="font-size:1.2rem; font-weight:600; color:#0b2f49; margin-bottom:1.5rem; padding:0.5rem 0;">
+        ${escapeHtml(quizData.question)}
+      </div>
+      
+      <div id="choicesContainer" style="display:flex; flex-direction:column; gap:0.7rem;">
+        ${quizData.choices.map((choice, index) => `
+          <button onclick="selectChoice(${index})" class="choice-btn" data-index="${index}" style="
+            background:#f0f6fd; 
+            border:2px solid #d6e2ef; 
+            border-radius:12px; 
+            padding:0.8rem 1.2rem; 
+            text-align:left; 
+            font-size:1rem; 
+            font-family:inherit; 
+            cursor:pointer; 
+            transition:0.2s;
+            display:flex;
+            align-items:center;
+            gap:0.8rem;
+            color:#1e293b;
+          ">
+            <span style="background:#dde9f5; border-radius:50%; width:28px; height:28px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.85rem; color:#1f6d9b; flex-shrink:0;">${String.fromCharCode(65 + index)}</span>
+            <span>${escapeHtml(choice)}</span>
+          </button>
+        `).join('')}
+      </div>
+      
+      <div id="feedbackContainer" style="margin-top:1.2rem; padding:1rem; border-radius:12px; display:none; font-weight:500;">
+      </div>
+      
+      <div style="margin-top:1rem; display:flex; gap:0.8rem; justify-content:center; flex-wrap:wrap;">
+        <button onclick="showAnswer()" style="background:#e67e22; color:#fff; border:none; padding:0.5rem 1.5rem; border-radius:30px; font-weight:600; cursor:pointer; font-family:inherit; transition:0.2s;">
+          <i class="fas fa-eye"></i> Voir la réponse
+        </button>
+      </div>
+    </div>
+  `;
+  
+  contentArea.innerHTML = html;
+}
+
+// Fonction pour sélectionner un choix
+function selectChoice(index) {
+  const buttons = document.querySelectorAll('.choice-btn');
+  const feedback = document.getElementById('feedbackContainer');
+  
+  // Désactiver tous les boutons
+  buttons.forEach(btn => btn.disabled = true);
+  
+  const selectedText = currentChoices[index];
+  const isCorrect = selectedText === currentCorrectAnswer;
+  
+  // Colorer les boutons
+  buttons.forEach((btn, i) => {
+    const choiceText = currentChoices[i];
+    if (choiceText === currentCorrectAnswer) {
+      btn.style.background = '#27ae60';
+      btn.style.borderColor = '#27ae60';
+      btn.style.color = '#fff';
+      btn.querySelector('span:first-child').style.background = '#fff';
+      btn.querySelector('span:first-child').style.color = '#27ae60';
+    } else if (i === index && !isCorrect) {
+      btn.style.background = '#e74c3c';
+      btn.style.borderColor = '#e74c3c';
+      btn.style.color = '#fff';
+      btn.querySelector('span:first-child').style.background = '#fff';
+      btn.querySelector('span:first-child').style.color = '#e74c3c';
+    } else {
+      btn.style.opacity = '0.6';
+    }
+  });
+  
+  // Afficher le feedback
+  feedback.style.display = 'block';
+  if (isCorrect) {
+    feedback.style.background = '#d4edda';
+    feedback.style.color = '#155724';
+    feedback.style.border = '1px solid #c3e6cb';
+    feedback.innerHTML = `<i class="fas fa-check-circle" style="color:#27ae60;"></i> ✅ Bravo ! C'est la bonne réponse.`;
+  } else {
+    feedback.style.background = '#f8d7da';
+    feedback.style.color = '#721c24';
+    feedback.style.border = '1px solid #f5c6cb';
+    feedback.innerHTML = `<i class="fas fa-times-circle" style="color:#e74c3c;"></i> ❌ Ce n'est pas la bonne réponse. La bonne réponse était : <strong>"${escapeHtml(currentCorrectAnswer)}"</strong>`;
+  }
+}
+
+// Fonction pour afficher la réponse sans sélection
+function showAnswer() {
+  const buttons = document.querySelectorAll('.choice-btn');
+  const feedback = document.getElementById('feedbackContainer');
+  
+  // Désactiver tous les boutons
+  buttons.forEach(btn => btn.disabled = true);
+  
+  // Colorer les boutons
+  buttons.forEach((btn, i) => {
+    const choiceText = currentChoices[i];
+    if (choiceText === currentCorrectAnswer) {
+      btn.style.background = '#27ae60';
+      btn.style.borderColor = '#27ae60';
+      btn.style.color = '#fff';
+      btn.querySelector('span:first-child').style.background = '#fff';
+      btn.querySelector('span:first-child').style.color = '#27ae60';
+    } else {
+      btn.style.opacity = '0.6';
+    }
+  });
+  
+  // Afficher le feedback
+  feedback.style.display = 'block';
+  feedback.style.background = '#d4edda';
+  feedback.style.color = '#155724';
+  feedback.style.border = '1px solid #c3e6cb';
+  feedback.innerHTML = `<i class="fas fa-info-circle" style="color:#27ae60;"></i> ℹ️ La bonne réponse est : <strong>"${escapeHtml(currentCorrectAnswer)}"</strong>`;
+}
+
+// ================================================================
+// 8. MODIFICATION DE L'INTERFACE – Ajout d'un bouton "Quiz"
+// ================================================================
+
+// Ajouter un bouton "Quiz" dans les onglets
+document.addEventListener('DOMContentLoaded', function() {
+  const tabNav = document.getElementById('tabNav');
+  
+  // Créer le bouton Quiz
+  const quizBtn = document.createElement('button');
+  quizBtn.className = 'tab-btn';
+  quizBtn.dataset.cat = 'quiz';
+  quizBtn.innerHTML = '<i class="fas fa-brain"></i> Quiz (1-100)';
+  quizBtn.addEventListener('click', function() {
+    setCategory('quiz');
+  });
+  tabNav.appendChild(quizBtn);
+  
+  // Surcharger la fonction setCategory pour gérer le quiz
+  const originalSetCategory = setCategory;
+  setCategory = function(cat) {
+    if (cat === 'quiz') {
+      // Activer le bouton quiz
+      tabBtns.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.cat === cat);
+      });
+      currentCategory = cat;
+      displayQuizQuestion();
+      return;
+    }
+    originalSetCategory(cat);
+  };
+});
+
+console.log('🎯 Quiz prêt ! Cliquez sur l\'onglet "Quiz (1-100)" pour commencer.');<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
@@ -960,6 +1196,243 @@
 
     // Initialisation
     setCategory('all');
+    // ================================================================
+// 7. SYSTÈME DE QUIZ – 1 question aléatoire avec 4 choix
+// ================================================================
+
+let currentQuestion = null;
+let currentChoices = [];
+let currentCorrectAnswer = '';
+
+// Fonction pour mélanger un tableau (algorithme de Fisher-Yates)
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// Fonction pour obtenir une question aléatoire avec 4 choix
+function getRandomQuestion() {
+  // Sélectionner une question aléatoire parmi les 100
+  const randomIndex = Math.floor(Math.random() * questions100.length);
+  const question = questions100[randomIndex];
+  
+  // Préparer la question
+  let questionText = '';
+  let correctAnswer = '';
+  
+  // Choisir aléatoirement entre la partie SR et PS
+  const useSR = Math.random() < 0.5;
+  
+  if (useSR) {
+    questionText = question.qSR;
+    correctAnswer = question.rSR;
+  } else {
+    questionText = question.qPS;
+    correctAnswer = question.rPS;
+  }
+  
+  // Récupérer toutes les réponses pour générer des distracteurs
+  const allAnswers = questions100.map(q => q.rSR);
+  const allAnswersPS = questions100.map(q => q.rPS);
+  const allPossibleAnswers = [...allAnswers, ...allAnswersPS];
+  
+  // Filtrer pour enlever la bonne réponse et les doublons
+  const uniqueAnswers = [...new Set(allPossibleAnswers.filter(a => a !== correctAnswer))];
+  
+  // Mélanger et prendre 3 distracteurs
+  const shuffled = shuffleArray([...uniqueAnswers]);
+  const distractors = shuffled.slice(0, 3);
+  
+  // Créer les 4 choix (1 bonne + 3 mauvaises)
+  const choices = [correctAnswer, ...distractors];
+  const shuffledChoices = shuffleArray(choices);
+  
+  return {
+    question: questionText,
+    correctAnswer: correctAnswer,
+    choices: shuffledChoices,
+    id: question.id,
+    verif: question.verif,
+    useSR: useSR
+  };
+}
+
+// Fonction pour afficher la question dans l'interface
+function displayQuizQuestion() {
+  // Générer une question aléatoire
+  const quizData = getRandomQuestion();
+  currentQuestion = quizData;
+  currentCorrectAnswer = quizData.correctAnswer;
+  currentChoices = quizData.choices;
+  
+  // Construire le HTML du quiz
+  let html = `
+    <div class="quiz-container" style="background:#f8faff; border-radius:1.5rem; padding:2rem; border:2px solid #e6edf5; margin-top:1rem;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:0.5rem;">
+        <span style="font-size:0.85rem; background:#dde9f5; padding:0.2rem 1rem; border-radius:30px; color:#1f6d9b; font-weight:600;">
+          <i class="fas fa-question-circle"></i> Question ${quizData.id} ${quizData.useSR ? '• Sécurité routière' : '• Premiers secours'}
+          <span style="background:#3b7a9e; color:#fff; padding:0.1rem 0.6rem; border-radius:20px; font-size:0.7rem; margin-left:0.5rem;">${quizData.verif}</span>
+        </span>
+        <button onclick="displayQuizQuestion()" style="background:#1f6d9b; color:#fff; border:none; padding:0.4rem 1.2rem; border-radius:30px; font-weight:600; cursor:pointer; font-family:inherit; transition:0.2s;">
+          <i class="fas fa-sync-alt"></i> Nouvelle question
+        </button>
+      </div>
+      
+      <div style="font-size:1.2rem; font-weight:600; color:#0b2f49; margin-bottom:1.5rem; padding:0.5rem 0;">
+        ${escapeHtml(quizData.question)}
+      </div>
+      
+      <div id="choicesContainer" style="display:flex; flex-direction:column; gap:0.7rem;">
+        ${quizData.choices.map((choice, index) => `
+          <button onclick="selectChoice(${index})" class="choice-btn" data-index="${index}" style="
+            background:#f0f6fd; 
+            border:2px solid #d6e2ef; 
+            border-radius:12px; 
+            padding:0.8rem 1.2rem; 
+            text-align:left; 
+            font-size:1rem; 
+            font-family:inherit; 
+            cursor:pointer; 
+            transition:0.2s;
+            display:flex;
+            align-items:center;
+            gap:0.8rem;
+            color:#1e293b;
+          ">
+            <span style="background:#dde9f5; border-radius:50%; width:28px; height:28px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.85rem; color:#1f6d9b; flex-shrink:0;">${String.fromCharCode(65 + index)}</span>
+            <span>${escapeHtml(choice)}</span>
+          </button>
+        `).join('')}
+      </div>
+      
+      <div id="feedbackContainer" style="margin-top:1.2rem; padding:1rem; border-radius:12px; display:none; font-weight:500;">
+      </div>
+      
+      <div style="margin-top:1rem; display:flex; gap:0.8rem; justify-content:center; flex-wrap:wrap;">
+        <button onclick="showAnswer()" style="background:#e67e22; color:#fff; border:none; padding:0.5rem 1.5rem; border-radius:30px; font-weight:600; cursor:pointer; font-family:inherit; transition:0.2s;">
+          <i class="fas fa-eye"></i> Voir la réponse
+        </button>
+      </div>
+    </div>
+  `;
+  
+  contentArea.innerHTML = html;
+}
+
+// Fonction pour sélectionner un choix
+function selectChoice(index) {
+  const buttons = document.querySelectorAll('.choice-btn');
+  const feedback = document.getElementById('feedbackContainer');
+  
+  // Désactiver tous les boutons
+  buttons.forEach(btn => btn.disabled = true);
+  
+  const selectedText = currentChoices[index];
+  const isCorrect = selectedText === currentCorrectAnswer;
+  
+  // Colorer les boutons
+  buttons.forEach((btn, i) => {
+    const choiceText = currentChoices[i];
+    if (choiceText === currentCorrectAnswer) {
+      btn.style.background = '#27ae60';
+      btn.style.borderColor = '#27ae60';
+      btn.style.color = '#fff';
+      btn.querySelector('span:first-child').style.background = '#fff';
+      btn.querySelector('span:first-child').style.color = '#27ae60';
+    } else if (i === index && !isCorrect) {
+      btn.style.background = '#e74c3c';
+      btn.style.borderColor = '#e74c3c';
+      btn.style.color = '#fff';
+      btn.querySelector('span:first-child').style.background = '#fff';
+      btn.querySelector('span:first-child').style.color = '#e74c3c';
+    } else {
+      btn.style.opacity = '0.6';
+    }
+  });
+  
+  // Afficher le feedback
+  feedback.style.display = 'block';
+  if (isCorrect) {
+    feedback.style.background = '#d4edda';
+    feedback.style.color = '#155724';
+    feedback.style.border = '1px solid #c3e6cb';
+    feedback.innerHTML = `<i class="fas fa-check-circle" style="color:#27ae60;"></i> ✅ Bravo ! C'est la bonne réponse.`;
+  } else {
+    feedback.style.background = '#f8d7da';
+    feedback.style.color = '#721c24';
+    feedback.style.border = '1px solid #f5c6cb';
+    feedback.innerHTML = `<i class="fas fa-times-circle" style="color:#e74c3c;"></i> ❌ Ce n'est pas la bonne réponse. La bonne réponse était : <strong>"${escapeHtml(currentCorrectAnswer)}"</strong>`;
+  }
+}
+
+// Fonction pour afficher la réponse sans sélection
+function showAnswer() {
+  const buttons = document.querySelectorAll('.choice-btn');
+  const feedback = document.getElementById('feedbackContainer');
+  
+  // Désactiver tous les boutons
+  buttons.forEach(btn => btn.disabled = true);
+  
+  // Colorer les boutons
+  buttons.forEach((btn, i) => {
+    const choiceText = currentChoices[i];
+    if (choiceText === currentCorrectAnswer) {
+      btn.style.background = '#27ae60';
+      btn.style.borderColor = '#27ae60';
+      btn.style.color = '#fff';
+      btn.querySelector('span:first-child').style.background = '#fff';
+      btn.querySelector('span:first-child').style.color = '#27ae60';
+    } else {
+      btn.style.opacity = '0.6';
+    }
+  });
+  
+  // Afficher le feedback
+  feedback.style.display = 'block';
+  feedback.style.background = '#d4edda';
+  feedback.style.color = '#155724';
+  feedback.style.border = '1px solid #c3e6cb';
+  feedback.innerHTML = `<i class="fas fa-info-circle" style="color:#27ae60;"></i> ℹ️ La bonne réponse est : <strong>"${escapeHtml(currentCorrectAnswer)}"</strong>`;
+}
+
+// ================================================================
+// 8. MODIFICATION DE L'INTERFACE – Ajout d'un bouton "Quiz"
+// ================================================================
+
+// Ajouter un bouton "Quiz" dans les onglets
+document.addEventListener('DOMContentLoaded', function() {
+  const tabNav = document.getElementById('tabNav');
+  
+  // Créer le bouton Quiz
+  const quizBtn = document.createElement('button');
+  quizBtn.className = 'tab-btn';
+  quizBtn.dataset.cat = 'quiz';
+  quizBtn.innerHTML = '<i class="fas fa-brain"></i> Quiz (1-100)';
+  quizBtn.addEventListener('click', function() {
+    setCategory('quiz');
+  });
+  tabNav.appendChild(quizBtn);
+  
+  // Surcharger la fonction setCategory pour gérer le quiz
+  const originalSetCategory = setCategory;
+  setCategory = function(cat) {
+    if (cat === 'quiz') {
+      // Activer le bouton quiz
+      tabBtns.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.cat === cat);
+      });
+      currentCategory = cat;
+      displayQuizQuestion();
+      return;
+    }
+    originalSetCategory(cat);
+  };
+});
+
+console.log('🎯 Quiz prêt ! Cliquez sur l\'onglet "Quiz (1-100)" pour commencer.');
   </script>
 </body>
 </html>
