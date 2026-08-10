@@ -139,6 +139,7 @@
       display: flex;
       align-items: flex-start;
       gap: 1rem;
+      flex-wrap: wrap;
     }
     .question-item:hover {
       border-color: #b6cfe0;
@@ -150,14 +151,25 @@
       color: #1f6d9b;
       background: #dde9f5;
       border-radius: 40px;
-      min-width: 2.8rem;
+      min-width: 3.2rem;
       text-align: center;
-      padding: 0.1rem 0.4rem;
+      padding: 0.1rem 0.6rem;
       flex-shrink: 0;
       margin-top: 0.1rem;
     }
+    .q-doublon {
+      font-size: 0.75rem;
+      color: #7f8c8d;
+      background: #eef2f7;
+      padding: 0.1rem 0.8rem;
+      border-radius: 30px;
+      flex-shrink: 0;
+      align-self: flex-start;
+      margin-top: 0.2rem;
+    }
     .q-text {
       flex: 1;
+      min-width: 200px;
     }
     .q-text .question {
       font-weight: 600;
@@ -213,6 +225,7 @@
       align-items: center;
       gap: 1rem;
       margin-bottom: 0.5rem;
+      flex-wrap: wrap;
     }
     .q-100-header .num {
       font-weight: 700;
@@ -230,6 +243,13 @@
       color: #fff;
       background: #3b7a9e;
       padding: 0.2rem 1rem;
+      border-radius: 30px;
+    }
+    .q-100-header .doublon-info {
+      font-size: 0.75rem;
+      color: #7f8c8d;
+      background: #eef2f7;
+      padding: 0.2rem 0.8rem;
       border-radius: 30px;
     }
     .q-100-body {
@@ -291,7 +311,7 @@
       .header h1 { font-size: 1.8rem; }
       .tab-btn { padding: 0.4rem 1.2rem; font-size: 0.9rem; }
       .question-item { flex-wrap: wrap; padding: 1rem; }
-      .q-number { min-width: 2.4rem; font-size: 1rem; }
+      .q-number { min-width: 2.8rem; font-size: 1rem; }
       .q-text .question { font-size: 0.95rem; }
       .q-category-badge { font-size: 0.6rem; padding: 0.1rem 0.6rem; }
       .search-bar input { font-size: 0.9rem; padding: 0.6rem 1rem 0.6rem 2.5rem; background-size: 1rem; }
@@ -349,182 +369,187 @@
 
   <script>
     // ================================================================
-    // 1. DONNÉES – Toutes les questions classées (pour les onglets classiques)
-    //    Mise à jour avec les doublons conformément au document
+    // 1. DONNÉES – Vérifications INTÉRIEURES
     // ================================================================
-    const questions = [
-      // ----- SÉCURITÉ ROUTIÈRE (questions pures) -----
-      { id: 1, cat: 'securite-routiere', q: 'Pourquoi doit-on régler la hauteur des feux ?', r: 'Pour ne pas éblouir les autres usagers.', doublon: 65 },
-      { id: 2, cat: 'securite-routiere', q: 'Pourquoi est-il préférable d\'utiliser un liquide lave-glace spécial en hiver ?', r: 'Pour éviter le gel du liquide.', doublon: null },
-      { id: 3, cat: 'securite-routiere', q: 'Quel est l\'intérêt de la position nuit du rétroviseur ?', r: 'Ne pas être ébloui par les feux du véhicule suiveur.', doublon: 67 },
-      { id: 4, cat: 'securite-routiere', q: 'Citez un endroit où l\'on peut trouver les pressions préconisées pour les pneumatiques.', r: 'Sur une plaque dans la portière, dans la notice du véhicule ou au niveau de la trappe à carburant.', doublon: 68 },
-      { id: 5, cat: 'securite-routiere', q: 'Comment détecter l\'usure des essuie-glaces en circulation ?', r: 'En cas de pluie, lorsqu\'ils laissent des traces sur le pare-brise.', doublon: 69 },
-      { id: 6, cat: 'securite-routiere', q: 'Quelles sont les précautions à prendre en cas d\'installation d\'un porte-vélo ?', r: 'La plaque d\'immatriculation et les feux doivent être visibles.', doublon: null },
-      { id: 7, cat: 'securite-routiere', q: 'En cas de panne ou d\'accident, quel autre accessoire de sécurité est obligatoire ? (hors gilet)', r: 'Le triangle de pré-signalisation.', doublon: 71 },
-      { id: 8, cat: 'securite-routiere', q: 'Quelle est la conséquence d\'un niveau insuffisant du liquide de frein ?', r: 'Une perte d\'efficacité du freinage.', doublon: 70 },
-      { id: 9, cat: 'securite-routiere', q: 'Quels sont les deux autres documents obligatoires à présenter en cas de contrôle ? (hors carte grise)', r: 'L\'attestation d\'assurance et le permis de conduire.', doublon: null },
-      { id: 10, cat: 'securite-routiere', q: 'Quel est le risque de circuler avec des balais d\'essuie-glace défectueux ?', r: 'Une mauvaise visibilité en cas d\'intempéries.', doublon: null },
-      { id: 11, cat: 'securite-routiere', q: 'Quelles sont les précautions à prendre lors du remplissage du réservoir de carburant ?', r: 'Arrêter le moteur, ne pas fumer, ne pas téléphoner.', doublon: 34 },
-      { id: 12, cat: 'securite-routiere', q: 'Quel est le danger si l\'on complète le niveau du liquide de refroidissement moteur chaud ?', r: 'Un risque de brûlure.', doublon: 72 },
-      { id: 13, cat: 'securite-routiere', q: 'Quelle peut être la conséquence d\'une panne de dégivrage de la lunette arrière ?', r: 'Une insuffisance ou absence de visibilité vers l\'arrière.', doublon: 73 },
-      { id: 14, cat: 'securite-routiere', q: 'Quelle est la signification d\'un clignotement plus rapide ?', r: 'Non-fonctionnement de l\'une des ampoules.', doublon: 74 },
-      { id: 15, cat: 'securite-routiere', q: 'Quelles sont les conditions à respecter pour contrôler le niveau d\'huile ?', r: 'Moteur froid et sur un terrain plat.', doublon: 75 },
-      { id: 16, cat: 'securite-routiere', q: 'Dans quels cas utilise-t-on les feux de brouillard arrière ?', r: 'Par temps de brouillard et neige.', doublon: null },
-      { id: 17, cat: 'securite-routiere', q: 'À partir de quel taux d\'alcoolémie, en période de permis probatoire, est‑on en infraction ?', r: '0,2 g/l (0 verre).', doublon: 77 },
-      { id: 18, cat: 'securite-routiere', q: 'Dans quels cas doit-on utiliser les feux de détresse ?', r: 'En cas de panne, d\'accident ou de ralentissement important.', doublon: [31, 76, 85] },
-      { id: 19, cat: 'securite-routiere', q: 'Pourquoi est-il important de bien régler son volant ? (citez deux exemples)', r: 'Confort de conduite, accessibilité aux commandes, visibilité du tableau de bord, efficacité des airbags.', doublon: null },
-      { id: 20, cat: 'securite-routiere', q: 'Citez un cas d\'utilisation de l\'appel lumineux.', r: 'Pour avertir de son approche, en cas de danger, ou à la place de l\'avertisseur sonore.', doublon: 78 },
-      { id: 21, cat: 'securite-routiere', q: 'Citez deux éléments complémentaires permettant un désembuage efficace.', r: 'La commande de vitesse de ventilation, la commande d\'air chaud, la climatisation.', doublon: 79 },
-      { id: 22, cat: 'securite-routiere', q: 'Quel est le principal risque d\'un manque d\'huile moteur ?', r: 'Une détérioration ou une casse du moteur.', doublon: [36, 80] },
-      { id: 23, cat: 'securite-routiere', q: 'Qu\'est-ce qui peut provoquer la décharge de la batterie, moteur éteint ?', r: 'Les feux ou accessoires électriques en fonctionnement.', doublon: null },
-      { id: 24, cat: 'securite-routiere', q: 'Quelle est la solution en cas de panne de batterie pour démarrer sans déplacer le véhicule ?', r: 'Brancher une deuxième batterie en parallèle ou la remplacer.', doublon: null },
-      { id: 25, cat: 'securite-routiere', q: 'Quel est le risque de circuler avec un frein de parking mal desserré ?', r: 'Une dégradation du système de freinage.', doublon: [55, 81] },
-      { id: 26, cat: 'securite-routiere', q: 'Quelles sont les conséquences d\'un mauvais réglage des feux de croisement ?', r: 'Mauvaise vision vers l\'avant et risque d\'éblouissement.', doublon: 82 },
-      { id: 27, cat: 'securite-routiere', q: 'Quelle est la conséquence d\'une température trop élevée du liquide de refroidissement ?', r: 'Une surchauffe ou une casse moteur.', doublon: 83 },
-      { id: 28, cat: 'securite-routiere', q: 'Quelle est l\'utilité des dispositifs réfléchissants ?', r: 'Rendre visible le véhicule la nuit.', doublon: null },
-      { id: 29, cat: 'securite-routiere', q: 'Quelle précaution pour que les enfants à l\'arrière ne puissent pas ouvrir leur portière ?', r: 'Actionner la sécurité enfant sur les deux portières arrière.', doublon: null },
-      { id: 30, cat: 'securite-routiere', q: 'Par temps clair, à quelle distance les feux de position doivent‑ils être visibles ?', r: 'À 150 mètres.', doublon: null },
-      { id: 32, cat: 'securite-routiere', q: 'Qu\'est-ce que l\'aquaplanage et quelle peut être sa conséquence ?', r: 'Film d\'eau entre le pneu et la chaussée pouvant entraîner une perte de contrôle.', doublon: 84 },
-      { id: 33, cat: 'securite-routiere', q: 'Sans actionner la commande du régulateur, comment le désactiver rapidement ?', r: 'En appuyant sur la pédale de frein ou d\'embrayage.', doublon: null },
-      { id: 35, cat: 'securite-routiere', q: 'Dans quel cas peut-on utiliser l\'avertisseur sonore en agglomération ?', r: 'En cas de danger immédiat.', doublon: null },
-      { id: 37, cat: 'securite-routiere', q: 'Dans quelle situation doit-on désactiver l\'airbag passager ?', r: 'Lors du transport d\'un enfant à l\'avant dans un siège auto dos à la route.', doublon: 87 },
-      { id: 38, cat: 'securite-routiere', q: 'À quelle fréquence est-il préconisé de vérifier la pression des pneus ?', r: 'Chaque mois, et avant chaque long trajet.', doublon: [63, 86, 99] },
-      { id: 39, cat: 'securite-routiere', q: 'En règle générale, à partir de quel âge un enfant peut‑il être installé sur le siège passager avant ?', r: '10 ans.', doublon: 89 },
-      { id: 40, cat: 'securite-routiere', q: 'Un défaut d\'éclairage de la plaque d\'immatriculation au contrôle technique entraîne-t-il une contre-visite ?', r: 'Oui.', doublon: null },
-      { id: 41, cat: 'securite-routiere', q: 'Quels sont les deux autres documents obligatoires à présenter en cas de contrôle ? (hors attestation d\'assurance)', r: 'Le certificat d\'immatriculation et le permis de conduire.', doublon: null },
-      { id: 42, cat: 'securite-routiere', q: 'Si la sécurité enfant est enclenchée, est‑il possible d\'ouvrir la portière arrière depuis l\'extérieur ?', r: 'Oui.', doublon: 88 },
-      { id: 43, cat: 'securite-routiere', q: 'Pouvez-vous utiliser les feux de brouillard arrière par forte pluie ?', r: 'Non.', doublon: 91 },
-      { id: 44, cat: 'securite-routiere', q: 'Quelles sont les deux utilités des feux de recul ?', r: 'Éclairer la zone de recul et avertir les autres usagers.', doublon: null },
-      { id: 45, cat: 'securite-routiere', q: 'Quelle est l\'utilité de l\'appuie-tête ?', r: 'Limiter les blessures en cas de choc en retenant le mouvement de la tête.', doublon: null },
-      { id: 46, cat: 'securite-routiere', q: 'Quelle est la conséquence en cas de panne des feux de stop ?', r: 'Manque d\'information pour les suiveurs et risque de collision.', doublon: 90 },
-      { id: 47, cat: 'securite-routiere', q: 'Quelle est la différence entre un voyant orange et un voyant rouge ?', r: 'Rouge = anomalie ou danger ; Orange = élément important.', doublon: null },
-      { id: 48, cat: 'securite-routiere', q: 'En roulant, quel est le risque d\'une mauvaise fermeture du capot ?', r: 'Un risque d\'ouverture du capot pouvant entraîner un accident.', doublon: null },
-      { id: 49, cat: 'securite-routiere', q: 'Quel peut être le risque de maintenir le recyclage de l\'air de manière prolongée ?', r: 'Risque de buée sur les vitres, donc mauvaise visibilité.', doublon: 93 },
-      { id: 50, cat: 'securite-routiere', q: 'Quel est le principal risque d\'une absence de liquide lave-glace ?', r: 'Une mauvaise visibilité.', doublon: null },
-      { id: 51, cat: 'securite-routiere', q: 'Quel est le risque de maintenir les feux de route lors d\'un croisement ?', r: 'Éblouissement des autres usagers.', doublon: 95 },
-      { id: 52, cat: 'securite-routiere', q: 'Quelle est l\'utilité des feux diurnes ?', r: 'Rendre le véhicule plus visible le jour.', doublon: 92 },
-      { id: 53, cat: 'securite-routiere', q: 'En cas d\'accident, dans quel délai le constat amiable doit‑il être transmis à l\'assureur ?', r: '5 jours.', doublon: null },
-      { id: 54, cat: 'securite-routiere', q: 'Utilise-t-on le triangle de pré-signalisation sur autoroute ?', r: 'Non.', doublon: 94 },
-      { id: 56, cat: 'securite-routiere', q: 'Quelle est la conséquence d\'une panne du feu de croisement ?', r: 'Mauvaise visibilité et risque d\'être confondu avec un deux-roues.', doublon: 96 },
-      { id: 57, cat: 'securite-routiere', q: 'Quelle est l\'utilité d\'un limiteur de vitesse ?', r: 'Ne pas dépasser la vitesse programmée.', doublon: null },
-      { id: 58, cat: 'securite-routiere', q: 'Quelle est la conséquence d\'une panne du feu de position arrière ?', r: 'Être mal vu et risque de collision.', doublon: 98 },
-      { id: 59, cat: 'securite-routiere', q: 'Pour une bonne visibilité vers l\'arrière, quelle commande supplémentaire actionner par temps de pluie ?', r: 'La commande de désembuage arrière.', doublon: 97 },
-      { id: 60, cat: 'securite-routiere', q: 'Lorsque vous transportez un poids important dans le coffre, quelles précautions prendre pour les pneus et l\'éclairage ?', r: 'Augmenter la pression des pneus et régler la hauteur des feux avant.', doublon: null },
-      { id: 61, cat: 'securite-routiere', q: 'Peut-on fixer tous les sièges enfants sur des attaches Isofix ?', r: 'Non, uniquement ceux compatibles.', doublon: null },
-      { id: 62, cat: 'securite-routiere', q: 'Quels sont les risques de circuler avec des objets sur la plage arrière ?', r: 'Mauvaise visibilité vers l\'arrière et risque de projection.', doublon: null },
-      { id: 64, cat: 'securite-routiere', q: 'Pour un capot s\'ouvrant depuis l\'avant, quelle est l\'utilité du dispositif de sécurité ?', r: 'Empêcher l\'ouverture du capot en circulation en cas de mauvais verrouillage.', doublon: null },
-      { id: 66, cat: 'securite-routiere', q: 'Quel est le risque d\'un lave-glace défaillant ?', r: 'Mauvaise visibilité.', doublon: 100 },
-
-      // ----- PREMIERS SECOURS -----
-      { cat: 'premiers-secours', q: 'Comment et pourquoi protéger une zone de danger en cas d\'accident de la route ?', r: 'En délimitant clairement et largement la zone de danger de façon visible pour protéger les victimes et éviter un sur-accident.' },
-      { cat: 'premiers-secours', q: 'Quels comportements adopter en cas de diffusion du signal d\'alerte du SAIP ?', r: 'Se mettre en sécurité, s\'informer via les médias et sites officiels, respecter les consignes.' },
-      { cat: 'premiers-secours', q: 'Comment est composé le signal d\'alerte du SAIP diffusé par les sirènes ?', r: 'Signal National d\'Alerte (SNA) : variation sur 3 cycles ; fin d\'alerte : signal continu.' },
-      { cat: 'premiers-secours', q: 'Sur autoroute, comment indiquer avec précision les lieux de l\'accident depuis un téléphone portable ?', r: 'En indiquant le numéro de l\'autoroute, le sens de circulation et le point kilométrique.' },
-      { cat: 'premiers-secours', q: 'Comment vérifier la respiration d\'une victime ?', r: 'Regarder si le ventre et la poitrine se soulèvent et sentir l\'air expiré.' },
-      { cat: 'premiers-secours', q: 'Qu\'est-ce qu\'une perte de connaissance ?', r: 'La victime ne répond pas et ne réagit pas, mais respire.' },
-      { cat: 'premiers-secours', q: 'Si un dégagement d\'urgence de la victime est nécessaire, où doit-elle être déplacée ?', r: 'Dans un endroit suffisamment éloigné du danger et de ses conséquences.' },
-      { cat: 'premiers-secours', q: 'En cas de panne ou d\'accident, quel équipement de sécurité doit être porté avant de quitter le véhicule ?', r: 'Le gilet de haute visibilité.' },
-      { cat: 'premiers-secours', q: 'Pourquoi l\'alerte auprès des services de secours doit-elle être rapide et précise ?', r: 'Pour permettre aux secours d\'apporter les moyens adaptés dans les plus brefs délais.' },
-      { cat: 'premiers-secours', q: 'Quels sont les numéros d\'urgence à composer ?', r: '18 (pompiers), 15 (SAMU), 112 (européen).' },
-      { cat: 'premiers-secours', q: 'Quels comportements adopter en présence d\'une victime qui ne répond pas, ne réagit pas, mais respire ?', r: 'La placer en position latérale de sécurité (PLS), alerter, surveiller la respiration.' },
-      { cat: 'premiers-secours', q: 'Comment arrêter une hémorragie ?', r: 'Appuyer fortement sur la plaie avec les doigts ou la paume, en plaçant un tissu propre.' },
-      { cat: 'premiers-secours', q: 'Hors autoroute ou endroit dangereux, où doit être placé le triangle de pré-signalisation ?', r: 'À environ 30 m de la panne/accident, ou avant un virage/sommet de côte.' },
-      { cat: 'premiers-secours', q: 'Quelles sont les conditions pour réaliser le dégagement d\'urgence d\'une victime ?', r: 'La victime doit être visible, facile à atteindre, rien ne doit gêner ; il faut être sûr de pouvoir la dégager.' },
-      { cat: 'premiers-secours', q: 'Quelles sont les trois informations à transmettre aux services de secours ?', r: 'Le numéro de téléphone, la nature du problème, la localisation précise.' },
-      { cat: 'premiers-secours', q: 'Par quels moyens doit être réalisée l\'alerte des secours ?', r: 'À l\'aide d\'un téléphone portable, ou à défaut d\'un téléphone fixe ou d\'une borne d\'appel d\'urgence.' },
-      { cat: 'premiers-secours', q: 'Quel comportement adopter en présence d\'une victime en arrêt cardiaque ?', r: 'Alerter, Masser (réanimation cardio-pulmonaire), Défibriller avec un DAE si possible.' },
-      { cat: 'premiers-secours', q: 'Dans quel cas peut-on positionner une victime en PLS ?', r: 'Si la victime ne répond pas, ne réagit pas et respire.' },
-      { cat: 'premiers-secours', q: 'Dans quelle situation peut-on déplacer une victime ?', r: 'En présence d\'un danger réel, immédiat et non contrôlable (déplacement exceptionnel).' },
-      { cat: 'premiers-secours', q: 'Quel est l\'objectif du Signal d\'Alerte et d\'Information des Populations (SAIP) ?', r: 'Avertir la population d\'un danger imminent ou d\'un événement grave.' },
-      { cat: 'premiers-secours', q: 'Comment est diffusée l\'alerte émise par le SAIP ?', r: 'Par les sirènes, les médias (Radio France, France Télévision) et l\'application SAIP.' },
-      { cat: 'premiers-secours', q: 'À partir de quel âge peut-on suivre une formation aux premiers secours ?', r: 'À partir de 10 ans.' },
-      { cat: 'premiers-secours', q: 'Pourquoi faut-il pratiquer immédiatement une réanimation sur une victime en arrêt cardiaque ?', r: 'Car les lésions du cerveau surviennent dès les premières minutes.' },
-      { cat: 'premiers-secours', q: 'Lors d\'un appel avec les secours, pourquoi attendre que le correspondant autorise à raccrocher ?', r: 'Pour recevoir des conseils ou des consignes jusqu\'à l\'arrivée des secours.' },
-      { cat: 'premiers-secours', q: 'À quel moment pouvez-vous mettre fin à un appel avec les secours ?', r: 'Uniquement lorsque le correspondant vous invite à le faire.' },
-      { cat: 'premiers-secours', q: 'Citez les trois manières d\'évaluer l\'état de conscience d\'une victime.', r: 'Poser des questions simples, secouer doucement les épaules, demander un geste simple (serrer la main).' },
-      { cat: 'premiers-secours', q: 'Quels sont les risques pour une personne en perte de connaissance allongée sur le dos ?', r: 'Arrêt respiratoire et arrêt cardiaque.' },
-      { cat: 'premiers-secours', q: 'Qu\'est-ce qu\'une hémorragie ?', r: 'Une perte de sang prolongée qui ne s\'arrête pas, imbibant un mouchoir en quelques secondes.' },
-      { cat: 'premiers-secours', q: 'Quels sont les risques pour une personne victime d\'une hémorragie ?', r: 'Détresse circulatoire ou arrêt cardiaque.' },
-      { cat: 'premiers-secours', q: 'Quels sont les signes d\'un arrêt cardiaque ?', r: 'La victime ne répond pas, ne réagit pas et ne respire pas (ou respiration anormale).' },
-      { cat: 'premiers-secours', q: 'Qu\'est-ce qu\'un défibrillateur automatisé externe (DAE) ?', r: 'Un appareil qui peut rétablir une activité cardiaque normale en cas d\'arrêt cardiaque.' },
-      { cat: 'premiers-secours', q: 'L\'utilisation d\'un DAE sur une victime qui n\'est pas en arrêt cardiaque présente-t-elle un risque ?', r: 'Non, car il ne se déclenche que si la victime est en arrêt cardiaque.' },
-      { cat: 'premiers-secours', q: 'Quel est le risque principal d\'un arrêt cardiaque sans intervention ?', r: 'La mort de la victime en quelques minutes.' },
-      { cat: 'premiers-secours', q: 'Qu\'est-ce qu\'un arrêt cardiaque ?', r: 'Le cœur ne fonctionne plus ou fonctionne de façon anarchique.' },
-      { cat: 'premiers-secours', q: 'Pourquoi ne faut-il pas laisser une personne en perte de connaissance allongée sur le dos ?', r: 'Risque d\'étouffement par liquides ou chute de la langue en arrière.' },
-
-      // ----- VÉRIFICATIONS INTÉRIEURES (VI) -----
-      { cat: 'verifications-interieures', q: 'Pourquoi doit-on régler la hauteur des feux ?', r: 'Pour ne pas éblouir les autres usagers.' },
-      { cat: 'verifications-interieures', q: 'Quel est l\'intérêt de la position nuit du rétroviseur ?', r: 'Ne pas être ébloui par les feux du véhicule suiveur.' },
-      { cat: 'verifications-interieures', q: 'Comment détecter l\'usure des essuie-glaces ?', r: 'Lorsqu\'ils laissent des traces sur le pare-brise.' },
-      { cat: 'verifications-interieures', q: 'Quels documents sont obligatoires (hors carte grise) ?', r: 'L\'attestation d\'assurance et le permis de conduire.' },
-      { cat: 'verifications-interieures', q: 'Précautions lors du remplissage du carburant ?', r: 'Arrêter le moteur, ne pas fumer, ne pas téléphoner.' },
-      { cat: 'verifications-interieures', q: 'Conséquence d\'une panne de dégivrage arrière ?', r: 'Insuffisance ou absence de visibilité vers l\'arrière.' },
-      { cat: 'verifications-interieures', q: 'Conditions pour contrôler le niveau d\'huile ?', r: 'Moteur froid et sur un terrain plat.' },
-      { cat: 'verifications-interieures', q: 'Taux d\'alcoolémie en période probatoire ?', r: '0,2 g/l (0 verre).' },
-      { cat: 'verifications-interieures', q: 'Pourquoi bien régler le volant ?', r: 'Confort, accessibilité, visibilité, efficacité des airbags.' },
-      { cat: 'verifications-interieures', q: 'Éléments pour un désembuage efficace ?', r: 'Ventilation, air chaud, climatisation.' },
-      { cat: 'verifications-interieures', q: 'Cause de décharge de la batterie moteur éteint ?', r: 'Feux ou accessoires électriques en fonctionnement.' },
-      { cat: 'verifications-interieures', q: 'Risque d\'un frein de parking mal desserré ?', r: 'Dégradation du système de freinage.' },
-      { cat: 'verifications-interieures', q: 'Température élevée du liquide de refroidissement ?', r: 'Surchauffe ou casse moteur.' },
-      { cat: 'verifications-interieures', q: 'Sécurité enfant pour les portières ?', r: 'Actionner la sécurité enfant.' },
-      { cat: 'verifications-interieures', q: 'Quand utiliser les feux de détresse ?', r: 'Panne, accident ou ralentissement important.' },
-      { cat: 'verifications-interieures', q: 'Désactiver rapidement le régulateur ?', r: 'En appuyant sur la pédale de frein ou d\'embrayage.' },
-      { cat: 'verifications-interieures', q: 'Utilisation de l\'avertisseur sonore en agglomération ?', r: 'En cas de danger immédiat.' },
-      { cat: 'verifications-interieures', q: 'Quand désactiver l\'airbag passager ?', r: 'Enfant à l\'avant dans un siège dos à la route.' },
-      { cat: 'verifications-interieures', q: 'Âge minimum pour s\'asseoir à l\'avant ?', r: '10 ans.' },
-      { cat: 'verifications-interieures', q: 'Différence voyant rouge / orange ?', r: 'Rouge = danger ; Orange = alerte.' },
-      { cat: 'verifications-interieures', q: 'Recyclage d\'air prolongé : risque ?', r: 'Apparition de buée, mauvaise visibilité.' },
-      { cat: 'verifications-interieures', q: 'Feux de route en croisement : risque ?', r: 'Éblouissement des autres usagers.' },
-      { cat: 'verifications-interieures', q: 'Utilité du limiteur de vitesse ?', r: 'Ne pas dépasser la vitesse programmée.' },
-      { cat: 'verifications-interieures', q: 'Visibilité arrière sous pluie : quelle commande ?', r: 'Désembuage arrière.' },
-      { cat: 'verifications-interieures', q: 'Sièges Isofix : compatibles avec tous les sièges enfants ?', r: 'Non, uniquement ceux compatibles.' },
-      { cat: 'verifications-interieures', q: 'Fréquence de vérification de la pression des pneus ?', r: 'Tous les mois.' },
-      { cat: 'verifications-interieures', q: 'Réglage de la hauteur des feux : pourquoi ?', r: 'Pour ne pas éblouir.' },
-      { cat: 'verifications-interieures', q: 'Panne de feu de croisement : conséquence ?', r: 'Mauvaise visibilité, risque d\'être confondu avec un deux-roues.' },
-      { cat: 'verifications-interieures', q: 'Panne de feu de position arrière : risque ?', r: 'Être mal vu, risque de collision.' },
-      { cat: 'verifications-interieures', q: 'Chargement lourd : précautions ?', r: 'Augmenter la pression des pneus et régler la hauteur des feux.' },
-      { cat: 'verifications-interieures', q: 'Délai d\'envoi du constat amiable ?', r: '5 jours.' },
-
-      // ----- VÉRIFICATIONS EXTÉRIEURES (VE) -----
-      { cat: 'verifications-exterieures', q: 'Pourquoi utiliser un liquide lave-glace spécial hiver ?', r: 'Pour éviter le gel du liquide.' },
-      { cat: 'verifications-exterieures', q: 'Où trouver les pressions des pneumatiques ?', r: 'Sur une plaque dans la portière, dans la notice ou au niveau de la trappe à carburant.' },
-      { cat: 'verifications-exterieures', q: 'Précautions avec un porte-vélo ?', r: 'La plaque d\'immatriculation et les feux doivent être visibles.' },
-      { cat: 'verifications-exterieures', q: 'Conséquence d\'un niveau insuffisant de liquide de frein ?', r: 'Perte d\'efficacité du freinage.' },
-      { cat: 'verifications-exterieures', q: 'Risque avec des essuie-glaces défectueux ?', r: 'Mauvaise visibilité en cas d\'intempéries.' },
-      { cat: 'verifications-exterieures', q: 'Danger en ouvrant le liquide de refroidissement moteur chaud ?', r: 'Risque de brûlure.' },
-      { cat: 'verifications-exterieures', q: 'Clignotement rapide d\'un clignotant = ?', r: 'Non-fonctionnement d\'une ampoule.' },
-      { cat: 'verifications-exterieures', q: 'Utilisation des feux de brouillard arrière ?', r: 'Par temps de brouillard et neige.' },
-      { cat: 'verifications-exterieures', q: 'Quand utiliser les feux de détresse ?', r: 'Panne, accident ou ralentissement important.' },
-      { cat: 'verifications-exterieures', q: 'Utilité de l\'appel lumineux ?', r: 'Avertir de son approche, danger, remplacer l\'avertisseur sonore.' },
-      { cat: 'verifications-exterieures', q: 'Risque d\'un manque d\'huile moteur ?', r: 'Détérioration ou casse du moteur.' },
-      { cat: 'verifications-exterieures', q: 'Solution en cas de panne de batterie ?', r: 'Brancher une deuxième batterie ou la remplacer.' },
-      { cat: 'verifications-exterieures', q: 'Mauvais réglage des feux : conséquences ?', r: 'Mauvaise visibilité et éblouissement des autres.' },
-      { cat: 'verifications-exterieures', q: 'Utilité des dispositifs réfléchissants ?', r: 'Rendre visible le véhicule la nuit.' },
-      { cat: 'verifications-exterieures', q: 'Distance de visibilité des feux de position ?', r: '150 mètres.' },
-      { cat: 'verifications-exterieures', q: 'Qu\'est-ce que l\'aquaplanage ?', r: 'Film d\'eau entre le pneu et la chaussée pouvant entraîner une perte de contrôle.' },
-      { cat: 'verifications-exterieures', q: 'Précautions lors du remplissage de carburant ?', r: 'Arrêter le moteur, ne pas fumer, ne pas téléphoner.' },
-      { cat: 'verifications-exterieures', q: 'Fréquence de vérification de la pression des pneus ?', r: 'Chaque mois et avant un long trajet.' },
-      { cat: 'verifications-exterieures', q: 'Éclairage de la plaque : contre-visite au contrôle technique ?', r: 'Oui.' },
-      { cat: 'verifications-exterieures', q: 'Sécurité enfant enclenchée : ouverture extérieure possible ?', r: 'Oui.' },
-      { cat: 'verifications-exterieures', q: 'Feux de brouillard arrière par forte pluie ?', r: 'Non.' },
-      { cat: 'verifications-exterieures', q: 'Utilité des feux de recul ?', r: 'Éclairer la zone de recul et avertir.' },
-      { cat: 'verifications-exterieures', q: 'Conséquence d\'une panne des feux stop ?', r: 'Risque de collision.' },
-      { cat: 'verifications-exterieures', q: 'Mauvaise fermeture du capot : risque ?', r: 'Ouverture du capot en roulant.' },
-      { cat: 'verifications-exterieures', q: 'Utilité des feux diurnes ?', r: 'Rendre le véhicule plus visible le jour.' },
-      { cat: 'verifications-exterieures', q: 'Triangle de pré-signalisation sur autoroute ?', r: 'Non.' },
-      { cat: 'verifications-exterieures', q: 'Panne de feu de croisement : conséquences ?', r: 'Mauvaise visibilité, confusion avec un deux-roues.' },
-      { cat: 'verifications-exterieures', q: 'Panne de feu de position arrière : risque ?', r: 'Mauvaise visibilité, risque de collision.' },
-      { cat: 'verifications-exterieures', q: 'Lave-glace défaillant : conséquence ?', r: 'Mauvaise visibilité.' },
-      { cat: 'verifications-exterieures', q: 'Transport d\'une charge lourde : précautions ?', r: 'Augmenter la pression des pneus et régler la hauteur des feux.' },
-      { cat: 'verifications-exterieures', q: 'Objets sur la plage arrière : risques ?', r: 'Mauvaise visibilité et risque de projection.' },
-      { cat: 'verifications-exterieures', q: 'Dispositif de sécurité du capot : utilité ?', r: 'Empêcher l\'ouverture en circulation en cas de mauvais verrouillage.' },
-      { cat: 'verifications-exterieures', q: 'Où trouver les pressions des pneus ?', r: 'Portière, notice ou trappe à carburant.' },
-      { cat: 'verifications-exterieures', q: 'Usure des essuie-glaces : comment la détecter ?', r: 'Traces sur le pare-brise.' },
+    const verificationsInterieures = [
+      { id: '1 / 65', q: 'Réglage hauteur des feux', r: '« Cette commande permet d\'adapter la hauteur des feux en fonction du chargement du véhicule. »' },
+      { id: '3 / 67', q: 'Rétroviseur intérieur en position nuit', r: '« Je bascule le rétroviseur en position nuit pour éviter l\'éblouissement. »' },
+      { id: '5 / 69', q: 'Essuie-glaces avant', r: '« Je mets les essuie-glaces à leur vitesse maximale. »' },
+      { id: '7 / 71', q: 'Gilet de haute visibilité', r: '« Le gilet de haute visibilité doit être à portée de main dans l\'habitacle. »' },
+      { id: '9', q: 'Certificat d\'immatriculation', r: '« Je montre le certificat d\'immatriculation du véhicule. »' },
+      { id: '11', q: 'Indicateur de carburant', r: '« Je montre l\'indicateur du niveau de carburant. »' },
+      { id: '13 / 73', q: 'Dégivrage lunette arrière', r: '« J\'actionne le dégivrage de la lunette arrière et je montre son voyant. »' },
+      { id: '15 / 75', q: 'Voyant pression d\'huile', r: '« Ce voyant indique une pression insuffisante d\'huile moteur. »' },
+      { id: '17 / 77', q: 'Éthylotest', r: '« Je montre l\'éthylotest s\'il est présent dans le véhicule. »' },
+      { id: '19', q: 'Réglage du volant', r: '« Je montre la commande permettant de régler la hauteur et/ou la profondeur du volant. »' },
+      { id: '21 / 79', q: 'Air dirigé vers pare-brise', r: '« Je dirige l\'air vers le pare-brise pour le désembuer. »' },
+      { id: '23', q: 'Voyant batterie', r: '« Ce voyant indique un défaut du système de charge de la batterie. »' },
+      { id: '25 / 55 / 81', q: 'Voyant freinage', r: '« Ce voyant est rouge. Il indique une défaillance du système de freinage ou que le frein de stationnement est serré. »' },
+      { id: '27 / 83', q: 'Température liquide refroidissement', r: '« Ce voyant indique une température trop élevée du liquide de refroidissement. »' },
+      { id: '29', q: 'Portière mal fermée', r: '« Ce voyant indique qu\'une portière est mal fermée. »' },
+      { id: '31 / 85', q: 'Feux de détresse', r: '« J\'actionne les feux de détresse. »' },
+      { id: '33', q: 'Régulateur de vitesse', r: '« Je montre la commande permettant d\'utiliser le régulateur de vitesse. »' },
+      { id: '35', q: 'Avertisseur sonore', r: '« J\'appuie sur le klaxon. »' },
+      { id: '37 / 87', q: 'Airbag passager', r: '« Je montre la commande permettant de désactiver l\'airbag passager. »' },
+      { id: '39 / 89', q: 'Ceinture conducteur', r: '« Ce voyant indique que la ceinture du conducteur n\'est pas bouclée. »' },
+      { id: '41', q: 'Assurance', r: '« Je montre le document ou dispositif permettant de justifier l\'assurance du véhicule. »' },
+      { id: '43 / 91', q: 'Antibrouillard arrière', r: '« J\'actionne le feu antibrouillard arrière et je montre son voyant. »' },
+      { id: '45', q: 'Appuie-tête conducteur', r: '« L\'appuie-tête doit être réglé afin de protéger correctement la tête et le cou. »' },
+      { id: '47', q: 'Voyant antibrouillard arrière', r: '« Le voyant du feu antibrouillard arrière est de couleur orange. »' },
+      { id: '49 / 93', q: 'Recyclage de l\'air', r: '« J\'actionne la commande de recyclage de l\'air. »' },
+      { id: '51 / 95', q: 'Feux de route', r: '« J\'allume les feux de route et je montre le voyant correspondant. »' },
+      { id: '53', q: 'Constat amiable', r: '« Je montre le constat amiable. »' },
+      { id: '57', q: 'Limiteur de vitesse', r: '« Je montre la commande permettant d\'utiliser le limiteur de vitesse. »' },
+      { id: '59 / 97', q: 'Essuie-glace arrière', r: '« J\'actionne l\'essuie-glace arrière. »' },
+      { id: '61', q: 'ISOFIX', r: '« Je montre les fixations ISOFIX permettant d\'installer un siège enfant. »' },
+      { id: '63 / 99', q: 'Pression des pneus', r: '« Ce voyant indique une pression insuffisante d\'un ou plusieurs pneumatiques. »' }
     ];
 
     // ================================================================
-    // 2. DONNÉES – Questions 1 à 100 (ordre exact)
-    //    Chaque objet : id, verif (VI/VE), qSR, rSR, qPS, rPS
+    // 2. DONNÉES – Vérifications EXTÉRIEURES
+    // ================================================================
+    const verificationsExterieures = [
+      { id: '2', q: 'Remplissage lave-glace', r: '« Je montre l\'orifice de remplissage du liquide lave-glace. »' },
+      { id: '4 / 68', q: 'Flanc d\'un pneu', r: '« Le flanc ne doit présenter ni déchirure ni hernie. »' },
+      { id: '6', q: 'Plaques d\'immatriculation', r: '« Elles doivent être propres, lisibles et correctement fixées. »' },
+      { id: '8 / 70', q: 'Liquide de frein', r: '« Le niveau doit être compris entre les repères minimum et maximum. »' },
+      { id: '10', q: 'Balais d\'essuie-glace', r: '« Les balais doivent être en bon état et permettre un essuyage efficace. »' },
+      { id: '12', q: 'Liquide de refroidissement', r: '« Le niveau doit être compris entre les repères minimum et maximum. »' },
+      { id: '14 / 74', q: 'Clignotants côté trottoir', r: '« Ils doivent être propres, en bon état et fonctionner correctement. »' },
+      { id: '16', q: 'Antibrouillard arrière', r: '« Il doit être propre, en bon état et fonctionner correctement. »' },
+      { id: '18 / 76', q: 'Feux de détresse', r: '« Ils doivent fonctionner sur l\'ensemble des indicateurs de direction. »' },
+      { id: '20 / 78', q: 'Feux de route', r: '« Ils doivent être propres, en bon état et fonctionner correctement. »' },
+      { id: '22 / 80', q: 'Niveau d\'huile moteur', r: '« Le niveau doit être compris entre les repères minimum et maximum. »' },
+      { id: '24', q: 'Batterie', r: '« Je montre la batterie et vérifie qu\'elle est correctement fixée. »' },
+      { id: '26 / 82', q: 'Feux de croisement', r: '« Ils doivent être propres, en bon état et fonctionner correctement. »' },
+      { id: '28', q: 'Dispositifs réfléchissants', r: '« Ils doivent être propres, en bon état et correctement fixés. »' },
+      { id: '30', q: 'Feux de position', r: '« Ils doivent être propres, en bon état et fonctionner correctement. »' },
+      { id: '32 / 84', q: 'Témoin d\'usure', r: '« Je vérifie que la profondeur des sculptures est suffisante et que le témoin d\'usure n\'est pas atteint. »' },
+      { id: '36', q: 'Remplissage huile moteur', r: '« Je montre l\'orifice de remplissage de l\'huile moteur. »' },
+      { id: '38 / 86', q: 'Pression pneus arrière chargé', r: '« Je vérifie la pression recommandée pour un véhicule chargé. »' },
+      { id: '40', q: 'Éclairage plaque arrière', r: '« Il doit être propre, en bon état et fonctionner correctement. »' },
+      { id: '42 / 88', q: 'Sécurité enfant', r: '« Je montre le dispositif de sécurité enfant. »' },
+      { id: '44', q: 'Feu de recul', r: '« Il doit être propre, en bon état et fonctionner correctement. »' },
+      { id: '46 / 90', q: 'Feux stop', r: '« Ils doivent être propres, en bon état et fonctionner correctement. »' },
+      { id: '48 / 64', q: 'Capot', r: '« Je montre la commande permettant d\'ouvrir le capot puis le dispositif de sécurité. »' },
+      { id: '50', q: 'Orifice lave-glace', r: '« Je montre l\'orifice de remplissage du liquide lave-glace. »' },
+      { id: '52 / 92', q: 'Feux diurnes', r: '« Ils doivent être propres, en bon état et fonctionner correctement. »' },
+      { id: '54 / 94', q: 'Triangle de présignalisation', r: '« Je montre où se trouve le triangle de présignalisation. »' },
+      { id: '56 / 96', q: 'Ampoule avant', r: '« Je montre l\'emplacement permettant de remplacer une ampoule avant. »' },
+      { id: '58 / 98', q: 'Ampoule arrière', r: '« Je montre l\'emplacement permettant de remplacer une ampoule arrière. »' },
+      { id: '60 / 62', q: 'Coffre', r: '« J\'ouvre/ferme le coffre et vérifie qu\'il est correctement verrouillé. »' },
+      { id: '66 / 100', q: 'Gicleurs lave-glace', r: '« Je montre les gicleurs permettant de projeter le liquide lave-glace sur le pare-brise. »' }
+    ];
+
+    // ================================================================
+    // 3. DONNÉES – Sécurité ROUTIÈRE (mise à jour complète)
+    // ================================================================
+    const securiteRoutiere = [
+      { id: '1 / 65', q: 'Pourquoi doit-on régler la hauteur des feux ?', r: 'Pour ne pas éblouir les autres usagers.' },
+      { id: '2', q: 'Pourquoi utiliser un liquide lave-glace spécial hiver ?', r: 'Pour éviter le gel du liquide.' },
+      { id: '3 / 67', q: 'Quel est l\'intérêt de la position nuit du rétroviseur ?', r: 'Ne pas être ébloui par les feux du véhicule suiveur.' },
+      { id: '4 / 68', q: 'Où trouver les pressions des pneumatiques ?', r: 'Sur une plaque dans la portière, dans la notice du véhicule ou au niveau de la trappe à carburant.' },
+      { id: '5 / 69', q: 'Comment détecter l\'usure des essuie-glaces ?', r: 'Lorsqu\'ils laissent des traces sur le pare-brise.' },
+      { id: '6', q: 'Précautions avec un porte-vélo ?', r: 'La plaque d\'immatriculation et les feux doivent être visibles.' },
+      { id: '7 / 71', q: 'Accessoire obligatoire (hors gilet) en cas de panne ?', r: 'Le triangle de pré-signalisation.' },
+      { id: '8 / 70', q: 'Conséquence d\'un niveau insuffisant de liquide de frein ?', r: 'Une perte d\'efficacité du freinage.' },
+      { id: '9', q: 'Documents obligatoires (hors carte grise) ?', r: 'L\'attestation d\'assurance et le permis de conduire.' },
+      { id: '10', q: 'Risque avec des essuie-glaces défectueux ?', r: 'Une mauvaise visibilité en cas d\'intempéries.' },
+      { id: '11 / 34', q: 'Précautions lors du remplissage du carburant ?', r: 'Arrêter le moteur, ne pas fumer, ne pas téléphoner.' },
+      { id: '12 / 72', q: 'Danger liquide de refroidissement moteur chaud ?', r: 'Un risque de brûlure.' },
+      { id: '13 / 73', q: 'Conséquence panne dégivrage arrière ?', r: 'Une insuffisance ou une absence de visibilité vers l\'arrière.' },
+      { id: '14 / 74', q: 'Clignotement rapide ?', r: 'Non-fonctionnement d\'une ampoule.' },
+      { id: '15 / 75', q: 'Conditions pour contrôler le niveau d\'huile ?', r: 'Moteur froid et sur un terrain plat.' },
+      { id: '16', q: 'Utilisation feux de brouillard arrière ?', r: 'Par temps de brouillard et neige.' },
+      { id: '17 / 77', q: 'Taux alcool permis probatoire ?', r: '0,2 g/l.' },
+      { id: '18 / 31 / 76 / 85', q: 'Quand utiliser les feux de détresse ?', r: 'En cas de panne, d\'accident ou de ralentissement important.' },
+      { id: '19', q: 'Pourquoi bien régler le volant ?', r: 'Confort de conduite, accessibilité aux commandes, visibilité du tableau de bord et efficacité des airbags.' },
+      { id: '20 / 78', q: 'Utilité appel lumineux ?', r: 'Pour avertir de son approche, en cas de danger ou à la place de l\'avertisseur sonore.' },
+      { id: '21 / 79', q: 'Éléments pour désembuage efficace ?', r: 'Commande de ventilation, air chaud, climatisation.' },
+      { id: '22 / 36 / 80', q: 'Risque manque d\'huile moteur ?', r: 'Risque de détérioration ou de casse du moteur.' },
+      { id: '23', q: 'Cause décharge batterie moteur éteint ?', r: 'Les feux ou accessoires électriques en fonctionnement.' },
+      { id: '24', q: 'Solution panne batterie ?', r: 'Brancher une deuxième batterie ou la remplacer.' },
+      { id: '25 / 55 / 81', q: 'Risque frein mal desserré ?', r: 'Dégradation du système de freinage.' },
+      { id: '26 / 82', q: 'Mauvais réglage feux ?', r: 'Mauvaise visibilité et éblouissement des autres usagers.' },
+      { id: '27 / 83', q: 'Température élevée moteur ?', r: 'Surchauffe ou casse moteur.' },
+      { id: '28', q: 'Utilité dispositifs réfléchissants ?', r: 'Rendre visible le véhicule la nuit.' },
+      { id: '29', q: 'Sécurité enfant portière ?', r: 'Actionner la sécurité enfant.' },
+      { id: '30', q: 'Distance visibilité feux de position ?', r: '150 mètres.' },
+      { id: '32 / 84', q: 'Qu\'est-ce que l\'aquaplanage ?', r: 'Film d\'eau entraînant une perte de contrôle.' },
+      { id: '33', q: 'Désactiver régulateur ?', r: 'Appuyer sur frein ou embrayage.' },
+      { id: '35', q: 'Avertisseur sonore en ville ?', r: 'En cas de danger immédiat.' },
+      { id: '37 / 87', q: 'Désactiver airbag ?', r: 'Enfant dos à la route.' },
+      { id: '38 / 63 / 86 / 99', q: 'Pression pneus fréquence ?', r: 'Chaque mois et avant long trajet.' },
+      { id: '39 / 89', q: 'Âge place avant ?', r: '10 ans.' },
+      { id: '40', q: 'Éclairage plaque contre-visite ?', r: 'Oui.' },
+      { id: '41', q: 'Documents obligatoires (hors attestation d\'assurance) ?', r: 'Le certificat d\'immatriculation et le permis de conduire.' },
+      { id: '42 / 88', q: 'Sécurité enfant enclenchée : ouverture extérieure possible ?', r: 'Oui.' },
+      { id: '43 / 91', q: 'Feux de brouillard arrière sous forte pluie ?', r: 'Non.' },
+      { id: '44', q: 'Utilité des feux de recul ?', r: 'Éclairer la zone de recul et avertir les autres usagers.' },
+      { id: '45', q: 'Utilité de l\'appuie-tête ?', r: 'Permet de retenir le mouvement de la tête en cas de choc et de limiter les blessures.' },
+      { id: '46 / 90', q: 'Conséquence panne feux stop ?', r: 'Manque d\'information pour les usagers et risque de collision.' },
+      { id: '47', q: 'Différence voyant rouge / orange ?', r: 'Rouge : anomalie ou danger. Orange : élément important.' },
+      { id: '48', q: 'Mauvaise fermeture du capot ?', r: 'Risque d\'ouverture du capot pouvant entraîner un accident.' },
+      { id: '49 / 93', q: 'Recyclage de l\'air prolongé ?', r: 'Risque de mauvaise visibilité par apparition de buée.' },
+      { id: '50', q: 'Absence de lave-glace ?', r: 'Mauvaise visibilité.' },
+      { id: '51 / 95', q: 'Feux de route lors d\'un croisement ?', r: 'Risque d\'éblouissement des autres usagers.' },
+      { id: '52 / 92', q: 'Utilité feux diurnes ?', r: 'Rendre le véhicule plus visible le jour.' },
+      { id: '53', q: 'Délai pour envoyer un constat ?', r: '5 jours.' },
+      { id: '54 / 94', q: 'Triangle sur autoroute ?', r: 'Non.' },
+      { id: '56 / 96', q: 'Panne feu de croisement ?', r: 'Mauvaise visibilité et risque d\'être confondu avec un deux-roues.' },
+      { id: '57', q: 'Utilité limiteur de vitesse ?', r: 'Ne pas dépasser la vitesse programmée.' },
+      { id: '58 / 98', q: 'Panne feu position arrière ?', r: 'Être mal vu et risque de collision.' },
+      { id: '59 / 97', q: 'Visibilité arrière sous pluie ?', r: 'Commande de désembuage arrière.' },
+      { id: '60', q: 'Transport charge lourde : précautions ?', r: 'Augmenter la pression des pneus et régler la hauteur des feux.' },
+      { id: '61', q: 'Sièges Isofix compatibles ?', r: 'Non, uniquement ceux compatibles.' },
+      { id: '62', q: 'Objets sur plage arrière ?', r: 'Mauvaise visibilité et risque de projection.' },
+      { id: '64', q: 'Dispositif sécurité capot ?', r: 'Empêcher l\'ouverture en circulation en cas de mauvais verrouillage.' },
+      { id: '66 / 100', q: 'Lave-glace défaillant ?', r: 'Mauvaise visibilité.' }
+    ];
+
+    // ================================================================
+    // 4. DONNÉES – Premiers Secours
+    // ================================================================
+    const premiersSecours = [
+      { q: 'Comment et pourquoi protéger une zone de danger en cas d\'accident de la route ?', r: 'En délimitant clairement et largement la zone de danger de façon visible pour protéger les victimes et éviter un sur-accident.' },
+      { q: 'Quels comportements adopter en cas de diffusion du signal d\'alerte du SAIP ?', r: 'Se mettre en sécurité, s\'informer via les médias et sites officiels, respecter les consignes.' },
+      { q: 'Comment est composé le signal d\'alerte du SAIP diffusé par les sirènes ?', r: 'Signal National d\'Alerte (SNA) : variation sur 3 cycles ; fin d\'alerte : signal continu.' },
+      { q: 'Sur autoroute, comment indiquer avec précision les lieux de l\'accident depuis un téléphone portable ?', r: 'En indiquant le numéro de l\'autoroute, le sens de circulation et le point kilométrique.' },
+      { q: 'Comment vérifier la respiration d\'une victime ?', r: 'Regarder si le ventre et la poitrine se soulèvent et sentir l\'air expiré.' },
+      { q: 'Qu\'est-ce qu\'une perte de connaissance ?', r: 'La victime ne répond pas et ne réagit pas, mais respire.' },
+      { q: 'Si un dégagement d\'urgence de la victime est nécessaire, où doit-elle être déplacée ?', r: 'Dans un endroit suffisamment éloigné du danger et de ses conséquences.' },
+      { q: 'En cas de panne ou d\'accident, quel équipement de sécurité doit être porté avant de quitter le véhicule ?', r: 'Le gilet de haute visibilité.' },
+      { q: 'Pourquoi l\'alerte auprès des services de secours doit-elle être rapide et précise ?', r: 'Pour permettre aux secours d\'apporter les moyens adaptés dans les plus brefs délais.' },
+      { q: 'Quels sont les numéros d\'urgence à composer ?', r: '18 (pompiers), 15 (SAMU), 112 (européen).' },
+      { q: 'Quels comportements adopter en présence d\'une victime qui ne répond pas, ne réagit pas, mais respire ?', r: 'La placer en position latérale de sécurité (PLS), alerter, surveiller la respiration.' },
+      { q: 'Comment arrêter une hémorragie ?', r: 'Appuyer fortement sur la plaie avec les doigts ou la paume, en plaçant un tissu propre.' },
+      { q: 'Hors autoroute ou endroit dangereux, où doit être placé le triangle de pré-signalisation ?', r: 'À environ 30 m de la panne/accident, ou avant un virage/sommet de côte.' },
+      { q: 'Quelles sont les conditions pour réaliser le dégagement d\'urgence d\'une victime ?', r: 'La victime doit être visible, facile à atteindre, rien ne doit gêner ; il faut être sûr de pouvoir la dégager.' },
+      { q: 'Quelles sont les trois informations à transmettre aux services de secours ?', r: 'Le numéro de téléphone, la nature du problème, la localisation précise.' },
+      { q: 'Par quels moyens doit être réalisée l\'alerte des secours ?', r: 'À l\'aide d\'un téléphone portable, ou à défaut d\'un téléphone fixe ou d\'une borne d\'appel d\'urgence.' },
+      { q: 'Quel comportement adopter en présence d\'une victime en arrêt cardiaque ?', r: 'Alerter, Masser (réanimation cardio-pulmonaire), Défibriller avec un DAE si possible.' },
+      { q: 'Dans quel cas peut-on positionner une victime en PLS ?', r: 'Si la victime ne répond pas, ne réagit pas et respire.' },
+      { q: 'Dans quelle situation peut-on déplacer une victime ?', r: 'En présence d\'un danger réel, immédiat et non contrôlable (déplacement exceptionnel).' },
+      { q: 'Quel est l\'objectif du Signal d\'Alerte et d\'Information des Populations (SAIP) ?', r: 'Avertir la population d\'un danger imminent ou d\'un événement grave.' },
+      { q: 'Comment est diffusée l\'alerte émise par le SAIP ?', r: 'Par les sirènes, les médias (Radio France, France Télévision) et l\'application SAIP.' },
+      { q: 'À partir de quel âge peut-on suivre une formation aux premiers secours ?', r: 'À partir de 10 ans.' },
+      { q: 'Pourquoi faut-il pratiquer immédiatement une réanimation sur une victime en arrêt cardiaque ?', r: 'Car les lésions du cerveau surviennent dès les premières minutes.' },
+      { q: 'Lors d\'un appel avec les secours, pourquoi attendre que le correspondant autorise à raccrocher ?', r: 'Pour recevoir des conseils ou des consignes jusqu\'à l\'arrivée des secours.' },
+      { q: 'À quel moment pouvez-vous mettre fin à un appel avec les secours ?', r: 'Uniquement lorsque le correspondant vous invite à le faire.' },
+      { q: 'Citez les trois manières d\'évaluer l\'état de conscience d\'une victime.', r: 'Poser des questions simples, secouer doucement les épaules, demander un geste simple (serrer la main).' },
+      { q: 'Quels sont les risques pour une personne en perte de connaissance allongée sur le dos ?', r: 'Arrêt respiratoire et arrêt cardiaque.' },
+      { q: 'Qu\'est-ce qu\'une hémorragie ?', r: 'Une perte de sang prolongée qui ne s\'arrête pas, imbibant un mouchoir en quelques secondes.' },
+      { q: 'Quels sont les risques pour une personne victime d\'une hémorragie ?', r: 'Détresse circulatoire ou arrêt cardiaque.' },
+      { q: 'Quels sont les signes d\'un arrêt cardiaque ?', r: 'La victime ne répond pas, ne réagit pas et ne respire pas (ou respiration anormale).' },
+      { q: 'Qu\'est-ce qu\'un défibrillateur automatisé externe (DAE) ?', r: 'Un appareil qui peut rétablir une activité cardiaque normale en cas d\'arrêt cardiaque.' },
+      { q: 'L\'utilisation d\'un DAE sur une victime qui n\'est pas en arrêt cardiaque présente-t-elle un risque ?', r: 'Non, car il ne se déclenche que si la victime est en arrêt cardiaque.' },
+      { q: 'Quel est le risque principal d\'un arrêt cardiaque sans intervention ?', r: 'La mort de la victime en quelques minutes.' },
+      { q: 'Qu\'est-ce qu\'un arrêt cardiaque ?', r: 'Le cœur ne fonctionne plus ou fonctionne de façon anarchique.' },
+      { q: 'Pourquoi ne faut-il pas laisser une personne en perte de connaissance allongée sur le dos ?', r: 'Risque d\'étouffement par liquides ou chute de la langue en arrière.' }
+    ];
+
+    // ================================================================
+    // 5. DONNÉES – Questions 1 à 100 (ordre exact)
     // ================================================================
     const questions100 = [
       { id: 1, verif: 'VI', qSR: 'Pourquoi doit-on régler la hauteur des feux ?', rSR: 'Pour ne pas éblouir les autres usagers.', qPS: 'Comment et pourquoi protéger une zone de danger en cas d\'accident de la route ?', rPS: 'En délimitant clairement et largement la zone de danger de façon visible pour protéger les victimes et éviter un sur-accident.' },
@@ -630,7 +655,7 @@
     ];
 
     // ================================================================
-    // 3. LOGIQUE D'AFFICHAGE
+    // 6. LOGIQUE D'AFFICHAGE
     // ================================================================
     const contentArea = document.getElementById('contentArea');
     const searchInput = document.getElementById('searchInput');
@@ -642,7 +667,134 @@
     function render() {
       const searchTerm = currentSearch.toLowerCase().trim();
 
-      // Si on est dans l'onglet "questions-1-100"
+      // Onglet "verifications-interieures"
+      if (currentCategory === 'verifications-interieures') {
+        let filtered = verificationsInterieures;
+        if (searchTerm) {
+          filtered = filtered.filter(item =>
+            item.q.toLowerCase().includes(searchTerm) ||
+            item.r.toLowerCase().includes(searchTerm) ||
+            item.id.toLowerCase().includes(searchTerm)
+          );
+        }
+        if (filtered.length === 0) {
+          contentArea.innerHTML = `<div class="empty-state"><i class="fas fa-search"></i><p>Aucune vérification intérieure ne correspond.</p></div>`;
+          return;
+        }
+        let html = `<div class="question-list">`;
+        filtered.forEach(item => {
+          html += `
+            <div class="question-item">
+              <span class="q-number">${item.id}</span>
+              <div class="q-text">
+                <div class="question">${escapeHtml(item.q)}</div>
+                <div class="answer"><i class="fas fa-check-circle"></i> ${escapeHtml(item.r)}</div>
+              </div>
+              <span class="q-category-badge" style="background:#2c7a5a;">VI</span>
+            </div>
+          `;
+        });
+        html += `</div>`;
+        contentArea.innerHTML = html;
+        return;
+      }
+
+      // Onglet "verifications-exterieures"
+      if (currentCategory === 'verifications-exterieures') {
+        let filtered = verificationsExterieures;
+        if (searchTerm) {
+          filtered = filtered.filter(item =>
+            item.q.toLowerCase().includes(searchTerm) ||
+            item.r.toLowerCase().includes(searchTerm) ||
+            item.id.toLowerCase().includes(searchTerm)
+          );
+        }
+        if (filtered.length === 0) {
+          contentArea.innerHTML = `<div class="empty-state"><i class="fas fa-search"></i><p>Aucune vérification extérieure ne correspond.</p></div>`;
+          return;
+        }
+        let html = `<div class="question-list">`;
+        filtered.forEach(item => {
+          html += `
+            <div class="question-item">
+              <span class="q-number">${item.id}</span>
+              <div class="q-text">
+                <div class="question">${escapeHtml(item.q)}</div>
+                <div class="answer"><i class="fas fa-check-circle"></i> ${escapeHtml(item.r)}</div>
+              </div>
+              <span class="q-category-badge" style="background:#d4880f;">VE</span>
+            </div>
+          `;
+        });
+        html += `</div>`;
+        contentArea.innerHTML = html;
+        return;
+      }
+
+      // Onglet "securite-routiere"
+      if (currentCategory === 'securite-routiere') {
+        let filtered = securiteRoutiere;
+        if (searchTerm) {
+          filtered = filtered.filter(item =>
+            item.q.toLowerCase().includes(searchTerm) ||
+            item.r.toLowerCase().includes(searchTerm) ||
+            item.id.toLowerCase().includes(searchTerm)
+          );
+        }
+        if (filtered.length === 0) {
+          contentArea.innerHTML = `<div class="empty-state"><i class="fas fa-search"></i><p>Aucune question de sécurité routière ne correspond.</p></div>`;
+          return;
+        }
+        let html = `<div class="question-list">`;
+        filtered.forEach(item => {
+          html += `
+            <div class="question-item">
+              <span class="q-number">${item.id}</span>
+              <div class="q-text">
+                <div class="question">${escapeHtml(item.q)}</div>
+                <div class="answer"><i class="fas fa-check-circle"></i> ${escapeHtml(item.r)}</div>
+              </div>
+              <span class="q-category-badge" style="background:#1f6d9b;">SR</span>
+            </div>
+          `;
+        });
+        html += `</div>`;
+        contentArea.innerHTML = html;
+        return;
+      }
+
+      // Onglet "premiers-secours"
+      if (currentCategory === 'premiers-secours') {
+        let filtered = premiersSecours;
+        if (searchTerm) {
+          filtered = filtered.filter(item =>
+            item.q.toLowerCase().includes(searchTerm) ||
+            item.r.toLowerCase().includes(searchTerm)
+          );
+        }
+        if (filtered.length === 0) {
+          contentArea.innerHTML = `<div class="empty-state"><i class="fas fa-search"></i><p>Aucune question de premiers secours ne correspond.</p></div>`;
+          return;
+        }
+        let html = `<div class="question-list">`;
+        filtered.forEach((item, index) => {
+          html += `
+            <div class="question-item">
+              <span class="q-number">${index + 1}</span>
+              <div class="q-text">
+                <div class="question">${escapeHtml(item.q)}</div>
+                <div class="answer"><i class="fas fa-check-circle"></i> ${escapeHtml(item.r)}</div>
+              </div>
+              <span class="q-category-badge" style="background:#b33c5a;">PS</span>
+            </div>
+          `;
+        });
+        html += `</div>`;
+        contentArea.innerHTML = html;
+        return;
+      }
+
+      // Onglet "questions-1-100"
       if (currentCategory === 'questions-1-100') {
         let filtered = questions100;
         if (searchTerm) {
@@ -660,11 +812,42 @@
         }
         let html = `<div class="q-100-list">`;
         filtered.forEach(item => {
+          // Déterminer les doublons pour cet ID
+          let doublonInfo = '';
+          // Chercher dans les vérifications intérieures
+          const viItem = verificationsInterieures.find(vi => {
+            const ids = vi.id.split(' / ').map(s => s.trim());
+            return ids.includes(String(item.id));
+          });
+          if (viItem && viItem.id.includes(' / ')) {
+            doublonInfo = `Doublons : ${viItem.id}`;
+          }
+          // Chercher dans les vérifications extérieures si pas trouvé
+          if (!doublonInfo) {
+            const veItem = verificationsExterieures.find(ve => {
+              const ids = ve.id.split(' / ').map(s => s.trim());
+              return ids.includes(String(item.id));
+            });
+            if (veItem && veItem.id.includes(' / ')) {
+              doublonInfo = `Doublons : ${veItem.id}`;
+            }
+          }
+          // Chercher dans la sécurité routière si pas trouvé
+          if (!doublonInfo) {
+            const srItem = securiteRoutiere.find(sr => {
+              const ids = sr.id.split(' / ').map(s => s.trim());
+              return ids.includes(String(item.id));
+            });
+            if (srItem && srItem.id.includes(' / ')) {
+              doublonInfo = `Doublons : ${srItem.id}`;
+            }
+          }
           html += `
             <div class="q-100-item">
               <div class="q-100-header">
                 <span class="num">${item.id}</span>
                 <span class="verif-badge">${item.verif}</span>
+                ${doublonInfo ? `<span class="doublon-info">${doublonInfo}</span>` : ''}
               </div>
               <div class="q-100-body">
                 <div class="sub-q">
@@ -686,40 +869,62 @@
         return;
       }
 
-      // Autres onglets (classiques)
-      let filtered = questions;
-      if (currentCategory !== 'all') {
-        filtered = filtered.filter(q => q.cat === currentCategory);
-      }
+      // Onglet "all" (Toutes)
+      // On combine toutes les catégories
+      let allQuestions = [];
+
+      // Ajouter les questions de sécurité routière avec leur catégorie
+      securiteRoutiere.forEach(item => {
+        allQuestions.push({ id: item.id, cat: 'securite-routiere', q: item.q, r: item.r });
+      });
+
+      // Ajouter les vérifications intérieures
+      verificationsInterieures.forEach(item => {
+        allQuestions.push({ id: item.id, cat: 'verifications-interieures', q: item.q, r: item.r });
+      });
+
+      // Ajouter les vérifications extérieures
+      verificationsExterieures.forEach(item => {
+        allQuestions.push({ id: item.id, cat: 'verifications-exterieures', q: item.q, r: item.r });
+      });
+
+      // Ajouter les premiers secours (sans ID)
+      premiersSecours.forEach((item, index) => {
+        allQuestions.push({ id: `PS-${index + 1}`, cat: 'premiers-secours', q: item.q, r: item.r });
+      });
+
+      let filtered = allQuestions;
       if (searchTerm) {
-        filtered = filtered.filter(q =>
-          q.q.toLowerCase().includes(searchTerm) ||
-          q.r.toLowerCase().includes(searchTerm)
+        filtered = filtered.filter(item =>
+          item.q.toLowerCase().includes(searchTerm) ||
+          item.r.toLowerCase().includes(searchTerm) ||
+          item.id.toLowerCase().includes(searchTerm)
         );
       }
       if (filtered.length === 0) {
         contentArea.innerHTML = `<div class="empty-state"><i class="fas fa-search"></i><p>Aucune question ne correspond.</p></div>`;
         return;
       }
+
       let html = `<div class="question-list">`;
-      filtered.forEach((item, index) => {
-        const displayNumber = index + 1;
+      filtered.forEach(item => {
         let catLabel = '';
+        let catColor = '';
         switch (item.cat) {
-          case 'securite-routiere': catLabel = 'SR'; break;
-          case 'premiers-secours': catLabel = 'PS'; break;
-          case 'verifications-interieures': catLabel = 'VI'; break;
-          case 'verifications-exterieures': catLabel = 'VE'; break;
-          default: catLabel = '';
+          case 'securite-routiere': catLabel = 'SR'; catColor = '#1f6d9b'; break;
+          case 'premiers-secours': catLabel = 'PS'; catColor = '#b33c5a'; break;
+          case 'verifications-interieures': catLabel = 'VI'; catColor = '#2c7a5a'; break;
+          case 'verifications-exterieures': catLabel = 'VE'; catColor = '#d4880f'; break;
+          default: catLabel = ''; catColor = '#3b7a9e';
         }
         html += `
           <div class="question-item">
-            <span class="q-number">${displayNumber}</span>
+            <span class="q-number">${item.id}</span>
             <div class="q-text">
               <div class="question">${escapeHtml(item.q)}</div>
               <div class="answer"><i class="fas fa-check-circle"></i> ${escapeHtml(item.r)}</div>
             </div>
-            <span class="q-category-badge">${catLabel}</span>
+            <span class="q-category-badge" style="background:${catColor};">${catLabel}</span>
           </div>
         `;
       });
