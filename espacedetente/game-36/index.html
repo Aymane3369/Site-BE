@@ -685,7 +685,7 @@
         filtered.forEach(item => {
           html += `
             <div class="question-item">
-              <span class="q-number">${item.id}</span>
+              <span class="q-number">${escapeHtml(item.id)}</span>
               <div class="q-text">
                 <div class="question">${escapeHtml(item.q)}</div>
                 <div class="answer"><i class="fas fa-check-circle"></i> ${escapeHtml(item.r)}</div>
@@ -717,7 +717,7 @@
         filtered.forEach(item => {
           html += `
             <div class="question-item">
-              <span class="q-number">${item.id}</span>
+              <span class="q-number">${escapeHtml(item.id)}</span>
               <div class="q-text">
                 <div class="question">${escapeHtml(item.q)}</div>
                 <div class="answer"><i class="fas fa-check-circle"></i> ${escapeHtml(item.r)}</div>
@@ -749,7 +749,7 @@
         filtered.forEach(item => {
           html += `
             <div class="question-item">
-              <span class="q-number">${item.id}</span>
+              <span class="q-number">${escapeHtml(item.id)}</span>
               <div class="q-text">
                 <div class="question">${escapeHtml(item.q)}</div>
                 <div class="answer"><i class="fas fa-check-circle"></i> ${escapeHtml(item.r)}</div>
