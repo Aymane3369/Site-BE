@@ -1,1 +1,2430 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jeu d’échecs</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:#101214;
+  color:#fff;
+  font-family:Arial,sans-serif;
+}
+
+header{
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  max-width:1200px;
+  margin:auto;
+}
+
+h1{
+  margin:0;
+  color:#d9aa45;
+}
+
+button,select{
+  background:#252a2e;
+  color:white;
+  border:1px solid #444;
+  border-radius:8px;
+  padding:10px;
+  cursor:pointer;
+}
+
+button:hover{
+  border-color:#d9aa45;
+}
+
+.app{
+  max-width:1200px;
+  margin:auto;
+  padding:15px;
+  display:grid;
+  grid-template-columns:minmax(400px,700px) 320px;
+  gap:20px;
+}
+
+.clock{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:10px;
+}
+
+.clockBox{
+  background:#1d2124;
+  padding:10px;
+  text-align:center;
+  border-radius:10px;
+  border:2px solid #333;
+}
+
+.clockBox.active{
+  border-color:#d9aa45;
+}
+
+.time{
+  font-size:30px;
+  font-family:monospace;
+}
+
+#board{
+  width:100%;
+  aspect-ratio:1;
+  display:grid;
+  grid-template-columns:repeat(8,1fr);
+  border:5px solid #292929;
+}
+
+.square{
+  position:relative;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  cursor:pointer;
+}
+
+.light{background:#f0d9b5}
+.dark{background:#b58863}
+
+.piece{
+  font-size:clamp(32px,7vw,65px);
+  line-height:1;
+  z-index:2;
+  user-select:none;
+}
+
+.whitePiece{
+  color:white;
+  text-shadow:0 2px 3px #000;
+}
+
+.blackPiece{
+  color:#111;
+  text-shadow:0 1px 1px #fff;
+}
+
+.selected{
+  box-shadow:inset 0 0 0 5px #ffd740;
+}
+
+.last{
+  background-image:linear-gradient(#d9aa4550,#d9aa4550);
+}
+
+.check{
+  box-shadow:inset 0 0 0 6px #e33;
+}
+
+.dot{
+  position:absolute;
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  background:#0007;
+}
+
+.capture{
+  position:absolute;
+  width:75%;
+  height:75%;
+  border:5px solid #a22a;
+  border-radius:50%;
+}
+
+.panel{
+  background:#1b1f22;
+  padding:15px;
+  border-radius:12px;
+}
+
+.status{
+  padding:12px;
+  background:#272c30;
+  border-radius:8px;
+  text-align:center;
+  margin-bottom:10px;
+  font-weight:bold;
+}
+
+.controls{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.full{
+  grid-column:1/-1;
+}
+
+.section{
+  border-top:1px solid #3b3f42;
+  margin-top:15px;
+  padding-top:15px;
+}
+
+.moves{
+  max-height:250px;
+  overflow:auto;
+  background:#111;
+  padding:8px;
+  border-radius:8px;
+}
+
+.move{
+  display:grid;
+  grid-template-columns:40px 1fr 1fr;
+  padding:5px;
+  border-bottom:1px solid #292929;
+}
+
+.settings{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.settings select{
+  width:100%;
+  margin-top:4px;
+}
+
+label{
+  font-size:12px;
+  color:#aaa;
+}
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#000b;
+  align-items:center;
+  justify-content:center;
+  z-index:10;
+}
+
+.modal.active{
+  display:flex;
+}
+
+.modalBox{
+  background:#202428;
+  padding:25px;
+  border-radius:15px;
+  text-align:center;
+}
+
+.promotion{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+}
+
+.promotion button{
+  font-size:40px;
+}
+
+@media(max-width:850px){
+
+  .app{
+    display:block;
+  }
+
+  .panel{
+    margin-top:15px;
+  }
+
+  header{
+    display:block;
+    text-align:center;
+  }
+
+  header button{
+    margin-top:10px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<h1>♔ Royal Chess</h1>
+
+<button onclick="newGame()">
+Nouvelle partie
+</button>
+
+</header>
+
+<div class="app">
+
+<main>
+
+<div class="clock">
+
+<div id="blackClock" class="clockBox">
+<div>NOIRS</div>
+<div class="time">10:00</div>
+</div>
+
+<div id="whiteClock" class="clockBox active">
+<div>BLANCS</div>
+<div class="time">10:00</div>
+</div>
+
+</div>
+
+<div id="board"></div>
+
+</main>
+
+
+<aside class="panel">
+
+<div id="status" class="status">
+Les Blancs jouent
+</div>
+
+<div class="controls">
+
+<button onclick="newGame()">
+♟ Nouvelle
+</button>
+
+<button onclick="undo()">
+↩ Annuler
+</button>
+
+<button onclick="flip()">
+⇅ Retourner
+</button>
+
+<button onclick="toggleSound()">
+🔊 Sons
+</button>
+
+<button onclick="saveGame()">
+💾 Sauver
+</button>
+
+<button onclick="loadGame()">
+📂 Charger
+</button>
+
+<button onclick="exportPGN()">
+📜 PGN
+</button>
+
+<button onclick="copyPGN()">
+📋 Copier
+</button>
+
+</div>
+
+
+<div class="section">
+
+<h3>⚙️ Paramètres</h3>
+
+<div class="settings">
+
+<div>
+<label>Mode</label>
+
+<select id="mode" onchange="newGame()">
+
+<option value="human">
+2 joueurs
+</option>
+
+<option value="ai">
+Contre IA
+</option>
+
+</select>
+</div>
+
+
+<div>
+
+<label>Niveau IA</label>
+
+<select id="level">
+
+<option value="1">
+Facile
+</option>
+
+<option value="2" selected>
+Moyen
+</option>
+
+<option value="3">
+Difficile
+</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>Cadence</label>
+
+<select id="time" onchange="newGame()">
+
+<option value="600">
+10 + 0
+</option>
+
+<option value="300">
+5 + 0
+</option>
+
+<option value="180">
+3 + 2
+</option>
+
+<option value="60">
+1 + 0
+</option>
+
+<option value="0">
+Sans chrono
+</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>Thème</label>
+
+<select onchange="theme(this.value)">
+
+<option value="classic">
+Classique
+</option>
+
+<option value="green">
+Vert
+</option>
+
+<option value="blue">
+Bleu
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="section">
+
+<h3>📋 Coups</h3>
+
+<div id="moves" class="moves">
+Aucun coup.
+</div>
+
+</div>
+
+
+<div class="section">
+
+<h3>🏆 Statistiques</h3>
+
+<div id="stats">
+Elo : 1200<br>
+Parties : 0<br>
+Victoires : 0<br>
+Défaites : 0<br>
+Nulles : 0
+</div>
+
+</div>
+
+</aside>
+
+</div>
+
+
+<div id="promotionModal" class="modal">
+
+<div class="modalBox">
+
+<h2>Promotion</h2>
+
+<div id="promotion" class="promotion"></div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* ================================
+   PIECES
+================================ */
+
+const PIECES={
+w:{
+k:"♔",
+q:"♕",
+r:"♖",
+b:"♗",
+n:"♘",
+p:"♙"
+},
+b:{
+k:"♚",
+q:"♛",
+r:"♜",
+b:"♝",
+n:"♞",
+p:"♟"
+}
+};
+
+const FILES="abcdefgh";
+
+
+/* ================================
+   VARIABLES
+================================ */
+
+let board;
+let turn;
+let selected=null;
+let legal=[];
+let history=[];
+let moves=[];
+let lastMove=null;
+let orientation="w";
+
+let castle;
+
+let enPassant=null;
+
+let gameOver=false;
+
+let sound=true;
+
+let clocks={
+w:600,
+b:600
+};
+
+let timer=null;
+
+let increment=0;
+
+let pendingPromotion=null;
+
+
+/* ================================
+   ECHIQUIER INITIALE
+================================ */
+
+function initialBoard(){
+
+return [
+
+["br","bn","bb","bq","bk","bb","bn","br"],
+["bp","bp","bp","bp","bp","bp","bp","bp"],
+[null,null,null,null,null,null,null,null],
+[null,null,null,null,null,null,null,null],
+[null,null,null,null,null,null,null,null],
+[null,null,null,null,null,null,null,null],
+["wp","wp","wp","wp","wp","wp","wp","wp"],
+["wr","wn","wb","wq","wk","wb","wn","wr"]
+
+];
+
+}
+
+
+/* ================================
+   OUTILS
+================================ */
+
+function inside(r,c){
+return r>=0&&r<8&&c>=0&&c<8;
+}
+
+function color(p){
+return p?p[0]:null;
+}
+
+function type(p){
+return p?p[1]:null;
+}
+
+function enemy(c){
+return c==="w"?"b":"w";
+}
+
+function clone(b){
+return b.map(r=>r.slice());
+}
+
+
+/* ================================
+   ROI
+================================ */
+
+function findKing(b,c){
+
+for(let r=0;r<8;r++)
+for(let col=0;col<8;col++)
+if(b[r][col]===c+"k")
+return[r,col];
+
+return null;
+}
+
+
+/* ================================
+   CASE ATTAQUEE
+================================ */
+
+function attacked(b,r,c,by){
+
+let pr=by==="w"?r+1:r-1;
+
+for(let dc of[-1,1]){
+
+let cc=c+dc;
+
+if(
+inside(pr,cc)&&
+b[pr][cc]===by+"p"
+)
+return true;
+
+}
+
+
+const knights=[
+[-2,-1],[-2,1],
+[-1,-2],[-1,2],
+[1,-2],[1,2],
+[2,-1],[2,1]
+];
+
+for(let [dr,dc] of knights){
+
+if(
+inside(r+dr,c+dc)&&
+b[r+dr][c+dc]===by+"n"
+)
+return true;
+
+}
+
+
+for(let dr=-1;dr<=1;dr++)
+for(let dc=-1;dc<=1;dc++){
+
+if(!dr&&!dc)continue;
+
+if(
+inside(r+dr,c+dc)&&
+b[r+dr][c+dc]===by+"k"
+)
+return true;
+
+}
+
+
+const straight=[
+[-1,0],[1,0],
+[0,-1],[0,1]
+];
+
+for(let [dr,dc] of straight){
+
+let rr=r+dr;
+let cc=c+dc;
+
+while(inside(rr,cc)){
+
+let p=b[rr][cc];
+
+if(p){
+
+if(
+color(p)===by &&
+(type(p)==="r"||type(p)==="q")
+)
+return true;
+
+break;
+}
+
+rr+=dr;
+cc+=dc;
+
+}
+
+}
+
+
+const diagonal=[
+[-1,-1],[-1,1],
+[1,-1],[1,1]
+];
+
+for(let [dr,dc] of diagonal){
+
+let rr=r+dr;
+let cc=c+dc;
+
+while(inside(rr,cc)){
+
+let p=b[rr][cc];
+
+if(p){
+
+if(
+color(p)===by &&
+(type(p)==="b"||type(p)==="q")
+)
+return true;
+
+break;
+}
+
+rr+=dr;
+cc+=dc;
+
+}
+
+}
+
+return false;
+}
+
+
+/* ================================
+   ECHEC
+================================ */
+
+function check(b,c){
+
+let k=findKing(b,c);
+
+return !k||
+attacked(
+b,
+k[0],
+k[1],
+enemy(c)
+);
+
+}
+
+
+/* ================================
+   COUPS POSSIBLES
+================================ */
+
+function pseudo(b,r,c){
+
+let p=b[r][c];
+
+if(!p)return[];
+
+let col=color(p);
+let t=type(p);
+
+let result=[];
+
+function add(rr,cc){
+
+if(
+inside(rr,cc)&&
+(!b[rr][cc]||color(b[rr][cc])!==col)
+)
+result.push([rr,cc]);
+
+}
+
+
+/* PION */
+
+if(t==="p"){
+
+let dir=col==="w"?-1:1;
+let start=col==="w"?6:1;
+
+if(
+inside(r+dir,c)&&
+!b[r+dir][c]
+){
+
+result.push([r+dir,c]);
+
+if(
+r===start&&
+!b[r+2*dir][c]
+)
+result.push([r+2*dir,c]);
+
+}
+
+for(let dc of[-1,1]){
+
+let rr=r+dir;
+let cc=c+dc;
+
+if(!inside(rr,cc))continue;
+
+if(
+b[rr][cc]&&
+color(b[rr][cc])!==col
+)
+result.push([rr,cc]);
+
+if(
+enPassant&&
+enPassant[0]===rr&&
+enPassant[1]===cc
+)
+result.push([rr,cc]);
+
+}
+
+}
+
+
+/* CAVALIER */
+
+if(t==="n"){
+
+[
+[-2,-1],[-2,1],
+[-1,-2],[-1,2],
+[1,-2],[1,2],
+[2,-1],[2,1]
+].forEach(x=>add(r+x[0],c+x[1]));
+
+}
+
+
+/* FOUS */
+
+if(t==="b"||t==="q"){
+
+[
+[-1,-1],[-1,1],
+[1,-1],[1,1]
+].forEach(d=>{
+
+let rr=r+d[0];
+let cc=c+d[1];
+
+while(inside(rr,cc)){
+
+if(!b[rr][cc])
+result.push([rr,cc]);
+
+else{
+
+if(color(b[rr][cc])!==col)
+result.push([rr,cc]);
+
+break;
+}
+
+rr+=d[0];
+cc+=d[1];
+
+}
+
+});
+
+}
+
+
+/* TOURS */
+
+if(t==="r"||t==="q"){
+
+[
+[-1,0],[1,0],
+[0,-1],[0,1]
+].forEach(d=>{
+
+let rr=r+d[0];
+let cc=c+d[1];
+
+while(inside(rr,cc)){
+
+if(!b[rr][cc])
+result.push([rr,cc]);
+
+else{
+
+if(color(b[rr][cc])!==col)
+result.push([rr,cc]);
+
+break;
+}
+
+rr+=d[0];
+cc+=d[1];
+
+}
+
+});
+
+}
+
+
+/* ROI */
+
+if(t==="k"){
+
+for(let dr=-1;dr<=1;dr++)
+for(let dc=-1;dc<=1;dc++)
+if(dr||dc)
+add(r+dr,c+dc);
+
+
+/* ROQUE */
+
+if(col==="w"&&r===7&&c===4&&!check(b,"w")){
+
+if(
+castle.wK&&
+!b[7][5]&&
+!b[7][6]&&
+b[7][7]==="wr"&&
+!attacked(b,7,5,"b")&&
+!attacked(b,7,6,"b")
+)
+result.push([7,6]);
+
+
+if(
+castle.wQ&&
+!b[7][1]&&
+!b[7][2]&&
+!b[7][3]&&
+b[7][0]==="wr"&&
+!attacked(b,7,3,"b")&&
+!attacked(b,7,2,"b")
+)
+result.push([7,2]);
+
+}
+
+
+if(col==="b"&&r===0&&c===4&&!check(b,"b")){
+
+if(
+castle.bK&&
+!b[0][5]&&
+!b[0][6]&&
+b[0][7]==="br"&&
+!attacked(b,0,5,"w")&&
+!attacked(b,0,6,"w")
+)
+result.push([0,6]);
+
+
+if(
+castle.bQ&&
+!b[0][1]&&
+!b[0][2]&&
+!b[0][3]&&
+b[0][0]==="br"&&
+!attacked(b,0,3,"w")&&
+!attacked(b,0,2,"w")
+)
+result.push([0,2]);
+
+}
+
+}
+
+return result;
+}
+
+
+/* ================================
+   APPLIQUER COUP
+================================ */
+
+function apply(b,from,to,promotion=null){
+
+let n=clone(b);
+
+let p=n[from[0]][from[1]];
+
+n[from[0]][from[1]]=null;
+
+
+/* En passant */
+
+if(
+type(p)==="p"&&
+from[1]!==to[1]&&
+!n[to[0]][to[1]]
+){
+
+let rr=color(p)==="w"
+?to[0]+1
+:to[0]-1;
+
+n[rr][to[1]]=null;
+
+}
+
+
+n[to[0]][to[1]]=
+promotion?
+color(p)+promotion:
+p;
+
+
+/* Roque */
+
+if(
+type(p)==="k"&&
+Math.abs(to[1]-from[1])===2
+){
+
+if(to[1]===6){
+
+n[to[0]][5]=
+n[to[0]][7];
+
+n[to[0]][7]=null;
+
+}else{
+
+n[to[0]][3]=
+n[to[0]][0];
+
+n[to[0]][0]=null;
+
+}
+
+}
+
+return n;
+}
+
+
+/* ================================
+   COUPS LEGAUX
+================================ */
+
+function legalMoves(r,c){
+
+let p=board[r][c];
+
+if(!p)return[];
+
+let col=color(p);
+
+return pseudo(board,r,c)
+.filter(to=>{
+
+let test=apply(
+board,
+[r,c],
+to
+);
+
+return !check(test,col);
+
+});
+
+}
+
+
+function allMoves(b,c){
+
+let result=[];
+
+for(let r=0;r<8;r++)
+for(let col=0;col<8;col++){
+
+if(color(b[r][col])!==c)
+continue;
+
+let original=board;
+
+board=b;
+
+let lm=legalMoves(r,col);
+
+board=original;
+
+lm.forEach(to=>{
+
+result.push({
+from:[r,col],
+to
+});
+
+});
+
+}
+
+return result;
+}
+
+
+/* ================================
+   RENDU ECHIQUIER
+================================ */
+
+function render(){
+
+let el=document.getElementById("board");
+
+el.innerHTML="";
+
+
+for(let vr=0;vr<8;vr++){
+
+for(let vc=0;vc<8;vc++){
+
+let r=
+orientation==="w"
+?vr
+:7-vr;
+
+let c=
+orientation==="w"
+?vc
+:7-vc;
+
+
+let s=document.createElement("div");
+
+s.className=
+"square "+
+(
+(r+c)%2===0
+?"light"
+:"dark"
+);
+
+
+/* Dernier coup */
+
+if(lastMove&&
+(
+lastMove.from[0]===r&&
+lastMove.from[1]===c||
+lastMove.to[0]===r&&
+lastMove.to[1]===c
+))
+s.classList.add("last");
+
+
+/* Sélection */
+
+if(
+selected&&
+selected[0]===r&&
+selected[1]===c
+)
+s.classList.add("selected");
+
+
+/* Echec */
+
+if(check(board,turn)){
+
+let k=findKing(board,turn);
+
+if(
+k&&
+k[0]===r&&
+k[1]===c
+)
+s.classList.add("check");
+
+}
+
+
+/* Coup possible */
+
+if(
+legal.some(
+m=>m[0]===r&&m[1]===c
+)
+){
+
+let marker=document.createElement("span");
+
+marker.className=
+board[r][c]
+?"capture"
+:"dot";
+
+s.appendChild(marker);
+
+}
+
+
+/* Pièce */
+
+let p=board[r][c];
+
+if(p){
+
+let piece=document.createElement("span");
+
+piece.className=
+"piece "+
+(
+color(p)==="w"
+?"whitePiece"
+:"blackPiece"
+);
+
+piece.textContent=
+PIECES[color(p)][type(p)];
+
+s.appendChild(piece);
+
+}
+
+
+s.onclick=()=>clickSquare(r,c);
+
+el.appendChild(s);
+
+}
+
+}
+
+updateStatus();
+updateMoves();
+updateClocks();
+}
+
+
+/* ================================
+   CLIC
+================================ */
+
+function clickSquare(r,c){
+
+if(gameOver)return;
+
+if(
+document.getElementById("mode").value==="ai"&&
+turn==="b"
+)
+return;
+
+
+let p=board[r][c];
+
+
+if(selected){
+
+let valid=legal.some(
+m=>m[0]===r&&m[1]===c
+);
+
+
+if(valid){
+
+let moving=
+board[selected[0]][selected[1]];
+
+
+/* Promotion */
+
+if(
+type(moving)==="p"&&
+(r===0||r===7)
+){
+
+pendingPromotion={
+from:selected,
+to:[r,c]
+};
+
+showPromotion(
+color(moving)
+);
+
+return;
+
+}
+
+
+makeMove(
+selected,
+[r,c]
+);
+
+return;
+}
+
+
+if(
+p&&
+color(p)===turn
+){
+
+selected=[r,c];
+
+legal=
+legalMoves(r,c);
+
+render();
+
+return;
+}
+
+
+selected=null;
+legal=[];
+render();
+
+return;
+}
+
+
+if(
+p&&
+color(p)===turn
+){
+
+selected=[r,c];
+
+legal=
+legalMoves(r,c);
+
+render();
+
+}
+
+}
+
+
+/* ================================
+   JOUER COUP
+================================ */
+
+function makeMove(from,to,promotion=null){
+
+if(gameOver)return;
+
+
+let p=board[from[0]][from[1]];
+
+let captured=board[to[0]][to[1]];
+
+
+/* Historique */
+
+history.push({
+
+board:clone(board),
+turn,
+castle:{...castle},
+enPassant,
+clocks:{...clocks},
+moves:[...moves],
+lastMove
+
+});
+
+
+/* Roques */
+
+if(p==="wk"){
+castle.wK=false;
+castle.wQ=false;
+}
+
+if(p==="bk"){
+castle.bK=false;
+castle.bQ=false;
+}
+
+if(p==="wr"&&from[0]===7&&from[1]===0)
+castle.wQ=false;
+
+if(p==="wr"&&from[0]===7&&from[1]===7)
+castle.wK=false;
+
+if(p==="br"&&from[0]===0&&from[1]===0)
+castle.bQ=false;
+
+if(p==="br"&&from[0]===0&&from[1]===7)
+castle.bK=false;
+
+
+/* Tour capturée */
+
+if(captured==="wr"){
+if(to[0]===7&&to[1]===0)castle.wQ=false;
+if(to[0]===7&&to[1]===7)castle.wK=false;
+}
+
+if(captured==="br"){
+if(to[0]===0&&to[1]===0)castle.bQ=false;
+if(to[0]===0&&to[1]===7)castle.bK=false;
+}
+
+
+/* Notation */
+
+let notation=notationMove(
+from,
+to,
+p,
+captured,
+promotion
+);
+
+
+/* Appliquer */
+
+board=apply(
+board,
+from,
+to,
+promotion
+);
+
+
+/* En passant */
+
+enPassant=null;
+
+if(
+type(p)==="p"&&
+Math.abs(to[0]-from[0])===2
+){
+
+enPassant=[
+(from[0]+to[0])/2,
+from[1]
+];
+
+}
+
+
+/* Incrément */
+
+if(increment&&
+clocks[turn]!==Infinity)
+clocks[turn]+=increment;
+
+
+moves.push(notation);
+
+lastMove={
+from,
+to
+};
+
+
+turn=enemy(turn);
+
+selected=null;
+legal=[];
+
+
+soundEffect(
+captured
+?"capture"
+:"move"
+);
+
+
+render();
+
+checkEnd();
+
+
+if(
+!gameOver&&
+document.getElementById("mode").value==="ai"&&
+turn==="b"
+){
+
+setTimeout(aiMove,200);
+
+}
+
+}
+
+
+/* ================================
+   NOTATION
+================================ */
+
+function notationMove(
+from,
+to,
+p,
+captured,
+promotion
+){
+
+if(
+type(p)==="k"&&
+Math.abs(to[1]-from[1])===2
+)
+return to[1]===6?"O-O":"O-O-O";
+
+
+let s="";
+
+if(type(p)!=="p")
+s=type(p).toUpperCase();
+
+if(type(p)==="p"&&captured)
+s+=FILES[from[1]];
+
+if(captured)s+="x";
+
+s+=FILES[to[1]]+(8-to[0]);
+
+if(promotion)
+s+="="+promotion.toUpperCase();
+
+return s;
+}
+
+
+/* ================================
+   FIN PARTIE
+================================ */
+
+function checkEnd(){
+
+let lm=allMoves(
+board,
+turn
+);
+
+
+if(!lm.length){
+
+gameOver=true;
+
+stopTimer();
+
+
+if(check(board,turn)){
+
+document.getElementById("status")
+.textContent=
+"♚ ÉCHEC ET MAT — "+
+(
+enemy(turn)==="w"
+?"Les Blancs gagnent"
+:"Les Noirs gagnent"
+);
+
+stats(enemy(turn));
+
+}else{
+
+document.getElementById("status")
+.textContent=
+"PAT — Partie nulle";
+
+stats("draw");
+
+}
+
+return;
+}
+
+
+/* Temps */
+
+if(
+clocks[turn]!==Infinity&&
+clocks[turn]<=0
+){
+
+gameOver=true;
+
+stopTimer();
+
+let winner=enemy(turn);
+
+document.getElementById("status")
+.textContent=
+"⏱ Temps écoulé — "+
+(
+winner==="w"
+?"Les Blancs gagnent"
+:"Les Noirs gagnent"
+);
+
+stats(winner);
+
+}
+
+}
+
+
+/* ================================
+   STATUS
+================================ */
+
+function updateStatus(){
+
+if(gameOver)return;
+
+let text=
+turn==="w"
+?"♔ Les Blancs jouent"
+:"♚ Les Noirs jouent";
+
+if(check(board,turn))
+text+=" — ÉCHEC !";
+
+document.getElementById("status")
+.textContent=text;
+}
+
+
+/* ================================
+   COUPS AFFICHES
+================================ */
+
+function updateMoves(){
+
+let el=document.getElementById("moves");
+
+if(!moves.length){
+
+el.textContent="Aucun coup.";
+
+return;
+}
+
+el.innerHTML="";
+
+for(
+let i=0;
+i<moves.length;
+i+=2
+){
+
+let row=document.createElement("div");
+
+row.className="move";
+
+row.innerHTML=`
+<span>${i/2+1}.</span>
+<span>${moves[i]||""}</span>
+<span>${moves[i+1]||""}</span>
+`;
+
+el.appendChild(row);
+
+}
+
+el.scrollTop=el.scrollHeight;
+}
+
+
+/* ================================
+   HORLOGE
+================================ */
+
+function formatTime(t){
+
+if(t===Infinity)return"∞";
+
+t=Math.max(0,Math.ceil(t));
+
+return(
+Math.floor(t/60)+
+":"+
+String(t%60).padStart(2,"0")
+);
+
+}
+
+
+function updateClocks(){
+
+document.querySelector(
+"#whiteClock .time"
+).textContent=formatTime(clocks.w);
+
+document.querySelector(
+"#blackClock .time"
+).textContent=formatTime(clocks.b);
+
+document.getElementById(
+"whiteClock"
+).classList.toggle(
+"active",
+turn==="w"&&!gameOver
+);
+
+document.getElementById(
+"blackClock"
+).classList.toggle(
+"active",
+turn==="b"&&!gameOver
+);
+
+}
+
+
+function startTimer(){
+
+stopTimer();
+
+if(clocks.w===Infinity)return;
+
+timer=setInterval(()=>{
+
+if(gameOver)return;
+
+clocks[turn]--;
+
+updateClocks();
+
+if(clocks[turn]<=0)
+checkEnd();
+
+},1000);
+
+}
+
+
+function stopTimer(){
+
+if(timer){
+
+clearInterval(timer);
+timer=null;
+
+}
+
+}
+
+
+/* ================================
+   NOUVELLE PARTIE
+================================ */
+
+function newGame(){
+
+stopTimer();
+
+board=initialBoard();
+
+turn="w";
+
+selected=null;
+
+legal=[];
+
+history=[];
+
+moves=[];
+
+lastMove=null;
+
+enPassant=null;
+
+castle={
+wK:true,
+wQ:true,
+bK:true,
+bQ:true
+};
+
+let t=
+Number(
+document.getElementById("time").value
+);
+
+if(t===0){
+
+clocks={
+w:Infinity,
+b:Infinity
+};
+
+increment=0;
+
+}else{
+
+clocks={
+w:t,
+b:t
+};
+
+increment=t===180?2:0;
+
+}
+
+gameOver=false;
+
+render();
+
+startTimer();
+
+}
+
+
+/* ================================
+   ANNULER
+================================ */
+
+function undo(){
+
+if(!history.length)return;
+
+let h=history.pop();
+
+board=h.board;
+turn=h.turn;
+castle=h.castle;
+enPassant=h.enPassant;
+clocks=h.clocks;
+moves=h.moves;
+lastMove=h.lastMove;
+
+gameOver=false;
+
+selected=null;
+legal=[];
+
+render();
+
+startTimer();
+
+}
+
+
+/* ================================
+   RETOURNER
+================================ */
+
+function flip(){
+
+orientation=
+orientation==="w"
+?"b"
+:"w";
+
+render();
+
+}
+
+
+/* ================================
+   PROMOTION
+================================ */
+
+function showPromotion(c){
+
+let modal=
+document.getElementById(
+"promotionModal"
+);
+
+let container=
+document.getElementById(
+"promotion"
+);
+
+container.innerHTML="";
+
+["q","r","b","n"].forEach(t=>{
+
+let button=
+document.createElement("button");
+
+button.textContent=PIECES[c][t];
+
+button.onclick=()=>{
+
+modal.classList.remove("active");
+
+makeMove(
+pendingPromotion.from,
+pendingPromotion.to,
+t
+);
+
+pendingPromotion=null;
+
+};
+
+container.appendChild(button);
+
+});
+
+modal.classList.add("active");
+
+}
+
+
+/* ================================
+   IA
+================================ */
+
+const VALUES={
+p:100,
+n:320,
+b:330,
+r:500,
+q:900,
+k:20000
+};
+
+
+function evaluate(b){
+
+let score=0;
+
+for(let r=0;r<8;r++)
+for(let c=0;c<8;c++){
+
+let p=b[r][c];
+
+if(!p)continue;
+
+let v=VALUES[type(p)];
+
+score+=
+color(p)==="b"
+?v
+:-v;
+
+}
+
+return score;
+}
+
+
+function minimax(
+b,
+side,
+depth,
+alpha,
+beta
+){
+
+if(depth===0)
+return evaluate(b);
+
+
+let list=allMoves(b,side);
+
+if(!list.length){
+
+if(check(b,side))
+return side==="b"?-999999:999999;
+
+return 0;
+}
+
+
+if(side==="b"){
+
+let best=-Infinity;
+
+for(let m of list){
+
+let next=apply(
+b,
+m.from,
+m.to
+);
+
+let score=minimax(
+next,
+"w",
+depth-1,
+alpha,
+beta
+);
+
+best=Math.max(best,score);
+
+alpha=Math.max(alpha,score);
+
+if(beta<=alpha)break;
+
+}
+
+return best;
+
+}else{
+
+let best=Infinity;
+
+for(let m of list){
+
+let next=apply(
+b,
+m.from,
+m.to
+);
+
+let score=minimax(
+next,
+"b",
+depth-1,
+alpha,
+beta
+);
+
+best=Math.min(best,score);
+
+beta=Math.min(beta,score);
+
+if(beta<=alpha)break;
+
+}
+
+return best;
+
+}
+
+}
+
+
+function aiMove(){
+
+if(
+gameOver||
+document.getElementById("mode").value!=="ai"||
+turn!=="b"
+)
+return;
+
+let list=allMoves(board,"b");
+
+if(!list.length)return;
+
+let level=
+Number(
+document.getElementById("level").value
+);
+
+let depth=
+level===1?1:
+level===2?2:3;
+
+let best=list[0];
+
+let bestScore=-Infinity;
+
+for(let m of list){
+
+let next=apply(
+board,
+m.from,
+m.to
+);
+
+let score=minimax(
+next,
+"w",
+depth-1,
+-Infinity,
+Infinity
+);
+
+if(score>bestScore){
+
+bestScore=score;
+best=m;
+
+}
+
+}
+
+
+let p=
+board[
+best.from[0]
+][
+best.from[1]
+];
+
+let promotion=null;
+
+if(
+type(p)==="p"&&
+best.to[0]===0
+)
+promotion="q";
+
+makeMove(
+best.from,
+best.to,
+promotion
+);
+
+}
+
+
+/* ================================
+   SAUVEGARDE
+================================ */
+
+function saveGame(){
+
+localStorage.setItem(
+"royalChess",
+JSON.stringify({
+
+board,
+turn,
+castle,
+enPassant,
+clocks,
+moves,
+lastMove,
+orientation
+
+})
+);
+
+alert("Partie sauvegardée.");
+
+}
+
+
+function loadGame(){
+
+let data=
+localStorage.getItem(
+"royalChess"
+);
+
+if(!data){
+
+alert("Aucune sauvegarde.");
+
+return;
+}
+
+data=JSON.parse(data);
+
+board=data.board;
+turn=data.turn;
+castle=data.castle;
+enPassant=data.enPassant;
+clocks=data.clocks;
+moves=data.moves||[];
+lastMove=data.lastMove;
+orientation=data.orientation||"w";
+
+gameOver=false;
+
+render();
+
+startTimer();
+
+}
+
+
+/* ================================
+   PGN
+================================ */
+
+function pgn(){
+
+let text=
+'[Event "Royal Chess"]\n'+
+'[Site "Local"]\n'+
+'[White "Player"]\n'+
+'[Black "Player"]\n'+
+'[Result "*"]\n\n';
+
+for(let i=0;i<moves.length;i+=2){
+
+text+=
+(i/2+1)+". "+
+moves[i];
+
+if(moves[i+1])
+text+=" "+moves[i+1];
+
+text+=" ";
+
+}
+
+return text.trim();
+}
+
+
+function exportPGN(){
+
+let blob=new Blob(
+[pgn()],
+{type:"text/plain"}
+);
+
+let url=
+URL.createObjectURL(blob);
+
+let a=
+document.createElement("a");
+
+a.href=url;
+
+a.download="royal-chess.pgn";
+
+a.click();
+
+URL.revokeObjectURL(url);
+
+}
+
+
+async function copyPGN(){
+
+try{
+
+await navigator.clipboard.writeText(pgn());
+
+alert("PGN copié.");
+
+}catch{
+
+alert(pgn());
+
+}
+
+}
+
+
+/* ================================
+   SONS
+================================ */
+
+let audio=null;
+
+function soundEffect(kind){
+
+if(!sound)return;
+
+try{
+
+if(!audio)
+audio=new AudioContext();
+
+let oscillator=
+audio.createOscillator();
+
+let gain=
+audio.createGain();
+
+oscillator.connect(gain);
+gain.connect(audio.destination);
+
+oscillator.frequency.value=
+kind==="capture"?180:330;
+
+gain.gain.value=.03;
+
+oscillator.start();
+
+oscillator.stop(
+audio.currentTime+.1
+);
+
+}catch{}
+
+}
+
+
+function toggleSound(){
+
+sound=!sound;
+
+alert(
+sound
+?"Sons activés"
+:"Sons désactivés"
+);
+
+}
+
+
+/* ================================
+   THEMES
+================================ */
+
+function theme(t){
+
+let root=
+document.documentElement;
+
+if(t==="green"){
+
+root.style.setProperty(
+"--light",
+"#eeeed2"
+);
+
+root.style.setProperty(
+"--dark",
+"#769656"
+);
+
+}
+
+else if(t==="blue"){
+
+root.style.setProperty(
+"--light",
+"#dce8f2"
+);
+
+root.style.setProperty(
+"--dark",
+"#557a9d"
+);
+
+}
+
+else{
+
+root.style.setProperty(
+"--light",
+"#f0d9b5"
+);
+
+root.style.setProperty(
+"--dark",
+"#b58863"
+);
+
+}
+
+}
+
+
+/* ================================
+   STATISTIQUES
+================================ */
+
+function stats(result){
+
+let s=
+JSON.parse(
+localStorage.getItem(
+"royalStats"
+)||
+'{"elo":1200,"games":0,"wins":0,"losses":0,"draws":0}'
+);
+
+
+s.games++;
+
+if(result==="w"){
+
+s.wins++;
+s.elo+=16;
+
+}
+
+else if(result==="b"){
+
+s.losses++;
+s.elo=Math.max(
+400,
+s.elo-16
+);
+
+}
+
+else{
+
+s.draws++;
+
+}
+
+
+localStorage.setItem(
+"royalStats",
+JSON.stringify(s)
+);
+
+showStats();
+
+}
+
+
+function showStats(){
+
+let s=
+JSON.parse(
+localStorage.getItem(
+"royalStats"
+)||
+'{"elo":1200,"games":0,"wins":0,"losses":0,"draws":0}'
+);
+
+
+document.getElementById(
+"stats"
+).innerHTML=`
+
+Elo : <b>${s.elo}</b><br>
+Parties : ${s.games}<br>
+Victoires : ${s.wins}<br>
+Défaites : ${s.losses}<br>
+Nulles : ${s.draws}
+
+`;
+
+}
+
+
+/* ================================
+   LANCEMENT
+================================ */
+
+showStats();
+
+newGame();
+
+</script>
+
+</body>
+</html>
