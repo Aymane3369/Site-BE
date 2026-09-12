@@ -1,1458 +1,3798 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>Game Hub · Ultra Console</title>
 
-  <style>
-    /* ========== RESET & ROOT ========== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
 
-    :root {
-      --bg1: #05070a;
-      --text: #fff;
-      --card: rgba(255,255,255,0.06);
-      --border: rgba(255,255,255,0.12);
-      --glow: #00ffcc;
-      --shadow: 0 0 25px #00ffcc55;
-      --radius: 16px;
-    }
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1.0,
+               maximum-scale=1.0,
+               user-scalable=no">
 
-    body.light {
-      --bg1: #eef3ff;
-      --text: #111;
-      --card: rgba(0,0,0,0.04);
-      --border: rgba(0,0,0,0.15);
-      --glow: #0077ff;
-      --shadow: 0 0 30px #0077ff44;
-    }
+<meta name="theme-color" content="#05070a">
 
-    body.neon {
-      --bg1: #000;
-      --text: #fff;
-      --card: rgba(255,255,255,0.04);
-      --border: #ff00ff;
-      --glow: #ff00ff;
-      --shadow: 0 0 35px #ff00ff77;
-    }
+<meta name="description"
+      content="Digital Hub Ingénierie & Travaux : jeux, outils, génie civil, mathématiques, programmation, IA, connaissances et multimédia.">
 
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', 'Fira Code', monospace;
-      overflow: hidden;
-      color: var(--text);
-      background: var(--bg1);
-      transition: background 0.3s ease, color 0.2s;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-    }
+<title>Digital Hub · Ingénierie & Travaux</title>
 
-    /* ========== WAVES ========== */
-    .waves {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      z-index: 0;
-      pointer-events: none;
-      opacity: 0.5;
-      transition: opacity 0.3s;
-    }
+<style>
 
-    .waves.paused {
-      opacity: 0.1;
-    }
+/* =========================================================
+   RESET
+========================================================= */
 
-    .wave {
-      position: absolute;
-      width: 200%;
-      height: 200%;
-      background:
-        radial-gradient(
-          circle at 30% 30%,
-          rgba(0,255,204,0.2),
-          transparent 60%
-        );
-      animation: moveWave 14s linear infinite;
-      filter: blur(50px);
-      will-change: transform;
-    }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-    .waves.paused .wave {
-      animation-play-state: paused;
-    }
+html,
+body{
+  width:100%;
+  height:100%;
+}
 
-    .wave:nth-child(2) {
-      animation-duration: 22s;
-      opacity: 0.4;
-      background:
-        radial-gradient(
-          circle at 70% 60%,
-          rgba(255,0,200,0.15),
-          transparent 60%
-        );
-    }
+button,
+input{
+  font:inherit;
+}
 
-    .wave:nth-child(3) {
-      animation-duration: 30s;
-      opacity: 0.25;
-      background:
-        radial-gradient(
-          circle at 10% 80%,
-          rgba(0,150,255,0.2),
-          transparent 60%
-        );
-    }
 
-    @keyframes moveWave {
-      0% {
-        transform: translate(-20%, -20%) rotate(0deg) scale(1);
-      }
+/* =========================================================
+   VARIABLES
+========================================================= */
 
-      50% {
-        transform: translate(20%, 10%) rotate(180deg) scale(1.1);
-      }
+:root{
 
-      100% {
-        transform: translate(-20%, -20%) rotate(360deg) scale(1);
-      }
-    }
+  --bg:
+    radial-gradient(circle at 10% 10%,#063c35 0%,transparent 32%),
+    radial-gradient(circle at 90% 90%,#082746 0%,transparent 32%),
+    #05070a;
 
-    /* ========== PARTICLES CANVAS ========== */
-    #particlesCanvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1;
-      pointer-events: none;
-      width: 100vw;
-      height: 100vh;
-    }
+  --panel:rgba(7,12,17,.72);
 
-    /* ========== BOOT SCREEN ========== */
-    #boot {
-      position: fixed;
-      inset: 0;
-      background: #05070a;
-      z-index: 999;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      transition: opacity 0.8s ease;
-    }
+  --card:rgba(255,255,255,.055);
 
-    #boot h2 {
-      letter-spacing: 6px;
-      font-weight: 300;
-      opacity: 0;
-      animation: fadeIn 1.2s forwards;
-      font-size: 1.6rem;
-      text-shadow: 0 0 20px #00ffcc55;
-      text-align: center;
-      padding: 0 16px;
-    }
+  --card-hover:rgba(255,255,255,.10);
 
-    #boot .bar {
-      width: 220px;
-      height: 2px;
-      background: #1f2a36;
-      margin-top: 28px;
-      border-radius: 4px;
-      overflow: hidden;
-      box-shadow: 0 0 12px #00ffcc22;
-    }
+  --text:#fff;
 
-    #boot .bar::after {
-      content: '';
-      display: block;
-      width: 45%;
-      height: 100%;
-      background:
-        linear-gradient(
-          90deg,
-          transparent,
-          #00ffcc,
-          transparent
-        );
-      animation: load 1.4s infinite ease-in-out;
-    }
+  --muted:rgba(255,255,255,.55);
 
-    @keyframes load {
-      0% {
-        transform: translateX(-150%);
-      }
+  --border:rgba(255,255,255,.12);
 
-      100% {
-        transform: translateX(280%);
-      }
-    }
+  --border-hover:rgba(0,255,204,.45);
 
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-      }
-    }
+  --glow:#00ffcc;
 
-    /* ========== UI CONTAINER ========== */
-    .container {
-      position: relative;
-      z-index: 2;
-      width: 460px;
-      max-width: 94vw;
-      padding: 6px 0;
-      max-height: 90vh;
-      display: flex;
-      flex-direction: column;
-    }
+  --glow2:#00aaff;
 
-    .title {
-      text-align: center;
-      margin-bottom: 18px;
-      letter-spacing: 6px;
-      font-weight: 300;
-      font-size: 1.2rem;
-      opacity: 0.7;
-      text-transform: uppercase;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 12px;
-      backdrop-filter: blur(4px);
-      flex-shrink: 0;
-    }
+  --gold:#ffd43b;
 
-    .menu {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      overflow-y: auto;
-      padding-right: 4px;
-      scrollbar-width: thin;
-      scrollbar-color: var(--glow) transparent;
-      flex: 1 1 auto;
-      min-height: 0;
-    }
+  --danger:#ff5577;
 
-    .menu::-webkit-scrollbar {
-      width: 5px;
-    }
+  --radius:18px;
 
-    .menu::-webkit-scrollbar-thumb {
-      background: var(--glow);
-      border-radius: 10px;
-    }
+  --shadow:
+    0 0 25px rgba(0,255,204,.18);
 
-    .item {
-      padding: 14px 18px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: 0.15s ease;
-      backdrop-filter: blur(12px);
-      font-weight: 400;
-      letter-spacing: 0.3px;
-      user-select: none;
-      outline: none;
-      color: var(--text);
-    }
+}
 
-    .item:focus-visible {
-      outline: 2px solid var(--glow);
-      outline-offset: 2px;
-    }
 
-    .item span {
-      opacity: 0.5;
-      font-size: 0.9rem;
-      transition: 0.2s;
-      margin-left: 10px;
-      flex-shrink: 0;
-    }
+body.light{
 
-    .item.selected {
-      border: 1px solid var(--glow);
-      box-shadow: var(--shadow);
-      transform: scale(1.02);
-      background: rgba(255,255,255,0.08);
-    }
+  --bg:
+    radial-gradient(circle at 10% 10%,#d8fff5 0%,transparent 32%),
+    radial-gradient(circle at 90% 90%,#dcecff 0%,transparent 32%),
+    #eef3ff;
 
-    .item:hover {
-      background: rgba(255,255,255,0.08);
-    }
+  --panel:rgba(255,255,255,.72);
 
-    .hint {
-      margin-top: 16px;
-      text-align: center;
-      font-size: 11px;
-      opacity: 0.45;
-      letter-spacing: 1.5px;
-      font-weight: 300;
-      flex-shrink: 0;
-    }
+  --card:rgba(255,255,255,.65);
 
-    /* ========== THEME TOGGLE ========== */
-    .theme-btn {
-      position: fixed;
-      top: 18px;
-      right: 20px;
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      background: var(--card);
-      backdrop-filter: blur(8px);
-      cursor: pointer;
-      z-index: 10;
-      font-size: 1.4rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text);
-      transition: 0.2s;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
+  --card-hover:rgba(255,255,255,.95);
 
-    .theme-btn:hover {
-      transform: scale(1.08);
-      border-color: var(--glow);
-    }
+  --text:#111827;
 
-    /* ========== TOAST ========== */
-    #toast {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(8px);
-      padding: 12px 28px;
-      border-radius: 40px;
-      border: 1px solid var(--glow);
-      color: #fff;
-      font-size: 0.95rem;
-      z-index: 50;
-      opacity: 0;
-      transition:
-        opacity 0.4s ease,
-        transform 0.4s ease;
-      pointer-events: none;
-      white-space: nowrap;
-      box-shadow: 0 0 30px rgba(255,0,0,0.2);
-    }
+  --muted:rgba(17,24,39,.55);
 
-    #toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
+  --border:rgba(0,0,0,.10);
 
-    /* ========== RESPONSIVE ========== */
-    @media (max-width: 500px) {
-      .container {
-        width: 98vw;
-        max-height: 92vh;
-      }
+  --border-hover:rgba(0,119,255,.45);
 
-      .title {
-        font-size: 1rem;
-        letter-spacing: 3px;
-      }
+  --glow:#0077ff;
 
-      .item {
-        padding: 12px 14px;
-        font-size: 0.85rem;
-      }
+  --glow2:#00aaff;
 
-      .theme-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 1.2rem;
-        top: 12px;
-        right: 12px;
-      }
+  --shadow:
+    0 0 25px rgba(0,119,255,.18);
 
-      #toast {
-        font-size: 0.8rem;
-        padding: 10px 20px;
-        white-space: normal;
-        max-width: 90vw;
-        text-align: center;
-      }
-    }
+}
 
-    @media (max-width: 400px) {
-      .item {
-        padding: 10px 10px;
-        font-size: 0.75rem;
-      }
 
-      .title {
-        font-size: 0.9rem;
-      }
-    }
-  </style>
+body.neon{
+
+  --bg:
+    radial-gradient(circle at 10% 10%,#450052 0%,transparent 35%),
+    radial-gradient(circle at 90% 90%,#001b45 0%,transparent 35%),
+    #000;
+
+  --panel:rgba(0,0,0,.78);
+
+  --card:rgba(255,255,255,.035);
+
+  --card-hover:rgba(255,0,255,.12);
+
+  --text:#fff;
+
+  --muted:rgba(255,255,255,.55);
+
+  --border:rgba(255,0,255,.28);
+
+  --border-hover:rgba(255,0,255,.8);
+
+  --glow:#ff00ff;
+
+  --glow2:#00ffff;
+
+  --shadow:
+    0 0 30px rgba(255,0,255,.25);
+
+}
+
+
+/* =========================================================
+   BODY
+========================================================= */
+
+body{
+
+  font-family:
+    Inter,
+    "Segoe UI",
+    system-ui,
+    sans-serif;
+
+  color:var(--text);
+
+  background:var(--bg);
+
+  overflow:hidden;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  transition:
+    background .4s ease,
+    color .3s ease;
+
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+.background{
+
+  position:fixed;
+
+  inset:0;
+
+  overflow:hidden;
+
+  pointer-events:none;
+
+  z-index:0;
+
+}
+
+.orb{
+
+  position:absolute;
+
+  width:380px;
+
+  height:380px;
+
+  border-radius:50%;
+
+  filter:blur(90px);
+
+  opacity:.15;
+
+  animation:
+    floatOrb 18s ease-in-out infinite alternate;
+
+}
+
+.orb.one{
+
+  background:#00ffcc;
+
+  left:-130px;
+
+  top:-120px;
+
+}
+
+.orb.two{
+
+  background:#0066ff;
+
+  right:-130px;
+
+  bottom:-130px;
+
+  animation-delay:-7s;
+
+}
+
+.orb.three{
+
+  background:#ff00ff;
+
+  width:250px;
+
+  height:250px;
+
+  left:45%;
+
+  top:40%;
+
+  animation-delay:-12s;
+
+}
+
+@keyframes floatOrb{
+
+  from{
+    transform:
+      translate3d(0,0,0)
+      scale(1);
+  }
+
+  to{
+    transform:
+      translate3d(70px,50px,0)
+      scale(1.15);
+  }
+
+}
+
+
+/* =========================================================
+   PARTICLES
+========================================================= */
+
+#particles{
+
+  position:fixed;
+
+  inset:0;
+
+  width:100%;
+
+  height:100%;
+
+  pointer-events:none;
+
+  z-index:1;
+
+  opacity:.65;
+
+}
+
+
+/* =========================================================
+   APPLICATION
+========================================================= */
+
+.app{
+
+  position:relative;
+
+  z-index:5;
+
+  width:min(760px,96vw);
+
+  height:min(900px,96vh);
+
+  display:flex;
+
+  flex-direction:column;
+
+  padding:20px;
+
+  border:1px solid var(--border);
+
+  border-radius:28px;
+
+  background:var(--panel);
+
+  backdrop-filter:blur(28px);
+
+  -webkit-backdrop-filter:blur(28px);
+
+  box-shadow:
+    0 25px 100px rgba(0,0,0,.42),
+    var(--shadow);
+
+  overflow:hidden;
+
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.topbar{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:12px;
+
+  margin-bottom:15px;
+
+}
+
+.brand{
+
+  min-width:0;
+
+}
+
+.brand-title{
+
+  font-size:1.08rem;
+
+  font-weight:800;
+
+  letter-spacing:2px;
+
+  text-transform:uppercase;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:8px;
+
+}
+
+.brand-sub{
+
+  margin-top:4px;
+
+  font-size:.64rem;
+
+  color:var(--muted);
+
+  letter-spacing:1.5px;
+
+}
+
+.top-actions{
+
+  display:flex;
+
+  gap:7px;
+
+}
+
+
+/* =========================================================
+   ICON BUTTON
+========================================================= */
+
+.icon-btn{
+
+  width:42px;
+
+  height:42px;
+
+  flex-shrink:0;
+
+  border:1px solid var(--border);
+
+  border-radius:50%;
+
+  background:var(--card);
+
+  color:var(--text);
+
+  cursor:pointer;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  font-size:1rem;
+
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    background .18s ease;
+
+  -webkit-tap-highlight-color:transparent;
+
+}
+
+.icon-btn:hover{
+
+  transform:translateY(-2px) scale(1.05);
+
+  border-color:var(--glow);
+
+  background:var(--card-hover);
+
+}
+
+.icon-btn:active{
+
+  transform:scale(.94);
+
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+
+  padding:14px;
+
+  margin-bottom:13px;
+
+  border:1px solid var(--border);
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,255,204,.07),
+      rgba(0,170,255,.04),
+      transparent
+    );
+
+  position:relative;
+
+  overflow:hidden;
+
+}
+
+.hero::after{
+
+  content:"";
+
+  position:absolute;
+
+  width:130px;
+
+  height:130px;
+
+  border-radius:50%;
+
+  right:-50px;
+
+  top:-50px;
+
+  background:var(--glow);
+
+  filter:blur(60px);
+
+  opacity:.12;
+
+}
+
+.hero-top{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:10px;
+
+}
+
+.hero-title{
+
+  font-size:.95rem;
+
+  font-weight:700;
+
+}
+
+.hero-description{
+
+  margin-top:4px;
+
+  font-size:.67rem;
+
+  color:var(--muted);
+
+  line-height:1.5;
+
+}
+
+.status{
+
+  flex-shrink:0;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:5px;
+
+  padding:5px 8px;
+
+  border:1px solid var(--border);
+
+  border-radius:999px;
+
+  font-size:.57rem;
+
+  color:var(--muted);
+
+}
+
+.status-dot{
+
+  width:6px;
+
+  height:6px;
+
+  border-radius:50%;
+
+  background:var(--glow);
+
+  box-shadow:0 0 10px var(--glow);
+
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.search{
+
+  position:relative;
+
+  margin-bottom:11px;
+
+}
+
+.search input{
+
+  width:100%;
+
+  height:48px;
+
+  border:1px solid var(--border);
+
+  border-radius:15px;
+
+  outline:none;
+
+  background:var(--card);
+
+  color:var(--text);
+
+  padding:0 72px 0 45px;
+
+  font-size:.88rem;
+
+  transition:
+    border-color .2s,
+    box-shadow .2s,
+    background .2s;
+
+}
+
+.search input::placeholder{
+
+  color:var(--muted);
+
+}
+
+.search input:focus{
+
+  border-color:var(--glow);
+
+  background:var(--card-hover);
+
+  box-shadow:
+    0 0 20px rgba(0,255,204,.10);
+
+}
+
+.search-icon{
+
+  position:absolute;
+
+  left:15px;
+
+  top:50%;
+
+  transform:translateY(-50%);
+
+  opacity:.55;
+
+  pointer-events:none;
+
+}
+
+.clear-search{
+
+  position:absolute;
+
+  right:12px;
+
+  top:50%;
+
+  transform:translateY(-50%);
+
+  border:none;
+
+  background:none;
+
+  color:var(--muted);
+
+  cursor:pointer;
+
+  display:none;
+
+  font-size:.95rem;
+
+  padding:6px;
+
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stats{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,1fr);
+
+  gap:7px;
+
+  margin-bottom:11px;
+
+}
+
+.stat{
+
+  min-width:0;
+
+  padding:9px 7px;
+
+  border:1px solid var(--border);
+
+  border-radius:13px;
+
+  background:var(--card);
+
+  text-align:center;
+
+  transition:
+    border-color .2s,
+    transform .2s;
+
+}
+
+.stat:hover{
+
+  transform:translateY(-2px);
+
+  border-color:var(--border-hover);
+
+}
+
+.stat strong{
+
+  display:block;
+
+  font-size:.88rem;
+
+}
+
+.stat span{
+
+  display:block;
+
+  margin-top:2px;
+
+  font-size:.53rem;
+
+  color:var(--muted);
+
+  text-transform:uppercase;
+
+  letter-spacing:.8px;
+
+}
+
+
+/* =========================================================
+   CATEGORIES
+========================================================= */
+
+.categories{
+
+  display:flex;
+
+  gap:7px;
+
+  overflow-x:auto;
+
+  scrollbar-width:none;
+
+  margin-bottom:11px;
+
+  padding:2px 1px 4px;
+
+}
+
+.categories::-webkit-scrollbar{
+
+  display:none;
+
+}
+
+.category{
+
+  flex-shrink:0;
+
+  border:1px solid var(--border);
+
+  background:var(--card);
+
+  color:var(--text);
+
+  padding:8px 11px;
+
+  border-radius:999px;
+
+  cursor:pointer;
+
+  font-size:.65rem;
+
+  white-space:nowrap;
+
+  transition:
+    .18s ease;
+
+}
+
+.category:hover{
+
+  transform:translateY(-1px);
+
+  border-color:var(--border-hover);
+
+}
+
+.category.active{
+
+  border-color:var(--glow);
+
+  background:var(--card-hover);
+
+  box-shadow:
+    0 0 14px rgba(0,255,204,.10);
+
+}
+
+
+/* =========================================================
+   CONTENT HEADER
+========================================================= */
+
+.content-header{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:10px;
+
+  margin:3px 2px 8px;
+
+}
+
+.section-title{
+
+  font-size:.67rem;
+
+  text-transform:uppercase;
+
+  letter-spacing:1.5px;
+
+  color:var(--muted);
+
+}
+
+.sort-select{
+
+  border:1px solid var(--border);
+
+  border-radius:8px;
+
+  background:var(--card);
+
+  color:var(--text);
+
+  padding:5px 7px;
+
+  outline:none;
+
+  font-size:.58rem;
+
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.content{
+
+  flex:1;
+
+  min-height:0;
+
+  overflow-y:auto;
+
+  padding-right:4px;
+
+  scrollbar-width:thin;
+
+  scrollbar-color:
+    var(--glow)
+    transparent;
+
+  -webkit-overflow-scrolling:touch;
+
+  overscroll-behavior:contain;
+
+}
+
+.content::-webkit-scrollbar{
+
+  width:5px;
+
+}
+
+.content::-webkit-scrollbar-thumb{
+
+  background:var(--glow);
+
+  border-radius:10px;
+
+}
+
+
+/* =========================================================
+   ITEM
+========================================================= */
+
+.item{
+
+  position:relative;
+
+  width:100%;
+
+  min-height:64px;
+
+  margin-bottom:7px;
+
+  padding:10px 11px;
+
+  border:1px solid var(--border);
+
+  border-radius:17px;
+
+  background:var(--card);
+
+  color:var(--text);
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+  cursor:pointer;
+
+  user-select:none;
+
+  outline:none;
+
+  transition:
+    transform .16s ease,
+    border-color .16s ease,
+    background .16s ease,
+    box-shadow .16s ease;
+
+  -webkit-tap-highlight-color:transparent;
+
+}
+
+.item:hover{
+
+  background:var(--card-hover);
+
+  border-color:var(--border-hover);
+
+  transform:translateX(3px);
+
+}
+
+.item.selected{
+
+  border-color:var(--glow);
+
+  box-shadow:
+    0 0 18px rgba(0,255,204,.10);
+
+  background:var(--card-hover);
+
+  transform:translateX(4px);
+
+}
+
+.item:focus-visible{
+
+  outline:2px solid var(--glow);
+
+  outline-offset:2px;
+
+}
+
+.item-icon{
+
+  width:40px;
+
+  height:40px;
+
+  flex-shrink:0;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  border-radius:12px;
+
+  background:rgba(255,255,255,.055);
+
+  font-size:1.15rem;
+
+}
+
+.item-main{
+
+  flex:1;
+
+  min-width:0;
+
+}
+
+.item-name-row{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:7px;
+
+  min-width:0;
+
+}
+
+.item-name{
+
+  font-size:.82rem;
+
+  font-weight:600;
+
+  line-height:1.25;
+
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+
+  white-space:nowrap;
+
+}
+
+.item-category{
+
+  margin-top:3px;
+
+  font-size:.57rem;
+
+  color:var(--muted);
+
+  text-transform:uppercase;
+
+  letter-spacing:.75px;
+
+}
+
+.item-actions{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:5px;
+
+  flex-shrink:0;
+
+}
+
+.favorite{
+
+  width:32px;
+
+  height:32px;
+
+  border:none;
+
+  background:transparent;
+
+  color:var(--muted);
+
+  cursor:pointer;
+
+  border-radius:50%;
+
+  font-size:1rem;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+}
+
+.favorite:hover,
+.favorite.active{
+
+  color:var(--gold);
+
+  background:rgba(255,212,59,.10);
+
+}
+
+.launch{
+
+  width:28px;
+
+  height:28px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  color:var(--muted);
+
+  font-size:.65rem;
+
+}
+
+.badge{
+
+  flex-shrink:0;
+
+  padding:3px 6px;
+
+  border-radius:999px;
+
+  font-size:.47rem;
+
+  font-weight:700;
+
+  text-transform:uppercase;
+
+  letter-spacing:.5px;
+
+  border:1px solid var(--border);
+
+  color:var(--muted);
+
+}
+
+.badge.hot{
+
+  color:#ff9d3b;
+
+  border-color:rgba(255,157,59,.35);
+
+  background:rgba(255,157,59,.08);
+
+}
+
+.badge.ai{
+
+  color:#b86cff;
+
+  border-color:rgba(184,108,255,.35);
+
+  background:rgba(184,108,255,.08);
+
+}
+
+.badge.new{
+
+  color:var(--glow);
+
+  border-color:var(--border-hover);
+
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.empty{
+
+  text-align:center;
+
+  padding:55px 20px;
+
+  color:var(--muted);
+
+}
+
+.empty-icon{
+
+  font-size:2.5rem;
+
+  margin-bottom:10px;
+
+}
+
+.empty strong{
+
+  display:block;
+
+  color:var(--text);
+
+  margin-bottom:5px;
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  flex-wrap:wrap;
+
+  gap:5px;
+
+  padding-top:10px;
+
+  text-align:center;
+
+  font-size:.58rem;
+
+  color:var(--muted);
+
+  letter-spacing:.6px;
+
+}
+
+.footer kbd{
+
+  border:1px solid var(--border);
+
+  padding:2px 5px;
+
+  border-radius:5px;
+
+  background:var(--card);
+
+  color:var(--text);
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+#toast{
+
+  position:fixed;
+
+  left:50%;
+
+  bottom:24px;
+
+  transform:
+    translate(-50%,80px);
+
+  opacity:0;
+
+  z-index:100;
+
+  padding:11px 19px;
+
+  border:1px solid var(--glow);
+
+  border-radius:999px;
+
+  background:rgba(0,0,0,.86);
+
+  backdrop-filter:blur(12px);
+
+  color:white;
+
+  font-size:.75rem;
+
+  pointer-events:none;
+
+  transition:.3s ease;
+
+  white-space:nowrap;
+
+}
+
+#toast.show{
+
+  opacity:1;
+
+  transform:
+    translate(-50%,0);
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:600px){
+
+  body{
+
+    align-items:stretch;
+
+  }
+
+  .app{
+
+    width:100vw;
+
+    height:100dvh;
+
+    max-height:none;
+
+    border-radius:0;
+
+    border:0;
+
+    padding:13px;
+
+  }
+
+  .brand-title{
+
+    font-size:.88rem;
+
+  }
+
+  .brand-sub{
+
+    font-size:.52rem;
+
+    letter-spacing:1px;
+
+  }
+
+  .hero{
+
+    padding:11px;
+
+  }
+
+  .hero-title{
+
+    font-size:.82rem;
+
+  }
+
+  .hero-description{
+
+    font-size:.6rem;
+
+  }
+
+  .status{
+
+    font-size:.5rem;
+
+  }
+
+  .stats{
+
+    grid-template-columns:
+      repeat(4,1fr);
+
+    gap:5px;
+
+  }
+
+  .stat{
+
+    padding:8px 3px;
+
+  }
+
+  .stat strong{
+
+    font-size:.78rem;
+
+  }
+
+  .stat span{
+
+    font-size:.45rem;
+
+  }
+
+  .item{
+
+    min-height:63px;
+
+    padding:9px;
+
+  }
+
+  .item-icon{
+
+    width:37px;
+
+    height:37px;
+
+    font-size:1rem;
+
+  }
+
+  .item-name{
+
+    font-size:.75rem;
+
+  }
+
+  .item-category{
+
+    font-size:.52rem;
+
+  }
+
+  .badge{
+
+    display:none;
+
+  }
+
+  .footer{
+
+    padding-top:8px;
+
+    font-size:.52rem;
+
+  }
+
+}
+
+@media(max-width:380px){
+
+  .app{
+
+    padding:10px;
+
+  }
+
+  .hero{
+
+    display:none;
+
+  }
+
+  .item-category{
+
+    display:none;
+
+  }
+
+  .item-icon{
+
+    width:34px;
+
+    height:34px;
+
+  }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+  *,
+  *::before,
+  *::after{
+
+    animation-duration:.01ms!important;
+
+    animation-iteration-count:1!important;
+
+    transition-duration:.01ms!important;
+
+  }
+
+}
+
+</style>
+
 </head>
+
 
 <body>
 
-  <!-- 🌊 WAVES -->
-  <div
-    class="waves"
-    id="wavesContainer"
-    aria-hidden="true"
-  >
-    <div class="wave"></div>
-    <div class="wave"></div>
-    <div class="wave"></div>
+
+<!-- =======================================================
+     BACKGROUND
+======================================================= -->
+
+<div class="background" aria-hidden="true">
+
+  <div class="orb one"></div>
+
+  <div class="orb two"></div>
+
+  <div class="orb three"></div>
+
+</div>
+
+
+<canvas id="particles"></canvas>
+
+
+<!-- =======================================================
+     APPLICATION
+======================================================= -->
+
+<main class="app">
+
+
+<!-- TOP BAR -->
+
+<header class="topbar">
+
+  <div class="brand">
+
+    <div class="brand-title">
+      🕹️ DIGITAL HUB
+    </div>
+
+    <div class="brand-sub">
+      INGÉNIERIE & TRAVAUX · ULTRA CONSOLE
+    </div>
+
   </div>
 
-  <!-- ✨ PARTICLES -->
-  <canvas id="particlesCanvas"></canvas>
 
-  <!-- BOOT -->
-  <div id="boot">
-    <h2>⚡ Bienvenue dans votre Espace détente</h2>
-    <div class="bar"></div>
+  <div class="top-actions">
+
+    <button
+      class="icon-btn"
+      id="homeBtn"
+      title="Accueil"
+      aria-label="Accueil">
+
+      🏠
+
+    </button>
+
+
+    <button
+      class="icon-btn"
+      id="fullscreenBtn"
+      title="Plein écran"
+      aria-label="Plein écran">
+
+      ⛶
+
+    </button>
+
+
+    <button
+      class="icon-btn"
+      id="themeBtn"
+      title="Changer de thème"
+      aria-label="Changer de thème">
+
+      ☀️
+
+    </button>
+
   </div>
 
-  <!-- THEME TOGGLE -->
+</header>
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+  <div class="hero-top">
+
+    <div>
+
+      <div class="hero-title">
+        🚀 Votre espace numérique
+      </div>
+
+      <div class="hero-description">
+
+        Jeux, génie civil, calculs,
+        programmation, IA,
+        connaissances et multimédia.
+
+      </div>
+
+    </div>
+
+
+    <div class="status">
+
+      <span class="status-dot"></span>
+
+      ONLINE
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- SEARCH -->
+
+<div class="search">
+
+  <span class="search-icon">
+    🔎
+  </span>
+
+  <input
+    id="search"
+    type="search"
+    autocomplete="off"
+    placeholder="Rechercher une application..."
+    aria-label="Rechercher une application">
+
   <button
-    class="theme-btn"
-    id="themeToggle"
-    aria-label="Changer de thème"
-  >
-    ☀
+    class="clear-search"
+    id="clearSearch"
+    aria-label="Effacer la recherche">
+
+    ✕
+
   </button>
 
-  <!-- TOAST -->
-  <div id="toast"></div>
+</div>
 
-  <!-- MENU -->
-  <div class="container">
 
-    <div class="title">
-      🕹️ GAME HUB // CONSOLE
-    </div>
+<!-- STATS -->
 
-    <div
-      class="menu"
-      id="menuContainer"
-      role="listbox"
-      aria-label="Liste des jeux et outils"
-    >
-      <!-- Généré par JavaScript -->
-    </div>
+<div class="stats">
 
-    <div class="hint">
-      ↑ ↓ navigation • ENTER sélection
-    </div>
+  <div class="stat">
+
+    <strong id="totalCount">
+      53
+    </strong>
+
+    <span>
+      Apps
+    </span>
 
   </div>
 
-  <script>
-    (function () {
-      'use strict';
-
-      /* =====================================================
-         1. CONFIGURATION DU MENU
-      ===================================================== */
-
-      const menuItems = [
-
-        {
-          label: '1. 🎮 Game 1 Balls',
-          url: '/espacedetente/game-balls',
-          status: '▶'
-        },
-
-        {
-          label: '2. 🧩 Game 2 Your name',
-          url: '/espacedetente/game-2',
-          status: '▶'
-        },
-
-        {
-          label: '3. 🚀 Game 3 Earth',
-          url: '/espacedetente/game-3',
-          status: '▶'
-        },
-
-        {
-          label: '4. 🧱 Beam Iso',
-          url: '/espacedetente/game-4',
-          status: '▶'
-        },
-
-        {
-          label: '5. 🏗 Modèle diagramme',
-          url: '/espacedetente/game-5',
-          status: '▶'
-        },
-
-        {
-          label: '6. 🎮 Agent virtuel d’Ingénierie',
-          url: '/espacedetente/game-6',
-          status: '▶'
-        },
-
-        {
-          label: '7. 🎮 Tetris',
-          url: '/espacedetente/game-7',
-          status: '▶'
-        },
-
-        {
-          label: '8. 🎮 Discutez avec Avatar Gemma',
-          url: '/espacedetente/game-8',
-          status: '▶'
-        },
-
-        {
-          label: '9. 🔢 Calculatrice',
-          url: '/espacedetente/game-9',
-          status: '▶'
-        },
-
-        {
-          label: '10. 📈 Calcul dérivées & intégrales',
-          url: '/espacedetente/game-10',
-          status: '▶'
-        },
-
-        {
-          label: '11. 📖 60 sujets génie civil',
-          url: '/espacedetente/game-11',
-          status: '▶'
-        },
-
-        {
-          label: '12. 📐 Langages de Programmation',
-          url: '/espacedetente/game-12',
-          status: '▶'
-        },
-
-        {
-          label: '13. 🏗️ Scientifiques & Physiciens',
-          url: '/espacedetente/game-13',
-          status: '▶'
-        },
-
-        {
-          label: '14. 🌊 Mécanique des fluides',
-          url: '/espacedetente/game-14',
-          status: '▶'
-        },
-
-        {
-          label: '15. ⚙️ Langage C++',
-          url: '/espacedetente/game-15',
-          status: '▶'
-        },
-
-        {
-          label: '16. 🌉 Langage Python',
-          url: '/espacedetente/game-16',
-          status: '▶'
-        },
-
-        {
-          label: '17. 🏢 Développement & pratiques',
-          url: '/espacedetente/game-17',
-          status: '▶'
-        },
-
-        {
-          label: '18. 📊 Charges permanentes & variables',
-          url: '/espacedetente/game-18',
-          status: '▶'
-        },
-
-        {
-          label: '19. 🌍 Eurocode 8 : parasismique',
-          url: '/espacedetente/game-19',
-          status: '▶'
-        },
-
-        {
-          label: '20. 🔬 Matériaux innovants & durabilité',
-          url: '/espacedetente/game-20',
-          status: '▶'
-        },
-
-        {
-          label: '21. 🏗️ Ingénierie des structures béton : du calcul à la réalisation',
-          url: '/espacedetente/game-21',
-          status: '▶'
-        },
-
-        {
-          label: '22. 🧱 L’univers du béton armé : conception et maîtrise',
-          url: '/espacedetente/game-22',
-          status: '▶'
-        },
-
-        {
-          label: '23. 🔎 Diagnostic et vérification des structures : l’œil de l’ingénieur',
-          url: '/espacedetente/game-23',
-          status: '▶'
-        },
-
-        {
-          label: '24. 🌲 Structures bois : concevoir avec une matière durable',
-          url: '/espacedetente/game-24',
-          status: '▶'
-        },
-
-        {
-          label: '25. ⚙️ Structures métalliques : l’art de construire avec l’acier',
-          url: '/espacedetente/game-25',
-          status: '▶'
-        },
-
-        {
-          label: '26. 📚 La grande bibliothèque des 60 récits du savoir',
-          url: '/espacedetente/game-26',
-          status: '▶'
-        },
-
-        {
-          label: '27. 🏆 Les 20 récits des bâtisseurs de réussite',
-          url: '/espacedetente/game-27',
-          status: '▶'
-        },
-
-        {
-          label: '28. ♟️ Les 20 récits des maîtres de la stratégie',
-          url: '/espacedetente/game-28',
-          status: '▶'
-        },
-
-        {
-          label: '29. 🦉 La sagesse des grands esprits',
-          url: '/espacedetente/game-29',
-          status: '▶'
-        },
-
-        {
-          label: '30. 🏚️ Le mystère de la maison des collines',
-          url: '/espacedetente/game-30',
-          status: '▶'
-        },
-
-        {
-          label: '31. 🌍 Le voyageur des mille connaissances',
-          url: '/espacedetente/game-31',
-          status: '▶'
-        },
-
-        {
-          label: '32. 🌐 La grande encyclopédie de culture générale',
-          url: '/espacedetente/game-32',
-          status: '▶'
-        },
-
-        {
-          label: '33. 🤖 Le futur technologique : comprendre les innovations de demain',
-          url: '/espacedetente/game-33',
-          status: '▶'
-        },
-
-        {
-          label: '34. 🧠 Intelligence artificielle : comprendre la révolution en marche',
-          url: '/espacedetente/game-34',
-          status: '▶'
-        },
-
-        {
-          label: '35. 💻 Bibliothèque mathématique collège',
-          url: '/espacedetente/game-35',
-          status: '▶'
-        },
-
-        {
-          label: '36. 🚘 100 questions Permis de conduire',
-          url: '/espacedetente/game-36',
-          status: '▶'
-        },
-
-        {
-          label: '37. 🪨 Bibliothèque génie civil',
-          url: '/espacedetente/game-37',
-          status: '▶'
-        },
-
-        {
-          label: '38. 🎮 Game Poolgame',
-          url: '/espacedetente/game-38',
-          status: '▶'
-        },
-
-        {
-          label: '39. 🎶 Lecteur de musique',
-          url: '/espacedetente/game-39',
-          status: '▶'
-        },
-
-        {
-          label: '40. ⚡ Game PingPong',
-          url: '/espacedetente/game-40',
-          status: '▶'
-        },
-
-        {
-          label: '41. 🌎 Les civilisations qui ont façonné l’humanité',
-          url: '/espacedetente/game-41',
-          status: 'En cours'
-        },
-
-        {
-          label: '42. 📡 TV Player 🧤📰',
-          url: '/espacedetente/game-42',
-          status: 'En cours'
-        },
-
-        {
-          label: '43. 🔬 Lecteur MP3 🎶',
-          url: '/espacedetente/game-43',
-          status: '▶'
-        },
-
-        {
-          label: '44. 🧬 Game voiture 1 🚗',
-          url: '/espacedetente/game-44',
-          status: '▶'
-        },
-
-        {
-          label: '45. 🌋 Convertisseur binaire',
-          url: '/espacedetente/game-45',
-          status: '▶'
-        },
-
-        {
-          label: '46. 📖 Vérificateur d’âge 🛡️',
-          url: '/espacedetente/game-46',
-          status: '▶'
-        },
-
-        {
-          label: '47. 🎓 Les connaissances essentielles à maîtriser',
-          url: '/espacedetente/game-47',
-          status: '▶'
-        },
-
-        {
-          label: '48. 🏅 Game voiture 2 🚙',
-          url: '/espacedetente/game-48',
-          status: '▶'
-        },
-
-        {
-          label: '49. 🌟 Les génies qui ont changé le cours de l’Histoire',
-          url: '/espacedetente/game-49',
-          status: '▶'
-        },
-
-        {
-          label: '50. 🧭 Le guide ultime de la culture générale',
-          url: '/espacedetente/game-50',
-          status: '▶'
-        },
-
-        {
-          label: '51. 🪭 Stickman',
-          url: '/espacedetente/game-51',
-          status: '▶'
-        },
-
-        {
-          label: '52. 🧮 Jeux d’échecs',
-          url: '/espacedetente/game-52',
-          status: '▶'
-        }
-
-      ];
-
-      /* =====================================================
-         2. RENDU DU MENU
-      ===================================================== */
-
-      const menuContainer =
-        document.getElementById('menuContainer');
-
-      menuItems.forEach((item, idx) => {
-
-        const div = document.createElement('div');
-
-        div.className = 'item';
-
-        if (idx === 0) {
-          div.classList.add('selected');
-          div.setAttribute('aria-selected', 'true');
-        } else {
-          div.setAttribute('aria-selected', 'false');
-        }
-
-        div.setAttribute('data-index', idx);
-        div.setAttribute('role', 'option');
-        div.setAttribute('tabindex', '0');
-
-        div.innerHTML =
-          `${item.label} <span>${item.status}</span>`;
-
-        div.addEventListener('click', () => {
-          handleItemClick(idx);
-        });
-
-        div.addEventListener('focus', () => {
-          setCurrentIndex(idx);
-        });
-
-        menuContainer.appendChild(div);
-      });
-
-      /* =====================================================
-         3. NAVIGATION
-      ===================================================== */
-
-      const items =
-        document.querySelectorAll('.item');
-
-      let currentIndex = 0;
-
-      function setCurrentIndex(idx) {
-
-        if (idx === currentIndex) return;
-
-        const previous =
-          items[currentIndex];
-
-        if (previous) {
-          previous.classList.remove('selected');
-          previous.setAttribute(
-            'aria-selected',
-            'false'
-          );
-        }
-
-        currentIndex = idx;
-
-        const current =
-          items[currentIndex];
-
-        if (current) {
-
-          current.classList.add('selected');
-
-          current.setAttribute(
-            'aria-selected',
-            'true'
-          );
-
-          current.focus();
-
-          current.scrollIntoView({
-            block: 'nearest',
-            behavior: 'smooth'
-          });
-        }
+
+  <div class="stat">
+
+    <strong id="visibleCount">
+      53
+    </strong>
+
+    <span>
+      Affichées
+    </span>
+
+  </div>
+
+
+  <div class="stat">
+
+    <strong id="favoriteCount">
+      0
+    </strong>
+
+    <span>
+      Favoris
+    </span>
+
+  </div>
+
+
+  <div class="stat">
+
+    <strong id="historyCount">
+      0
+    </strong>
+
+    <span>
+      Récentes
+    </span>
+
+  </div>
+
+</div>
+
+
+<!-- CATEGORIES -->
+
+<nav
+  class="categories"
+  id="categories"
+  aria-label="Catégories">
+</nav>
+
+
+<!-- CONTENT -->
+
+<section
+  class="content"
+  id="content"
+  tabindex="0">
+</section>
+
+
+<!-- FOOTER -->
+
+<footer class="footer">
+
+  <span>
+    ↑ ↓ naviguer
+  </span>
+
+  ·
+
+  <kbd>ENTER</kbd>
+
+  <span>
+    lancer
+  </span>
+
+  ·
+
+  <kbd>ESC</kbd>
+
+  <span>
+    accueil
+  </span>
+
+</footer>
+
+
+</main>
+
+
+<!-- TOAST -->
+
+<div id="toast"></div>
+
+
+<script>
+
+(function(){
+
+"use strict";
+
+
+/* =========================================================
+   APPLICATIONS
+========================================================= */
+
+const apps = [
+
+{
+id:1,
+name:"Game 1 Balls",
+icon:"🎮",
+category:"Jeux",
+url:"/espacedetente/game-balls",
+badge:"hot"
+},
+
+{
+id:2,
+name:"Game 2 Your name",
+icon:"🧩",
+category:"Jeux",
+url:"/espacedetente/game-2"
+},
+
+{
+id:3,
+name:"Game 3 Earth",
+icon:"🚀",
+category:"Jeux",
+url:"/espacedetente/game-3"
+},
+
+{
+id:4,
+name:"Beam Iso",
+icon:"🧱",
+category:"Génie civil",
+url:"/espacedetente/game-4",
+badge:"hot"
+},
+
+{
+id:5,
+name:"Modèle diagramme",
+icon:"🏗️",
+category:"Génie civil",
+url:"/espacedetente/game-5"
+},
+
+{
+id:6,
+name:"Agent virtuel d’Ingénierie",
+icon:"🤖",
+category:"IA & Technologie",
+url:"/espacedetente/game-6",
+badge:"ai"
+},
+
+{
+id:7,
+name:"Tetris",
+icon:"🎮",
+category:"Jeux",
+url:"/espacedetente/game-7"
+},
+
+{
+id:8,
+name:"Discutez avec Avatar Gemma",
+icon:"🤖",
+category:"IA & Technologie",
+url:"/espacedetente/game-8",
+badge:"ai"
+},
+
+{
+id:9,
+name:"Calculatrice",
+icon:"🔢",
+category:"Outils",
+url:"/espacedetente/game-9",
+badge:"hot"
+},
+
+{
+id:10,
+name:"Calcul dérivées & intégrales",
+icon:"📈",
+category:"Mathématiques",
+url:"/espacedetente/game-10"
+},
+
+{
+id:11,
+name:"60 sujets génie civil",
+icon:"📖",
+category:"Génie civil",
+url:"/espacedetente/game-11",
+badge:"new"
+},
+
+{
+id:12,
+name:"Langages de Programmation",
+icon:"📐",
+category:"Programmation",
+url:"/espacedetente/game-12"
+},
+
+{
+id:13,
+name:"Scientifiques & Physiciens",
+icon:"🔬",
+category:"Connaissances",
+url:"/espacedetente/game-13"
+},
+
+{
+id:14,
+name:"Mécanique des fluides",
+icon:"🌊",
+category:"Génie civil",
+url:"/espacedetente/game-14"
+},
+
+{
+id:15,
+name:"Langage C++",
+icon:"⚙️",
+category:"Programmation",
+url:"/espacedetente/game-15"
+},
+
+{
+id:16,
+name:"Langage Python",
+icon:"🐍",
+category:"Programmation",
+url:"/espacedetente/game-16",
+badge:"hot"
+},
+
+{
+id:17,
+name:"Développement & pratiques",
+icon:"🏢",
+category:"Programmation",
+url:"/espacedetente/game-17"
+},
+
+{
+id:18,
+name:"Charges permanentes & variables",
+icon:"📊",
+category:"Génie civil",
+url:"/espacedetente/game-18"
+},
+
+{
+id:19,
+name:"Eurocode 8 : parasismique",
+icon:"🌍",
+category:"Génie civil",
+url:"/espacedetente/game-19",
+badge:"hot"
+},
+
+{
+id:20,
+name:"Matériaux innovants & durabilité",
+icon:"🔬",
+category:"Génie civil",
+url:"/espacedetente/game-20"
+},
+
+{
+id:21,
+name:"Ingénierie des structures béton",
+icon:"🏗️",
+category:"Génie civil",
+url:"/espacedetente/game-21",
+badge:"hot"
+},
+
+{
+id:22,
+name:"L’univers du béton armé",
+icon:"🧱",
+category:"Génie civil",
+url:"/espacedetente/game-22"
+},
+
+{
+id:23,
+name:"Diagnostic et vérification des structures",
+icon:"🔎",
+category:"Génie civil",
+url:"/espacedetente/game-23"
+},
+
+{
+id:24,
+name:"Structures bois",
+icon:"🌲",
+category:"Génie civil",
+url:"/espacedetente/game-24"
+},
+
+{
+id:25,
+name:"Structures métalliques",
+icon:"⚙️",
+category:"Génie civil",
+url:"/espacedetente/game-25"
+},
+
+{
+id:26,
+name:"Grande bibliothèque des 60 récits du savoir",
+icon:"📚",
+category:"Connaissances",
+url:"/espacedetente/game-26"
+},
+
+{
+id:27,
+name:"20 récits des bâtisseurs de réussite",
+icon:"🏆",
+category:"Connaissances",
+url:"/espacedetente/game-27"
+},
+
+{
+id:28,
+name:"20 récits des maîtres de la stratégie",
+icon:"♟️",
+category:"Connaissances",
+url:"/espacedetente/game-28"
+},
+
+{
+id:29,
+name:"La sagesse des grands esprits",
+icon:"🦉",
+category:"Connaissances",
+url:"/espacedetente/game-29"
+},
+
+{
+id:30,
+name:"Le mystère de la maison des collines",
+icon:"🏚️",
+category:"Histoires",
+url:"/espacedetente/game-30"
+},
+
+{
+id:31,
+name:"Le voyageur des mille connaissances",
+icon:"🌍",
+category:"Connaissances",
+url:"/espacedetente/game-31"
+},
+
+{
+id:32,
+name:"Grande encyclopédie de culture générale",
+icon:"🌐",
+category:"Connaissances",
+url:"/espacedetente/game-32"
+},
+
+{
+id:33,
+name:"Le futur technologique",
+icon:"🤖",
+category:"IA & Technologie",
+url:"/espacedetente/game-33",
+badge:"ai"
+},
+
+{
+id:34,
+name:"Intelligence artificielle",
+icon:"🧠",
+category:"IA & Technologie",
+url:"/espacedetente/game-34",
+badge:"ai"
+},
+
+{
+id:35,
+name:"Bibliothèque mathématique collège",
+icon:"💻",
+category:"Mathématiques",
+url:"/espacedetente/game-35"
+},
+
+{
+id:36,
+name:"100 questions Permis de conduire",
+icon:"🚘",
+category:"Outils",
+url:"/espacedetente/game-36"
+},
+
+{
+id:37,
+name:"Bibliothèque génie civil",
+icon:"🪨",
+category:"Génie civil",
+url:"/espacedetente/game-37"
+},
+
+{
+id:38,
+name:"Poolgame",
+icon:"🎱",
+category:"Jeux",
+url:"/espacedetente/game-38"
+},
+
+{
+id:39,
+name:"Lecteur de musique",
+icon:"🎶",
+category:"Multimédia",
+url:"/espacedetente/game-39"
+},
+
+{
+id:40,
+name:"PingPong",
+icon:"⚡",
+category:"Jeux",
+url:"/espacedetente/game-40"
+},
+
+{
+id:41,
+name:"Les civilisations qui ont façonné l’humanité",
+icon:"🌎",
+category:"Connaissances",
+url:"/espacedetente/game-41",
+disabled:true
+},
+
+{
+id:42,
+name:"TV Player",
+icon:"📡",
+category:"Multimédia",
+url:"/espacedetente/game-42",
+disabled:true
+},
+
+{
+id:43,
+name:"Lecteur MP3",
+icon:"🎶",
+category:"Multimédia",
+url:"/espacedetente/game-43"
+},
+
+{
+id:44,
+name:"Game voiture 1",
+icon:"🚗",
+category:"Jeux",
+url:"/espacedetente/game-44"
+},
+
+{
+id:45,
+name:"Convertisseur binaire",
+icon:"🔢",
+category:"Outils",
+url:"/espacedetente/game-45"
+},
+
+{
+id:46,
+name:"Vérificateur d’âge",
+icon:"🛡️",
+category:"Outils",
+url:"/espacedetente/game-46"
+},
+
+{
+id:47,
+name:"Les connaissances essentielles à maîtriser",
+icon:"🎓",
+category:"Connaissances",
+url:"/espacedetente/game-47",
+badge:"new"
+},
+
+{
+id:48,
+name:"Game voiture 2",
+icon:"🚙",
+category:"Jeux",
+url:"/espacedetente/game-48"
+},
+
+{
+id:49,
+name:"Les génies qui ont changé l’Histoire",
+icon:"🌟",
+category:"Connaissances",
+url:"/espacedetente/game-49"
+},
+
+{
+id:50,
+name:"Guide ultime de la culture générale",
+icon:"🧭",
+category:"Connaissances",
+url:"/espacedetente/game-50"
+},
+
+{
+id:51,
+name:"Stickman",
+icon:"🪭",
+category:"Jeux",
+url:"/espacedetente/game-51"
+},
+
+{
+id:52,
+name:"Jeux d’échecs",
+icon:"♟️",
+category:"Jeux",
+url:"/espacedetente/game-52",
+badge:"hot"
+},
+
+{
+id:53,
+name:"Game-53 TV Multi",
+icon:"📺",
+category:"Multimédia",
+url:"/espacedetente/game-53",
+badge:"new"
+}
+
+];
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const content =
+document.getElementById("content");
+
+const categories =
+document.getElementById("categories");
+
+const search =
+document.getElementById("search");
+
+const clearSearch =
+document.getElementById("clearSearch");
+
+const totalCount =
+document.getElementById("totalCount");
+
+const visibleCount =
+document.getElementById("visibleCount");
+
+const favoriteCount =
+document.getElementById("favoriteCount");
+
+const historyCount =
+document.getElementById("historyCount");
+
+const themeBtn =
+document.getElementById("themeBtn");
+
+const homeBtn =
+document.getElementById("homeBtn");
+
+const fullscreenBtn =
+document.getElementById("fullscreenBtn");
+
+const toast =
+document.getElementById("toast");
+
+
+/* =========================================================
+   ETAT
+========================================================= */
+
+let currentCategory="Toutes";
+
+let currentIndex=0;
+
+let filteredApps=[...apps];
+
+let sortMode=
+localStorage.getItem("digitalHubSort")
+||"default";
+
+
+let favorites=
+JSON.parse(
+localStorage.getItem("digitalHubFavorites")
+||"[]"
+);
+
+
+let history=
+JSON.parse(
+localStorage.getItem("digitalHubHistory")
+||"[]"
+);
+
+
+/* =========================================================
+   CATEGORIES
+========================================================= */
+
+const categoryIcons={
+
+  "Toutes":"🌐",
+
+  "Favoris":"⭐",
+
+  "Récentes":"🕘",
+
+  "Jeux":"🎮",
+
+  "Génie civil":"🏗️",
+
+  "Outils":"🧮",
+
+  "Mathématiques":"📐",
+
+  "Programmation":"💻",
+
+  "IA & Technologie":"🤖",
+
+  "Connaissances":"🧠",
+
+  "Histoires":"📖",
+
+  "Multimédia":"🎵"
+
+};
+
+
+function getCategories(){
+
+  return [
+
+    "Toutes",
+
+    "Favoris",
+
+    "Récentes",
+
+    ...new Set(
+      apps.map(
+        app=>app.category
+      )
+    )
+
+  ];
+
+}
+
+
+function renderCategories(){
+
+  categories.innerHTML="";
+
+  getCategories().forEach(
+    category=>{
+
+      const button=
+      document.createElement("button");
+
+      button.className="category";
+
+      if(
+        category===
+        currentCategory
+      ){
+
+        button.classList.add("active");
+
       }
 
-      function move(direction) {
+      let count="";
 
-        const len = items.length;
+      if(category==="Favoris"){
 
-        const newIndex =
-          (currentIndex + direction + len) % len;
+        count=
+        favorites.length;
 
-        setCurrentIndex(newIndex);
-
-        moveSound();
       }
 
-      /* =====================================================
-         4. CLIC / ENTER
-      ===================================================== */
+      else if(category==="Récentes"){
 
-      let toastTimeout = null;
+        count=
+        history.length;
 
-      function showToast(message, isError = true) {
-
-        const toast =
-          document.getElementById('toast');
-
-        toast.textContent = message;
-
-        toast.style.borderColor =
-          isError
-            ? '#ff4444'
-            : 'var(--glow)';
-
-        toast.classList.add('show');
-
-        clearTimeout(toastTimeout);
-
-        toastTimeout = setTimeout(() => {
-          toast.classList.remove('show');
-        }, 3000);
       }
 
-      /*
-       * Navigation directe.
-       * Pas de fetch HEAD :
-       * cela évite les problèmes avec Vercel,
-       * les routes statiques et les hébergements.
-       */
+      else if(category!=="Toutes"){
 
-      function handleItemClick(index) {
+        count=
+        apps.filter(
+          app=>
+          app.category===category
+        ).length;
 
-        const item = menuItems[index];
-
-        if (!item) return;
-
-        selectSound();
-
-        setTimeout(() => {
-          window.location.href = item.url;
-        }, 120);
       }
 
-      /* =====================================================
-         5. CLAVIER
-      ===================================================== */
+      else{
 
-      document.addEventListener('keydown', (e) => {
+        count=apps.length;
 
-        if (e.key === 'ArrowDown') {
+      }
 
-          e.preventDefault();
+      button.textContent=
+      `${categoryIcons[category]||"📁"} ${category} · ${count}`;
 
-          move(1);
+      button.addEventListener(
+        "click",
+        ()=>{
 
-        } else if (e.key === 'ArrowUp') {
+          currentCategory=
+          category;
 
-          e.preventDefault();
+          currentIndex=0;
 
-          move(-1);
+          renderCategories();
 
-        } else if (
-          e.key === 'Enter' ||
-          e.key === ' '
-        ) {
-
-          e.preventDefault();
-
-          handleItemClick(currentIndex);
-        }
-
-      });
-
-      /* =====================================================
-         6. FOCUS INITIAL
-      ===================================================== */
-
-      setTimeout(() => {
-
-        if (items.length) {
-          items[0].focus();
-        }
-
-      }, 300);
-
-      /* =====================================================
-         7. WEB AUDIO
-      ===================================================== */
-
-      let audioCtx = null;
-      let audioReady = false;
-
-      function getAudioCtx() {
-
-        if (!audioCtx) {
-
-          audioCtx =
-            new (
-              window.AudioContext ||
-              window.webkitAudioContext
-            )();
+          renderApps();
 
         }
+      );
 
-        return audioCtx;
-      }
+      categories.appendChild(button);
 
-      function resumeAudioOnInteraction() {
+    }
+  );
 
-        if (audioReady) return;
+}
 
-        try {
 
-          const ctx = getAudioCtx();
+/* =========================================================
+   FAVORIS
+========================================================= */
 
-          if (ctx.state === 'suspended') {
+function isFavorite(id){
 
-            ctx.resume()
-              .then(() => {
-                audioReady = true;
-              })
-              .catch(() => {});
+  return favorites.includes(id);
 
-          } else {
+}
 
-            audioReady = true;
 
+function saveFavorites(){
+
+  localStorage.setItem(
+    "digitalHubFavorites",
+    JSON.stringify(favorites)
+  );
+
+}
+
+
+function updateFavoriteCount(){
+
+  favoriteCount.textContent=
+  favorites.length;
+
+}
+
+
+function toggleFavorite(id){
+
+  if(isFavorite(id)){
+
+    favorites=
+    favorites.filter(
+      x=>x!==id
+    );
+
+    showToast(
+      "☆ Retiré des favoris"
+    );
+
+  }
+
+  else{
+
+    favorites.push(id);
+
+    showToast(
+      "⭐ Ajouté aux favoris"
+    );
+
+  }
+
+  saveFavorites();
+
+  updateFavoriteCount();
+
+  renderCategories();
+
+  renderApps();
+
+}
+
+
+/* =========================================================
+   HISTORIQUE
+========================================================= */
+
+function saveHistory(){
+
+  localStorage.setItem(
+    "digitalHubHistory",
+    JSON.stringify(history)
+  );
+
+}
+
+
+function addToHistory(id){
+
+  history=
+  history.filter(
+    x=>x!==id
+  );
+
+  history.unshift(id);
+
+  history=
+  history.slice(0,12);
+
+  saveHistory();
+
+  updateHistoryCount();
+
+}
+
+
+function updateHistoryCount(){
+
+  historyCount.textContent=
+  history.length;
+
+}
+
+
+/* =========================================================
+   FILTRAGE
+========================================================= */
+
+function getFilteredApps(){
+
+  const query=
+  search.value
+  .trim()
+  .toLowerCase();
+
+
+  let result;
+
+
+  if(
+    currentCategory===
+    "Favoris"
+  ){
+
+    result=
+    apps.filter(
+      app=>
+      isFavorite(app.id)
+    );
+
+  }
+
+  else if(
+    currentCategory===
+    "Récentes"
+  ){
+
+    result=
+    history
+    .map(
+      id=>
+      apps.find(
+        app=>app.id===id
+      )
+    )
+    .filter(Boolean);
+
+  }
+
+  else{
+
+    result=
+    apps.filter(
+      app=>
+      currentCategory==="Toutes"
+      ||
+      app.category===
+      currentCategory
+    );
+
+  }
+
+
+  if(query){
+
+    result=
+    result.filter(
+      app=>
+        app.name
+        .toLowerCase()
+        .includes(query)
+
+        ||
+
+        app.category
+        .toLowerCase()
+        .includes(query)
+
+        ||
+
+        String(app.id)
+        .includes(query)
+    );
+
+  }
+
+
+  if(sortMode==="name"){
+
+    result.sort(
+      (a,b)=>
+      a.name.localeCompare(
+        b.name,
+        "fr"
+      )
+    );
+
+  }
+
+  else if(sortMode==="category"){
+
+    result.sort(
+      (a,b)=>
+      a.category.localeCompare(
+        b.category,
+        "fr"
+      )
+    );
+
+  }
+
+
+  return result;
+
+}
+
+
+/* =========================================================
+   BADGE
+========================================================= */
+
+function badgeHTML(app){
+
+  if(!app.badge){
+    return "";
+  }
+
+  const labels={
+    hot:"🔥 POPULAIRE",
+    ai:"IA",
+    new:"NOUVEAU"
+  };
+
+  return `
+    <span class="badge ${app.badge}">
+      ${labels[app.badge]||app.badge}
+    </span>
+  `;
+
+}
+
+
+/* =========================================================
+   RENDU
+========================================================= */
+
+function renderApps(){
+
+  filteredApps=
+  getFilteredApps();
+
+  visibleCount.textContent=
+  filteredApps.length;
+
+  content.innerHTML="";
+
+
+  const header=
+  document.createElement("div");
+
+  header.className=
+  "content-header";
+
+
+  const title=
+  document.createElement("div");
+
+  title.className=
+  "section-title";
+
+
+  const titleMap={
+
+    "Toutes":
+    "Toutes les applications",
+
+    "Favoris":
+    "Mes favoris",
+
+    "Récentes":
+    "Dernières applications"
+
+  };
+
+
+  title.textContent=
+  titleMap[currentCategory]
+  ||
+  currentCategory;
+
+
+  const select=
+  document.createElement("select");
+
+  select.className=
+  "sort-select";
+
+  select.setAttribute(
+    "aria-label",
+    "Trier"
+  );
+
+
+  select.innerHTML=`
+
+    <option value="default">
+      Ordre original
+    </option>
+
+    <option value="name">
+      Nom A → Z
+    </option>
+
+    <option value="category">
+      Catégorie
+    </option>
+
+  `;
+
+
+  select.value=
+  sortMode;
+
+
+  select.addEventListener(
+    "change",
+    ()=>{
+
+      sortMode=
+      select.value;
+
+      localStorage.setItem(
+        "digitalHubSort",
+        sortMode
+      );
+
+      currentIndex=0;
+
+      renderApps();
+
+    }
+  );
+
+
+  header.appendChild(title);
+
+  header.appendChild(select);
+
+  content.appendChild(header);
+
+
+  if(!filteredApps.length){
+
+    content.innerHTML+=`
+
+      <div class="empty">
+
+        <div class="empty-icon">
+          ${
+            currentCategory==="Favoris"
+            ? "⭐"
+            :
+            currentCategory==="Récentes"
+            ? "🕘"
+            : "🔎"
           }
+        </div>
 
-        } catch (_) {}
+        <strong>
+          ${
+            currentCategory==="Favoris"
+            ? "Aucun favori"
+            :
+            currentCategory==="Récentes"
+            ? "Aucune application récente"
+            :
+            "Aucun résultat"
+          }
+        </strong>
+
+        <span>
+          ${
+            currentCategory==="Favoris"
+            ? "Ajoute tes applications préférées avec ★."
+            :
+            currentCategory==="Récentes"
+            ? "Lance une application pour la retrouver ici."
+            :
+            "Essaie un autre mot-clé."
+          }
+        </span>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  filteredApps.forEach(
+    (app,index)=>{
+
+      const item=
+      document.createElement("div");
+
+      item.className="item";
+
+      if(index===currentIndex){
+
+        item.classList.add(
+          "selected"
+        );
+
       }
 
-      document.addEventListener(
-        'click',
-        resumeAudioOnInteraction,
-        { once: true }
+      item.tabIndex=0;
+
+      item.setAttribute(
+        "role",
+        "option"
       );
 
-      document.addEventListener(
-        'keydown',
-        resumeAudioOnInteraction,
-        { once: true }
+      item.setAttribute(
+        "aria-selected",
+        index===currentIndex
+        ?"true"
+        :"false"
       );
 
-      document.addEventListener(
-        'click',
-        () => {
 
-          if (!audioReady) {
-            resumeAudioOnInteraction();
-          }
+      const favorite=
+      isFavorite(app.id);
 
-        }
-      );
 
-      function playTone(
-        freq,
-        duration = 0.06,
-        type = 'sine',
-        volume = 0.05
-      ) {
+      item.innerHTML=`
 
-        try {
+        <div class="item-icon">
+          ${app.icon}
+        </div>
 
-          if (!audioReady) {
 
-            const ctx = getAudioCtx();
+        <div class="item-main">
 
-            if (ctx.state === 'suspended') {
+          <div class="item-name-row">
 
-              ctx.resume()
-                .then(() => {
+            <div class="item-name">
+              ${app.id}. ${escapeHTML(app.name)}
+            </div>
 
-                  audioReady = true;
+            ${badgeHTML(app)}
 
-                  playTone(
-                    freq,
-                    duration,
-                    type,
-                    volume
-                  );
+          </div>
 
-                })
-                .catch(() => {});
 
-              return;
+          <div class="item-category">
+
+            ${escapeHTML(app.category)}
+
+            ${
+              app.disabled
+              ? " · bientôt disponible"
+              : ""
             }
 
-            audioReady = true;
+          </div>
+
+        </div>
+
+
+        <div class="item-actions">
+
+          <button
+            class="favorite ${favorite?"active":""}"
+            aria-label="${
+              favorite
+              ?"Retirer des favoris"
+              :"Ajouter aux favoris"
+            }"
+            title="${
+              favorite
+              ?"Retirer des favoris"
+              :"Ajouter aux favoris"
+            }">
+
+            ${favorite?"★":"☆"}
+
+          </button>
+
+
+          <span class="launch">
+
+            ${app.disabled?"🚧":"▶"}
+
+          </span>
+
+        </div>
+
+      `;
+
+
+      item.addEventListener(
+        "click",
+        event=>{
+
+          if(
+            event.target.closest(
+              ".favorite"
+            )
+          ){
+
+            return;
+
           }
 
-          const ctx = getAudioCtx();
-
-          if (ctx.state !== 'running') return;
-
-          const osc =
-            ctx.createOscillator();
-
-          const gain =
-            ctx.createGain();
-
-          osc.type = type;
-
-          osc.frequency.value = freq;
-
-          gain.gain.value = volume;
-
-          osc.connect(gain);
-
-          gain.connect(ctx.destination);
-
-          osc.start();
-
-          osc.stop(
-            ctx.currentTime + duration
-          );
-
-        } catch (_) {}
-      }
-
-      function moveSound() {
-        playTone(
-          440,
-          0.04,
-          'sine',
-          0.04
-        );
-      }
-
-      function selectSound() {
-        playTone(
-          880,
-          0.09,
-          'triangle',
-          0.06
-        );
-      }
-
-      /* =====================================================
-         8. BOOT SOUND
-      ===================================================== */
-
-      setTimeout(() => {
-
-        playTone(
-          200,
-          0.2,
-          'sine',
-          0.06
-        );
-
-      }, 220);
-
-      setTimeout(() => {
-
-        playTone(
-          360,
-          0.2,
-          'sine',
-          0.05
-        );
-
-      }, 520);
-
-      /* =====================================================
-         9. DISPARITION DU BOOT
-      ===================================================== */
-
-      setTimeout(() => {
-
-        const boot =
-          document.getElementById('boot');
-
-        if (!boot) return;
-
-        boot.style.opacity = '0';
-
-        setTimeout(() => {
-
-          if (boot.parentNode) {
-            boot.remove();
-          }
-
-        }, 700);
-
-      }, 2200);
-
-      /* =====================================================
-         10. THÈMES
-      ===================================================== */
-
-      const themes = [
-        'default',
-        'light',
-        'neon'
-      ];
-
-      const themeBtn =
-        document.getElementById('themeToggle');
-
-      function applyTheme(themeName) {
-
-        document.body.classList.remove(
-          'light',
-          'neon'
-        );
-
-        if (themeName === 'light') {
-          document.body.classList.add('light');
-        }
-
-        if (themeName === 'neon') {
-          document.body.classList.add('neon');
-        }
-
-        localStorage.setItem(
-          'theme',
-          themeName
-        );
-
-        if (themeName === 'light') {
-
-          themeBtn.textContent = '🌙';
-
-        } else if (themeName === 'neon') {
-
-          themeBtn.textContent = '🌈';
-
-        } else {
-
-          themeBtn.textContent = '☀';
+          launchApp(app);
 
         }
-      }
-
-      function cycleTheme() {
-
-        const saved =
-          localStorage.getItem('theme') ||
-          'default';
-
-        let index =
-          themes.indexOf(saved);
-
-        if (index === -1) {
-          index = 0;
-        }
-
-        index =
-          (index + 1) % themes.length;
-
-        applyTheme(themes[index]);
-
-        moveSound();
-      }
-
-      const savedTheme =
-        localStorage.getItem('theme');
-
-      if (
-        savedTheme &&
-        themes.includes(savedTheme)
-      ) {
-
-        applyTheme(savedTheme);
-
-      } else {
-
-        applyTheme('default');
-
-      }
-
-      themeBtn.addEventListener(
-        'click',
-        cycleTheme
       );
 
-      /* =====================================================
-         11. PARTICULES
-      ===================================================== */
 
-      const canvas =
-        document.getElementById(
-          'particlesCanvas'
-        );
+      item.addEventListener(
+        "focus",
+        ()=>{
 
-      const ctx =
-        canvas.getContext('2d');
+          currentIndex=
+          index;
 
-      let width;
-      let height;
+          updateSelection();
 
-      let particles = [];
-
-      const COUNT = 70;
-
-      let animFrameId = null;
-
-      let isPageVisible = true;
-
-      function resize() {
-
-        width = window.innerWidth;
-
-        height = window.innerHeight;
-
-        canvas.width = width;
-
-        canvas.height = height;
-      }
-
-      window.addEventListener(
-        'resize',
-        resize
+        }
       );
 
-      resize();
 
-      function initParticles() {
+      const fav=
+      item.querySelector(
+        ".favorite"
+      );
 
-        particles = [];
 
-        for (
-          let i = 0;
-          i < COUNT;
-          i++
-        ) {
+      fav.addEventListener(
+        "click",
+        event=>{
 
-          particles.push({
+          event.stopPropagation();
 
-            x: Math.random() * width,
-
-            y: Math.random() * height,
-
-            r:
-              Math.random() * 2.2 + 0.8,
-
-            dx:
-              (Math.random() - 0.5) * 0.35,
-
-            dy:
-              (Math.random() - 0.5) * 0.35
-
-          });
+          toggleFavorite(
+            app.id
+          );
 
         }
-      }
+      );
 
-      initParticles();
 
-      function drawParticles() {
+      content.appendChild(item);
 
-        if (!isPageVisible) {
-          animFrameId = null;
-          return;
+    }
+  );
+
+}
+
+
+/* =========================================================
+   ESCAPE
+========================================================= */
+
+function escapeHTML(value){
+
+  return String(value)
+
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+
+  .replace(
+    /</g,
+    "&lt;"
+  )
+
+  .replace(
+    />/g,
+    "&gt;"
+  )
+
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+
+  .replace(
+    /'/g,
+    "&#039;"
+  );
+
+}
+
+
+/* =========================================================
+   SELECTION
+========================================================= */
+
+function updateSelection(){
+
+  const items=
+  content.querySelectorAll(
+    ".item"
+  );
+
+
+  items.forEach(
+    (item,index)=>{
+
+      const selected=
+      index===currentIndex;
+
+      item.classList.toggle(
+        "selected",
+        selected
+      );
+
+      item.setAttribute(
+        "aria-selected",
+        selected
+        ?"true"
+        :"false"
+      );
+
+    }
+  );
+
+
+  const current=
+  items[currentIndex];
+
+
+  if(current){
+
+    current.scrollIntoView({
+      block:"nearest",
+      behavior:"smooth"
+    });
+
+  }
+
+}
+
+
+function moveSelection(direction){
+
+  if(!filteredApps.length){
+
+    return;
+
+  }
+
+
+  currentIndex=
+  (
+    currentIndex+
+    direction+
+    filteredApps.length
+  )
+  %
+  filteredApps.length;
+
+
+  updateSelection();
+
+
+  playTone(
+    440,
+    .035,
+    "sine",
+    .025
+  );
+
+}
+
+
+/* =========================================================
+   LANCEMENT
+========================================================= */
+
+function launchApp(app){
+
+  if(!app){
+    return;
+  }
+
+
+  if(app.disabled){
+
+    showToast(
+      "🚧 Cette application est encore en développement"
+    );
+
+    return;
+
+  }
+
+
+  addToHistory(app.id);
+
+  playTone(
+    880,
+    .08,
+    "triangle",
+    .05
+  );
+
+
+  showToast(
+    "🚀 Ouverture de "+app.name
+  );
+
+
+  setTimeout(
+    ()=>{
+
+      window.location.href=
+      app.url;
+
+    },
+    120
+  );
+
+}
+
+
+/* =========================================================
+   RECHERCHE
+========================================================= */
+
+search.addEventListener(
+  "input",
+  ()=>{
+
+    clearSearch.style.display=
+    search.value
+    ?"block"
+    :"none";
+
+    currentIndex=0;
+
+    renderApps();
+
+  }
+);
+
+
+clearSearch.addEventListener(
+  "click",
+  ()=>{
+
+    search.value="";
+
+    clearSearch.style.display=
+    "none";
+
+    currentIndex=0;
+
+    renderApps();
+
+    search.focus();
+
+  }
+);
+
+
+/* =========================================================
+   CLAVIER
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  event=>{
+
+    if(
+      document.activeElement===
+      search
+      &&
+      event.key!=="Escape"
+    ){
+
+      return;
+
+    }
+
+
+    switch(event.key){
+
+      case "ArrowDown":
+
+        event.preventDefault();
+
+        moveSelection(1);
+
+        break;
+
+
+      case "ArrowUp":
+
+        event.preventDefault();
+
+        moveSelection(-1);
+
+        break;
+
+
+      case "Enter":
+
+        event.preventDefault();
+
+        if(
+          filteredApps.length
+        ){
+
+          launchApp(
+            filteredApps[
+              currentIndex
+            ]
+          );
+
         }
 
-        ctx.clearRect(
-          0,
-          0,
-          width,
-          height
+        break;
+
+
+      case "Escape":
+
+        event.preventDefault();
+
+        goHome();
+
+        break;
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   ACCUEIL
+========================================================= */
+
+function goHome(){
+
+  search.value="";
+
+  clearSearch.style.display=
+  "none";
+
+  currentCategory=
+  "Toutes";
+
+  currentIndex=0;
+
+  renderCategories();
+
+  renderApps();
+
+}
+
+
+homeBtn.addEventListener(
+  "click",
+  goHome
+);
+
+
+/* =========================================================
+   THEME
+========================================================= */
+
+const themes=[
+  "default",
+  "light",
+  "neon"
+];
+
+
+function applyTheme(theme){
+
+  document.body.classList.remove(
+    "light",
+    "neon"
+  );
+
+
+  if(theme==="light"){
+
+    document.body.classList.add(
+      "light"
+    );
+
+    themeBtn.textContent=
+    "🌙";
+
+  }
+
+  else if(theme==="neon"){
+
+    document.body.classList.add(
+      "neon"
+    );
+
+    themeBtn.textContent=
+    "🌈";
+
+  }
+
+  else{
+
+    themeBtn.textContent=
+    "☀️";
+
+  }
+
+
+  localStorage.setItem(
+    "digitalHubTheme",
+    theme
+  );
+
+}
+
+
+function cycleTheme(){
+
+  const current=
+  localStorage.getItem(
+    "digitalHubTheme"
+  )
+  ||
+  "default";
+
+
+  let index=
+  themes.indexOf(current);
+
+
+  index=
+  (index+1)
+  %
+  themes.length;
+
+
+  applyTheme(
+    themes[index]
+  );
+
+
+  playTone(
+    600,
+    .05,
+    "sine",
+    .035
+  );
+
+}
+
+
+themeBtn.addEventListener(
+  "click",
+  cycleTheme
+);
+
+
+applyTheme(
+  localStorage.getItem(
+    "digitalHubTheme"
+  )
+  ||
+  "default"
+);
+
+
+/* =========================================================
+   PLEIN ECRAN
+========================================================= */
+
+fullscreenBtn.addEventListener(
+  "click",
+  async()=>{
+
+    try{
+
+      if(!document.fullscreenElement){
+
+        await document.documentElement
+        .requestFullscreen();
+
+        fullscreenBtn.textContent=
+        "🡼";
+
+        showToast(
+          "⛶ Mode plein écran activé"
         );
 
-        for (const p of particles) {
-
-          p.x += p.dx;
-          p.y += p.dy;
-
-          if (
-            p.x < 0 ||
-            p.x > width
-          ) {
-            p.dx *= -1;
-          }
-
-          if (
-            p.y < 0 ||
-            p.y > height
-          ) {
-            p.dy *= -1;
-          }
-
-          ctx.beginPath();
-
-          ctx.arc(
-            p.x,
-            p.y,
-            p.r,
-            0,
-            Math.PI * 2
-          );
-
-          ctx.fillStyle =
-            'rgba(255,255,255,0.5)';
-
-          ctx.fill();
-        }
-
-        animFrameId =
-          requestAnimationFrame(
-            drawParticles
-          );
       }
+
+      else{
+
+        await document.exitFullscreen();
+
+        fullscreenBtn.textContent=
+        "⛶";
+
+      }
+
+    }
+
+    catch(_){
+
+      showToast(
+        "Le plein écran n'est pas disponible"
+      );
+
+    }
+
+  }
+);
+
+
+document.addEventListener(
+  "fullscreenchange",
+  ()=>{
+
+    fullscreenBtn.textContent=
+    document.fullscreenElement
+    ?"🡼"
+    :"⛶";
+
+  }
+);
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer;
+
+
+function showToast(message){
+
+  toast.textContent=
+  message;
+
+  toast.classList.add(
+    "show"
+  );
+
+
+  clearTimeout(
+    toastTimer
+  );
+
+
+  toastTimer=
+  setTimeout(
+    ()=>{
+
+      toast.classList.remove(
+        "show"
+      );
+
+    },
+    1800
+  );
+
+}
+
+
+/* =========================================================
+   AUDIO
+========================================================= */
+
+let audioContext=null;
+
+
+function getAudio(){
+
+  if(!audioContext){
+
+    audioContext=
+    new(
+      window.AudioContext||
+      window.webkitAudioContext
+    )();
+
+  }
+
+  return audioContext;
+
+}
+
+
+function playTone(
+  frequency,
+  duration,
+  type,
+  volume
+){
+
+  try{
+
+    const ctx=
+    getAudio();
+
+
+    if(
+      ctx.state==="suspended"
+    ){
+
+      ctx.resume();
+
+    }
+
+
+    const oscillator=
+    ctx.createOscillator();
+
+
+    const gain=
+    ctx.createGain();
+
+
+    oscillator.type=
+    type||"sine";
+
+
+    oscillator.frequency.value=
+    frequency;
+
+
+    gain.gain.setValueAtTime(
+      volume||.03,
+      ctx.currentTime
+    );
+
+
+    gain.gain.exponentialRampToValueAtTime(
+      .001,
+      ctx.currentTime+
+      duration
+    );
+
+
+    oscillator.connect(gain);
+
+    gain.connect(
+      ctx.destination
+    );
+
+
+    oscillator.start();
+
+
+    oscillator.stop(
+      ctx.currentTime+
+      duration
+    );
+
+  }
+
+  catch(_){}
+
+}
+
+
+/* =========================================================
+   PARTICULES
+========================================================= */
+
+const canvas=
+document.getElementById(
+  "particles"
+);
+
+const ctx=
+canvas.getContext(
+  "2d"
+);
+
+
+let particles=[];
+
+let animationFrame;
+
+
+function resizeCanvas(){
+
+  canvas.width=
+  window.innerWidth;
+
+  canvas.height=
+  window.innerHeight;
+
+}
+
+
+window.addEventListener(
+  "resize",
+  ()=>{
+    resizeCanvas();
+    createParticles();
+  }
+);
+
+
+function createParticles(){
+
+  particles=[];
+
+
+  const count=
+  window.innerWidth<600
+  ?25
+  :50;
+
+
+  for(
+    let i=0;
+    i<count;
+    i++
+  ){
+
+    particles.push({
+
+      x:
+      Math.random()*
+      canvas.width,
+
+      y:
+      Math.random()*
+      canvas.height,
+
+      radius:
+      Math.random()*
+      1.5+.3,
+
+      dx:
+      (Math.random()-.5)*.22,
+
+      dy:
+      (Math.random()-.5)*.22
+
+    });
+
+  }
+
+}
+
+
+function drawParticles(){
+
+  ctx.clearRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+
+  particles.forEach(
+    particle=>{
+
+      particle.x+=
+      particle.dx;
+
+      particle.y+=
+      particle.dy;
+
+
+      if(
+        particle.x<0||
+        particle.x>canvas.width
+      ){
+
+        particle.dx*=-1;
+
+      }
+
+
+      if(
+        particle.y<0||
+        particle.y>canvas.height
+      ){
+
+        particle.dy*=-1;
+
+      }
+
+
+      ctx.beginPath();
+
+
+      ctx.arc(
+        particle.x,
+        particle.y,
+        particle.radius,
+        0,
+        Math.PI*2
+      );
+
+
+      ctx.fillStyle=
+      "rgba(255,255,255,.32)";
+
+
+      ctx.fill();
+
+    }
+  );
+
+
+  animationFrame=
+  requestAnimationFrame(
+    drawParticles
+  );
+
+}
+
+
+resizeCanvas();
+
+createParticles();
+
+drawParticles();
+
+
+/* =========================================================
+   VISIBILITY
+========================================================= */
+
+document.addEventListener(
+  "visibilitychange",
+  ()=>{
+
+    if(document.hidden){
+
+      cancelAnimationFrame(
+        animationFrame
+      );
+
+    }
+
+    else{
 
       drawParticles();
 
-      /* =====================================================
-         12. VISIBILITÉ
-      ===================================================== */
+    }
 
-      document.addEventListener(
-        'visibilitychange',
-        () => {
+  }
+);
 
-          isPageVisible =
-            !document.hidden;
 
-          const waves =
-            document.getElementById(
-              'wavesContainer'
-            );
+/* =========================================================
+   INITIALISATION
+========================================================= */
 
-          if (isPageVisible) {
+totalCount.textContent=
+apps.length;
 
-            waves.classList.remove(
-              'paused'
-            );
+updateFavoriteCount();
 
-            if (animFrameId) {
+updateHistoryCount();
 
-              cancelAnimationFrame(
-                animFrameId
-              );
+renderCategories();
 
-            }
+renderApps();
 
-            drawParticles();
 
-          } else {
+console.log(
+  "🚀 Digital Hub V2 — "+
+  apps.length+
+  " applications"
+);
 
-            waves.classList.add(
-              'paused'
-            );
+})();
 
-            if (animFrameId) {
-
-              cancelAnimationFrame(
-                animFrameId
-              );
-
-              animFrameId = null;
-            }
-          }
-
-        }
-      );
-
-      /* =====================================================
-         13. INITIALISATION FINALE
-      ===================================================== */
-
-      console.log(
-        '🚀 Game Hub Ultra Console — 52 entrées'
-      );
-
-    })();
-  </script>
+</script>
 
 </body>
 </html>
