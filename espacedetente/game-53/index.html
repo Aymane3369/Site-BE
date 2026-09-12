@@ -2,6 +2,12 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer">
+    <meta http-equiv="Content-Security-Policy" 
+          content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob: mediastream:; 
+                   media-src * blob: data: mediastream:; 
+                   connect-src *; 
+                   img-src * data: blob:;">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>IPTV Ultimate Player</title>
     <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
@@ -190,7 +196,7 @@
     <div class="container">
         <div class="card video-card">
             <div id="video-wrapper">
-                <video id="player" controls playsinline webkit-playsinline></video>
+                <video id="player" controls playsinline webkit-playsinline crossorigin="anonymous"></video>
             </div>
 
             <div class="video-controls">
@@ -268,17 +274,17 @@
             iptvorg: {
                 name: 'iptv-org',
                 url: 'https://iptv-org.github.io/iptv/index.m3u',
-                needsProxy: false  // GitHub Pages autorise le CORS
+                needsProxy: false
             }
         };
 
-        // Proxys CORS (utilisés uniquement si needsProxy = true)
+        // Proxys CORS — limités au chargement de playlist uniquement
         const CORS_PROXIES = [
-            (url) => "https://corsproxy.io/?" + encodeURIComponent(url),
             (url) => "https://api.allorigins.win/raw?url=" + encodeURIComponent(url),
             (url) => "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(url),
             (url) => url
         ];
+        const PROXY_NAMES = ['allorigins.win', 'codetabs.com', 'direct'];
 
         const CONFIG = {
             maxHistory: 10,
@@ -400,12 +406,12 @@
             statusDiv.className = 'status ' + (loading ? 'loading ' : '') + type;
         }
 
-        // ============ CHARGEMENT ============
+        // ============ CHARGEMENT PLAYLIST ============
         async function fetchPlaylist(url, useProxy) {
             if (!useProxy) {
                 console.log('📡 Chargement direct (CORS autorisé):', url);
                 setStatus('⏳ Chargement direct...', 'info', true);
-                const response = await fetch(url);
+                const response = await fetch(url, { referrerPolicy: 'no-referrer' });
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 return await response.text();
             }
@@ -414,13 +420,16 @@
             for (let i = 0; i < CORS_PROXIES.length; i++) {
                 const proxiedUrl = CORS_PROXIES[i](url);
                 try {
-                    console.log(`[Proxy ${i+1}/${CORS_PROXIES.length}] ${proxiedUrl.substring(0, 80)}...`);
-                    setStatus(`⏳ Chargement (proxy ${i+1}/${CORS_PROXIES.length})...`, 'info', true);
+                    console.log(`[Proxy ${i+1}/${CORS_PROXIES.length}] ${PROXY_NAMES[i]}`);
+                    setStatus(`⏳ Chargement (proxy ${i+1}/${CORS_PROXIES.length} : ${PROXY_NAMES[i]})...`, 'info', true);
                     
                     const controller = new AbortController();
-                    const timeout = setTimeout(() => controller.abort(), 20000);
+                    const timeout = setTimeout(() => controller.abort(), 8000);
                     
-                    const response = await fetch(proxiedUrl, { signal: controller.signal });
+                    const response = await fetch(proxiedUrl, { 
+                        signal: controller.signal,
+                        referrerPolicy: 'no-referrer'
+                    });
                     clearTimeout(timeout);
                     
                     if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -430,10 +439,10 @@
                         throw new Error('Contenu non-M3U reçu');
                     }
                     
-                    console.log(`✅ Succès via proxy ${i+1}`);
+                    console.log(`✅ Succès via ${PROXY_NAMES[i]}`);
                     return text;
                 } catch (err) {
-                    console.warn(`❌ Proxy ${i+1} échoué:`, err.message);
+                    console.warn(`❌ Proxy ${i+1} (${PROXY_NAMES[i]}) échoué:`, err.message);
                     lastError = err;
                 }
             }
@@ -448,7 +457,6 @@
             localStorage.setItem('currentSource', sourceKey);
             urlInput.value = source.url;
             
-            // Mettre à jour l'état visuel des boutons
             document.querySelectorAll('.source-buttons button').forEach(b => b.classList.remove('active'));
             document.getElementById('src-' + sourceKey)?.classList.add('active');
             
@@ -476,11 +484,8 @@
                 return;
             }
             
-            // Détecter automatiquement si cette URL a besoin d'un proxy
-            // iptv-org.github.io autorise le CORS, les autres non
             const needsProxy = !url.includes('iptv-org.github.io') && !url.includes('github.io');
             
-            // Détecter si c'est une source connue
             for (const [key, source] of Object.entries(SOURCES)) {
                 if (url === source.url || url.replace('%24', '$') === source.url.replace('%24', '$')) {
                     return loadSource(key);
@@ -519,7 +524,7 @@
                     
                     let logo = '';
                     const logoMatch = trimmed.match(/tvg-logo="([^"]*)"/);
-                    if (logoMatch) logo = logoMatch[1];
+                    if (logoMatch) logo = logoMatch[1].replace('http://', 'https://');
                     
                     let group = '';
                     const groupMatch = trimmed.match(/group-title="([^"]*)"/);
@@ -527,7 +532,12 @@
                     
                     current = { name, url: '', logo, group };
                 } else if (!trimmed.startsWith('#') && current) {
-                    current.url = trimmed;
+                    // ⚡ Forcer HTTPS pour éviter Mixed Content en déploiement
+                    let streamUrl = trimmed;
+                    if (streamUrl.startsWith('http://')) {
+                        streamUrl = streamUrl.replace('http://', 'https://');
+                    }
+                    current.url = streamUrl;
                     channels.push({ ...current });
                     current = null;
                 }
@@ -558,6 +568,7 @@
             channelList.appendChild(div);
         }
 
+        // ============ LECTURE DIRECTE ============
         function playChannel(ch) {
             setStatus("▶️ " + ch.name, 'info');
             addToHistory(ch);
@@ -567,22 +578,62 @@
 
             document.querySelectorAll('.channel').forEach(c => c.classList.remove('active'));
 
+            const streamUrl = ch.url;
+            console.log('🎬 Lecture directe:', streamUrl);
+
             if (Hls.isSupported()) {
-                hls = new Hls({ enableWorker: true, lowLatencyMode: true, maxBufferLength: 10 });
-                hls.loadSource(ch.url);
+                hls = new Hls({
+                    enableWorker: true,
+                    lowLatencyMode: false,
+                    maxBufferLength: 30,
+                    manifestLoadingTimeOut: 10000,
+                    manifestLoadingMaxRetry: 1,
+                    fragLoadingTimeOut: 10000,
+                    fragLoadingMaxRetry: 1
+                });
+
+                hls.loadSource(streamUrl);
                 hls.attachMedia(player);
+
+                let hasPlayed = false;
+
                 hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                    console.log('✅ Manifest chargé');
                     player.play().catch(e => console.warn('Autoplay bloqué:', e));
                 });
+
+                hls.on(Hls.Events.FRAG_LOADED, () => {
+                    if (!hasPlayed) {
+                        hasPlayed = true;
+                        setStatus('▶️ ' + ch.name, 'success');
+                        console.log('✅ Lecture démarrée');
+                    }
+                });
+
                 hls.on(Hls.Events.ERROR, (e, data) => {
-                    if (data.fatal) {
-                        setStatus('⚠️ Erreur flux, reprise...', 'warning');
-                        try { hls.recoverMediaError(); } catch(e) {}
+                    if (!data.fatal) return;
+
+                    console.warn('❌ Erreur fatale:', data.type, data.details);
+
+                    if (data.type === Hls.ErrorTypes.NETWORK_ERROR) {
+                        setStatus('❌ Chaîne bloquée (CORS). Essaie dans VLC.', 'error');
+                        if (hls) { hls.destroy(); hls = null; }
+                    } else if (data.type === Hls.ErrorTypes.MEDIA_ERROR) {
+                        setStatus('❌ Codec non supporté par le navigateur', 'error');
+                        if (hls) { hls.destroy(); hls = null; }
+                    } else {
+                        setStatus('❌ Chaîne inaccessible', 'error');
+                        if (hls) { hls.destroy(); hls = null; }
                     }
                 });
             } else {
-                player.src = ch.url;
-                player.play().catch(e => console.warn('Autoplay bloqué:', e));
+                player.src = streamUrl;
+                player.play()
+                    .then(() => setStatus('▶️ ' + ch.name, 'success'))
+                    .catch(e => {
+                        console.warn('Lecture native échouée:', e);
+                        setStatus('❌ Chaîne inaccessible', 'error');
+                    });
             }
 
             if (isCastReady && castContext) {
@@ -818,11 +869,9 @@
 
         // ============ INITIALISATION ============
         window.onload = function() {
-            // Charger la source sauvegardée ou celle par défaut
             const savedSource = localStorage.getItem('currentSource');
             const sourceToLoad = savedSource && SOURCES[savedSource] ? savedSource : 'tvradiozap';
             
-            // Essayer d'abord le cache
             const cachedPlaylist = localStorage.getItem("playlist");
             const cachedUrl = localStorage.getItem("playlist_url");
             
@@ -832,14 +881,12 @@
                 if (channels.length > 0) {
                     displayChannels(channels);
                     setStatus(`✅ ${channels.length} chaînes (cache)`, 'success');
-                    // Mettre à jour le bouton actif
                     document.getElementById('src-' + sourceToLoad)?.classList.add('active');
                     urlInput.value = SOURCES[sourceToLoad].url;
                     return;
                 }
             }
             
-            // Sinon charger la source
             loadSource(sourceToLoad);
         };
     </script>
