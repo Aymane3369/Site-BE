@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>20 Récits initiatiques /title>
+    <title>20 Récits initiatiques </title>
     <style>
         * {
             margin: 0;
@@ -104,6 +104,11 @@
             border-color: #2d4059;
         }
 
+        .card:focus-visible {
+            outline: 3px solid #2d4059;
+            outline-offset: 3px;
+        }
+
         .card .num {
             font-size: 0.65rem;
             font-weight: 600;
@@ -134,14 +139,6 @@
             border-radius: 12px;
             color: #5a4a3a;
             margin-top: 0.4rem;
-        }
-
-        .card .lecon {
-            font-size: 0.7rem;
-            color: #2d4059;
-            font-weight: 500;
-            margin-top: 0.3rem;
-            font-style: italic;
         }
 
         #articlePage {
@@ -297,28 +294,20 @@
 
     <div class="container">
 
-        <!-- ============================================================ -->
-        <!-- PAGE D'ACCUEIL -->
-        <!-- ============================================================ -->
         <div id="homePage">
             <div class="header">
-                <h1>📖 <span>20 récits </span></h1>
+                <h1>📖 <span>20 récits initiatiques</span></h1>
                 <div class="subtitle">Pour enfants et adolescents  — Compétences de vie, leadership, résilience, gestion des émotions</div>
-                <div class="badge">Découvrir des histoires</div>
+                <div class="badge">Histoires et leçons</div>
             </div>
 
-            <div id="homeContent">
-                <!-- Les histoires seront -->
-            </div>
+            <div id="homeContent"></div>
 
             <div class="footer">
                 <p>📚 <span>20 récits</span> — Grandir, apprendre, s'inspirer</p>
             </div>
         </div>
 
-        <!-- ============================================================ -->
-        <!-- PAGE ARTICLE -->
-        <!-- ============================================================ -->
         <div id="articlePage">
             <div class="header" style="margin-bottom: 1.5rem;">
                 <h1>📖 <span>Récits initiatiques</span></h1>
@@ -339,10 +328,6 @@
     </div>
 
     <script>
-        // ================================================================
-        //  DONNÉES DES 20 RÉCITS
-        // ================================================================
-
         const recits = [{
             id: 1,
             title: "Le Prix de l'Honnêteté",
@@ -379,12 +364,12 @@
             themes: "Écoute active, empathie, résolution de conflits",
             content: `
                 <div class="story">
-                    Dans le lycée, deux groupes d'élèves se disputaient depuis des semaines. Chaque camp avait ses arguments, ses rancœurs, et personne ne voulait entendre l'autre. La tension était palpable, et une bagarre semblait inévitable.
+                    Dans le collège, deux groupes d'élèves se disputaient depuis des semaines. Chaque camp avait ses arguments, ses rancœurs, et personne ne voulait entendre l'autre. La tension était palpable, et une bagarre semblait inévitable.
                 </div>
 
                 <p>Lina, une jeune fille discrète, décida de faire quelque chose. Elle invita un représentant de chaque groupe à s'asseoir autour d'une table. Elle ne prit pas la parole. Elle les écouta. Pendant une heure, elle écouta sans juger, sans interrompre, sans donner de conseil.</p>
 
-                <p>À la fin, les deux élèves, qui ne s'étaient jamais vraiment écoutés, commencèrent à se comprendre. Ils réalisèrent qu'ils partageaient les mêmes peurs et les mêmes frustrations. Ils se serrèrent la main, et la tension du lycée s'apaisa.</p>
+                <p>À la fin, les deux élèves, qui ne s'étaient jamais vraiment écoutés, commencèrent à se comprendre. Ils réalisèrent qu'ils partageaient les mêmes peurs et les mêmes frustrations. Ils se serrèrent la main, et la tension du collège s'apaisa.</p>
 
                 <p>Lina n'avait pas parlé, mais elle avait tout changé.</p>
 
@@ -410,7 +395,7 @@
             themes: "Finances, patience, investissement",
             content: `
                 <div class="story">
-                    Pour ses 18 ans, Samir reçut un billet de 100 euros de son grand-père. "Ne les dépense pas tout de suite", lui dit-il. "Réfléchis à ce que tu veux vraiment." Samir voulait une nouvelle paire de baskets. Il les voyait déjà à ses pieds, brillantes et neuves.
+                    Pour ses 15 ans, Samir reçut un billet de 100 euros de son grand-père. "Ne les dépense pas tout de suite", lui dit-il. "Réfléchis à ce que tu veux vraiment." Samir voulait une nouvelle paire de baskets. Il les voyait déjà à ses pieds, brillantes et neuves.
                 </div>
 
                 <p>Mais il réfléchit. Il pouvait acheter les baskets, ou il pouvait investir dans un petit projet. Il décida d'acheter des fournitures pour créer des bijoux artisanaux, qu'il vendit sur les marchés. En trois mois, il avait transformé ses 100 euros en 300 euros.</p>
@@ -439,7 +424,7 @@
             themes: "Leadership, responsabilité, esprit d'équipe",
             content: `
                 <div class="story">
-                    L'équipe de basket du lycée était talentueuse, mais elle perdait tous les matchs. Le capitaine, Maxime, était un excellent joueur, mais il criait sur ses coéquipiers quand ils faisaient des erreurs. Il pensait que la peur motiverait ses coéquipiers.
+                    L'équipe de basket du collège était talentueuse, mais elle perdait tous les matchs. Le capitaine, Maxime, était un excellent joueur, mais il criait sur ses coéquipiers quand ils faisaient des erreurs. Il pensait que la peur motiverait ses coéquipiers.
                 </div>
 
                 <p>Un jour, à la mi-temps d'un match où ils perdaient 30 points d'écart, Maxime prit la parole. Mais au lieu de crier, il dit : "Je suis désolé. Je vous ai traités comme des soldats, pas comme une équipe. Je veux être votre capitaine, pas votre chef. Ensemble, on peut y arriver."</p>
@@ -454,7 +439,7 @@
                 <ul>
                     <li>Quelle erreur Maxime faisait-il en tant que capitaine ?</li>
                     <li>Qu'est-ce qui a changé quand il a parlé autrement ?</li>
-                    <li>Quelles qualités fais de toi un bon leader ?</li>
+                    <li>Quelles qualités font de toi un bon leader ?</li>
                 </ul>
 
                 <div class="defi">
@@ -468,7 +453,7 @@
             themes: "Entrepreneuriat, organisation, travail d'équipe",
             content: `
                 <div class="story">
-                    Pendant les vacances d'été, quatre amis — Sofia, Elias, Malika et Lucas — décidèrent de créer une petite entreprise de nettoyage de vitres. Ils avaient 17 ans, pas d'argent, mais beaucoup d'énergie.
+                    Pendant les vacances d'été, quatre amis — Sofia, Elias, Malika et Lucas — décidèrent de créer une petite entreprise de nettoyage de vitres. Ils avaient 15 ans, pas d'argent, mais beaucoup d'énergie.
                 </div>
 
                 <p>Ils se répartirent les rôles : Sofia gérait les finances, Elias le marketing, Malika les opérations, et Lucas les relations clients. Les premiers jours furent difficiles, mais ils persévérèrent. Ils imprimèrent des flyers, démarchèrent les commerces, et firent un excellent travail.</p>
@@ -497,10 +482,10 @@
             themes: "Persévérance, discipline, confiance",
             content: `
                 <div class="story">
-                    Hugo était en échec scolaire. Ses notes étaient mauvaises, et il avait perdu toute confiance en lui. Ses professeurs le considéraient comme un "cas désespéré". Mais le professeur Bernard, un vieux professeur de français, ne le voyait pas ainsi.
+                    Hugo était en échec scolaire. Ses notes étaient mauvaises, et il avait perdu toute confiance en lui. Ses professeurs le considéraient comme un élève en difficulté. Mais le professeur Bernard, un vieux professeur de français, ne le voyait pas ainsi.
                 </div>
 
-                <p>Il lui proposa un contrat : si Hugo acceptait de venir en aide une heure par semaine, et de lire un livre par mois, il l'aiderait à progresser. Hugo accepta, sans grand enthousiasme. Mais semaine après semaine, il découvrit le plaisir de lire, la satisfaction de comprendre. En six mois, ses notes remontèrent. Il obtint son bac avec mention.</p>
+                <p>Il lui proposa un contrat : si Hugo acceptait de venir en aide une heure par semaine, et de lire un livre par mois, il l'aiderait à progresser. Hugo accepta, sans grand enthousiasme. Mais semaine après semaine, il découvrit le plaisir de lire, la satisfaction de comprendre. En six mois, ses notes remontèrent. Il obtint son examen final avec mention.</p>
 
                 <p>Il comprit qu'une seconde chance n'est pas donnée, elle se construit.</p>
 
@@ -529,12 +514,12 @@
                     Marc et Patrick étaient deux frères jumeaux. Ils avaient les mêmes talents, les mêmes opportunités. Mais Marc choisissait la facilité : il jouait aux jeux vidéo au lieu d'étudier, il négligeait ses devoirs. Patrick, lui, travaillait tous les jours, lisait, s'entraînait.
                 </div>
 
-                <p>À 18 ans, Patrick avait une bourse pour une grande école. Marc, lui, avait du mal à trouver sa voie. Il ne comprenait pas pourquoi son frère avait réussi alors qu'ils étaient si semblables. Patrick lui dit : "Ce n'est pas ce qu'on fait une fois qui change tout, c'est ce qu'on fait chaque jour."</p>
+                <p>À 15 ans, Patrick avait une place dans une bonne école. Marc, lui, avait du mal à trouver sa voie. Il ne comprenait pas pourquoi son frère avait réussi alors qu'ils étaient si semblables. Patrick lui dit : "Ce n'est pas ce qu'on fait une fois qui change tout, c'est ce qu'on fait chaque jour."</p>
 
                 <p>Marc comprit que les petites décisions quotidiennes dessinent notre avenir.</p>
 
                 <div class="morale">
-                    <strong>📖 Leçon de vie :</strong> Nos choix quotidiens, mêmes petits, finissent par dessiner notre destin. La constance et la discipline sont plus importantes que les grandes résolutions.
+                    <strong>📖 Leçon de vie :</strong> Nos choix quotidiens, même petits, finissent par dessiner notre destin. La constance et la discipline sont plus importantes que les grandes résolutions.
                 </div>
 
                 <h4>❓ Questions de réflexion</h4>
@@ -613,10 +598,10 @@
             themes: "Mensonge, vérité, conséquences",
             content: `
                 <div class="story">
-                    Élise, 16 ans, avait menti à ses parents sur ses notes. Un petit mensonge, juste pour éviter une dispute. Mais ce mensonge en appela un autre, puis un autre. Elle inventa des profs, des cours, des rendez-vous. Elle devait constamment se souvenir de ce qu'elle avait dit.
+                    Élise, 14 ans, avait menti à ses parents sur ses notes. Un petit mensonge, juste pour éviter une dispute. Mais ce mensonge en appela un autre, puis un autre. Elle inventa des profs, des cours, des rendez-vous. Elle devait constamment se souvenir de ce qu'elle avait dit.
                 </div>
 
-                <p>Un jour, ses parents reçurent un appel du lycée. La vérité éclata. Ils étaient déçus, pas tant par les notes que par le mensonge. Elle réalisa que le mensonge lui avait coûté plus d'énergie que la vérité n'en aurait demandé.</p>
+                <p>Un jour, ses parents reçurent un appel du collège. La vérité éclata. Ils étaient déçus, pas tant par les notes que par le mensonge. Elle réalisa que le mensonge lui avait coûté plus d'énergie que la vérité n'en aurait demandé.</p>
 
                 <p>Elle promit de ne plus jamais mentir. Ce fut le plus grand soulagement de sa vie.</p>
 
@@ -671,10 +656,10 @@
             themes: "Courage, responsabilité, justice",
             content: `
                 <div class="story">
-                    Dans son lycée, Sam était témoin de harcèlement. Un élève était victime de moqueries quotidiennes. Sam était silencieux, comme beaucoup d'autres. Il avait peur d'être la prochaine cible. Mais un jour, il se dit que le silence était une forme de complicité.
+                    Dans son collège, Sam était témoin de harcèlement. Un élève était victime de moqueries quotidiennes. Sam était silencieux, comme beaucoup d'autres. Il avait peur d'être la prochaine cible. Mais un jour, il se dit que le silence était une forme de complicité.
                 </div>
 
-                <p>Il parla au proviseur. Il décrivit ce qu'il voyait. Une enquête fut ouverte, et le harcèlement cessa. L'élève victime vint le remercier. Sam comprit que le courage, ce n'est pas l'absence de peur, c'est agir malgré la peur.</p>
+                <p>Il parla au principal du collège. Il décrivit ce qu'il voyait. Une enquête fut ouverte, et le harcèlement cessa. L'élève victime vint le remercier. Sam comprit que le courage, ce n'est pas l'absence de peur, c'est agir malgré la peur.</p>
 
                 <p>Il avait fait la différence.</p>
 
@@ -700,7 +685,7 @@
             themes: "Équilibre numérique, présence, communication",
             content: `
                 <div class="story">
-                    Dans une classe de terminale, le professeur proposa un défi : une semaine sans téléphone. Les élèves étaient sceptiques, voire paniqués. Mais ils acceptèrent. Les premiers jours furent difficiles : ils ne savaient pas quoi faire de leurs mains, de leur temps.
+                    Dans une classe de troisième, le professeur proposa un défi : une semaine sans téléphone. Les élèves étaient sceptiques, voire paniqués. Mais ils acceptèrent. Les premiers jours furent difficiles : ils ne savaient pas quoi faire de leurs mains, de leur temps.
                 </div>
 
                 <p>Peu à peu, ils se parlèrent. Ils jouèrent aux cartes, racontèrent des histoires, rirent ensemble. À la fin de la semaine, ils étaient plus proches que jamais. Ils avaient redécouvert la présence réelle, la conversation vraie.</p>
@@ -729,10 +714,10 @@
             themes: "Objectifs, planification, discipline",
             content: `
                 <div class="story">
-                    Deux amis, Chloé et Yanis, étaient inséparables. À 18 ans, ils firent un pacte : dans cinq ans, ils se retrouveraient pour partager leurs réussites. Chloé voulait devenir médecin, Yanis ingénieur. Ils écrivirent leurs objectifs, leurs plans d'action, leurs échéances.
+                    Deux amis, Chloé et Yanis, étaient inséparables. À 15 ans, ils firent un pacte : dans cinq ans, ils se retrouveraient pour partager leurs réussites. Chloé voulait devenir médecin, Yanis ingénieur. Ils écrivirent leurs objectifs, leurs plans d'action, leurs échéances.
                 </div>
 
-                <p>Les cinq années passèrent. Chloé était en troisième année de médecine, Yanis avait un diplôme d'ingénieur. Ils se retrouvèrent, regardèrent leur contrat, et sourirent. Ils avaient tenu leur promesse.</p>
+                <p>Les cinq années passèrent. Chloé était en première année de médecine, Yanis avait intégré une école d'ingénieur. Ils se retrouvèrent, regardèrent leur contrat, et sourirent. Ils avaient tenu leur promesse.</p>
 
                 <p>Ils comprirent que les rêves ont besoin d'un plan pour devenir réalité.</p>
 
@@ -758,7 +743,7 @@
             themes: "Respect, reconnaissance, humilité",
             content: `
                 <div class="story">
-                    Amine était un lycéen populaire, mais il avait un défaut : il ne remerciait jamais personne. Pour lui, tout lui était dû. Un jour, sa grand-mère lui offrit un cadeau et il ne la remercia pas. Elle fut déçue, mais ne dit rien.
+                    Amine était un collégien populaire, mais il avait un défaut : il ne remerciait jamais personne. Pour lui, tout lui était dû. Un jour, sa grand-mère lui offrit un cadeau et il ne la remercia pas. Elle fut déçue, mais ne dit rien.
                 </div>
 
                 <p>Le lendemain, elle ne lui prépara pas son petit-déjeuner. Il fut surpris. Elle lui dit : "Je n'ai pas été remerciée pour ce que je fais depuis des années, alors j'ai décidé de m'arrêter." Amine comprit que la reconnaissance est une forme de respect.</p>
@@ -787,7 +772,7 @@
             themes: "Gestion de projet, coopération, créativité",
             content: `
                 <div class="story">
-                    Le défi était simple en apparence : construire une maquette de pont capable de supporter 5 kg avec seulement des bâtons de glace et de la colle. Mais en réalité, c'était un véritable projet d'ingénierie. Une équipe de quatre élèves de terminale se lança dans l'aventure.
+                    Le défi était simple en apparence : construire une maquette de pont capable de supporter 5 kg avec seulement des bâtons de glace et de la colle. Mais en réalité, c'était un véritable projet d'ingénierie. Une équipe de quatre élèves de troisième se lança dans l'aventure.
                 </div>
 
                 <p>Ils eurent des désaccords, des échecs, des nuits blanches. Mais ils apprirent à coopérer, à répartir les rôles, à écouter les idées des autres. Après trois semaines, leur pont tenait. Ils avaient réussi l'impossible.</p>
@@ -819,7 +804,7 @@
                     Sarah était une élève brillante, première de sa classe. Ses parents voulaient qu'elle devienne médecin, comme son père. Mais Sarah aimait l'art, la peinture, la création. Elle était déchirée entre les attentes des autres et ses propres désirs.
                 </div>
 
-                <p>Un jour, elle prit une décision : elle parlerait à ses parents. Elle leur expliqua sa passion pour l'art, son besoin de créer. Ils furent déçus d'abord, puis ils comprirent que son bonheur était plus important que leurs attentes.</p>
+                <p>Un jour, elle prit une décision : elle parlerait à ses parents. Elle leur expliqua sa passion pour l'art, son besoin de créer. Ils furent d'abord déçus, puis ils comprirent que son bonheur était plus important que leurs attentes.</p>
 
                 <p>Sarah entra en école d'art. Elle était libre, et elle était elle-même.</p>
 
@@ -927,10 +912,6 @@
             `
         }];
 
-        // ================================================================
-        //  CONSTRUCTION DE LA PAGE D'ACCUEIL
-        // ================================================================
-
         const homeContent = document.getElementById('homeContent');
 
         const grid = document.createElement('div');
@@ -940,21 +921,30 @@
             const card = document.createElement('div');
             card.className = 'card';
             card.setAttribute('data-id', h.id);
+            card.setAttribute('role', 'button');
+            card.setAttribute('tabindex', '0');
+            card.setAttribute('aria-label', `Lire le récit ${h.id} : ${h.title}`);
+
             card.innerHTML = `
                 <div class="num">Récit ${String(h.id).padStart(2, '0')}</div>
                 <h3>${h.title}</h3>
                 <div class="desc">${h.lecon}</div>
                 <div class="theme">${h.themes}</div>
             `;
+
             card.addEventListener('click', () => navigateToArticle(h.id));
+
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    navigateToArticle(h.id);
+                }
+            });
+
             grid.appendChild(card);
         });
 
         homeContent.appendChild(grid);
-
-        // ================================================================
-        //  ROUTING (Hash-based)
-        // ================================================================
 
         const homePage = document.getElementById('homePage');
         const articlePage = document.getElementById('articlePage');
@@ -962,8 +952,12 @@
         function showHome() {
             homePage.classList.remove('hidden');
             articlePage.classList.remove('active');
-            window.location.hash = '';
-            document.title = '20 Récits initiatiques — 15-18 ans';
+
+            if (window.location.hash) {
+                window.location.hash = '';
+            }
+
+            document.title = '20 Récits initiatiques — 10-15 ans';
         }
 
         function showArticle(id) {
@@ -975,10 +969,12 @@
 
         function renderArticle(id) {
             const h = recits.find(e => e.id === id);
+
             if (!h) {
                 showHome();
                 return;
             }
+
             document.getElementById('articleNum').textContent = `Récit ${String(h.id).padStart(2, '0')}`;
             document.getElementById('articleTitle').textContent = h.title;
             document.getElementById('articleLecon').textContent = `"${h.lecon}"`;
@@ -993,13 +989,16 @@
 
         function handleHash() {
             const hash = window.location.hash;
+
             if (hash.startsWith('#recit-')) {
                 const id = parseInt(hash.replace('#recit-', ''), 10);
+
                 if (recits.find(e => e.id === id)) {
                     showArticle(id);
                     return;
                 }
             }
+
             showHome();
         }
 
@@ -1007,6 +1006,7 @@
             e.preventDefault();
             showHome();
         });
+
         document.getElementById('backHomeBtn').addEventListener('click', (e) => {
             e.preventDefault();
             showHome();
