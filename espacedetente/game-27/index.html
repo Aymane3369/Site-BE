@@ -1,1021 +1,766 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>20 Récits initiatiques </title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon carnet d'aventures — Histoires, Détective & Brawl Stars</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-            background: #f5f0eb;
-            color: #1a1a2e;
-            padding: 2rem 1rem;
-            line-height: 1.7;
-        }
+  body {
+    font-family: 'Trebuchet MS', 'Segoe UI', system-ui, sans-serif;
+    background: #fff9f0;
+    color: #1a1a2e;
+    line-height: 1.8;
+    font-size: 18px;
+    padding: 1.5rem 1rem 3rem;
+  }
 
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
+  .toolbar {
+    max-width: 900px; margin: 0 auto 1.5rem;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 1rem; flex-wrap: wrap;
+  }
+  .print-btn {
+    background: #ff9f43; color: #fff; border: none;
+    padding: 0.7rem 1.4rem; border-radius: 30px;
+    font-size: 1rem; font-weight: 700; cursor: pointer;
+    box-shadow: 0 6px 18px rgba(255,159,67,0.35); transition: 0.2s;
+  }
+  .print-btn:hover { transform: translateY(-2px); }
 
-        .header {
-            background: linear-gradient(135deg, #1a1a2e, #2d4059);
-            color: #fff;
-            padding: 2.5rem 2rem;
-            border-radius: 20px;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        }
+  .adult-note {
+    background: #fff4e5; border-left: 5px solid #ff9f43;
+    padding: 0.9rem 1.1rem; border-radius: 12px;
+    font-size: 0.92rem; color: #7a5a2a;
+    max-width: 900px; margin: 0 auto 1.5rem;
+  }
 
-        .header h1 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
+  .page { display: none; }
+  .page.active { display: block; }
 
-        .header h1 span {
-            color: #f0c27a;
-        }
+  /* COUVERTURE */
+  #cover {
+    max-width: 780px; margin: 0 auto;
+    background: linear-gradient(160deg, #2d4059, #1a1a2e);
+    color: #fff; border-radius: 26px; padding: 3rem 2.2rem;
+    text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+  }
+  #cover .big-emoji { font-size: 4.5rem; line-height: 1; margin-bottom: 0.6rem; }
+  #cover h1 { font-size: 2.3rem; letter-spacing: -0.5px; margin-bottom: 0.4rem; }
+  #cover h1 span { color: #ffd28a; }
+  #cover .sub { font-size: 1.05rem; opacity: 0.92; margin-bottom: 2rem; }
+  #cover .owner {
+    background: rgba(255,255,255,0.12); border-radius: 14px;
+    padding: 1.2rem; font-size: 1.1rem; margin-top: 1rem;
+  }
+  #cover .owner .line {
+    display: inline-block; border-bottom: 2px dashed rgba(255,255,255,0.5);
+    min-width: 220px; height: 1.4em; margin-left: 0.4rem;
+  }
+  #cover .owner .line-small {
+    display: inline-block; border-bottom: 2px dashed rgba(255,255,255,0.5);
+    min-width: 120px; height: 1.4em; margin-left: 0.4rem;
+  }
 
-        .header .subtitle {
-            margin-top: 0.6rem;
-            font-size: 1.05rem;
-            opacity: 0.9;
-        }
+  /* INDEX */
+  #index { max-width: 780px; margin: 1.5rem auto 0; }
+  #index h2 { text-align: center; font-size: 1.4rem; color: #2d4059; margin-bottom: 0.4rem; }
+  #index .hint { text-align: center; color: #7a6a5a; font-size: 0.9rem; margin-bottom: 1.3rem; }
+  .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.9rem; }
+  @media (max-width: 600px) { .cards { grid-template-columns: 1fr; } }
+  .card {
+    background: #fff; border: 2px solid #ffe0b8; border-radius: 16px;
+    padding: 1rem 1.1rem; text-decoration: none; color: #1a1a2e;
+    display: flex; align-items: center; gap: 0.9rem;
+    transition: 0.2s; box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+  }
+  .card:hover { transform: translateY(-3px); border-color: #ff9f43; }
+  .card .emoji { font-size: 1.9rem; flex-shrink: 0; }
+  .card .txt h3 { font-size: 0.98rem; color: #2d4059; margin-bottom: 0.1rem; }
+  .card .txt p { font-size: 0.82rem; color: #6a5a4a; line-height: 1.45; }
+  .card.special { border-color: #ff9f43; background: #fff4e5; }
+  .card.special2 { border-color: #27ae60; background: #eafaf0; }
+  .card.special3 { border-color: #e74c3c; background: #fdecea; }
 
-        .header .badge {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.12);
-            padding: 0.3rem 1.2rem;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-top: 0.8rem;
-        }
+  /* HISTOIRE */
+  .story-page {
+    max-width: 780px; margin: 0 auto; background: #fff;
+    border-radius: 26px; padding: 2.5rem 2.2rem;
+    box-shadow: 0 14px 40px rgba(0,0,0,0.08);
+  }
+  .story-page .back {
+    display: inline-block; color: #ff9f43; text-decoration: none;
+    font-weight: 700; font-size: 0.95rem; margin-bottom: 1.2rem;
+  }
+  .story-page .back:hover { text-decoration: underline; }
+  .story-page .story-emoji { font-size: 3.2rem; display: block; margin-bottom: 0.4rem; }
+  .story-page h2 { font-size: 1.8rem; color: #2d4059; margin-bottom: 1.3rem; line-height: 1.25; }
+  .story-page .text p {
+    font-size: 1.16rem; line-height: 1.9; margin-bottom: 1rem; color: #2a2a3a;
+  }
+  .story-page .lesson {
+    background: #eafaf0; border-left: 6px solid #27ae60;
+    padding: 1.1rem 1.3rem; border-radius: 14px; margin: 1.5rem 0;
+    font-size: 1.08rem; font-weight: 600; color: #1e6b3f;
+  }
+  .story-page .lesson .label {
+    display: block; font-size: 0.8rem; font-weight: 700; color: #27ae60;
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.3rem;
+  }
+  .story-page .questions {
+    background: #f0f5fc; border-left: 6px solid #2d4059;
+    padding: 1.1rem 1.3rem; border-radius: 14px; margin: 1.2rem 0;
+  }
+  .story-page .questions h4 { color: #2d4059; font-size: 1rem; margin-bottom: 0.6rem; }
+  .story-page .questions ul { list-style: none; padding: 0; }
+  .story-page .questions li { font-size: 1rem; padding: 0.25rem 0; }
+  .story-page .questions li::before { content: "👉 "; }
+  .story-page .mission {
+    background: #fff4e5; border: 2px dashed #ff9f43;
+    padding: 1.1rem 1.3rem; border-radius: 14px; margin-top: 1.2rem;
+  }
+  .story-page .mission .label {
+    display: inline-block; background: #ff9f43; color: #fff;
+    font-size: 0.72rem; font-weight: 800; letter-spacing: 0.5px;
+    padding: 0.2rem 0.7rem; border-radius: 20px;
+    margin-bottom: 0.5rem; text-transform: uppercase;
+  }
+  .story-page .mission p { font-size: 1.05rem; color: #6b4a1e; font-weight: 600; }
 
-        .back-link {
-            display: inline-block;
-            color: #f0c27a;
-            text-decoration: none;
-            font-weight: 600;
-            margin-top: 0.5rem;
-            transition: 0.2s;
-        }
+  /* CARNETS */
+  .carnet {
+    max-width: 780px; margin: 0 auto; background: #fff;
+    border-radius: 26px; padding: 2.5rem 2.2rem;
+    box-shadow: 0 14px 40px rgba(0,0,0,0.08);
+  }
+  .carnet h2 { font-size: 1.8rem; color: #2d4059; text-align: center; margin-bottom: 0.3rem; }
+  .carnet .intro { text-align: center; color: #7a6a5a; margin-bottom: 1.8rem; font-size: 0.95rem; }
+  .carnet .row {
+    display: flex; align-items: flex-start; gap: 0.8rem;
+    padding: 0.8rem 0.5rem; border-bottom: 1px dashed #ffe0b8;
+  }
+  .carnet .row:last-of-type { border-bottom: none; }
+  .carnet .check {
+    width: 30px; height: 30px; border: 3px solid #ff9f43;
+    border-radius: 8px; flex-shrink: 0; margin-top: 0.15rem;
+  }
+  .carnet .check.green { border-color: #27ae60; }
+  .carnet .m-emoji { font-size: 1.4rem; flex-shrink: 0; }
+  .carnet .m-txt { flex: 1; }
+  .carnet .m-txt .t { font-size: 1rem; font-weight: 700; color: #2d4059; }
+  .carnet .m-txt .d { font-size: 0.88rem; color: #7a6a5a; }
+  .carnet .m-date { font-size: 0.75rem; color: #b0a090; min-width: 65px; text-align: right; }
+  .carnet .victories {
+    margin-top: 2rem; background: #fffaf2; border-radius: 16px;
+    padding: 1.3rem 1.3rem 1.5rem; border: 2px solid #ffe0b8;
+  }
+  .carnet .victories h3 { color: #2d4059; font-size: 1.15rem; margin-bottom: 0.3rem; }
+  .carnet .victories .vsub { color: #7a6a5a; font-size: 0.88rem; margin-bottom: 0.9rem; }
+  .carnet .victories .line { border-bottom: 1.5px solid #ffe0b8; height: 2.1rem; }
 
-        .back-link:hover {
-            color: #fff;
-            text-decoration: underline;
-        }
+  /* DÉFIS */
+  .defi {
+    background: #f4fbf6; border: 2px solid #b8e6c9;
+    border-radius: 16px; padding: 1.2rem 1.3rem; margin-bottom: 1rem;
+  }
+  .defi.red { background: #fdecea; border-color: #f5b7b1; }
+  .defi.red .d-num { background: #e74c3c; }
+  .defi.red h3 { color: #922b21; }
+  .defi.red p { color: #4a2626; }
+  .defi.red .answer { border-top-color: #f5b7b1; color: #7a3a3a; }
+  .defi.red .answer strong { color: #e74c3c; }
+  .defi.blue { background: #eef3f8; border-color: #b8d4e6; }
+  .defi.blue .d-num { background: #2d4059; }
+  .defi.blue h3 { color: #1a2a3e; }
+  .defi.blue p { color: #2a3a4e; }
+  .defi.blue .answer { border-top-color: #b8d4e6; color: #4a5a6e; }
+  .defi.blue .answer strong { color: #2d4059; }
+  .defi .d-num {
+    display: inline-block; background: #27ae60; color: #fff;
+    font-size: 0.72rem; font-weight: 800; letter-spacing: 0.5px;
+    padding: 0.2rem 0.7rem; border-radius: 20px;
+    margin-bottom: 0.5rem; text-transform: uppercase;
+  }
+  .defi h3 { color: #1e6b3f; font-size: 1.1rem; margin-bottom: 0.4rem; }
+  .defi p { font-size: 0.98rem; color: #2a3a2e; margin-bottom: 0.4rem; }
+  .defi ul, .defi ol { padding-left: 1.3rem; margin: 0.4rem 0; }
+  .defi li { font-size: 0.96rem; padding: 0.15rem 0; }
+  .defi .answer {
+    margin-top: 0.6rem; padding-top: 0.6rem;
+    border-top: 1px dashed #b8e6c9;
+    font-size: 0.85rem; color: #5a7a62; font-style: italic;
+  }
+  .defi .answer strong { color: #27ae60; font-style: normal; }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1rem;
-        }
+  .solutions {
+    margin-top: 1.5rem; background: #fffaf2;
+    border: 2px dashed #ff9f43; border-radius: 14px;
+    padding: 1rem 1.2rem;
+  }
+  .solutions h3 { color: #b0700a; font-size: 1rem; margin-bottom: 0.4rem; }
+  .solutions p { font-size: 0.85rem; color: #7a6a5a; line-height: 1.6; }
 
-        .section-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #1a1a2e;
-            margin: 1.5rem 0 1rem;
-            padding-left: 0.5rem;
-            border-left: 6px solid #f0c27a;
-        }
+  /* BRAWL STARS SPECIFIC */
+  .brawl-header {
+    text-align: center; margin-bottom: 1.5rem;
+    padding: 1.5rem 1rem;
+    background: linear-gradient(135deg, #ffd700, #ff9f43, #e74c3c);
+    border-radius: 20px; color: #fff;
+  }
+  .brawl-header img {
+    max-width: 220px; height: auto;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+  }
+  .brawl-header .logo-fallback {
+    display: none; font-size: 2.2rem; font-weight: 900;
+    letter-spacing: 1px; text-shadow: 2px 2px 0 #000;
+  }
+  .brawl-header p { margin-top: 0.6rem; font-size: 1rem; font-weight: 700; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
 
-        .card {
-            background: #fff;
-            border-radius: 14px;
-            padding: 1.2rem 1.4rem;
-            border: 1px solid #e2d8cc;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
+  .brawler-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 0.8rem; margin: 1rem 0 1.5rem;
+  }
+  @media (max-width: 500px) { .brawler-stats { grid-template-columns: 1fr; } }
+  .stat-card {
+    background: linear-gradient(135deg, #f9f0ff, #f0e6ff);
+    border-radius: 14px; padding: 0.9rem;
+    text-align: center; border: 2px solid #d6b8e6;
+  }
+  .stat-card .s-emoji { font-size: 2rem; display: block; margin-bottom: 0.3rem; }
+  .stat-card .s-val { font-size: 1.3rem; font-weight: 800; color: #4a2d6b; }
+  .stat-card .s-lab { font-size: 0.8rem; color: #7a5a9a; }
 
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-            border-color: #2d4059;
-        }
-
-        .card:focus-visible {
-            outline: 3px solid #2d4059;
-            outline-offset: 3px;
-        }
-
-        .card .num {
-            font-size: 0.65rem;
-            font-weight: 600;
-            color: #8a7a6a;
-            background: #f5ede4;
-            padding: 0.1rem 0.6rem;
-            border-radius: 12px;
-            display: inline-block;
-        }
-
-        .card h3 {
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: #1a1a2e;
-            margin: 0.3rem 0 0.2rem;
-        }
-
-        .card .desc {
-            font-size: 0.82rem;
-            color: #5a4a3a;
-        }
-
-        .card .theme {
-            display: inline-block;
-            font-size: 0.6rem;
-            padding: 0.15rem 0.6rem;
-            background: #f5ede4;
-            border-radius: 12px;
-            color: #5a4a3a;
-            margin-top: 0.4rem;
-        }
-
-        #articlePage {
-            display: none;
-        }
-
-        #articlePage.active {
-            display: block;
-        }
-
-        #homePage.hidden {
-            display: none;
-        }
-
-        .article-container {
-            background: #fff;
-            border-radius: 20px;
-            padding: 2.5rem 2.8rem;
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.07);
-            max-width: 820px;
-            margin: 0 auto;
-        }
-
-        .article-container .article-num {
-            font-size: 0.7rem;
-            color: #8a7a6a;
-            background: #f5ede4;
-            padding: 0.2rem 1rem;
-            border-radius: 30px;
-            display: inline-block;
-            font-weight: 600;
-        }
-
-        .article-container h2 {
-            font-size: 1.8rem;
-            margin: 0.3rem 0 0.2rem;
-            color: #1a1a2e;
-        }
-
-        .article-container .article-lecon {
-            font-size: 0.9rem;
-            color: #2d4059;
-            font-weight: 600;
-            margin-bottom: 0.8rem;
-            font-style: italic;
-        }
-
-        .article-container .article-theme {
-            font-size: 0.75rem;
-            color: #8a7a6a;
-            margin-bottom: 0.8rem;
-        }
-
-        .article-container .article-theme span {
-            background: #f5ede4;
-            padding: 0.15rem 0.8rem;
-            border-radius: 12px;
-        }
-
-        .article-container .article-content h4 {
-            color: #1a1a2e;
-            margin: 1.2rem 0 0.3rem;
-            font-size: 1.05rem;
-        }
-
-        .article-container .article-content p {
-            margin-bottom: 0.8rem;
-            font-size: 1.02rem;
-            line-height: 1.8;
-        }
-
-        .article-container .article-content .story {
-            background: #faf6f0;
-            padding: 1.2rem 1.5rem;
-            border-radius: 12px;
-            border-left: 4px solid #f0c27a;
-            margin: 1rem 0;
-        }
-
-        .article-container .article-content .morale {
-            background: #f0f7ee;
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            border-left: 4px solid #2d7a2d;
-            margin: 1rem 0;
-        }
-
-        .article-container .article-content .defi {
-            background: #eef3f8;
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            border-left: 4px solid #2d4059;
-            margin: 1rem 0;
-        }
-
-        .article-container .article-content ul {
-            padding-left: 1.5rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .article-container .article-content ul li {
-            margin-bottom: 0.3rem;
-        }
-
-        .back-home {
-            display: inline-block;
-            margin-top: 1.8rem;
-            color: #2d4059;
-            text-decoration: none;
-            font-weight: 600;
-            padding: 0.5rem 1.2rem;
-            border: 2px solid #2d4059;
-            border-radius: 40px;
-            transition: 0.2s;
-        }
-
-        .back-home:hover {
-            background: #2d4059;
-            color: #fff;
-        }
-
-        @media (max-width: 640px) {
-            .header h1 {
-                font-size: 1.5rem;
-            }
-            .article-container {
-                padding: 1.5rem;
-            }
-            .article-container h2 {
-                font-size: 1.4rem;
-            }
-            .grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .footer {
-            margin-top: 2.5rem;
-            text-align: center;
-            font-size: 0.8rem;
-            color: #8a7a6a;
-            border-top: 1px solid #e2d8cc;
-            padding-top: 1.5rem;
-        }
-
-        .footer span {
-            color: #2d4059;
-            font-weight: 600;
-        }
-    </style>
+  /* IMPRESSION */
+  @media print {
+    @page { size: A4; margin: 1.4cm; }
+    body {
+      background: #fff; padding: 0; font-size: 13pt;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .no-print { display: none !important; }
+    #index { display: none !important; }
+    #cover, .story-page, .carnet {
+      display: block !important; box-shadow: none;
+      border-radius: 0; padding: 0; margin: 0;
+      page-break-after: always;
+    }
+    #cover {
+      padding: 2cm 1.5cm; border-radius: 20px; color: #fff;
+      min-height: 24cm; display: flex !important;
+      flex-direction: column; justify-content: center;
+    }
+    .carnet:last-of-type { page-break-after: auto; }
+    .story-page .back, .carnet .back { display: none; }
+    .defi { page-break-inside: avoid; }
+    .story-page h2, .carnet h2 { font-size: 20pt; }
+    .story-page .text p { font-size: 13pt; line-height: 1.7; }
+    .brawl-header { padding: 1rem; }
+    .defi, .carnet .row { page-break-inside: avoid; }
+  }
+</style>
 </head>
 <body>
 
-    <div class="container">
+  <div class="toolbar no-print">
+    <button class="print-btn" onclick="window.print()">🖨️ Imprimer le carnet complet</button>
+    <a href="#" style="color:#2d4059; font-weight:700; text-decoration:none;">🏠 Accueil</a>
+  </div>
 
-        <div id="homePage">
-            <div class="header">
-                <h1>📖 <span>20 récits initiatiques</span></h1>
-                <div class="subtitle">Pour enfants et adolescents  — Compétences de vie, leadership, résilience, gestion des émotions</div>
-                <div class="badge">Histoires et leçons</div>
-            </div>
+  <div class="adult-note no-print">
+    💡 <strong>J’aime apprendre.</strong>
+  </div>
 
-            <div id="homeContent"></div>
+  <!-- COUVERTURE -->
+  <section id="cover" class="page active">
+    <div class="big-emoji">📖🔍🎮</div>
+    <h1>Mon carnet <span>d'aventures</span></h1>
+    <p class="sub">8 histoires · 8 défis · Brawl Stars</p>
+    <div class="owner">
+      Ce carnet appartient à :<br>
+      <span class="line"></span><br><br>
+      J'ai <span class="line-small"></span> ans
+    </div>
+    <p style="margin-top:1.5rem; opacity:0.8; font-size:0.95rem;">
+      🎂 Joyeux anniversaire ! 🎉
+    </p>
+  </section>
 
-            <div class="footer">
-                <p>📚 <span>20 récits</span> — Grandir, apprendre, s'inspirer</p>
-            </div>
-        </div>
-
-        <div id="articlePage">
-            <div class="header" style="margin-bottom: 1.5rem;">
-                <h1>📖 <span>Récits initiatiques</span></h1>
-                <a class="back-link" href="#" id="backToHomeLink">← Retour à la liste</a>
-            </div>
-            <div class="article-container" id="articleContainer">
-                <div class="article-num" id="articleNum">01</div>
-                <h2 id="articleTitle">Titre</h2>
-                <div class="article-lecon" id="articleLecon">Leçon</div>
-                <div class="article-theme" id="articleTheme"><span>Thèmes</span></div>
-                <div class="article-content" id="articleContent">
-                    <p>Contenu...</p>
-                </div>
-                <a href="#" class="back-home" id="backHomeBtn">← Tous les récits</a>
-            </div>
-        </div>
-
+  <!-- INDEX -->
+  <section id="index" class="page active">
+    <h2>📚 Mes histoires</h2>
+    <p class="hint">Choisis celle qui te plaît ce soir.</p>
+    <div class="cards">
+      <a class="card" href="#histoire-1"><div class="emoji">🏅</div><div class="txt"><h3>L'Homme qui n'a pas triché</h3><p>Être honnête, même tout seul.</p></div></a>
+      <a class="card" href="#histoire-2"><div class="emoji">👂</div><div class="txt"><h3>Lina écoute</h3><p>Écouter, c'est très fort.</p></div></a>
+      <a class="card" href="#histoire-4"><div class="emoji">🏀</div><div class="txt"><h3>Le capitaine qui encourage</h3><p>Un vrai chef ne fait pas peur.</p></div></a>
+      <a class="card" href="#histoire-6"><div class="emoji">🌱</div><div class="txt"><h3>Hugo relève la tête</h3><p>Un petit pas chaque jour.</p></div></a>
+      <a class="card" href="#histoire-12"><div class="emoji">🦸</div><div class="txt"><h3>Sam ose parler</h3><p>Le courage, c'est agir malgré la peur.</p></div></a>
+      <a class="card" href="#histoire-15"><div class="emoji">💛</div><div class="txt"><h3>Le mot magique</h3><p>Un "merci" change tout.</p></div></a>
+      <a class="card" href="#histoire-19"><div class="emoji">💌</div><div class="txt"><h3>Albert et Yoann</h3><p>Demander pardon, c'est courageux.</p></div></a>
+      <a class="card" href="#histoire-20"><div class="emoji">🏔️</div><div class="txt"><h3>Ensemble vers le sommet</h3><p>On va plus loin ensemble.</p></div></a>
     </div>
 
-    <script>
-        const recits = [{
-            id: 1,
-            title: "Le Prix de l'Honnêteté",
-            lecon: "L'intégrité vaut plus que le succès obtenu par la tricherie.",
-            themes: "Honnêteté, réputation, confiance",
-            content: `
-                <div class="story">
-                    Adrien était le meilleur élève de sa classe, mais il était aussi le plus compétitif. Pour le concours national de mathématiques, il avait tout misé : des mois de travail, des nuits blanches, des espoirs immenses. Le jour de l'épreuve, il vit un élève tricher en regardant le portable de son voisin. Un instant, il fut tenté de l'imiter. Le sujet était si difficile, et il avait tellement peur d'échouer.
-                </div>
-
-                <p>Mais il se souvint des paroles de son grand-père : "Un homme qui ment à lui-même ne peut pas être fier de ses réussites." Il tourna la tête et continua son examen seul, sans tricher. Il obtint la deuxième place, derrière l'élève tricheur. Il fut déçu, mais il avait gardé son intégrité.</p>
-
-                <p>Quelques jours plus tard, la supercherie fut découverte. L'élève tricheur fut disqualifié, et Adrien fut déclaré vainqueur. Mais ce n'était pas la victoire qui comptait : c'était la fierté d'avoir été honnête.</p>
-
-                <div class="morale">
-                    <strong>📖 Leçon de vie :</strong> L'intégrité n'est pas une question de prix ou de reconnaissance. C'est un choix que l'on fait dans le silence, et qui construit notre caractère. La confiance des autres est plus précieuse que tous les trophées.
-                </div>
-
-                <h4>❓ Questions de réflexion</h4>
-                <ul>
-                    <li>Pourquoi Adrien a-t-il résisté à la tentation de tricher ?</li>
-                    <li>Quelle aurait été la conséquence d'une tricherie, même si elle n'avait pas été découverte ?</li>
-                    <li>Dans ta vie, as-tu déjà dû faire un choix difficile entre le facile et le juste ?</li>
-                </ul>
-
-                <div class="defi">
-                    <strong>🎯 Défi pratique :</strong> Cette semaine, identifie une situation où tu pourrais être tenté de prendre un raccourci. Choisis délibérément la voie honnête, même si elle est plus difficile. Note ce que tu as ressenti.
-                </div>
-            `
-        }, {
-            id: 2,
-            title: "Le Silence qui a Tout Changé",
-            lecon: "Savoir écouter est parfois plus puissant que savoir parler.",
-            themes: "Écoute active, empathie, résolution de conflits",
-            content: `
-                <div class="story">
-                    Dans le collège, deux groupes d'élèves se disputaient depuis des semaines. Chaque camp avait ses arguments, ses rancœurs, et personne ne voulait entendre l'autre. La tension était palpable, et une bagarre semblait inévitable.
-                </div>
-
-                <p>Lina, une jeune fille discrète, décida de faire quelque chose. Elle invita un représentant de chaque groupe à s'asseoir autour d'une table. Elle ne prit pas la parole. Elle les écouta. Pendant une heure, elle écouta sans juger, sans interrompre, sans donner de conseil.</p>
-
-                <p>À la fin, les deux élèves, qui ne s'étaient jamais vraiment écoutés, commencèrent à se comprendre. Ils réalisèrent qu'ils partageaient les mêmes peurs et les mêmes frustrations. Ils se serrèrent la main, et la tension du collège s'apaisa.</p>
-
-                <p>Lina n'avait pas parlé, mais elle avait tout changé.</p>
-
-                <div class="morale">
-                    <strong>📖 Leçon de vie :</strong> L'écoute active est une forme de respect. Elle permet de comprendre l'autre, de désamorcer les conflits et de bâtir des ponts. Parfois, le silence est plus éloquent que les mots.
-                </div>
-
-                <h4>❓ Questions de réflexion</h4>
-                <ul>
-                    <li>Pourquoi Lina a-t-elle choisi d'écouter plutôt que de parler ?</li>
-                    <li>Quand as-tu vécu une situation où l'écoute a permis de résoudre un conflit ?</li>
-                    <li>Comment peux-tu devenir un meilleur auditeur ?</li>
-                </ul>
-
-                <div class="defi">
-                    <strong>🎯 Défi pratique :</strong> Dans une conversation difficile cette semaine, essaie de ne pas interrompre. Reformule ce que l'autre a dit pour montrer que tu as compris. Observe l'effet sur la relation.
-                </div>
-            `
-        }, {
-            id: 3,
-            title: "Les 100 Euros",
-            lecon: "Gestion financière, patience et vision à long terme.",
-            themes: "Finances, patience, investissement",
-            content: `
-                <div class="story">
-                    Pour ses 15 ans, Samir reçut un billet de 100 euros de son grand-père. "Ne les dépense pas tout de suite", lui dit-il. "Réfléchis à ce que tu veux vraiment." Samir voulait une nouvelle paire de baskets. Il les voyait déjà à ses pieds, brillantes et neuves.
-                </div>
-
-                <p>Mais il réfléchit. Il pouvait acheter les baskets, ou il pouvait investir dans un petit projet. Il décida d'acheter des fournitures pour créer des bijoux artisanaux, qu'il vendit sur les marchés. En trois mois, il avait transformé ses 100 euros en 300 euros.</p>
-
-                <p>Il comprit que l'argent pouvait travailler pour lui, et que la patience était une forme d'intelligence. Il remercia son grand-père de lui avoir appris à voir au-delà de l'instant.</p>
-
-                <div class="morale">
-                    <strong>📖 Leçon de vie :</strong> La gestion financière est une compétence de vie. Savoir attendre, planifier et investir peut transformer une petite somme en une grande opportunité.
-                </div>
-
-                <h4>❓ Questions de réflexion</h4>
-                <ul>
-                    <li>Quelle a été la décision clé de Samir ?</li>
-                    <li>Pourquoi est-il important d'apprendre à gérer son argent dès le plus jeune âge ?</li>
-                    <li>Quel projet pourrais-tu lancer avec une petite somme ?</li>
-                </ul>
-
-                <div class="defi">
-                    <strong>🎯 Défi pratique :</strong> Prends un petit montant d'argent (5 ou 10 euros) et essaie de le faire fructifier de manière créative. Note ton plan et tes résultats.
-                </div>
-            `
-        }, {
-            id: 4,
-            title: "Le Capitaine de l'Équipe",
-            lecon: "Un bon leader ne commande pas : il inspire.",
-            themes: "Leadership, responsabilité, esprit d'équipe",
-            content: `
-                <div class="story">
-                    L'équipe de basket du collège était talentueuse, mais elle perdait tous les matchs. Le capitaine, Maxime, était un excellent joueur, mais il criait sur ses coéquipiers quand ils faisaient des erreurs. Il pensait que la peur motiverait ses coéquipiers.
-                </div>
-
-                <p>Un jour, à la mi-temps d'un match où ils perdaient 30 points d'écart, Maxime prit la parole. Mais au lieu de crier, il dit : "Je suis désolé. Je vous ai traités comme des soldats, pas comme une équipe. Je veux être votre capitaine, pas votre chef. Ensemble, on peut y arriver."</p>
-
-                <p>Pour la première fois, l'équipe joua avec cohésion. Ils perdirent de justesse, mais ils étaient unis. Les matchs suivants furent des victoires. Maxime avait compris que le leadership, c'est inspirer, pas imposer.</p>
-
-                <div class="morale">
-                    <strong>📖 Leçon de vie :</strong> Le vrai leadership ne repose pas sur l'autorité, mais sur l'inspiration. Un leader élève les autres, il ne les écrase pas.
-                </div>
-
-                <h4>❓ Questions de réflexion</h4>
-                <ul>
-                    <li>Quelle erreur Maxime faisait-il en tant que capitaine ?</li>
-                    <li>Qu'est-ce qui a changé quand il a parlé autrement ?</li>
-                    <li>Quelles qualités font de toi un bon leader ?</li>
-                </ul>
-
-                <div class="defi">
-                    <strong>🎯 Défi pratique :</strong> Cette semaine, dans un travail de groupe, concentre-toi sur l'encouragement plutôt que sur la critique. Observe comment les autres réagissent.
-                </div>
-            `
-        }, {
-            id: 5,
-            title: "L'Entreprise du Quartier",
-            lecon: "Entrepreneuriat, organisation, répartition des rôles.",
-            themes: "Entrepreneuriat, organisation, travail d'équipe",
-            content: `
-                <div class="story">
-                    Pendant les vacances d'été, quatre amis — Sofia, Elias, Malika et Lucas — décidèrent de créer une petite entreprise de nettoyage de vitres. Ils avaient 15 ans, pas d'argent, mais beaucoup d'énergie.
-                </div>
-
-                <p>Ils se répartirent les rôles : Sofia gérait les finances, Elias le marketing, Malika les opérations, et Lucas les relations clients. Les premiers jours furent difficiles, mais ils persévérèrent. Ils imprimèrent des flyers, démarchèrent les commerces, et firent un excellent travail.</p>
-
-                <p>En un mois, ils avaient gagné 800 euros chacun. Ils apprirent que l'organisation et la confiance en leurs capacités étaient les clés de leur succès.</p>
-
-                <div class="morale">
-                    <strong>📖 Leçon de vie :</strong> L'entrepreneuriat est une aventure qui apprend la responsabilité, l'organisation et la collaboration. Chaque rôle est important pour la réussite du projet.
-                </div>
-
-                <h4>❓ Questions de réflexion</h4>
-                <ul>
-                    <li>Pourquoi était-il important de se répartir les rôles ?</li>
-                    <li>Qu'est-ce qui a fait la force de leur équipe ?</li>
-                    <li>Quelle entreprise aimerais-tu créer un jour ?</li>
-                </ul>
-
-                <div class="defi">
-                    <strong>🎯 Défi pratique :</strong> Imagine un petit projet entrepreneurial que tu pourrais lancer avec des amis. Définis les rôles de chacun et élabore un plan simple.
-                </div>
-            `
-        }, {
-            id: 6,
-            title: "Une Seconde Chance",
-            lecon: "Persévérance, discipline, confiance en soi.",
-            themes: "Persévérance, discipline, confiance",
-            content: `
-                <div class="story">
-                    Hugo était en échec scolaire. Ses notes étaient mauvaises, et il avait perdu toute confiance en lui. Ses professeurs le considéraient comme un élève en difficulté. Mais le professeur Bernard, un vieux professeur de français, ne le voyait pas ainsi.
-                </div>
-
-                <p>Il lui proposa un contrat : si Hugo acceptait de venir en aide une heure par semaine, et de lire un livre par mois, il l'aiderait à progresser. Hugo accepta, sans grand enthousiasme. Mais semaine après semaine, il découvrit le plaisir de lire, la satisfaction de comprendre. En six mois, ses notes remontèrent. Il obtint son examen final avec mention.</p>
-
-                <p>Il comprit qu'une seconde chance n'est pas donnée, elle se construit.</p>
-
-                <div class="morale">
-                    <strong>📖 Leçon de vie :</strong> L'échec n'est pas une fatalité. Avec de la discipline, de l'aide et de la persévérance, on peut toujours se relever. La confiance en soi se construit pas à pas.
-                </div>
-
-                <h4>❓ Questions de réflexion</h4>
-                <ul>
-                    <li>Pourquoi Hugo était-il en échec ?</li>
-                    <li>Qu'est-ce qui a changé sa situation ?</li>
-                    <li>Dans quel domaine as-tu besoin d'une "seconde chance" ?</li>
-                </ul>
-
-                <div class="defi">
-                    <strong>🎯 Défi pratique :</strong> Identifie un domaine où tu aimerais progresser. Fixe-toi un petit objectif quotidien et tiens-le pendant un mois. Note tes progrès.
-                </div>
-            `
-        }, {
-            id: 7,
-            title: "Les Deux Frères",
-            lecon: "Les choix quotidiens construisent l'avenir.",
-            themes: "Choix, effort, responsabilité",
-            content: `
-                <div class="story">
-                    Marc et Patrick étaient deux frères jumeaux. Ils avaient les mêmes talents, les mêmes opportunités. Mais Marc choisissait la facilité : il jouait aux jeux vidéo au lieu d'étudier, il négligeait ses devoirs. Patrick, lui, travaillait tous les jours, lisait, s'entraînait.
-                </div>
-
-                <p>À 15 ans, Patrick avait une place dans une bonne école. Marc, lui, avait du mal à trouver sa voie. Il ne comprenait pas pourquoi son frère avait réussi alors qu'ils étaient si semblables. Patrick lui dit : "Ce n'est pas ce qu'on fait une fois qui change tout, c'est ce qu'on fait chaque jour."</p>
-
-                <p>Marc comprit que les petites décisions quotidiennes dessinent notre avenir.</p>
-
-                <div class="morale">
-                    <strong>📖 Leçon de vie :</strong> Nos choix quotidiens, même petits, finissent par dessiner notre destin. La constance et la discipline sont plus importantes que les grandes résolutions.
-                </div>
-
-                <h4>❓ Questions de réflexion</h4>
-                <ul>
-                    <li>Pourquoi Patrick a-t-il réussi là où Marc a échoué ?</li>
-                    <li>Quelle différence y a-t-il entre un choix ponctuel et une habitude ?</li>
-                    <li>Quelles habitudes quotidiennes pourrais-tu améliorer ?</li>
-                </ul>
-
-                <div class="defi">
-                    <strong>🎯 Défi pratique :</strong> Identifie une habitude que tu aimerais changer. Note-la et fixe-toi un petit engagement quotidien pendant 21 jours.
-                </div>
-            `
-        }, {
-            id: 8,
-            title: "Le Dernier Train",
-            lecon: "Les imprévus peuvent devenir des opportunités.",
-            themes: "Imprévus, opportunités, ouverture d'esprit",
-            content: `
-                <div class="story">
-                    Léa rata son train. Elle était en colère contre elle-même, contre les horaires, contre tout. Elle devait attendre deux heures le prochain train. Pour tuer le temps, elle s'installa sur un banc et sortit un livre.
-                </div>
-
-                <p>Un vieil homme s'assit à côté d'elle. Il lui demanda ce qu'elle lisait. Ils engagèrent une conversation. Il était un ancien architecte, et il lui parla de sa carrière, de ses voyages. Elle fut fascinée. Il lui donna sa carte et lui proposa un stage dans son ancienne agence.</p>
-
-                <p>Léa accepta. Elle découvrit une passion pour l'architecture qu'elle ne soupçonnait pas. Le train qu'elle avait raté lui avait offert une nouvelle direction.</p>
-
-                <div class="morale">
-                    <strong>📖 Leçon de vie :</strong> Les imprévus ne sont pas toujours des obstacles. Parfois, ils sont des portes dérobées qui mènent à des chemins inattendus. Être ouvert aux rencontres est une force.
-                </div>
-
-                <h4>❓ Questions de réflexion</h4>
-                <ul>
-                    <li>Pourquoi Léa était-elle en colère d'abord ?</li>
-                    <li>Que s'est-il passé grâce à cette attente ?</li>
-                    <li>As-tu déjà vécu un imprévu qui a changé ta vie ?</li>
-                </ul>
-
-                <div class="defi">
-                    <strong>🎯 Défi pratique :</strong> La prochaine fois qu'un imprévu change tes plans, essaie de voir ce qu'il pourrait t'apporter de positif. Note les opportunités que tu as découvertes grâce à des imprévus.
-                </div>
-            `
-        }, {
-            id: 9,
-            title: "Le Journal de Grand-Père",
-            lecon: "Gratitude, mémoire, transmission.",
-            themes: "Gratitude, mémoire, famille",
-            content: `
-                <div class="story">
-                    Après la mort de son grand-père, Clara hérita d'un vieux journal intime. Elle ne s'y était jamais intéressée. Mais un soir, elle l'ouvrit. Elle y découvrit une vie de sacrifices, d'efforts et de rêves. Son grand-père avait quitté son pays à 17 ans avec rien, et avait construit une vie digne.
-                </div>
-
-                <p>Elle comprit que tout ce qu'elle avait — sa maison, ses études, ses opportunités — était le fruit du travail de ceux qui l'avaient précédée. Elle se sentit reconnaissante. Elle décida d'écrire à son tour un journal, pour transmettre à ses enfants l'histoire qu'elle avait découverte.</p>
-
-                <p>Elle avait retrouvé ses racines.</p>
-
-                <div class="morale">
-                    <strong>📖 Leçon de vie :</strong> La gratitude envers ceux qui nous ont précédés est une source de force. Connaître ses racines, c'est se connaître soi-même.
-                </div>
-
-                <h4>❓ Questions de réflexion</h4>
-                <ul>
-                    <li>Pourquoi Clara a-t-elle été touchée par le journal ?</li>
-                    <li>Quelle est l'importance de transmettre les histoires familiales ?</li>
-                    <li>Que sais-tu de l'histoire de tes ancêtres ?</li>
-                </ul>
-
-                <div class="defi">
-                    <strong>🎯 Défi pratique :</strong> Interroge un membre de ta famille (parent, grand-parent) sur son histoire. Note ce qu'il te raconte. Tu pourrais découvrir des trésors insoupçonnés.
-                </div>
-            `
-        }, {
-            id: 10,
-            title: "Le Mensonge Parfait",
-            lecon: "La vérité finit toujours par être plus simple.",
-            themes: "Mensonge, vérité, conséquences",
-            content: `
-                <div class="story">
-                    Élise, 14 ans, avait menti à ses parents sur ses notes. Un petit mensonge, juste pour éviter une dispute. Mais ce mensonge en appela un autre, puis un autre. Elle inventa des profs, des cours, des rendez-vous. Elle devait constamment se souvenir de ce qu'elle avait dit.
-                </div>
-
-                <p>Un jour, ses parents reçurent un appel du collège. La vérité éclata. Ils étaient déçus, pas tant par les notes que par le mensonge. Elle réalisa que le mensonge lui avait coûté plus d'énergie que la vérité n'en aurait demandé.</p>
-
-                <p>Elle promit de ne plus jamais mentir. Ce fut le plus grand soulagement de sa vie.</p>
-
-                <div class="morale">
-                    <strong>📖 Leçon de vie :</strong> Le mensonge crée un labyrinthe dont il est difficile de sortir. La vérité, même inconfortable, est toujours plus légère à porter.
-                </div>
-
-                <h4>❓ Questions de réflexion</h4>
-                <ul>
-                    <li>Pourquoi Élise a-t-elle commencé à mentir ?</li>
-                    <li>Quelles ont été les conséquences de son mensonge ?</li>
-                    <li>As-tu déjà vécu une situation où un mensonge a créé des problèmes ?</li>
-                </ul>
-
-                <div class="defi">
-                    <strong>🎯 Défi pratique :</strong> Pendant une semaine, sois attentif à ce que tu dis. Essaie d'être aussi honnête que possible. Observe comment les autres réagissent et comment tu te sens.
-                </div>
-            `
-        }, {
-            id: 11,
-            title: "Le Village après la Tempête",
-            lecon: "Solidarité, résilience, engagement.",
-            themes: "Solidarité, résilience, engagement",
-            content: `
-                <div class="story">
-                    Le village de Saint-Martin avait été dévasté par une tempête. Les maisons étaient endommagées, les routes coupées. Personne ne savait par où commencer. Un groupe de jeunes, mené par Thomas, décida de ne pas attendre les secours. Ils organisèrent les équipes, priorisèrent les besoins, et firent le travail.
-                </div>
-
-                <p>Ils aidèrent les personnes âgées à nettoyer leurs maisons, apportèrent de l'eau et de la nourriture, et relevèrent le moral de tous. En une semaine, le village avait repris vie. Les habitants les remercièrent, mais eux disaient que c'était leur devoir de faire partie de la solution.</p>
-
-                <p>Ils avaient appris que la solidarité est une force qui nous dépasse.</p>
-
-                <div class="morale">
-                    <strong>📖 Leçon de vie :</strong> Les défis collectifs exigent des actions collectives. Chaque petit geste compte, et la solidarité est une force qui nous rend plus forts.
-                </div>
-
-                <h4>❓ Questions de réflexion</h4>
-                <ul>
-                    <li>Qu'a fait Thomas et son groupe ?</li>
-                    <li>Pourquoi n'ont-ils pas attendu les secours ?</li>
-                    <li>Dans ta communauté, comment pourrais-tu t'engager ?</li>
-                </ul>
-
-                <div class="defi">
-                    <strong>🎯 Défi pratique :</strong> Identifie un besoin dans ta communauté (aide aux devoirs, nettoyage, etc.). Propose ton aide à une association ou lance une petite action avec des amis.
-                </div>
-            `
-        }, {
-            id: 12,
-            title: "Le Choix du Courage",
-            lecon: "Courage moral, responsabilité.",
-            themes: "Courage, responsabilité, justice",
-            content: `
-                <div class="story">
-                    Dans son collège, Sam était témoin de harcèlement. Un élève était victime de moqueries quotidiennes. Sam était silencieux, comme beaucoup d'autres. Il avait peur d'être la prochaine cible. Mais un jour, il se dit que le silence était une forme de complicité.
-                </div>
-
-                <p>Il parla au principal du collège. Il décrivit ce qu'il voyait. Une enquête fut ouverte, et le harcèlement cessa. L'élève victime vint le remercier. Sam comprit que le courage, ce n'est pas l'absence de peur, c'est agir malgré la peur.</p>
-
-                <p>Il avait fait la différence.</p>
-
-                <div class="morale">
-                    <strong>📖 Leçon de vie :</strong> Le courage moral, c'est oser parler pour ceux qui ne le peuvent pas. La justice commence par une voix qui ose se lever.
-                </div>
-
-                <h4>❓ Questions de réflexion</h4>
-                <ul>
-                    <li>Pourquoi Sam a-t-il pris la parole ?</li>
-                    <li>Quelles auraient été les conséquences de son silence ?</li>
-                    <li>Quelle injustice aimerais-tu combattre ?</li>
-                </ul>
-
-                <div class="defi">
-                    <strong>🎯 Défi pratique :</strong> Si tu vois une injustice, fais un pas pour la dénoncer, même petit (parle à un adulte, écris un message de soutien, etc.).
-                </div>
-            `
-        }, {
-            id: 13,
-            title: "Le Smartphone Éteint",
-            lecon: "Équilibre numérique, présence, communication.",
-            themes: "Équilibre numérique, présence, communication",
-            content: `
-                <div class="story">
-                    Dans une classe de troisième, le professeur proposa un défi : une semaine sans téléphone. Les élèves étaient sceptiques, voire paniqués. Mais ils acceptèrent. Les premiers jours furent difficiles : ils ne savaient pas quoi faire de leurs mains, de leur temps.
-                </div>
-
-                <p>Peu à peu, ils se parlèrent. Ils jouèrent aux cartes, racontèrent des histoires, rirent ensemble. À la fin de la semaine, ils étaient plus proches que jamais. Ils avaient redécouvert la présence réelle, la conversation vraie.</p>
-
-                <p>Ils décidèrent de garder une journée par semaine sans téléphone.</p>
-
-                <div class="morale">
-                    <strong>📖 Leçon de vie :</strong> Les écrans sont des outils merveilleux, mais ils ne doivent pas remplacer les relations humaines. La présence réelle est une forme d'attention précieuse.
-                </div>
-
-                <h4>❓ Questions de réflexion</h4>
-                <ul>
-                    <li>Quelle a été la réaction des élèves au début ?</li>
-                    <li>Qu'ont-ils redécouvert pendant cette semaine ?</li>
-                    <li>Quelle est ta relation avec ton téléphone ?</li>
-                </ul>
-
-                <div class="defi">
-                    <strong>🎯 Défi pratique :</strong> Essaie une journée (ou même quelques heures) sans téléphone. Note ce que tu as fait différemment, comment tu as interagi avec les autres.
-                </div>
-            `
-        }, {
-            id: 14,
-            title: "Le Contrat",
-            lecon: "Objectifs, planification, discipline.",
-            themes: "Objectifs, planification, discipline",
-            content: `
-                <div class="story">
-                    Deux amis, Chloé et Yanis, étaient inséparables. À 15 ans, ils firent un pacte : dans cinq ans, ils se retrouveraient pour partager leurs réussites. Chloé voulait devenir médecin, Yanis ingénieur. Ils écrivirent leurs objectifs, leurs plans d'action, leurs échéances.
-                </div>
-
-                <p>Les cinq années passèrent. Chloé était en première année de médecine, Yanis avait intégré une école d'ingénieur. Ils se retrouvèrent, regardèrent leur contrat, et sourirent. Ils avaient tenu leur promesse.</p>
-
-                <p>Ils comprirent que les rêves ont besoin d'un plan pour devenir réalité.</p>
-
-                <div class="morale">
-                    <strong>📖 Leçon de vie :</strong> Les objectifs sans plan ne sont que des souhaits. La discipline et la planification transforment les rêves en réalité.
-                </div>
-
-                <h4>❓ Questions de réflexion</h4>
-                <ul>
-                    <li>Pourquoi le contrat était-il important ?</li>
-                    <li>Comment Chloé et Yanis ont-ils réussi à atteindre leurs objectifs ?</li>
-                    <li>Quels sont tes objectifs pour les cinq prochaines années ?</li>
-                </ul>
-
-                <div class="defi">
-                    <strong>🎯 Défi pratique :</strong> Écris trois objectifs pour les cinq prochaines années. Pour chaque objectif, note trois actions concrètes que tu peux entreprendre dès maintenant.
-                </div>
-            `
-        }, {
-            id: 15,
-            title: "La Valeur d'un 'Merci'",
-            lecon: "Respect, reconnaissance, humilité.",
-            themes: "Respect, reconnaissance, humilité",
-            content: `
-                <div class="story">
-                    Amine était un collégien populaire, mais il avait un défaut : il ne remerciait jamais personne. Pour lui, tout lui était dû. Un jour, sa grand-mère lui offrit un cadeau et il ne la remercia pas. Elle fut déçue, mais ne dit rien.
-                </div>
-
-                <p>Le lendemain, elle ne lui prépara pas son petit-déjeuner. Il fut surpris. Elle lui dit : "Je n'ai pas été remerciée pour ce que je fais depuis des années, alors j'ai décidé de m'arrêter." Amine comprit que la reconnaissance est une forme de respect.</p>
-
-                <p>Il s'excusa et la remercia. Depuis, il exprimait sa gratitude chaque jour.</p>
-
-                <div class="morale">
-                    <strong>📖 Leçon de vie :</strong> Un "merci" sincère est une petite phrase qui a un grand pouvoir. Il montre que l'on voit l'autre, que l'on respecte son temps et ses efforts.
-                </div>
-
-                <h4>❓ Questions de réflexion</h4>
-                <ul>
-                    <li>Pourquoi Amine ne remerciait-il jamais ?</li>
-                    <li>Que lui a appris cette expérience ?</li>
-                    <li>À qui n'as-tu pas dit merci alors que tu aurais dû ?</li>
-                </ul>
-
-                <div class="defi">
-                    <strong>🎯 Défi pratique :</strong> Pendant une semaine, remercie consciemment au moins trois personnes chaque jour. Note comment tu te sens et comment les autres réagissent.
-                </div>
-            `
-        }, {
-            id: 16,
-            title: "Le Projet Impossible",
-            lecon: "Gestion de projet, coopération, créativité.",
-            themes: "Gestion de projet, coopération, créativité",
-            content: `
-                <div class="story">
-                    Le défi était simple en apparence : construire une maquette de pont capable de supporter 5 kg avec seulement des bâtons de glace et de la colle. Mais en réalité, c'était un véritable projet d'ingénierie. Une équipe de quatre élèves de troisième se lança dans l'aventure.
-                </div>
-
-                <p>Ils eurent des désaccords, des échecs, des nuits blanches. Mais ils apprirent à coopérer, à répartir les rôles, à écouter les idées des autres. Après trois semaines, leur pont tenait. Ils avaient réussi l'impossible.</p>
-
-                <p>Ils avaient appris que les grands projets naissent de la coopération et de la persévérance.</p>
-
-                <div class="morale">
-                    <strong>📖 Leçon de vie :</strong> Les projets difficiles ne se réalisent pas seuls. La coopération, la créativité et la persévérance sont des clés du succès collectif.
-                </div>
-
-                <h4>❓ Questions de réflexion</h4>
-                <ul>
-                    <li>Quelles difficultés ont-ils rencontrées ?</li>
-                    <li>Comment ont-ils surmonté leurs désaccords ?</li>
-                    <li>Quel projet collectif aimerais-tu mener ?</li>
-                </ul>
-
-                <div class="defi">
-                    <strong>🎯 Défi pratique :</strong> Lance un petit projet avec des amis (un jardin partagé, un événement, un service). Note comment vous organisez le travail et résolvez les problèmes.
-                </div>
-            `
-        }, {
-            id: 17,
-            title: "Le Choix de Sarah",
-            lecon: "Liberté de choix, authenticité, responsabilité.",
-            themes: "Authenticité, choix, liberté",
-            content: `
-                <div class="story">
-                    Sarah était une élève brillante, première de sa classe. Ses parents voulaient qu'elle devienne médecin, comme son père. Mais Sarah aimait l'art, la peinture, la création. Elle était déchirée entre les attentes des autres et ses propres désirs.
-                </div>
-
-                <p>Un jour, elle prit une décision : elle parlerait à ses parents. Elle leur expliqua sa passion pour l'art, son besoin de créer. Ils furent d'abord déçus, puis ils comprirent que son bonheur était plus important que leurs attentes.</p>
-
-                <p>Sarah entra en école d'art. Elle était libre, et elle était elle-même.</p>
-
-                <div class="morale">
-                    <strong>📖 Leçon de vie :</strong> Être fidèle à soi-même est un acte de courage. La liberté de choisir sa voie est une responsabilité, mais aussi une chance de vivre pleinement.
-                </div>
-
-                <h4>❓ Questions de réflexion</h4>
-                <ul>
-                    <li>Pourquoi Sarah hésitait-elle ?</li>
-                    <li>Comment a-t-elle fait face aux attentes de ses parents ?</li>
-                    <li>Dans quel domaine as-tu besoin d'affirmer tes choix ?</li>
-                </ul>
-
-                <div class="defi">
-                    <strong>🎯 Défi pratique :</strong> Identifie un domaine où tu suis les attentes des autres plutôt que tes propres désirs. Prends une petite mesure pour t'en rapprocher (en parler, faire une recherche, etc.).
-                </div>
-            `
-        }, {
-            id: 18,
-            title: "Les Mille Décisions",
-            lecon: "Les habitudes façonnent le destin.",
-            themes: "Habitudes, choix, destin",
-            content: `
-                <div class="story">
-                    Ce n'était pas une grande décision qui changea la vie de Nathan, mais mille petites. Chaque matin, il choisissait de se lever tôt, de lire vingt minutes, de faire une promenade. Chaque soir, il choisissait de revoir ses cours, de méditer cinq minutes.
-                </div>
-
-                <p>Un an plus tard, il était devenu une personne différente : plus concentré, plus calme, plus confiant. Ses amis ne comprenaient pas ce qui s'était passé. Lui savait : ce n'était pas un événement, c'était une accumulation de choix.</p>
-
-                <p>Les habitudes façonnent qui nous devenons.</p>
-
-                <div class="morale">
-                    <strong>📖 Leçon de vie :</strong> Nos vies ne sont pas définies par les grands événements, mais par l'accumulation des petites décisions quotidiennes. Les habitudes construisent notre avenir.
-                </div>
-
-                <h4>❓ Questions de réflexion</h4>
-                <ul>
-                    <li>Quelles petites décisions Nathan prenait-il chaque jour ?</li>
-                    <li>Comment a-t-il changé en un an ?</li>
-                    <li>Quelles habitudes pourrais-tu adopter pour devenir la personne que tu veux être ?</li>
-                </ul>
-
-                <div class="defi">
-                    <strong>🎯 Défi pratique :</strong> Identifie trois petites habitudes que tu aimerais adopter. Note-les et tiens-les pendant 21 jours. Note les changements que tu observes.
-                </div>
-            `
-        }, {
-            id: 19,
-            title: "L'Héritage Invisible",
-            lecon: "Éthique, transmission, vision.",
-            themes: "Éthique, transmission, vision",
-            content: `
-                <div class="story">
-                    Monsieur Dufresne était un entrepreneur à la retraite. Il avait créé une entreprise florissante, mais il ne parlait jamais d'argent. Il parlait de valeurs, de confiance, d'engagement. Un jeune stagiaire, Thomas, lui demanda : "Quel est votre plus grand héritage ?"
-                </div>
-
-                <p>Il répondit : "Ce n'est pas l'entreprise, c'est ce que j'ai appris à ceux qui ont travaillé avec moi. La fiabilité, l'honnêteté, l'attention aux autres. C'est ça qui reste quand l'argent disparaît."</p>
-
-                <p>Thomas comprit que l'héritage le plus précieux est invisible.</p>
-
-                <div class="morale">
-                    <strong>📖 Leçon de vie :</strong> Ce que nous transmettons de plus précieux n'est pas matériel. Ce sont les valeurs, les principes, la vision que nous laissons aux autres.
-                </div>
-
-                <h4>❓ Questions de réflexion</h4>
-                <ul>
-                    <li>Quelle était la véritable richesse de Monsieur Dufresne ?</li>
-                    <li>Qu'est-ce que tu aimerais transmettre ?</li>
-                    <li>Qui t'a transmis des valeurs importantes ?</li>
-                </ul>
-
-                <div class="defi">
-                    <strong>🎯 Défi pratique :</strong> Identifie trois valeurs que tu aimerais incarner dans ta vie. Écris comment tu pourrais les transmettre aux autres par tes actions.
-                </div>
-            `
-        }, {
-            id: 20,
-            title: "Le Sommet",
-            lecon: "Résilience, préparation, esprit d'équipe, dépassement de soi.",
-            themes: "Résilience, esprit d'équipe, dépassement",
-            content: `
-                <div class="story">
-                    Le Mont Blanc était un défi que quatre amis s'étaient promis de relever. Ils s'étaient entraînés pendant des mois, mais la montagne était impitoyable. Le froid, la fatigue, le doute. À mi-parcours, l'un d'eux voulut abandonner.
-                </div>
-
-                <p>Les autres l'encouragèrent. Ils ralentirent, partagèrent leurs forces, leurs provisions, leurs mots. Après des heures d'effort, ils atteignirent le sommet. La vue était spectaculaire, mais ce qui comptait vraiment, c'était ce qu'ils avaient surmonté ensemble.</p>
-
-                <p>Ils avaient appris que le vrai sommet n'est pas une altitude, mais une leçon d'humilité et de persévérance.</p>
-
-                <div class="morale">
-                    <strong>📖 Leçon de vie :</strong> Les plus grands défis ne sont pas ceux qu'on relève seul. La résilience, l'esprit d'équipe et le dépassement de soi transforment l'ascension en un voyage inoubliable.
-                </div>
-
-                <h4>❓ Questions de réflexion</h4>
-                <ul>
-                    <li>Pourquoi l'un des amis a-t-il voulu abandonner ?</li>
-                    <li>Comment l'équipe a-t-elle surmonté cette épreuve ?</li>
-                    <li>Quel est ton "sommet" personnel ?</li>
-                </ul>
-
-                <div class="defi">
-                    <strong>🎯 Défi pratique :</strong> Identifie un défi personnel que tu veux relever (sportif, académique, créatif). Établis un plan, trouve des personnes pour te soutenir, et lance-toi.
-                </div>
-            `
-        }];
-
-        const homeContent = document.getElementById('homeContent');
-
-        const grid = document.createElement('div');
-        grid.className = 'grid';
-
-        recits.forEach(h => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.setAttribute('data-id', h.id);
-            card.setAttribute('role', 'button');
-            card.setAttribute('tabindex', '0');
-            card.setAttribute('aria-label', `Lire le récit ${h.id} : ${h.title}`);
-
-            card.innerHTML = `
-                <div class="num">Récit ${String(h.id).padStart(2, '0')}</div>
-                <h3>${h.title}</h3>
-                <div class="desc">${h.lecon}</div>
-                <div class="theme">${h.themes}</div>
-            `;
-
-            card.addEventListener('click', () => navigateToArticle(h.id));
-
-            card.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    navigateToArticle(h.id);
-                }
-            });
-
-            grid.appendChild(card);
-        });
-
-        homeContent.appendChild(grid);
-
-        const homePage = document.getElementById('homePage');
-        const articlePage = document.getElementById('articlePage');
-
-        function showHome() {
-            homePage.classList.remove('hidden');
-            articlePage.classList.remove('active');
-
-            if (window.location.hash) {
-                window.location.hash = '';
-            }
-
-            document.title = '20 Récits initiatiques — 10-15 ans';
-        }
-
-        function showArticle(id) {
-            homePage.classList.add('hidden');
-            articlePage.classList.add('active');
-            window.location.hash = `recit-${id}`;
-            renderArticle(id);
-        }
-
-        function renderArticle(id) {
-            const h = recits.find(e => e.id === id);
-
-            if (!h) {
-                showHome();
-                return;
-            }
-
-            document.getElementById('articleNum').textContent = `Récit ${String(h.id).padStart(2, '0')}`;
-            document.getElementById('articleTitle').textContent = h.title;
-            document.getElementById('articleLecon').textContent = `"${h.lecon}"`;
-            document.getElementById('articleTheme').innerHTML = `<span>${h.themes}</span>`;
-            document.getElementById('articleContent').innerHTML = h.content;
-            document.title = `${h.title} — Récits initiatiques`;
-        }
-
-        function navigateToArticle(id) {
-            showArticle(id);
-        }
-
-        function handleHash() {
-            const hash = window.location.hash;
-
-            if (hash.startsWith('#recit-')) {
-                const id = parseInt(hash.replace('#recit-', ''), 10);
-
-                if (recits.find(e => e.id === id)) {
-                    showArticle(id);
-                    return;
-                }
-            }
-
-            showHome();
-        }
-
-        document.getElementById('backToHomeLink').addEventListener('click', (e) => {
-            e.preventDefault();
-            showHome();
-        });
-
-        document.getElementById('backHomeBtn').addEventListener('click', (e) => {
-            e.preventDefault();
-            showHome();
-        });
-
-        window.addEventListener('hashchange', handleHash);
-        window.addEventListener('load', handleHash);
-        window.addEventListener('popstate', handleHash);
-    </script>
+    <h2 style="margin-top:2rem;">🎮 Mes défis Brawl Stars</h2>
+    <p class="hint">Pour les fans de Brawlers qui veulent grandir.</p>
+    <div class="cards">
+      <a class="card special3" href="#brawl"><div class="emoji">🏆</div><div class="txt"><h3>Le Carnet Brawl Stars</h3><p>8 défis : calculs, stratégie, mémoire, création.</p></div></a>
+    </div>
+
+    <h2 style="margin-top:2rem;"> Mes défis</h2>
+    <p class="hint">Pour me muscler en s'amusant.</p>
+    <div class="cards">
+      <a class="card special2" href="#detective"><div class="emoji">🔍</div><div class="txt"><h3>Le Carnet du Petit Détective</h3><p>8 défis : énigmes, expériences, astuces, magie.</p></div></a>
+      <a class="card special" href="#coeur"><div class="emoji">✅</div><div class="txt"><h3>Mon carnet du cœur</h3><p>Mes 8 missions à cocher.</p></div></a>
+    </div>
+  </section>
+
+  <!-- HISTOIRE 1 -->
+  <section id="histoire-1" class="page story-page">
+    <a class="back" href="#">← Toutes les histoires</a>
+    <span class="story-emoji">🏅</span>
+    <h2>L'Homme qui n'a pas triché</h2>
+    <div class="text">
+      <p>Adrien a 11 ans. Il adore les maths. Aujourd'hui, c'est le grand concours.</p>
+      <p>Pendant l'épreuve, il voit son voisin copier sur son téléphone. Adrien hésite. C'est difficile. Et si personne ne le voit ?</p>
+      <p>Alors il pense à son grand-père. Un jour, il lui a dit : « Un homme qui triche ne peut pas être fier de lui. »</p>
+      <p>Adrien respire. Il regarde son sujet. Il travaille tout seul.</p>
+      <p>Il finit deuxième. Le tricheur est premier… mais quelques jours plus tard, on découvre la triche. Le tricheur est puni. Adrien gagne.</p>
+      <p>Mais le plus beau, c'est qu'Adrien est fier de lui.</p>
+    </div>
+    <div class="lesson"><span class="label">Ce que j'ai appris</span>Être honnête, même quand personne ne regarde, c'est ça être fort.</div>
+    <div class="questions"><h4>Je réfléchis</h4><ul><li>Pourquoi Adrien n'a pas triché ?</li><li>Toi, qu'aurais-tu fait ?</li></ul></div>
+    <div class="mission"><span class="label">🎯 Ma mission</span><p>Cette semaine, je dis la vérité dans une situation où c'est difficile.</p></div>
+  </section>
+
+  <!-- HISTOIRE 2 -->
+  <section id="histoire-2" class="page story-page">
+    <a class="back" href="#">← Toutes les histoires</a>
+    <span class="story-emoji">👂</span>
+    <h2>Lina écoute</h2>
+    <div class="text">
+      <p>Au collège, deux groupes de copains se disputent. Ils crient. Personne n'écoute personne.</p>
+      <p>Lina est une fille calme. Elle a une idée. Elle demande à un garçon de chaque groupe de s'asseoir à une table.</p>
+      <p>Lina ne parle pas. Elle écoute. Juste elle écoute.</p>
+      <p>Au bout d'une heure, les deux garçons se regardent. Ils réalisent qu'ils ont les mêmes peurs. Ils se serrent la main.</p>
+      <p>Lina n'a rien dit. Et pourtant, elle a tout changé.</p>
+    </div>
+    <div class="lesson"><span class="label">Ce que j'ai appris</span>Parfois, écouter, c'est plus fort que parler.</div>
+    <div class="questions"><h4>Je réfléchis</h4><ul><li>Pourquoi Lina ne parle pas ?</li><li>Quand as-tu été bien écouté ?</li></ul></div>
+    <div class="mission"><span class="label">🎯 Ma mission</span><p>J'écoute quelqu'un jusqu'au bout, sans l'interrompre.</p></div>
+  </section>
+
+  <!-- HISTOIRE 4 -->
+  <section id="histoire-4" class="page story-page">
+    <a class="back" href="#">← Toutes les histoires</a>
+    <span class="story-emoji">🏀</span>
+    <h2>Le capitaine qui encourage</h2>
+    <div class="text">
+      <p>Maxime est le capitaine de l'équipe de basket. Il est fort. Mais il crie sur ses copains.</p>
+      <p>Résultat : l'équipe perd tous les matchs.</p>
+      <p>Un jour, à la mi-temps, ils perdent de 30 points. Maxime prend la parole.</p>
+      <p>Il dit : « Je suis désolé. Je vous ai traités comme des soldats. Je veux être votre capitaine, pas votre chef. Ensemble, on peut y arriver. »</p>
+      <p>L'équipe joue mieux. Ils perdent de peu. Mais ils sont unis. Les matchs suivants, ils gagnent.</p>
+    </div>
+    <div class="lesson"><span class="label">Ce que j'ai appris</span>Un vrai chef encourage. Il ne fait pas peur.</div>
+    <div class="questions"><h4>Je réfléchis</h4><ul><li>Qu'est-ce que Maxime a changé ?</li><li>Comment encourage-t-on quelqu'un ?</li></ul></div>
+    <div class="mission"><span class="label">🎯 Ma mission</span><p>J'encourage quelqu'un au lieu de le critiquer.</p></div>
+  </section>
+
+  <!-- HISTOIRE 6 -->
+  <section id="histoire-6" class="page story-page">
+    <a class="back" href="#">← Toutes les histoires</a>
+    <span class="story-emoji">🌱</span>
+    <h2>Hugo relève la tête</h2>
+    <div class="text">
+      <p>Hugo a de mauvaises notes. Il croit qu'il n'est pas capable.</p>
+      <p>Un professeur lui propose un marché : « Viens une heure par semaine. Et lis un livre par mois. Je t'aiderai. »</p>
+      <p>Hugo accepte. Au début, ce n'est pas drôle. Puis il découvre le plaisir de lire. Il comprend mieux.</p>
+      <p>Six mois plus tard, ses notes remontent. Il réussit son examen.</p>
+      <p>Hugo a compris : on peut toujours se relever.</p>
+    </div>
+    <div class="lesson"><span class="label">Ce que j'ai appris</span>Un petit pas chaque jour, et on peut gravir une montagne.</div>
+    <div class="questions"><h4>Je réfléchis</h4><ul><li>Qu'est-ce qui a aidé Hugo ?</li><li>Sur quoi aimerais-tu progresser ?</li></ul></div>
+    <div class="mission"><span class="label">🎯 Ma mission</span><p>Je choisis un petit objectif et je le tiens une semaine.</p></div>
+  </section>
+
+  <!-- HISTOIRE 12 -->
+  <section id="histoire-12" class="page story-page">
+    <a class="back" href="#">← Toutes les histoires</a>
+    <span class="story-emoji">🦸</span>
+    <h2>Sam ose parler</h2>
+    <div class="text">
+      <p>Sam voit un copain se faire embêter tous les jours. Les autres rient. Sam ne dit rien. Il a peur.</p>
+      <p>Un jour, il se dit : « Si je ne dis rien, je suis comme eux. »</p>
+      <p>Alors il va voir le principal. Il raconte tout.</p>
+      <p>Une enquête est faite. Les moqueries s'arrêtent.</p>
+      <p>Le copain vient le voir. Il lui dit merci.</p>
+      <p>Sam a compris : le courage, c'est agir même quand on a peur.</p>
+    </div>
+    <div class="lesson"><span class="label">Ce que j'ai appris</span>Le courage n'est pas l'absence de peur. C'est agir malgré la peur.</div>
+    <div class="questions"><h4>Je réfléchis</h4><ul><li>Pourquoi Sam a parlé ?</li><li>As-tu déjà vu une injustice ?</li></ul></div>
+    <div class="mission"><span class="label">🎯 Ma mission</span><p>Si je vois une injustice, je fais un petit pas pour aider.</p></div>
+  </section>
+
+  <!-- HISTOIRE 15 -->
+  <section id="histoire-15" class="page story-page">
+    <a class="back" href="#">← Toutes les histoires</a>
+    <span class="story-emoji">💛</span>
+    <h2>Le mot magique</h2>
+    <div class="text">
+      <p>Amine est populaire au collège. Mais il ne dit jamais merci. Pour lui, tout lui est dû.</p>
+      <p>Un jour, sa grand-mère lui offre un cadeau. Il ne la remercie pas.</p>
+      <p>Le lendemain, elle ne prépare pas son petit-déjeuner. Amine est surpris.</p>
+      <p>Elle dit : « Je n'ai pas été remerciée depuis des années. Alors j'arrête. »</p>
+      <p>Amine comprend. Il s'excuse. Il la remercie.</p>
+      <p>Depuis, il dit merci chaque jour.</p>
+    </div>
+    <div class="lesson"><span class="label">Ce que j'ai appris</span>Un « merci » sincère, c'est petit et c'est grand à la fois.</div>
+    <div class="questions"><h4>Je réfléchis</h4><ul><li>Pourquoi la grand-mère est triste ?</li><li>À qui dois-tu dire merci ?</li></ul></div>
+    <div class="mission"><span class="label">🎯 Ma mission</span><p>Aujourd'hui, je remercie trois personnes.</p></div>
+  </section>
+
+  <!-- HISTOIRE 19 — Albert -->
+  <section id="histoire-19" class="page story-page">
+    <a class="back" href="#">← Toutes les histoires</a>
+    <span class="story-emoji">💌</span>
+    <h2>Albert et Yoann</h2>
+    <div class="text">
+      <p>Albert et Yoann sont amis depuis toujours. Un jour, Albert dit une phrase méchante devant toute la classe.</p>
+      <p>Yoann est blessé. Il s'éloigne.</p>
+      <p>Albert a honte. Il n'ose pas s'excuser. Les jours passent.</p>
+      <p>Un soir, Albert écrit une lettre. Il dit : « J'ai eu tort. Pardon. »</p>
+      <p>Le lendemain, il donne la lettre. Yoann la lit. Il dit : « Merci d'avoir eu le courage. »</p>
+      <p>Ils ne redeviennent pas amis tout de suite. Mais une porte s'ouvre.</p>
+    </div>
+    <div class="lesson"><span class="label">Ce que j'ai appris</span>Demander pardon, c'est être courageux, pas faible.</div>
+    <div class="questions"><h4>Je réfléchis</h4><ul><li>Pourquoi Albert a mis du temps ?</li><li>Est-ce que c'est facile de demander pardon ?</li></ul></div>
+    <div class="mission"><span class="label">🎯 Ma mission</span><p>Je demande pardon à quelqu'un, même pour une petite chose.</p></div>
+  </section>
+
+  <!-- HISTOIRE 20 -->
+  <section id="histoire-20" class="page story-page">
+    <a class="back" href="#">← Toutes les histoires</a>
+    <span class="story-emoji">🏔️</span>
+    <h2>Ensemble vers le sommet</h2>
+    <div class="text">
+      <p>Quatre amis veulent monter le Mont Blanc. Ils s'entraînent pendant des mois.</p>
+      <p>Le jour J, c'est dur. Le froid, la fatigue. À mi-chemin, un ami veut abandonner.</p>
+      <p>Les trois autres s'arrêtent. Ils l'encouragent. Ils partagent leur eau et leurs mots.</p>
+      <p>Après des heures, ils arrivent au sommet. Tous les quatre.</p>
+      <p>Ils ont compris : on va plus loin ensemble.</p>
+    </div>
+    <div class="lesson"><span class="label">Ce que j'ai appris</span>Les grands défis se relèvent à plusieurs.</div>
+    <div class="questions"><h4>Je réfléchis</h4><ul><li>Pourquoi ils ne laissent pas leur ami ?</li><li>Quel est ton sommet à toi ?</li></ul></div>
+    <div class="mission"><span class="label">🎯 Ma mission</span><p>J'aide quelqu'un dans un projet, cette semaine.</p></div>
+  </section>
+
+  <!-- CARNET BRAWL STARS -->
+  <section id="brawl" class="page carnet">
+    <div class="brawl-header">
+      <img src="https://thumb.wikimedia.org/wikipedia/en/thumb/b/b2/Brawl_Stars_logo_2025.svg/500px-Brawl_Stars_logo_2025.svg.png"
+           alt="Brawl Stars"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+      <div class="logo-fallback">🎮 BRAWL STARS 🎮</div>
+      <p>8 défis de Brawler pour devenir un vrai champion... !</p>
+    </div>
+
+    <p class="intro" style="margin-top:0;">
+      Comme dans le jeu : <strong>observe, calcule, stratégise, crée.</strong><br>
+      Pas de trophées à gagner ici — juste devenir plus fort.
+    </p>
+
+    <div class="brawler-stats">
+      <div class="stat-card"><span class="s-emoji">💎</span><div class="s-val">10</div><div class="s-lab">gemmes pour gagner<br>en Razzia</div></div>
+      <div class="stat-card"><span class="s-emoji">⏱️</span><div class="s-val">15</div><div class="s-lab">secondes à tenir<br>avec 10 gemmes</div></div>
+      <div class="stat-card"><span class="s-emoji">👥</span><div class="s-val">3v3</div><div class="s-lab">équipes de 3<br>dans la plupart<br>des modes</div></div>
+    </div>
+
+    <!-- Défi 1 -->
+    <div class="defi red">
+      <span class="d-num">Défi 1 · Calcul 💎</span>
+      <h3>Les gemmes de la Razzia</h3>
+      <p>Ton équipe a <strong>7 gemmes</strong>. L'adversaire en a <strong>6</strong>. Il reste <strong>40 secondes</strong>.</p>
+      <ol>
+        <li>Combien de gemmes au total sur le terrain ?</li>
+        <li>Combien vous en manque-t-il pour atteindre 10 ?</li>
+        <li>Si vous en ramassez 3 en 10 secondes, combien de temps devrez-vous tenir sans en perdre pour gagner ?</li>
+      </ol>
+      <div class="answer">Réponses : <strong>13 gemmes</strong> · Il vous en manque <strong>3</strong> · Il faudra tenir <strong>15 secondes</strong> après les avoir ramassées (comme dans le jeu !).</div>
+    </div>
+
+    <!-- Défi 2 -->
+    <div class="defi red">
+      <span class="d-num">Défi 2 · Mémoire 🧠</span>
+      <h3>Le mur des Brawlers</h3>
+      <p><strong>Combien de Brawlers peux-tu nommer en 60 secondes</strong> sans regarder ton téléphone ? Écris-les ici ou dis-les à voix haute à un adulte qui compte.</p>
+      <p>Objectif niveau 1 : <strong>10 Brawlers</strong>. Niveau 2 : <strong>20</strong>. Niveau 3 : <strong>40</strong>.</p>
+      <p>Tu peux aussi essayer :</p>
+      <ul>
+        <li>Les Brawlers <strong>tanks</strong> (qui ont beaucoup de vie) : Bull, El Primo, Frank, Rosa…</li>
+        <li>Les Brawlers qui <strong>soignent</strong> : Poco, Pam, Byron, Gene…</li>
+        <li>Les Brawlers <strong>légendaires</strong> : Spike, Crow, Leon, Sandy, Amber, Meg, Chester, Kit, Kenji…</li>
+      </ul>
+    </div>
+
+    <!-- Défi 3 -->
+    <div class="defi red">
+      <span class="d-num">Défi 3 · Stratégie 🗺️</span>
+      <h3>Le plan de la Razzia</h3>
+      <p>Tu joues en <strong>Razzia de gemmes</strong> avec 2 amis. Voici votre équipe :</p>
+      <ul>
+        <li>Toi : <strong>Shelly</strong> (courte portée, super puissante)</li>
+        <li>Ami 1 : <strong>Piper</strong> (très longue portée, fragile)</li>
+        <li>Ami 2 : <strong>Bull</strong> (tank, fonce dans le tas)</li>
+      </ul>
+      <p>L'adversaire a <strong>Leon, Crow et Edgar</strong> (tous rapides et agressifs).</p>
+      <ol>
+        <li>Qui doit rester au milieu pour ramasser les gemmes ?</li>
+        <li>Qui doit se cacher et tirer de loin ?</li>
+        <li>Qui doit protéger les autres ?</li>
+      </ol>
+      <div class="answer">Stratégie : <strong>Bull</strong> protège au centre, <strong>Piper</strong> reste en retrait et tire, <strong>Shelly</strong> se cache dans les buissons pour piéger les attaquants rapides. À discuter avec un adulte !</div>
+    </div>
+
+    <!-- Défi 4 -->
+    <div class="defi blue">
+      <span class="d-num">Défi 4 · Calcul 🏆</span>
+      <h3>La course aux trophées</h3>
+      <p>Voici les trophées de tes Brawlers préférés :</p>
+      <ul>
+        <li>Shelly : <strong>320</strong> trophées</li>
+        <li>Colt : <strong>215</strong> trophées</li>
+        <li>Bull : <strong>408</strong> trophées</li>
+        <li>Spike : <strong>157</strong> trophées</li>
+      </ul>
+      <ol>
+        <li>Combien de trophées au total ?</li>
+        <li>Combien te manque-t-il pour atteindre <strong>1 500 trophées</strong> ?</li>
+        <li>Si tu gagnes en moyenne <strong>8 trophées</strong> par match, combien de matchs pour arriver à 1 500 ?</li>
+      </ol>
+      <div class="answer">Réponses : <strong>1 100 trophées</strong> · Il te manque <strong>400</strong> · Environ <strong>50 matchs</strong> (400 ÷ 8).</div>
+    </div>
+
+    <!-- Défi 5 -->
+    <div class="defi blue">
+      <span class="d-num">Défi 5 · Logique 🧩</span>
+      <h3>Qui est qui ?</h3>
+      <p>Trois Brawlers se cachent. Devine-les grâce aux indices :</p>
+      <ol>
+        <li>Il est <strong>légendaire</strong>, il se cache dans les buissons, il devient invisible.</li>
+        <li>Il est <strong>tank</strong>, il charge avec ses cornes, il a une super qui le fait foncer.</li>
+        <li>Il est <strong>légendaire</strong>, il lance des cartes, il est un as du poker.</li>
+      </ol>
+      <div class="answer">Réponses : 1) <strong>Leon</strong> · 2) <strong>Bull</strong> · 3) <strong>Chester</strong> (ou Charlie selon les versions).</div>
+    </div>
+
+    <!-- Défi 6 -->
+    <div class="defi blue">
+      <span class="d-num">Défi 6 · Créativité 🎨</span>
+      <h3>Invente ton Brawler</h3>
+      <p>Imagine un nouveau Brawler <strong>100% à toi</strong> et remplis sa fiche :</p>
+      <ul>
+        <li><strong>Nom :</strong> ____________</li>
+        <li><strong>Rareté :</strong> Rare / Super Rare / Épique / Mythique / Légendaire</li>
+        <li><strong>Apparence :</strong> décris ou dessine</li>
+        <li><strong>Attaque :</strong> que fait-il ?</li>
+        <li><strong>Super :</strong> quel est son pouvoir spécial ?</li>
+        <li><strong>Star Power :</strong> un bonus caché</li>
+        <li><strong>Son cri de guerre :</strong> une phrase qu'il dit en arrivant</li>
+      </ul>
+      <p>Dessine-le au dos de cette page !</p>
+    </div>
+
+    <!-- Défi 7 -->
+    <div class="defi">
+      <span class="d-num">Défi 7 · Vocabulaire 📖</span>
+      <h3>Mots mélangés Brawl</h3>
+      <p>Remets les lettres dans l'ordre pour retrouver les mots du jeu :</p>
+      <ul>
+        <li>I Z A Z A R → ?</li>
+        <li>L S Y H E L → ?</li>
+        <li>R I W A L B → ?</li>
+        <li>G M E E M → ?</li>
+        <li>P H E R O S → ?</li>
+        <li>H P E R O S → ? (indice : celui qui a la super la plus puissante)</li>
+      </ul>
+      <div class="answer">Réponses : <strong>RAZZIA</strong> · <strong>SHELLY</strong> · <strong>BRAWL</strong> · <strong>GEMME</strong> · <strong>SHOPE</strong> (boutique) · <strong>HEROS</strong>. Bonus : combien d'autres mots du jeu peux-tu écrire ?</div>
+    </div>
+
+    <!-- Défi 8 -->
+    <div class="defi">
+      <span class="d-num">Défi 8 · Curiosité 💡</span>
+      <h3>La question du champion</h3>
+      <p>Choisis UNE question sur Brawl Stars et cherche la réponse (avec un adulte, sur le wiki, ou en testant dans le jeu) :</p>
+      <ul>
+        <li>Qui a créé Brawl Stars, et dans quel pays ?</li>
+        <li>Combien de Brawlers existent aujourd'hui ? (le chiffre change souvent !)</li>
+        <li>Quel est le Brawler le plus ancien du jeu ?</li>
+        <li>Combien de gemmes coûte le Pass Brawl ?</li>
+        <li>Quel mode de jeu a été ajouté le plus récemment ?</li>
+      </ul>
+      <p>Écris ce que tu as appris avec <strong>TES mots</strong> au dos de la page.</p>
+      <div class="answer">Indice : Brawl Stars est créé par <strong>Supercell</strong>, une entreprise <strong>finlandaise</strong> (le pays du Père Noël !).</div>
+    </div>
+
+    <div class="solutions">
+      <h3>🎯 Le mot du champion</h3>
+      <p>Dans Brawl Stars, les meilleurs joueurs ne sont pas ceux qui cliquent le plus vite — ce sont ceux qui <strong>réfléchissent avant d'agir</strong>. Comme dans la vie : observe, calcule, choisis, recommence. C'est comme ça qu'on devient un vrai champion. 🏆</p>
+    </div>
+
+    <a class="back" href="#" style="display:inline-block; margin-top:2rem;">← Retour</a>
+  </section>
+
+  <!-- CARNET DU CŒUR -->
+  <section id="coeur" class="page carnet">
+    <h2>✅ Mon carnet du cœur</h2>
+    <p class="intro">Je coche chaque mission quand je l'ai faite. Pas de course, juste pour moi.</p>
+
+    <div class="row"><div class="check"></div><div class="m-emoji">🏅</div><div class="m-txt"><div class="t">L'honnêteté</div><div class="d">Je dis la vérité même quand c'est difficile.</div></div><div class="m-date">Date : ____</div></div>
+    <div class="row"><div class="check"></div><div class="m-emoji">👂</div><div class="m-txt"><div class="t">L'écoute</div><div class="d">J'écoute quelqu'un jusqu'au bout, sans l'interrompre.</div></div><div class="m-date">Date : ____</div></div>
+    <div class="row"><div class="check"></div><div class="m-emoji">🏀</div><div class="m-txt"><div class="t">L'encouragement</div><div class="d">J'encourage quelqu'un au lieu de le critiquer.</div></div><div class="m-date">Date : ____</div></div>
+    <div class="row"><div class="check"></div><div class="m-emoji">🌱</div><div class="m-txt"><div class="t">La persévérance</div><div class="d">Je tiens un petit objectif pendant une semaine.</div></div><div class="m-date">Date : ____</div></div>
+    <div class="row"><div class="check"></div><div class="m-emoji">🦸</div><div class="m-txt"><div class="t">Le courage</div><div class="d">Je fais un petit pas pour aider quelqu'un.</div></div><div class="m-date">Date : ____</div></div>
+    <div class="row"><div class="check"></div><div class="m-emoji">💛</div><div class="m-txt"><div class="t">La gratitude</div><div class="d">Je remercie trois personnes dans la journée.</div></div><div class="m-date">Date : ____</div></div>
+    <div class="row"><div class="check"></div><div class="m-emoji">💌</div><div class="m-txt"><div class="t">Le pardon</div><div class="d">Je demande pardon à quelqu'un.</div></div><div class="m-date">Date : ____</div></div>
+    <div class="row"><div class="check"></div><div class="m-emoji">🏔️</div><div class="m-txt"><div class="t">L'entraide</div><div class="d">J'aide quelqu'un dans un projet.</div></div><div class="m-date">Date : ____</div></div>
+
+    <div class="victories">
+      <h3>🌟 Mes plus belles victoires</h3>
+      <p class="vsub">Écris ou dessine ce que tu as réussi. Même les petites choses comptent !</p>
+      <div class="line"></div><div class="line"></div><div class="line"></div>
+      <div class="line"></div><div class="line"></div><div class="line"></div>
+    </div>
+    <a class="back" href="#" style="display:inline-block; margin-top:2rem;">← Retour</a>
+  </section>
+
+  <!-- CARNET DU PETIT DÉTECTIVE -->
+  <section id="detective" class="page carnet">
+    <h2>🔍 Le Carnet du Petit Détective</h2>
+    <p class="intro">8 défis: observation, logique, mémoire, créativité.<br>Pas de notes. Juste le plaisir de chercher.</p>
+
+    <div class="defi">
+      <span class="d-num">Défi 1 · Observation</span>
+      <h3>👁️ Œil de lynx</h3>
+      <p>Regarde une pièce de ta maison pendant <strong>30 secondes</strong>. Puis ferme les yeux.</p>
+      <p>Cite <strong>10 objets</strong> que tu as vus. Puis ouvre les yeux : combien étaient justes ?</p>
+      <p>Refais le lendemain : essaie d'en citer 15.</p>
+    </div>
+
+    <div class="defi">
+      <span class="d-num">Défi 2 · Logique</span>
+      <h3>🧩 Les 4 devinettes</h3>
+      <ol>
+        <li>Plus j'en prends, plus j'en laisse derrière moi. Qui suis-je ?</li>
+        <li>Je vole sans ailes et je pleure sans yeux. Qui suis-je ?</li>
+        <li>On me trouve une fois dans une minute, deux fois dans un moment, jamais dans mille ans. Qui suis-je ?</li>
+        <li>J'ai un chapeau mais pas de tête, un pied mais pas de chaussure. Qui suis-je ?</li>
+      </ol>
+      <div class="answer">Réponses en bas de page ↓ (ne regarde qu'après avoir cherché !)</div>
+    </div>
+
+    <div class="defi">
+      <span class="d-num">Défi 3 · Vocabulaire</span>
+      <h3>📚 Le mot du jour</h3>
+      <p>Choisis un mot dans la liste et <strong>utilise-le dans une phrase</strong> aujourd'hui. Le lendemain, prends-en un autre.</p>
+      <p><em>farfelu · vertigineux · murmure · ébloui · minuscule · chimère · bizarre · délicieux · rusé · curieux</em></p>
+      <p>Objectif : en utiliser 7 cette semaine. Écris tes phrases au dos du carnet.</p>
+    </div>
+
+    <div class="defi">
+      <span class="d-num">Défi 4 · Science</span>
+      <h3>🧪 Le poivre qui fuit</h3>
+      <p><strong>Il faut :</strong> un bol d'eau, du poivre moulu, du liquide vaisselle.</p>
+      <ol>
+        <li>Saupoudre du poivre sur l'eau.</li>
+        <li>Trempe ton doigt dans le liquide vaisselle.</li>
+        <li>Touche doucement le centre de l'eau avec ton doigt.</li>
+      </ol>
+      <p>Le poivre <strong>fuit</strong> vers les bords ! Pourquoi ? Le savon casse la « peau » de l'eau (la tension superficielle).</p>
+    </div>
+
+    <div class="defi">
+      <span class="d-num">Défi 5 · Calcul</span>
+      <h3>🔢 L'astuce du 11</h3>
+      <p>Pour multiplier un nombre à 2 chiffres par 11 :</p>
+      <p><strong>Exemple : 32 × 11</strong><br>
+      Sépare les chiffres : <strong>3</strong> … <strong>2</strong><br>
+      Additionne-les : 3 + 2 = <strong>5</strong><br>
+      Mets le 5 au milieu : <strong>3 5 2</strong>. Résultat : 352 !</p>
+      <p>Essaie : <em>14 × 11 · 23 × 11 · 41 × 11</em></p>
+      <div class="answer">14×11=154 · 23×11=253 · 41×11=451. Attention si la somme dépasse 9 : 68×11 → 6 (6+8=14) 8 → 748 (le 1 se reporte).</div>
+    </div>
+
+    <div class="defi">
+      <span class="d-num">Défi 6 · Curiosité</span>
+      <h3>🌤️ La question curieuse</h3>
+      <p>Pose-toi UNE grande question. Cherche la réponse avec un adulte ou un livre. Écris ce que tu as compris avec TES mots.</p>
+      <p>Exemples : <em>Pourquoi le ciel est-il bleu ? Pourquoi on bâille ? Comment un avion vole ? Pourquoi les chats ronronnent ?</em></p>
+      <p>Une question par semaine. C'est comme ça qu'on devient vraiment intelligent : en cherchant.</p>
+    </div>
+
+    <div class="defi">
+      <span class="d-num">Défi 7 · Stratégie</span>
+      <h3>♟️ Le joueur d'échecs</h3>
+      <p>Joue <strong>3 parties</strong> d'un jeu de stratégie : échecs, dames, Puissance 4, ou même cartes.</p>
+      <p>Après chaque partie, note <strong>UNE nouvelle idée</strong> que tu as apprise (une ruse, un piège, une erreur à éviter).</p>
+      <p>Je réfléchis <em>avant</em> de jouer .</p>
+    </div>
+
+    <div class="defi">
+      <span class="d-num">Défi 8 · Magie</span>
+      <h3>🎩 Le tour de magie mathématique</h3>
+      <p>Demande à quelqu'un de :</p>
+      <ol>
+        <li>Penser à un nombre secret.</li>
+        <li>Ajouter 5.</li>
+        <li>Multiplier par 2.</li>
+        <li>Soustraire 4.</li>
+        <li>Diviser par 2.</li>
+        <li>Soustraire son nombre de départ.</li>
+      </ol>
+      <p>Résultat : <strong>3</strong>. À tous les coups ! Pourquoi ? C'est la magie de l'algèbre. Essaie de comprendre… c'est là qu'est l'intelligence.</p>
+      <div class="answer">Démonstration : x → x+5 → 2(x+5)=2x+10 → 2x+6 → x+3 → x+3−x = <strong>3</strong>. Le résultat est toujours 3, quel que soit le nombre de départ !</div>
+    </div>
+
+    <div class="solutions">
+      <h3>🔎 Solutions des devinettes (Défi 2)</h3>
+      <p>
+        1. <strong>Les pas</strong> (ou les empreintes) — plus on en fait, plus on en laisse derrière soi.<br>
+        2. <strong>Un nuage</strong> — il « vole » dans le ciel et « pleure » la pluie.<br>
+        3. <strong>La lettre M</strong> — une fois dans « minute », deux dans « moment », jamais dans « ans ».<br>
+        4. <strong>Un champignon</strong> — il a un chapeau et un pied, mais rien d'autre.
+      </p>
+    </div>
+    <a class="back" href="#" style="display:inline-block; margin-top:2rem;">← Retour</a>
+  </section>
+
+<script>
+  function showView(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    if (id === 'home') {
+      document.getElementById('cover').classList.add('active');
+      document.getElementById('index').classList.add('active');
+    } else {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('active');
+      else {
+        document.getElementById('cover').classList.add('active');
+        document.getElementById('index').classList.add('active');
+      }
+    }
+    window.scrollTo(0, 0);
+  }
+  function handleHash() {
+    const h = window.location.hash.replace('#', '');
+    if (h.startsWith('histoire-') || h === 'detective' || h === 'coeur' || h === 'brawl') showView(h);
+    else showView('home');
+  }
+  window.addEventListener('hashchange', handleHash);
+  window.addEventListener('load', handleHash);
+  handleHash();
+</script>
 
 </body>
 </html>
