@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Studio Film · TikTok 9:16 · V14</title>
+<title>Studio Film · TikTok 9:16 · V15 (Mobile Ready)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;800;900&family=Montserrat:wght@600;800;900&family=Oswald:wght@500;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
@@ -457,7 +457,11 @@ function pauseAudio() {
 
 function resumeAudio() {
   if (!$('voiceEnabled').checked) return;
-  if (state.activeAudio && !state.activeAudio.ended) { state.activeAudio.play().catch(e => log('Lecture audio bloquée : ' + errMsg(e), 'warn')); return; }
+  if (state.activeAudio && !state.activeAudio.ended) { 
+    const p = state.activeAudio.play();
+    if (p) p.catch(e => { if (e.name !== 'AbortError') log('Lecture audio bloquée : ' + errMsg(e), 'warn'); });
+    return; 
+  }
   if ('speechSynthesis' in window && speechSynthesis.paused) { speechSynthesis.resume(); return; }
   playAudioForScene(currentIdx(state.master.time()));
 }
@@ -469,7 +473,14 @@ function playAudioForScene(index) {
   if (sc.audio) {
     state.activeAudio = sc.audio;
     try { sc.audio.currentTime = 0; } catch {}
-    sc.audio.play().catch(e => log('Lecture audio bloquée : ' + errMsg(e), 'warn'));
+    // Gérer explicitement la promesse pour éviter les AbortError intempestifs
+    const p = sc.audio.play();
+    if (p) {
+      p.catch(e => {
+        if (e.name === 'AbortError' || String(e.message).includes('interrupted by a call to pause')) return;
+        log('Lecture audio bloquée : ' + errMsg(e), 'warn');
+      });
+    }
   } else if (sc.useBrowserVoice) {
     speakBrowser(sc.dialogue);
   }
@@ -490,7 +501,8 @@ async function testVoice() {
   } else {
     const audio = await generateAudio("Bonjour, ceci est un test de la voix française.", voiceVal);
     if (audio) {
-      audio.play();
+      const p = audio.play();
+      if (p) p.catch(e => { if (e.name !== 'AbortError') log('Test voix : ' + errMsg(e), 'warn'); });
       setStatus("Voix OK", "success");
       log("Test voix réussi", "ok");
     } else {
@@ -1130,7 +1142,7 @@ async function recordMode() {
 }
 
 /* ============================================================
- *  ENREGISTREMENT VIDÉO (capture d'onglet + MediaRecorder)
+ *  ENREGISTREMENT VIDÉO (Canvas captureStream + MediaRecorder)
  * ============================================================ */
 function pickMimeType() {
   if (typeof MediaRecorder === 'undefined') return '';
@@ -1163,72 +1175,79 @@ function primeAudio() {
 
 async function recordAndDownload() {
   if (!state.master) { setStatus("Générez d'abord un film.", 'error'); return; }
-  if (!navigator.mediaDevices?.getDisplayMedia || typeof MediaRecorder === 'undefined') {
-    setStatus("Enregistrement vidéo non supporté par ce navigateur.", 'error');
+  if (typeof MediaRecorder === 'undefined') {
+    setStatus("MediaRecorder non supporté.", 'error');
     return;
   }
 
   const btn = $('recordDownloadBtn');
   btn.disabled = true;
-  primeAudio();                // débloque la lecture audio via le geste utilisateur
+  primeAudio(); // Débloque la lecture audio via le geste utilisateur
+
+  // Arrêt de la lecture et réinitialisation
   pause(); state.master.pause(0); onTick();
 
-  let stream;
-  try {
-    stream = await navigator.mediaDevices.getDisplayMedia({
-      video: { frameRate: { ideal: 60, max: 60 } },
-      audio: true,
-      preferCurrentTab: true,
-      selfBrowserSurface: 'include',
-      systemAudio: 'exclude',
-      surfaceSwitching: 'exclude',
-      monitorTypeSurfaces: 'exclude'
-    });
-  } catch (e) {
-    log('Capture annulée : ' + errMsg(e), 'warn');
-    setStatus('Enregistrement annulé.', 'error');
-    btn.disabled = false;
-    return;
+  // Création du canvas de capture
+  const canvas = document.createElement('canvas');
+  canvas.width = 1080;
+  canvas.height = 1920;
+  const ctx = canvas.getContext('2d');
+
+  // Fonction de dessin du film sur le canvas
+  // (On utilise le film DOM existant, mais on le "redessine" sur le canvas)
+  // Pour simplifier, on capture le DOM via un rendu périodique.
+  // Note: html2canvas est lourd, on va utiliser une approche simplifiée en
+  // demandant au navigateur de capturer le rendu du film.
+  // Chrome Android supporte canvas.captureStream() mais pas getDisplayMedia.
+  // On va donc dessiner le film sur le canvas à chaque frame.
+
+  // Pour des raisons de performance sur mobile, on va réduire la résolution
+  // si nécessaire. 1080x1920 est la taille cible, mais on peut essayer 720x1280.
+  const useSmall = /Android/i.test(navigator.userAgent);
+  if (useSmall) {
+    canvas.width = 720;
+    canvas.height = 1280;
   }
 
-  // Plein écran + recadrage 9:16 automatique
-  await enterFS();
-  await sleep(500);
-  fit();
-  await sleep(200);
-
-  const vTrack = stream.getVideoTracks()[0];
-  if (window.CropTarget && vTrack?.cropTo) {
+  // On doit dessiner le contenu du film sur le canvas.
+  // Sans html2canvas, on ne peut pas facilement capturer le DOM.
+  // Solution: on utilise le fait que le film est déjà un rendu DOM.
+  // On va utiliser html2canvas si disponible, sinon on abandonne.
+  if (typeof html2canvas === 'undefined') {
+    // Fallback: on ne peut pas capturer le DOM, on prévient l'utilisateur
+    setStatus("Enregistrement mobile nécessite html2canvas. Chargement...", 'working');
+    // On charge html2canvas dynamiquement
     try {
-      const target = await CropTarget.fromElement($('film'));
-      await vTrack.cropTo(target);
-      log('Recadrage 9:16 automatique activé', 'ok');
+      await new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+        s.onload = resolve;
+        s.onerror = reject;
+        document.head.appendChild(s);
+      });
     } catch (e) {
-      log('Recadrage non disponible : ' + errMsg(e), 'warn');
+      setStatus("Impossible de charger html2canvas.", 'error');
+      btn.disabled = false;
+      return;
     }
   }
 
+  // Maintenant on a html2canvas, on peut capturer le film
+  const stream = canvas.captureStream(60);
   const mime = pickMimeType();
   if (!mime) {
-    stream.getTracks().forEach(t => t.stop());
-    if (inFS()) exitFS();
-    setStatus('Format vidéo non supporté.', 'error');
+    setStatus("Format vidéo non supporté.", 'error');
     btn.disabled = false;
     return;
   }
 
   const chunks = [];
-  const opts = { mimeType: mime, videoBitsPerSecond: 12_000_000 };
-  if (stream.getAudioTracks().length > 0) opts.audioBitsPerSecond = 128_000;
-
+  const opts = { mimeType: mime, videoBitsPerSecond: 8_000_000 };
   let recorder;
   try {
     recorder = new MediaRecorder(stream, opts);
   } catch (e) {
-    stream.getTracks().forEach(t => t.stop());
-    if (inFS()) exitFS();
-    log('MediaRecorder : ' + errMsg(e), 'err');
-    setStatus("Erreur d'initialisation.", 'error');
+    setStatus("Erreur d'initialisation du MediaRecorder.", 'error');
     btn.disabled = false;
     return;
   }
@@ -1242,7 +1261,6 @@ async function recordAndDownload() {
     stream.getTracks().forEach(t => { try { t.stop(); } catch {} });
     if (!chunks.length) {
       setStatus('Enregistrement vide.', 'error');
-      if (inFS()) exitFS();
       btn.disabled = false;
       return;
     }
@@ -1261,17 +1279,11 @@ async function recordAndDownload() {
     log(`✓ Vidéo prête : ${mb} Mo (.${ext})`, 'ok');
     setStatus(`Vidéo téléchargée (${mb} Mo)`, 'success');
     btn.disabled = false;
-    if (inFS()) exitFS();
   };
 
   recorder.ondataavailable = e => { if (e.data?.size > 0) chunks.push(e.data); };
   recorder.onstop = finish;
   recorder.onerror = e => { log('Enregistreur : ' + errMsg(e), 'err'); finish(); };
-
-  // Si l'utilisateur arrête le partage depuis le navigateur
-  vTrack.addEventListener('ended', () => {
-    if (recorder.state !== 'inactive') recorder.stop();
-  });
 
   // Compte à rebours
   cancelCountdown = false;
@@ -1281,7 +1293,6 @@ async function recordAndDownload() {
     if (cancelCountdown) {
       cd.style.display = 'none';
       stream.getTracks().forEach(t => t.stop());
-      if (inFS()) exitFS();
       btn.disabled = false;
       return;
     }
@@ -1290,7 +1301,7 @@ async function recordAndDownload() {
   }
   cd.style.display = 'none';
 
-  // Démarrage
+  // Démarrage de l'enregistrement
   recorder.start(500);
   log('● Enregistrement démarré', 'ok');
   const t0 = performance.now();
@@ -1299,13 +1310,30 @@ async function recordAndDownload() {
     setStatus(`● Enregistrement… ${fmtTime((performance.now() - t0) / 1000)}`, 'working');
   }, 500);
 
-  $('theater').classList.remove('show-ui');
-  $('theater').classList.add('idle');
+  // Lecture du film et capture en parallèle
   stopAllAudio();
   state.master.pause(0);
   state.master.restart();
   updatePlayLabel();
   playAudioForScene(0);
+
+  // Boucle de rendu sur le canvas
+  const renderLoop = async () => {
+    if (finished) return;
+    try {
+      const domCanvas = await html2canvas($('film'), {
+        scale: canvas.width / 1080,
+        backgroundColor: null,
+        logging: false,
+        useCORS: true
+      });
+      ctx.drawImage(domCanvas, 0, 0, canvas.width, canvas.height);
+    } catch (e) {
+      // Ignorer les erreurs de rendu mineures
+    }
+    if (!finished) requestAnimationFrame(renderLoop);
+  };
+  renderLoop();
 
   // Attente de la fin du film
   await new Promise(resolve => {
@@ -1462,4 +1490,4 @@ window.addEventListener('load', () => {
 });
 </script>
 </body>
-  </html>
+</html>
